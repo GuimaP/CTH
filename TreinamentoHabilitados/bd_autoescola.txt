@@ -1,0 +1,135 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+CREATE SCHEMA IF NOT EXISTS `bd_autoescola` DEFAULT CHARACTER SET utf8 ;
+USE `bd_autoescola` ;
+
+-- -----------------------------------------------------
+-- Table `bd_autoescola`.`tb_calendario`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_autoescola`.`tb_calendario` (
+  `ID_CALENDARIO` INT(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`ID_CALENDARIO`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_autoescola`.`tb_cnh`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_autoescola`.`tb_cnh` (
+  `ID_CNH` INT(11) NOT NULL AUTO_INCREMENT,
+  `REGISTRO_CNH` VARCHAR(50) NOT NULL,
+  `VALIDADE_CNH` VARCHAR(30) NOT NULL,
+  `PRIMEIRA_CNH` VARCHAR(30) NOT NULL,
+  PRIMARY KEY (`ID_CNH`),
+  UNIQUE INDEX `REGISTRO_CNH` (`REGISTRO_CNH` ASC))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_autoescola`.`tb_endereco`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_autoescola`.`tb_endereco` (
+  `ID_ENDERECO` INT(11) NOT NULL AUTO_INCREMENT,
+  `LOGRADOURO_ENDERECO` VARCHAR(200) NOT NULL,
+  `NUMERO_ENDERECO` VARCHAR(20) NOT NULL,
+  `BAIRRO_ENDERECO` VARCHAR(50) NULL DEFAULT NULL,
+  `CEP_ENDERECO` VARCHAR(30) NOT NULL,
+  PRIMARY KEY (`ID_ENDERECO`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_autoescola`.`tb_cadastrocliente`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_autoescola`.`tb_cadastrocliente` (
+  `ID_CADASTROCLIENTE` INT(11) NOT NULL AUTO_INCREMENT,
+  `DATACADASTRO_CADASTROCLIENTE` VARCHAR(30) NOT NULL,
+  `PESQUISA1_CADASTRO` VARCHAR(30) NULL DEFAULT NULL,
+  `PESQUISA2_CADASTRO` VARCHAR(30) NULL DEFAULT NULL,
+  `PESQUISA3_CADASTRO` VARCHAR(30) NULL DEFAULT NULL,
+  `PESQUISA4_CADASTRO` VARCHAR(30) NULL DEFAULT NULL,
+  `OBSERVACAO_CADASTRO` VARCHAR(300) NULL DEFAULT NULL,
+  PRIMARY KEY (`ID_CADASTROCLIENTE`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_autoescola`.`tb_cliente`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_autoescola`.`tb_cliente` (
+  `ID_CLIENTE` INT(11) NOT NULL AUTO_INCREMENT,
+  `NOME_CLIENTE` VARCHAR(255) NOT NULL,
+  `DATANASCIMENTO_CLIENTE` VARCHAR(20) NOT NULL,
+  `EMAIL_CLIENTE` VARCHAR(255) NULL DEFAULT NULL,
+  `ESCOLARIDADE_CLIENTE` VARCHAR(20) NULL DEFAULT NULL,
+  `TELEFONE_CLIENTE` VARCHAR(25) NULL DEFAULT NULL,
+  `CELULAR_CLIENTE` VARCHAR(25) NULL DEFAULT NULL,
+  `PROFISSAO_CLIENTE` VARCHAR(30) NULL DEFAULT NULL,
+  `RG_CLIENTE` VARCHAR(30) NULL DEFAULT NULL,
+  `CPF_CLIENTE` VARCHAR(30) NOT NULL,
+  `SEXO_CLIENTE` VARCHAR(20) NOT NULL,
+  `tb_cnh_ID_CNH` INT(11) NOT NULL,
+  `tb_endereco_ID_ENDERECO` INT(11) NOT NULL,
+  `tb_cadastrocliente_ID_CADASTROCLIENTE` INT(11) NOT NULL,
+  PRIMARY KEY (`ID_CLIENTE`, `tb_cnh_ID_CNH`, `tb_endereco_ID_ENDERECO`, `tb_cadastrocliente_ID_CADASTROCLIENTE`),
+  UNIQUE INDEX `NOME_CLIENTE` (`NOME_CLIENTE` ASC),
+  UNIQUE INDEX `CPF_CLIENTE` (`CPF_CLIENTE` ASC),
+  UNIQUE INDEX `EMAIL_CLIENTE` (`EMAIL_CLIENTE` ASC),
+  UNIQUE INDEX `TELEFONE_CLIENTE` (`TELEFONE_CLIENTE` ASC),
+  UNIQUE INDEX `CELULAR_CLIENTE` (`CELULAR_CLIENTE` ASC),
+  UNIQUE INDEX `RG_CLIENTE` (`RG_CLIENTE` ASC),
+  INDEX `fk_tb_cliente_tb_cnh_idx` (`tb_cnh_ID_CNH` ASC),
+  INDEX `fk_tb_cliente_tb_endereco1_idx` (`tb_endereco_ID_ENDERECO` ASC),
+  INDEX `fk_tb_cliente_tb_cadastrocliente1_idx` (`tb_cadastrocliente_ID_CADASTROCLIENTE` ASC),
+  CONSTRAINT `fk_tb_cliente_tb_cnh`
+    FOREIGN KEY (`tb_cnh_ID_CNH`)
+    REFERENCES `bd_autoescola`.`tb_cnh` (`ID_CNH`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tb_cliente_tb_endereco1`
+    FOREIGN KEY (`tb_endereco_ID_ENDERECO`)
+    REFERENCES `bd_autoescola`.`tb_endereco` (`ID_ENDERECO`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tb_cliente_tb_cadastrocliente1`
+    FOREIGN KEY (`tb_cadastrocliente_ID_CADASTROCLIENTE`)
+    REFERENCES `bd_autoescola`.`tb_cadastrocliente` (`ID_CADASTROCLIENTE`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_autoescola`.`tb_funcionario`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_autoescola`.`tb_funcionario` (
+  `ID_FUNCIONARIO` INT(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`ID_FUNCIONARIO`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `bd_autoescola`.`tb_login`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bd_autoescola`.`tb_login` (
+  `ID_LOGIN` INT(11) NOT NULL AUTO_INCREMENT,
+  `USUARIO_LOGIN` VARCHAR(50) NOT NULL,
+  `SENHA_LOGIN` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`ID_LOGIN`),
+  UNIQUE INDEX `USUARIO_LOGIN` (`USUARIO_LOGIN` ASC),
+  UNIQUE INDEX `SENHA_LOGIN` (`SENHA_LOGIN` ASC))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
