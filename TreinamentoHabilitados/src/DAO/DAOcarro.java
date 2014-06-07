@@ -29,7 +29,7 @@ public class DAOcarro extends DAOconexao {
 		try {
 			comando = banco.conecta.prepareStatement(sql, 
 					PreparedStatement.RETURN_GENERATED_KEYS);
-			comando.setString(1, carro.getAno());
+			comando.setLong(1, carro.getAno());
 			comando.setString(2, carro.getMarca());
 			comando.setString(3, carro.getModelo());
 			comando.setString(4,carro.getPlaca());
@@ -53,7 +53,7 @@ public class DAOcarro extends DAOconexao {
 			ResultSet rs = comando.executeQuery();
 			while (rs.next()){
 				carroObj = new Carro();
-				carroObj.setAno(rs.getString("ANO_CARRO"));
+				carroObj.setAno(rs.getLong("ANO_CARRO"));
 				carroObj.setMarca(rs.getString("MARCA_CARRO"));
 				carroObj.setModelo(rs.getString("MODELO_CARRO"));
 				carroObj.setPlaca(rs.getString("PLACA_CARRO"));

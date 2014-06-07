@@ -113,7 +113,7 @@ public class CadastroCarro extends JFrame {
 					tfMarca.requestFocus(true);
 				} else {
 					Carro carro = new Carro();
-					carro.setAno(tfAno.getText());
+					carro.setAno(Long.parseLong(tfAno.getText()));
 					carro.setMarca(tfMarca.getText());
 					carro.setModelo(tfModelo.getText());
 					carro.setPlaca(tfPlaca.getValue().toString());

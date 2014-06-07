@@ -8,7 +8,7 @@ public class ConnectionFactoryRepositoryDois {
 	private final static EntityManager manager = openEntity();
 	
 	private static EntityManager openEntity(){
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("autoEscola");
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("autoEscolaNew");
 		return factory.createEntityManager();
 	}
 	

@@ -1,8 +1,14 @@
 package modelo;
 
-public class Cnh {
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+public class Cnh {
+	
 	private String primeiraHabilitacao;
+	@Id
 	private String registroCnh;
 	private String dtValidade;
 

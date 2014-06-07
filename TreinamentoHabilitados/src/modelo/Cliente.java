@@ -1,10 +1,22 @@
 package modelo;
 
-public class Cliente {
+import java.util.Date;
 
-	private int idCliente;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="tb_cliente")
+public class Cliente {
+	
+	@Id
+	@GeneratedValue
+	private long idCliente;
+	
 	private String nome;
-	private String nascimento;
+	private Date nascimento;
 	private String email;
 	private String escolaridade;
 	private String telefone;
@@ -13,6 +25,7 @@ public class Cliente {
 	private String cpf;
 	private String sexo;
 	private String celular;
+	
 	
 	public String getCelular() {
 		return celular;
@@ -54,11 +67,11 @@ public class Cliente {
 		this.nome = nome;
 	}
 
-	public String getNascimento() {
+	public Date getNascimento() {
 		return nascimento;
 	}
 
-	public void setNascimento(String nascimento) {
+	public void setNascimento(Date nascimento) {
 		this.nascimento = nascimento;
 	}
 
@@ -93,11 +106,11 @@ public class Cliente {
 	public void setProfissao(String profissao) {
 		this.profissao = profissao;
 	}
-	public int getIdCliente() {
+	public long getIdCliente() {
 		return idCliente;
 	}
 
-	public void setIdCliente(int idCliente) {
+	public void setIdCliente(long idCliente) {
 		this.idCliente = idCliente;
 	}
 		@Override

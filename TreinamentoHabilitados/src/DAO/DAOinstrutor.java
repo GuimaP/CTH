@@ -1,12 +1,15 @@
 package DAO;
 
 import java.util.List;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 import javax.swing.JOptionPane;
 import javax.swing.JOptionPane;
+
 import modelo.Carro;
 import modelo.Funcionario;
 
@@ -31,7 +34,7 @@ public class DAOinstrutor extends DAOconexao {
 			comando = banco.conecta.prepareStatement(sql,
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			comando.setString(1, funcionario.getNome());
-			comando.setString(2, funcionario.getData());
+			comando.setDate(2, (Date) funcionario.getData()); //TODO VEROFICAR FUNCIONAMENTO
 			comando.setString(3, funcionario.getCnh());
 			comando.setString(4, funcionario.getValidadeCnh());
 			comando.setString(5, funcionario.getPrimeiraCnh());
@@ -63,7 +66,7 @@ public class DAOinstrutor extends DAOconexao {
 				try {
 					funcionario = new Funcionario();
 					funcionario.setNome(rs.getString("NOME_INSTRUTOR"));
-					funcionario.setData(rs.getString("DATA_INSTRUTOR"));
+					funcionario.setData(rs.getDate("DATA_INSTRUTOR"));
 					funcionario.setCnh(rs.getString("CNH_INSTRUTOR"));
 					funcionario.setValidadeCnh(rs
 							.getString("VALIDADECNH_INSTRUTOR"));

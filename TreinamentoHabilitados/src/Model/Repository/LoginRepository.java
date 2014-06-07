@@ -10,6 +10,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
+import Main.Start;
 import modelo.Login;
 
 
@@ -21,9 +22,9 @@ public class LoginRepository {
 	
 	
 	public boolean isAutentica(Login Usuario){
-		EntityManager manager = ConnectionFactoryRepositoryDois.getManager();
+		
 		//Query q = manager.createQuery("FROM Login l order by l.usuario");
-		Session session = (Session) manager.getDelegate();
+		Session session = (Session) Start.manager.getDelegate();
 		
 		Criteria filtro= session.createCriteria(Login.class);
 		filtro.add(Restrictions.eq("usuario", Usuario.getUsuario()));		

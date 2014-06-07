@@ -1,17 +1,30 @@
 package modelo;
 
+import java.util.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+
+@Entity
+
 public class Funcionario {
 	
 	private String nome;
-	private String data;
+	private Date data;
 	private String cnh;
 	private String validadeCnh;
 	private String primeiraCnh;
 	private String rg;
+	@Id
 	private String cpf;
 	private String telefone;
 	private String celular;
 	private String status;
+	@OneToOne	
 	private Carro tbCarroPlacaCarro;
 	
 	public Carro getTbCarroPlacaCarro() {
@@ -26,10 +39,10 @@ public class Funcionario {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public String getData() {
+	public Date getData() {
 		return data;
 	}
-	public void setData(String data) {
+	public void setData(Date data) {
 		this.data = data;
 	}
 	public String getCnh() {

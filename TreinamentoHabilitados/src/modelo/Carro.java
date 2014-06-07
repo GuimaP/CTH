@@ -1,16 +1,23 @@
 package modelo;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="tb_carro")
 public class Carro {
-	
-	private String ano;
+	private long ano;
 	private String marca;
 	private String modelo;
+	@Id
 	private String placa;
 	
-	public String getAno() {
+	public long getAno() {
 		return ano;
 	}
-	public void setAno(String ano) {
+	public void setAno(long ano) {
 		this.ano = ano;
 	}
 	public String getMarca() {

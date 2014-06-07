@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="tb_funcionarioss")
+@Table(name="tb_login")
 public class Login implements Serializable{
 
 	@Id

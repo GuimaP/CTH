@@ -9,8 +9,10 @@ import java.lang.reflect.Array;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -32,6 +34,7 @@ import javax.swing.text.MaskFormatter;
 import javax.swing.text.html.ListView;
 
 import DAO.DAOcliente;
+import Main.Start;
 import principal.CadastroCliente;
 import modelo.Cliente;
 import modelo.Cnh;
@@ -517,10 +520,12 @@ public class TelaCadastroCliente extends JFrame {
 					cliente.setNome(tfNome.getText());
 					cadastro.setData(tfData.getText());
 					endereco.setLogradouro(tfLogradouro.getText());
-					endereco.setNumero(tfNumero.getText());
+					
+					endereco.setNumero(Long.parseLong(tfNumero.getText()));
 					endereco.setBairro(tfBairro.getText());
 					endereco.setCep(tfCep.getText());
-					cliente.setNascimento(tfNascimento.getText());
+					Date dt = new Date(tfNascimento.getText());
+					cliente.setNascimento(dt);
 					cliente.setSexo(jcSexo.getSelectedItem().toString());
 					cliente.setCpf(tfCpf.getText());
 					cliente.setRg(tfRg.getText());
@@ -553,9 +558,14 @@ public class TelaCadastroCliente extends JFrame {
 					cadastro.setObservacao(observa.getText());
 
 					// inserindo no banco
-					daoCliente = new DAOcliente();
-					daoCliente.inserir(cliente, cnh, endereco, cadastro);
-					populaList();
+					//daoCliente = new DAOcliente();
+					//daoCliente.inserir(cliente, cnh, endereco, cadastro);
+					EntityManager em = Start.manager;
+					em.getTransaction().begin();
+					em.persist(cadastro);
+					em.getTransaction().commit();
+					
+					//populaList();
 					limparCampos();
 
 					// TODO não esquecer de aplicar o ternario para os

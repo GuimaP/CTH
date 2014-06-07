@@ -1,12 +1,15 @@
 package DAO;
 
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.JOptionPane;
+
 import principal.CadastroCliente;
 import modelo.Cliente;
 import modelo.Cnh;
@@ -37,7 +40,7 @@ public class DAOcliente extends DAOconexao {
 				c = new Cliente();
 				c.setIdCliente(rs.getInt("ID_CLIENTE"));
 				c.setNome(rs.getString("NOME_CLIENTE"));
-				c.setNascimento(rs.getString("DATANASCIMENTO_CLIENTE"));
+				c.setNascimento(rs.getDate("DATANASCIMENTO_CLIENTE"));
 				c.setEmail(rs.getString("EMAIL_CLIENTE"));
 				c.setEscolaridade(rs.getString("ESCOLARIDADE_CLIENTE"));
 				c.setTelefone(rs.getString("TELEFONE_CLIENTE"));
@@ -76,7 +79,7 @@ public class DAOcliente extends DAOconexao {
 			comando = banco.conecta.prepareStatement(sql,
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			comando.setString(1, cliente.getNome());
-			comando.setString(2, cliente.getNascimento());
+			comando.setDate(2, (Date) cliente.getNascimento()); //TODO VERIFICAR SE FUNCIONA
 			comando.setString(3, cliente.getEmail());
 			comando.setString(4, cliente.getEscolaridade());
 			comando.setString(5, cliente.getTelefone());
@@ -89,7 +92,7 @@ public class DAOcliente extends DAOconexao {
 			comando.setString(12, cnh.getDtValidade());
 			comando.setString(13, cnh.getPrimeiraHabilitacao());
 			comando.setString(14, endereco.getLogradouro());
-			comando.setString(15, endereco.getNumero());
+			comando.setLong(15, endereco.getNumero());
 			comando.setString(16, endereco.getBairro());
 			comando.setString(17, endereco.getCep());
 			comando.setString(18, cadastroCliente.getData());

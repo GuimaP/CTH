@@ -8,8 +8,10 @@ import java.awt.event.KeyListener;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -21,6 +23,7 @@ import javax.swing.text.MaskFormatter;
 
 import DAO.DAOcarro;
 import DAO.DAOinstrutor;
+import Model.Repository.ConnectionFactoryRepositoryDois;
 import modelo.Carro;
 import modelo.Funcionario;
 
@@ -260,7 +263,8 @@ public class CadastroInstrutor extends JFrame {
 					Funcionario instrutor = new Funcionario();
 					// populando o objeto
 					instrutor.setNome(tfNome.getText());
-					instrutor.setData(tfData.getValue().toString());
+					Date dt = new Date(tfData.getValue().toString());
+					instrutor.setData(dt);
 					instrutor.setCnh(tfRegistroCnh.getText());
 					instrutor
 							.setValidadeCnh(tfValidadeCnh.getText().toString());
@@ -276,7 +280,9 @@ public class CadastroInstrutor extends JFrame {
 					instrutor.setTbCarroPlacaCarro((Carro) jcCarro
 							.getSelectedItem());
 					DAOinstrutor daoInstrutor = new DAOinstrutor();
-					daoInstrutor.inserir(instrutor);
+					//daoInstrutor.inserir(instrutor);
+					EntityManager em = ConnectionFactoryRepositoryDois.getManager();
+					em.persist(instrutor);
 
 				}
 
