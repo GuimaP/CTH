@@ -2,11 +2,19 @@ package principal;
 
 import java.awt.datatransfer.ClipboardOwner;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 import modelo.Cliente;
 import modelo.Cnh;
 import modelo.Endereco;
 
+@Entity
 public class CadastroCliente {
+	@Id
+	@GeneratedValue
+	private long idPesquisa;
 	private String data;
 	private String pesquisa1;
 	private String pesquisa2;

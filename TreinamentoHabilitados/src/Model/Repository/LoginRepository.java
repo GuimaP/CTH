@@ -24,8 +24,10 @@ public class LoginRepository {
 	public boolean isAutentica(Login Usuario){
 		
 		//Query q = manager.createQuery("FROM Login l order by l.usuario");
-		Session session = (Session) Start.manager.getDelegate();
+		Session session = (Session) ConnectionFactoryRepositoryDois.getManager().getDelegate();
+		try{
 		
+			session.getTransaction().begin();
 		Criteria filtro= session.createCriteria(Login.class);
 		filtro.add(Restrictions.eq("usuario", Usuario.getUsuario()));		
 		filtro.add(Restrictions.eq("senha", Usuario.getSenha()));
@@ -34,12 +36,19 @@ public class LoginRepository {
 		//	Login usuarioBanco = (Login)query.getSingleResult();
 		
 		Login ls =(Login) filtro.uniqueResult();
-		
+		session.getTransaction().commit();
 		if(ls!= null)
 			return true;
 		
 		return false;
 		
+		}catch (Exception e){
+			session.getTransaction().rollback();
+			e.printStackTrace();
+		}finally{
+			
 		
+		}
+		return false;
 	}
 }

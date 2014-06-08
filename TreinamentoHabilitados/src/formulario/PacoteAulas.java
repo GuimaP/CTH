@@ -55,8 +55,8 @@ public class PacoteAulas extends JFrame {
 
 			dao = new DAOinstrutor();
 			daoC = new DAOcliente();
-			funcionarioList = dao.buscarFunc();
-			clienteList = daoC.buscarTodos();
+			//funcionarioList = dao.buscarFunc();
+			//clienteList = daoC.buscarTodos();
 			populaListCli();
 			populaListFunc();
 			inicializarComponentes();

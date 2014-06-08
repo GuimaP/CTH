@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,7 +21,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 
+import com.itextpdf.text.pdf.TextField;
 import com.towel.swing.img.JImagePanel;
 
 import Model.Repository.LoginRepository;
@@ -113,25 +116,35 @@ public class TelaLogin extends JFrame {
 		btOk.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-					Login l = new Login();
-					l.setUsuario(tfUsuario.getText().trim());
-					l.setSenha(String.valueOf(jpSenha.getPassword()));
-					LoginRepository autentica = new LoginRepository();
+				Border borderVermelha = BorderFactory.createLineBorder(Color.red);
+				Border borderPreta = BorderFactory.createLineBorder(Color.black);
+				tfUsuario.setBorder(null);
+				jpSenha.setBorder(null);
+				if(tfUsuario.getText().trim().equals("")){
+					tfUsuario.setBorder(borderVermelha);
+				}else if(jpSenha.getText().trim().equals("")){
+					jpSenha.setBorder(borderVermelha);
+				}else{
+					try {
+						Login l = new Login();
+						l.setUsuario(tfUsuario.getText().trim());
+						l.setSenha(String.valueOf(jpSenha.getPassword()));
+						LoginRepository autentica = new LoginRepository();
 					
-					JTextArea a = new JTextArea();
+						JTextArea a = new JTextArea();
 					
 					
-					if(autentica.isAutentica(l)){
-						new Principal();
-						minhaFrame.dispose();
-					}else {
-						JOptionPane.showConfirmDialog(null, "não autenticado");
+						if(autentica.isAutentica(l)){
+							new Principal();
+							minhaFrame.dispose();
+						}else {
+							JOptionPane.showConfirmDialog(null, "não autenticado");
+						}
+				
+					}catch (Exception e1){
+						e1.printStackTrace();
+				
 					}
-				
-				}catch (Exception e1){
-					e1.printStackTrace();
-				
 				}
 			}
 			
@@ -145,7 +158,6 @@ public class TelaLogin extends JFrame {
 		
 		this.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
-				System.out.println("clique presses");
 				point.x = e.getX();//Pego a posição a localização da frame quando clicado
 		        point.y = e.getY();
 		      }
@@ -153,11 +165,13 @@ public class TelaLogin extends JFrame {
 		
 		this.addMouseMotionListener(new MouseMotionAdapter() {
 		      public void mouseDragged(MouseEvent e) {
-		    	  System.out.println("clique  drag");
 		    	  Point p = minhaFrame.getLocation();//pego a localização da frame no ato de arrastar
 		          minhaFrame.setLocation(p.x + e.getX() - point.x, p.y + e.getY() - point.y); // e então eu subtraio a localização dela, mais a onde eu cliquei 
 		        }
 		      });
+		
+		//Metodo para aceitar o Enter 
 	}
+	
 
 }
