@@ -92,7 +92,7 @@ public class Principal extends JFrame {
 		setSize(1024, 720);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);		
 		setLocationRelativeTo(null);
-		setTitle("Karol Habilitados");
+		setTitle("Karol Habilitados2");
 		setResizable(false);
 		setVisible(true);
 
