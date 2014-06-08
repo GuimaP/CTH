@@ -1,45 +1,41 @@
 package formulario;
 
 import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.lang.reflect.Array;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JViewport;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.border.Border;
 import javax.swing.text.MaskFormatter;
-import javax.swing.text.html.ListView;
 
-import DAO.DAOcliente;
-import Main.Start;
-import principal.CadastroCliente;
 import modelo.Cliente;
 import modelo.Cnh;
 import modelo.Endereco;
 import modelo.ModeloTable;
+import principal.CadastroCliente;
+import DAO.DAOcliente;
+import Model.Repository.ConnectionFactoryRepositoryDois;
 
 public class TelaCadastroCliente extends JFrame {
 	private JLabel lbNome, lbEmail, lbEscolaridade, lbProfissao, lbNascimento,
@@ -47,14 +43,14 @@ public class TelaCadastroCliente extends JFrame {
 			lbLogradouro, lbBairro, lbNumero, lbCep, lbRg, lbCpf, lbSexo,
 			lbObserva, lbQ1, lbQ2, lbQ3, lbQ4, lbData, lbCelular;
 	private JTextField tfNome, tfEmail, tfProfissao, tfRegistroCnh,
-			tfLogradouro, tfBairro, tfRg, tfQuestao1, tfNumero;
+			tfLogradouro, tfBairro, tfRg, tfQuestao1, tfNumero,tfBuscaCliente;
 	private JFormattedTextField tfData, tfNascimento, tfCep, tfCpf, tfCelular,
 			tfTelefone, tfValidadeCnh, tfPrimeiraHabilitacao;
 	private JButton btSalvar, btExcluir, btBuscar;
 	private JTextArea observa;
 	private JScrollPane scroll, scTable;
-	private ButtonGroup gQ1, gQ2;
-	private JRadioButton jrQ1Yes, jrQ1No, jrQ3Yes, jrQ3No;
+	private ButtonGroup gQ2, gQ3;
+	private JRadioButton jrQ2Yes, jrQ2No, jrQ3Yes, jrQ3No;
 	private String[] sexo = { "M", "F" };
 	private String[] escolaridade = { "Superior", "Tecnico", "Médio",
 			"Fundamental" };
@@ -71,13 +67,16 @@ public class TelaCadastroCliente extends JFrame {
 	Endereco endereco = new Endereco();
 	Cnh cnh = new Cnh();
 	CadastroCliente cadastro = new CadastroCliente();
+	
+	private JPanel panelCliente,painelGeral;
+	
 
 	public TelaCadastroCliente() {
 
 		try {
 			Cliente c = new Cliente();
 			try {
-				daoCliente = new DAOcliente();
+			daoCliente = new DAOcliente();
 				listCliente = daoCliente.buscarTodos();
 			} catch (SQLException e) {
 
@@ -135,307 +134,431 @@ public class TelaCadastroCliente extends JFrame {
 	}
 
 	public void inicializaComponentes() throws ParseException {
-		// Label
-		lbNome = new JLabel("Nome");
+		
+		
+		panelCliente = new JPanel();
+		Border border = BorderFactory.createTitledBorder("Cliente");
+		panelCliente.setBorder(border);
+		panelCliente.setLayout(new GridLayout(7,2));
+		panelCliente.setBounds(10, 20, 390, 220);
+	
+		
+		
+		// Nome
+		lbNome = new JLabel("  Nome");
 		lbNome.setLocation(40, 40);
 		lbNome.setSize(35, 10);
-		getContentPane().add(lbNome);
-
-		lbData = new JLabel("Data");
-		lbData.setLocation(390, 40);
-		lbData.setSize(35, 10);
-		getContentPane().add(lbData);
-
-		lbLogradouro = new JLabel("Rua");
-		lbLogradouro.setLocation(40, 70);
-		lbLogradouro.setSize(30, 10);
-		getContentPane().add(lbLogradouro);
-
-		lbNumero = new JLabel("Numero");
-		lbNumero.setLocation(350, 70);
-		lbNumero.setSize(50, 10);
-		getContentPane().add(lbNumero);
-
-		lbBairro = new JLabel("Bairro");
-		lbBairro.setLocation(40, 100);
-		lbBairro.setSize(50, 10);
-		getContentPane().add(lbBairro);
-
-		lbCep = new JLabel("Cep");
-		lbCep.setLocation(300, 100);
-		lbCep.setSize(30, 15);
-		getContentPane().add(lbCep);
-
-		lbNascimento = new JLabel("Data Nasc.");
-		lbNascimento.setLocation(40, 130);
-		lbNascimento.setSize(65, 15);
-		getContentPane().add(lbNascimento);
-
-		lbSexo = new JLabel("Sexo");
-		lbSexo.setLocation(180, 130);
-		lbSexo.setSize(30, 15);
-		getContentPane().add(lbSexo);
-
-		lbCpf = new JLabel("Cpf");
-		lbCpf.setLocation(40, 160);
-		lbCpf.setSize(30, 15);
-		getContentPane().add(lbCpf);
-
-		lbRg = new JLabel("Rg");
-		lbRg.setLocation(190, 160);
-		lbRg.setSize(50, 15);
-		getContentPane().add(lbRg);
-
-		lbTelefone = new JLabel("Telefone");
-		lbTelefone.setLocation(330, 160);
-		lbTelefone.setSize(50, 15);
-		getContentPane().add(lbTelefone);
-
-		lbCelular = new JLabel("Cel");
-		lbCelular.setLocation(480, 160);
-		lbCelular.setSize(30, 20);
-		getContentPane().add(lbCelular);
-
-		lbEmail = new JLabel("Email");
-		lbEmail.setLocation(40, 190);
-		lbEmail.setSize(50, 15);
-		getContentPane().add(lbEmail);
-
-		lbEscolaridade = new JLabel("Escolaridade");
-		lbEscolaridade.setLocation(40, 220);
-		lbEscolaridade.setSize(100, 15);
-		getContentPane().add(lbEscolaridade);
-
-		lbProfissao = new JLabel("Profissão");
-		lbProfissao.setLocation(240, 220);
-		lbProfissao.setSize(100, 15);
-		getContentPane().add(lbProfissao);
-
-		lbRegistroCnh = new JLabel("Nº Cnh");
-		lbRegistroCnh.setLocation(40, 250);
-		lbRegistroCnh.setSize(70, 15);
-		getContentPane().add(lbRegistroCnh);
-
-		lbValidadeCnh = new JLabel("Validade");
-		lbValidadeCnh.setLocation(190, 250);
-		lbValidadeCnh.setSize(80, 15);
-		getContentPane().add(lbValidadeCnh);
-
-		lbPrimeiraHabilitacao = new JLabel("Dt Permissão");
-		lbPrimeiraHabilitacao.setLocation(325, 250);
-		lbPrimeiraHabilitacao.setSize(100, 15);
-		getContentPane().add(lbPrimeiraHabilitacao);
-
-		lbObserva = new JLabel("Observações");
-		lbObserva.setLocation(60, 400);
-		lbObserva.setSize(120, 20);
-		getContentPane().add(lbObserva);
-
-		// Opções e Grupos de questões.
-		lbQ1 = new JLabel("A quanto tempo nao dirige?");
-		lbQ1.setLocation(40, 280);
-		lbQ1.setSize(200, 20);
-		getContentPane().add(lbQ1);
-
-		lbQ2 = new JLabel("Tem veiculo proprio?");
-		lbQ2.setLocation(40, 310);
-		lbQ2.setSize(200, 20);
-		getContentPane().add(lbQ2);
-
-		lbQ3 = new JLabel("É possivel treinar nele?");
-		lbQ3.setLocation(40, 340);
-		lbQ3.setSize(150, 20);
-		getContentPane().add(lbQ3);
-
-		lbQ4 = new JLabel("Como você soube da Karol Treinamentos?");
-		lbQ4.setLocation(40, 370);
-		lbQ4.setSize(250, 20);
-		getContentPane().add(lbQ4);
-
-		jrQ1Yes = new JRadioButton("Sim", true);
-		jrQ1Yes.setLocation(170, 310);
-		jrQ1Yes.setSize(60, 20);
-
-		jrQ1No = new JRadioButton("Não", false);
-		jrQ1No.setLocation(240, 310);
-		jrQ1No.setSize(60, 20);
-
-		jrQ3Yes = new JRadioButton("Sim", true);
-		jrQ3Yes.setLocation(190, 340);
-		jrQ3Yes.setSize(60, 20);
-
-		jrQ3No = new JRadioButton("Não", false);
-		jrQ3No.setLocation(260, 340);
-		jrQ3No.setSize(60, 20);
-
-		gQ1 = new ButtonGroup();
-		gQ1.add(jrQ1Yes);
-		gQ1.add(jrQ1No);
-		getContentPane().add(jrQ1Yes);
-		getContentPane().add(jrQ1No);
-
-		gQ2 = new ButtonGroup();
-		gQ2.add(jrQ3Yes);
-		gQ2.add(jrQ3No);
-		getContentPane().add(jrQ3Yes);
-		getContentPane().add(jrQ3No);
-		// Obs
-		observa = new JTextArea();
-		observa.setLineWrap(true);
-		scroll = new JScrollPane(observa);
-		scroll.setLocation(60, 430);
-		scroll.setSize(300, 60);
-		getContentPane().add(scroll);
-		// Botão
-		btSalvar = new JButton("Salvar");
-		btSalvar.setLocation(400, 520);
-		btSalvar.setSize(120, 35);
-		getContentPane().add(btSalvar);
-
-		btExcluir = new JButton("Excluir");
-		btExcluir.setLocation(530, 520);
-		btExcluir.setSize(120, 35);
-		getContentPane().add(btExcluir);
-
-		btBuscar = new JButton("Buscar");
-		btBuscar.setLocation(510, 40);
-		btBuscar.setSize(80, 30);
-		getContentPane().add(btBuscar);
-		// Text
+		panelCliente.add(lbNome);
+		
 		tfNome = new JTextField();
 		tfNome.setLocation(80, 37);
-		tfNome.setSize(300, 20);
-		getContentPane().add(tfNome);
+		tfNome.setSize(300, 30);
+		panelCliente.add(tfNome);
 
+		
+		
+		
+		
+		lbData = new JLabel("  Data");
+		lbData.setLocation(390, 40);
+		lbData.setSize(35, 10);
+		panelCliente.add(lbData);
+		
 		dataMask = new MaskFormatter("##/##/####");
 		dataMask.setPlaceholderCharacter('_');
 		tfData = new JFormattedTextField(dataMask);
 		tfData.setLocation(420, 37);
-		tfData.setSize(68, 20);
-		getContentPane().add(tfData);
+		tfData.setSize(68, 30);
+		panelCliente.add(tfData);
+		
+		
 
+		lbLogradouro = new JLabel("  Rua");
+		lbLogradouro.setLocation(40, 70);
+		lbLogradouro.setSize(30, 10);
+		panelCliente.add(lbLogradouro);
+		
 		tfLogradouro = new JTextField();
 		tfLogradouro.setLocation(80, 67);
-		tfLogradouro.setSize(250, 20);
-		getContentPane().add(tfLogradouro);
+		tfLogradouro.setSize(250, 30);
+		panelCliente.add(tfLogradouro);
 
+		
+		
+		
+		lbNumero = new JLabel("  Numero");
+		lbNumero.setLocation(350, 70);
+		lbNumero.setSize(50, 10);
+		panelCliente.add(lbNumero);
+		
 		tfNumero = new JTextField();
 		tfNumero.setLocation(410, 67);
-		tfNumero.setSize(60, 20);
-		getContentPane().add(tfNumero);
+		tfNumero.setSize(60, 30);
+		panelCliente.add(tfNumero);
 
+		
+		
+		
+		lbBairro = new JLabel("  Bairro");
+		lbBairro.setLocation(40, 100);
+		lbBairro.setSize(50, 10);
+		panelCliente.add(lbBairro);
+		
 		tfBairro = new JTextField();
 		tfBairro.setLocation(90, 97);
-		tfBairro.setSize(180, 20);
-		getContentPane().add(tfBairro);
+		tfBairro.setSize(180, 30);
+		panelCliente.add(tfBairro);
 
+		
+		
+		
+		lbCep = new JLabel("  Cep");
+		lbCep.setLocation(300, 100);
+		lbCep.setSize(30, 15);
+		panelCliente.add(lbCep);
+		
 		maskCep = new MaskFormatter("#####-###");
 		maskCep.setPlaceholderCharacter('_');
 		tfCep = new JFormattedTextField(maskCep);
 		tfCep.setLocation(340, 97);
-		tfCep.setSize(67, 20);
-		getContentPane().add(tfCep);
+		tfCep.setSize(67, 30);
+		panelCliente.add(tfCep);
 
+		
+		
+		
+		lbNascimento = new JLabel("  Data Nasc.");
+		lbNascimento.setLocation(40, 130);
+		lbNascimento.setSize(65, 15);
+		panelCliente.add(lbNascimento);
+		
 		dataMaskNascimento = new MaskFormatter("##/##/####");
 		dataMaskNascimento.setPlaceholderCharacter('_');
 		tfNascimento = new JFormattedTextField(dataMaskNascimento);
 		tfNascimento.setLocation(105, 127);
-		tfNascimento.setSize(68, 20);
-		getContentPane().add(tfNascimento);
+		tfNascimento.setSize(68, 30);
+		panelCliente.add(tfNascimento);
 
+		
+		
+		lbSexo = new JLabel("  Sexo");
+		lbSexo.setLocation(180, 130);
+		lbSexo.setSize(30, 15);
+		panelCliente.add(lbSexo);
+		
+		// Combo box
+		jcSexo = new JComboBox<String>(sexo);
+		jcSexo.setLocation(220, 127);
+		jcSexo.setSize(50, 30);
+		jcSexo.setSelectedIndex(-1);
+		panelCliente.add(jcSexo);
+
+				
+				
+				
+		lbCpf = new JLabel("  Cpf");
+		lbCpf.setLocation(40, 160);
+		lbCpf.setSize(30, 15);
+		panelCliente.add(lbCpf);
+		
 		maskCpf = new MaskFormatter("###.###.###-##");
 		maskCpf.setPlaceholderCharacter('_');
 		tfCpf = new JFormattedTextField(maskCpf);
 		tfCpf.setLocation(80, 157);
-		tfCpf.setSize(94, 20);
-		getContentPane().add(tfCpf);
+		tfCpf.setSize(94, 30);
+		panelCliente.add(tfCpf);
 
+		
+		
+		
+		lbRg = new JLabel("  Rg");
+		lbRg.setLocation(190, 160);
+		lbRg.setSize(50, 15);
+		panelCliente.add(lbRg);
+		
 		tfRg = new JTextField();
 		tfRg.setLocation(220, 157);
-		tfRg.setSize(100, 20);
-		getContentPane().add(tfRg);
+		tfRg.setSize(100, 30);
+		panelCliente.add(tfRg);
 
+		
+		
+
+		lbTelefone = new JLabel("  Telefone");
+		lbTelefone.setLocation(330, 160);
+		lbTelefone.setSize(50, 15);
+		panelCliente.add(lbTelefone);
+		
 		maskTelefone = new MaskFormatter("(##)####-####");
 		maskTelefone.setPlaceholderCharacter('_');
 		tfTelefone = new JFormattedTextField(maskTelefone);
 		tfTelefone.setLocation(385, 157);
 		tfTelefone.setSize(88, 20);
-		getContentPane().add(tfTelefone);
+		panelCliente.add(tfTelefone);
+
+		
+		
+		
+		lbCelular = new JLabel("  Cel");
+		lbCelular.setLocation(480, 160);
+		lbCelular.setSize(30, 20);
+		panelCliente.add(lbCelular);
 
 		maskCelular = new MaskFormatter("(##)#-####-####");
 		maskCelular.setPlaceholderCharacter('_');
 		tfCelular = new JFormattedTextField(maskCelular);
 		tfCelular.setLocation(505, 157);
-		tfCelular.setSize(98, 20);
-		getContentPane().add(tfCelular);
-
+		tfCelular.setSize(98, 30);
+		panelCliente.add(tfCelular);
+		
+		
+		
+		
+		lbEmail = new JLabel("  Email");
+		lbEmail.setLocation(40, 190);
+		lbEmail.setSize(50, 15);
+		panelCliente.add(lbEmail);
+		
 		tfEmail = new JTextField();
 		tfEmail.setLocation(80, 187);
-		tfEmail.setSize(200, 20);
-		getContentPane().add(tfEmail);
+		tfEmail.setSize(200, 30);
+		panelCliente.add(tfEmail);
+		
+		
+		
+		
+		lbEscolaridade = new JLabel("  Escolaridade");
+		lbEscolaridade.setLocation(40, 220);
+		lbEscolaridade.setSize(100, 15);
+		panelCliente.add(lbEscolaridade);
+		
+		jcEscolaridade = new JComboBox<String>(escolaridade);
+		jcEscolaridade.setLocation(120, 217);
+		jcEscolaridade.setSize(105, 30);
+		jcEscolaridade.setSelectedIndex(-1);
+		panelCliente.add(jcEscolaridade);
+		
+		//-----
+
+		
+		add(panelCliente);
+		
+		
+		//y = 240 ~ 250
+		
+		painelGeral = new JPanel();
+		Border border2 = BorderFactory.createTitledBorder("Dados Gerais");
+		painelGeral.setLayout(new GridLayout(9, 2));
+		painelGeral.setBorder(border2);
+		painelGeral.setBounds(10,250,390,310);//TODO GERENCIANDO O LAYOUT
+		
+		
+		
+		lbProfissao = new JLabel("Profissão");
+		lbProfissao.setLocation(240, 220);
+		lbProfissao.setSize(100, 15);
+		painelGeral.add(lbProfissao);
 
 		tfProfissao = new JTextField();
 		tfProfissao.setLocation(300, 217);
 		tfProfissao.setSize(100, 20);
-		getContentPane().add(tfProfissao);
-
+		painelGeral.add(tfProfissao);
+		
+		
+		
+		
+		lbRegistroCnh = new JLabel("Nº Cnh");
+		lbRegistroCnh.setLocation(40, 250);
+		lbRegistroCnh.setSize(70, 15);
+		painelGeral.add(lbRegistroCnh);
+		
+		
 		tfRegistroCnh = new JTextField();
 		tfRegistroCnh.setLocation(80, 247);
 		tfRegistroCnh.setSize(100, 20);
-		getContentPane().add(tfRegistroCnh);
+		painelGeral.add(tfRegistroCnh);
 
+	
+		
+
+		lbValidadeCnh = new JLabel("Validade");
+		lbValidadeCnh.setLocation(190, 250);
+		lbValidadeCnh.setSize(80, 15);
+		painelGeral.add(lbValidadeCnh);
+		
 		maskValidadeCnh = new MaskFormatter("##/##/####");
 		maskValidadeCnh.setPlaceholderCharacter('_');
 		tfValidadeCnh = new JFormattedTextField(maskValidadeCnh);
 		tfValidadeCnh.setLocation(245, 247);
 		tfValidadeCnh.setSize(70, 20);
-		getContentPane().add(tfValidadeCnh);
+		painelGeral.add(tfValidadeCnh);
+		
+		
+		
+		lbPrimeiraHabilitacao = new JLabel("Dt Permissão");
+		lbPrimeiraHabilitacao.setLocation(325, 250);
+		lbPrimeiraHabilitacao.setSize(100, 15);
+		painelGeral.add(lbPrimeiraHabilitacao);
 
+		
 		maskPrimeiraHabilitacao = new MaskFormatter("##/##/####");
 		maskPrimeiraHabilitacao.setPlaceholderCharacter('_');
 		tfPrimeiraHabilitacao = new JFormattedTextField(maskPrimeiraHabilitacao);
 		tfPrimeiraHabilitacao.setLocation(410, 247);
 		tfPrimeiraHabilitacao.setSize(70, 20);
-		getContentPane().add(tfPrimeiraHabilitacao);
-
+		painelGeral.add(tfPrimeiraHabilitacao);
+		
+		
+		
+		
+		// Opções e Grupos de questões.
+		lbQ1 = new JLabel("A quanto tempo nao dirige?");
+		lbQ1.setLocation(40, 280);
+		lbQ1.setSize(200, 20);
+		painelGeral.add(lbQ1);
+		
+		
 		tfQuestao1 = new JTextField();
 		tfQuestao1.setLocation(200, 280);
 		tfQuestao1.setSize(70, 20);
-		getContentPane().add(tfQuestao1);
-		// Combo box
-		jcSexo = new JComboBox<String>(sexo);
-		jcSexo.setLocation(220, 127);
-		jcSexo.setSize(50, 20);
-		jcSexo.setSelectedIndex(-1);
-		getContentPane().add(jcSexo);
+		painelGeral.add(tfQuestao1);
+		
+		
+		
 
-		jcEscolaridade = new JComboBox<String>(escolaridade);
-		jcEscolaridade.setLocation(120, 217);
-		jcEscolaridade.setSize(105, 20);
-		jcEscolaridade.setSelectedIndex(-1);
-		getContentPane().add(jcEscolaridade);
+		
+		
+		lbQ2 = new JLabel("Tem veiculo proprio?");
+		lbQ2.setLocation(40, 310);
+		lbQ2.setSize(200, 20);
+		painelGeral.add(lbQ2);
+		
+		
+		JPanel painelQ2 = new JPanel();
+		
+		jrQ2Yes = new JRadioButton("Sim", true);
+		jrQ2Yes.setLocation(170, 310);
+		jrQ2Yes.setSize(60, 20);
+		
+		jrQ2No = new JRadioButton("Não", false);
+		jrQ2No.setLocation(240, 310);
+		jrQ2No.setSize(60, 20);
+		
+		gQ2 = new ButtonGroup();
+		gQ2.add(jrQ2Yes);
+		gQ2.add(jrQ2No);
+		painelQ2.add(jrQ2Yes);
+		painelQ2.add(jrQ2No);
+		
+		painelGeral.add(painelQ2);
+		
+		
+		
+		JPanel painelQ3 = new JPanel(); //Painel para colocar os radios parar alinhar os radios
+		
+		lbQ3 = new JLabel("É possivel treinar nele?");
+		lbQ3.setLocation(40, 340);
+		lbQ3.setSize(150, 20);
+		painelGeral.add(lbQ3);
+		
+		
+		jrQ3Yes = new JRadioButton("Sim", true);
+		jrQ3Yes.setLocation(190, 340);
+		jrQ3Yes.setSize(60, 20);
+		
+		jrQ3No = new JRadioButton("Não", false);
+		jrQ3No.setLocation(260, 340);
+		jrQ3No.setSize(60, 20);
+		
+		
+		gQ3 = new ButtonGroup();
+		gQ3.add(jrQ3Yes);
+		gQ3.add(jrQ3No);
+		painelQ3.add(jrQ3Yes);
+		painelQ3.add(jrQ3No);
+		
+		painelGeral.add(painelQ3);
 
+
+		 
+		
+		lbQ4 = new JLabel("Como você soube da Karol Treinamentos?");
+		lbQ4.setLocation(40, 370);
+		lbQ4.setSize(250, 20);
+		painelGeral.add(lbQ4);
+
+		
 		jcPesquisa = new JComboBox<String>(pesquisa);
 		jcPesquisa.setLocation(290, 370);
 		jcPesquisa.setSize(105, 20);
 		jcPesquisa.setSelectedIndex(-1);
-		getContentPane().add(jcPesquisa);
+		painelGeral.add(jcPesquisa);
+		
+
+		
+		
+
+		lbObserva = new JLabel("Observações");
+		lbObserva.setLocation(60, 400);
+		lbObserva.setSize(120, 20);
+		painelGeral.add(lbObserva);
+		
+
+		
+		// Obs
+		observa = new JTextArea();
+		observa.setLineWrap(true);
+		scroll = new JScrollPane(observa);
+		scroll.setLocation(60, 430);
+		scroll.setSize(300, 80);
+		painelGeral.add(scroll);
+		
+		
+		
+		add(painelGeral);
+		
+		// Botão
+		btSalvar = new JButton("Salvar");
+		btSalvar.setLocation(10, 570);
+		btSalvar.setSize(180, 35);
+		getContentPane().add(btSalvar);
+
+		btExcluir = new JButton("Excluir");
+		btExcluir.setLocation(215, 570);
+		btExcluir.setSize(180, 35);
+		getContentPane().add(btExcluir);
+
+		
+		
+		
+		tfBuscaCliente = new JTextField();
+		tfBuscaCliente.setBounds(430, 50, 250, 25);
+		add(tfBuscaCliente);
+		
+		btBuscar = new JButton("Buscar");
+		btBuscar.setLocation(690, 50);
+		btBuscar.setSize(80, 25);
+		getContentPane().add(btBuscar);
+		// Text
+				
+
+		
 		// Table
 		table = new JTable(new ModeloTable(listCliente));
 		scTable = new JScrollPane(table);
-		scTable.setSize(350, 450);
-		scTable.setLocation(620, 40);
+		scTable.setSize(350, 480);
+		scTable.setLocation(430, 80);
 		getContentPane().add(scTable);
 
 		// PAINEL//
 		getContentPane().setLayout(null);
-		setSize(1024, 600);
+		setSize(800, 640);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setVisible(true);
 		setLocationRelativeTo(null);
 		setTitle("Cadastro Cliente");
 		setResizable(false);
-		getContentPane().setBackground(Color.lightGray);
+		//getContentPane().setBackground(Color.lightGray);
 
 	}
 
@@ -543,7 +666,7 @@ public class TelaCadastroCliente extends JFrame {
 					cnh.setDtValidade(tfValidadeCnh.getText());
 					cnh.setPrimeiraHabilitacao(tfPrimeiraHabilitacao.getText());
 					cadastro.setPesquisa1(tfQuestao1.getText());
-					if (jrQ1Yes.isSelected()) {
+					if (jrQ2Yes.isSelected()) {
 						cadastro.setPesquisa2("sim");
 					} else {
 						cadastro.setPesquisa2("não");
@@ -560,7 +683,7 @@ public class TelaCadastroCliente extends JFrame {
 					// inserindo no banco
 					//daoCliente = new DAOcliente();
 					//daoCliente.inserir(cliente, cnh, endereco, cadastro);
-					EntityManager em = Start.manager;
+					EntityManager em = ConnectionFactoryRepositoryDois.getManager();
 					em.getTransaction().begin();
 					em.persist(cadastro);
 					em.getTransaction().commit();
