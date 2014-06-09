@@ -18,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -27,6 +28,8 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 import javax.swing.text.MaskFormatter;
 
 import modelo.Cliente;
@@ -37,7 +40,7 @@ import principal.CadastroCliente;
 import DAO.DAOcliente;
 import Model.Repository.ConnectionFactoryRepositoryDois;
 
-public class TelaCadastroCliente extends JFrame {
+public class TelaCadastroCliente extends JInternalFrame {
 	private JLabel lbNome, lbEmail, lbEscolaridade, lbProfissao, lbNascimento,
 			lbTelefone, lbPrimeiraHabilitacao, lbValidadeCnh, lbRegistroCnh,
 			lbLogradouro, lbBairro, lbNumero, lbCep, lbRg, lbCpf, lbSexo,
@@ -555,9 +558,10 @@ public class TelaCadastroCliente extends JFrame {
 		setSize(800, 640);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setVisible(true);
-		setLocationRelativeTo(null);
+		setClosable(true);
 		setTitle("Cadastro Cliente");
 		setResizable(false);
+		setIconifiable(true);
 		//getContentPane().setBackground(Color.lightGray);
 
 	}
@@ -720,6 +724,7 @@ public class TelaCadastroCliente extends JFrame {
 
 			}
 		});
+		
 		tfLogradouro.addKeyListener(new KeyListener() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -741,6 +746,7 @@ public class TelaCadastroCliente extends JFrame {
 
 			}
 		});
+	
 		tfNumero.addKeyListener(new KeyListener() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -762,6 +768,7 @@ public class TelaCadastroCliente extends JFrame {
 
 			}
 		});
+		
 		tfBairro.addKeyListener(new KeyListener() {
 
 			@Override
@@ -785,6 +792,7 @@ public class TelaCadastroCliente extends JFrame {
 
 			}
 		});
+	
 		tfEmail.addKeyListener(new KeyListener() {
 
 			@Override
@@ -808,6 +816,7 @@ public class TelaCadastroCliente extends JFrame {
 
 			}
 		});
+		
 		tfProfissao.addKeyListener(new KeyListener() {
 
 			@Override
@@ -832,5 +841,10 @@ public class TelaCadastroCliente extends JFrame {
 			}
 		});
 
+		this.addInternalFrameListener(new InternalFrameAdapter() {
+			public void internalFrameClosing(InternalFrameEvent arg0) {
+				Principal.isFrameInstrutorOpen = false;
+			}
+		});
 	}
 }

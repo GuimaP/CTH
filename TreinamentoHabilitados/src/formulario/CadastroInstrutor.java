@@ -1,8 +1,12 @@
 package formulario;
 
 import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.ContainerListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.SQLException;
@@ -12,14 +16,23 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
 import javax.swing.text.MaskFormatter;
+
+import com.towel.swing.img.JImagePanel;
 
 import DAO.DAOcarro;
 import DAO.DAOinstrutor;
@@ -27,7 +40,7 @@ import Model.Repository.ConnectionFactoryRepositoryDois;
 import modelo.Carro;
 import modelo.Funcionario;
 
-public class CadastroInstrutor extends JFrame {
+public class CadastroInstrutor extends JInternalFrame {
 
 	private JLabel lbNome, lbData, lbRegistroCnh, lbValidadeCnh, lbPrimeiraCnh,
 			lbTelefone, lbCelular, lbRg, lbCpf, lbCarro, lbStatus;
@@ -42,9 +55,11 @@ public class CadastroInstrutor extends JFrame {
 	private String[] status = { "Ativo", "Inativo" };
 	List<Carro> carroList;
 	Carro[] carroVetor;
-	DAOcarro daoCarro = new DAOcarro();
-	Carro carro = new Carro();
-
+	private DAOcarro daoCarro = new DAOcarro();
+	private Carro carro = new Carro();
+	private JPanel painelFotoInstrutor;
+	
+	
 	public CadastroInstrutor() {
 		try {
 			inicializaComponentes();
@@ -61,160 +76,185 @@ public class CadastroInstrutor extends JFrame {
 
 	public void inicializaComponentes() throws ParseException, SQLException {
 		// Label
-
+		setLayout(null);
+		
+		
+		//---Dados do Cliente
+		
+		
+		
 		lbNome = new JLabel("Nome");
-		lbNome.setLocation(30, 40);
-		lbNome.setSize(50, 20);
-		getContentPane().add(lbNome);
+		lbNome.setBounds(5, 10, 40, 20);
+		add(lbNome);
 
-		lbData = new JLabel("Data");
-		lbData.setLocation(350, 40);
-		lbData.setSize(50, 20);
-		getContentPane().add(lbData);
-
-		lbRegistroCnh = new JLabel("Nº Cnh");
-		lbRegistroCnh.setLocation(30, 80);
-		lbRegistroCnh.setSize(100, 20);
-		getContentPane().add(lbRegistroCnh);
-
-		lbValidadeCnh = new JLabel("Validade");
-		lbValidadeCnh.setLocation(180, 80);
-		lbValidadeCnh.setSize(100, 20);
-		getContentPane().add(lbValidadeCnh);
-
-		lbPrimeiraCnh = new JLabel("Dt Permissão");
-		lbPrimeiraCnh.setLocation(310, 80);
-		lbPrimeiraCnh.setSize(100, 20);
-		getContentPane().add(lbPrimeiraCnh);
-
-		lbRg = new JLabel("Rg");
-		lbRg.setLocation(120, 120);
-		lbRg.setSize(100, 20);
-		getContentPane().add(lbRg);
-
-		lbCpf = new JLabel("Cpf");
-		lbCpf.setLocation(255, 120);
-		lbCpf.setSize(50, 20);
-		getContentPane().add(lbCpf);
-
-		lbTelefone = new JLabel("Telefone");
-		lbTelefone.setLocation(30, 160);
-		lbTelefone.setSize(100, 20);
-		getContentPane().add(lbTelefone);
-
-		lbCelular = new JLabel("Celular");
-		lbCelular.setLocation(180, 160);
-		lbCelular.setSize(100, 20);
-		getContentPane().add(lbCelular);
-
-		lbCarro = new JLabel("Carro");
-		lbCarro.setLocation(335, 160);
-		lbCarro.setSize(50, 20);
-		getContentPane().add(lbCarro);
-
-		lbStatus = new JLabel("Status");
-		lbStatus.setLocation(150, 200);
-		lbStatus.setSize(100, 20);
-		getContentPane().add(lbStatus);
-		// tfNome
 		tfNome = new JTextField();
-		tfNome.setLocation(75, 40);
-		tfNome.setSize(260, 20);
-		getContentPane().add(tfNome);
-
-		tfRegistroCnh = new JTextField();
-		tfRegistroCnh.setLocation(73, 80);
-		tfRegistroCnh.setSize(100, 20);
-		getContentPane().add(tfRegistroCnh);
-
-		tfRg = new JTextField();
-		tfRg.setLocation(140, 120);
-		tfRg.setSize(100, 20);
-		getContentPane().add(tfRg);
+		tfNome.setBounds(50, 10, 305, 25);
+		add(tfNome);
+		
+		
+		//---
+		
+		lbData = new JLabel("Data");
+		lbData.setBounds(5, 40, 40, 20);
+		add(lbData);
 
 		maskData = new MaskFormatter("##/##/####");
 		maskData.setPlaceholderCharacter('_');
 		tfData = new JFormattedTextField(maskData);
-		tfData.setLocation(385, 40);
-		tfData.setSize(68, 20);
-		getContentPane().add(tfData);
+		tfData.setBounds(60, 40, 100, 25);
+		add(tfData);
+		
+			
+		
+		lbRegistroCnh = new JLabel("Nº Cnh");
+		lbRegistroCnh.setBounds(170, 40, 40, 20);
+		add(lbRegistroCnh);
 
+		tfRegistroCnh = new JTextField();
+		tfRegistroCnh.setBounds(255,40,100,25);
+		add(tfRegistroCnh);
+		
+		
+		//--
+		
+		
+		lbValidadeCnh = new JLabel("Validade");
+		lbValidadeCnh.setBounds(5, 65, 60, 20);
+		add(lbValidadeCnh);
+		
 		maskValidadeCnh = new MaskFormatter("##/##/####");
 		maskValidadeCnh.setPlaceholderCharacter('_');
 		tfValidadeCnh = new JFormattedTextField(maskValidadeCnh);
-		tfValidadeCnh.setLocation(235, 80);
-		tfValidadeCnh.setSize(68, 20);
-		getContentPane().add(tfValidadeCnh);
+		tfValidadeCnh.setBounds(60, 65, 100, 25);
+		add(tfValidadeCnh);
+		
+		
+		lbPrimeiraCnh = new JLabel("Dt. Permissão");
+		lbPrimeiraCnh.setBounds(170, 65, 90, 20);
+		add(lbPrimeiraCnh);
 
 		maskPrimeiraCnh = new MaskFormatter("##/##/####");
 		maskPrimeiraCnh.setPlaceholderCharacter('_');
 		tfPrimeiraCnh = new JFormattedTextField(maskPrimeiraCnh);
-		tfPrimeiraCnh.setLocation(390, 80);
-		tfPrimeiraCnh.setSize(68, 20);
-		getContentPane().add(tfPrimeiraCnh);
+		tfPrimeiraCnh.setBounds(255, 65, 100, 25);
+		add(tfPrimeiraCnh);
+		
+		//--
+		
+		
+		lbRg = new JLabel("Rg");
+		lbRg.setBounds(5, 90, 40, 20);
+		add(lbRg);
 
+		tfRg = new JTextField();
+		tfRg.setBounds(60, 90, 100, 25);
+		add(tfRg);
+
+		
+		
+		
+		lbCpf = new JLabel("Cpf");
+		lbCpf.setBounds(170, 90, 40, 20);
+		add(lbCpf);
+		
 		maskCpf = new MaskFormatter("###.###.###-##");
 		maskCpf.setPlaceholderCharacter('_');
 		tfCpf = new JFormattedTextField(maskCpf);
-		tfCpf.setLocation(280, 120);
-		tfCpf.setSize(93, 20);
-		getContentPane().add(tfCpf);
+		tfCpf.setBounds(255, 90, 100, 25);
+		add(tfCpf);
+		
+		
+		//--
 
+		lbTelefone = new JLabel("Telefone");
+		lbTelefone.setBounds(5, 115, 60, 20);
+		add(lbTelefone);
+		
 		maskTelefone = new MaskFormatter("(##)####-####");
 		maskTelefone.setPlaceholderCharacter('_');
 		tfTelefone = new JFormattedTextField(maskTelefone);
-		tfTelefone.setLocation(85, 160);
-		tfTelefone.setSize(88, 20);
-		getContentPane().add(tfTelefone);
+		tfTelefone.setBounds(60, 115, 100, 25);
+		add(tfTelefone);
 
+		
+		
+		
+		lbCelular = new JLabel("Celular");
+		lbCelular.setBounds(165, 115, 60, 20);
+		add(lbCelular);
+
+		
 		maskCelular = new MaskFormatter("(##)#-####-####");
 		maskCelular.setPlaceholderCharacter('_');
 		tfCelular = new JFormattedTextField(maskCelular);
-		tfCelular.setLocation(227, 160);
-		tfCelular.setSize(98, 20);
-		getContentPane().add(tfCelular);
-		// Combobox
+		tfCelular.setBounds(255, 115, 100, 25);
+		add(tfCelular);
+		
 
+		//---- Fim dos Dados do CLiente
+		
+		
+		//--
+		
+		
+		lbCarro = new JLabel("Carro");
+		lbCarro.setBounds(5, 145, 40, 20);
+		add(lbCarro);
+		
+		
 		jcCarro = new JComboBox<Carro>();
-		carroList = daoCarro.buscarCarro();
-		for (int i = 0; i < carroList.size(); i++) {
-			jcCarro.addItem(carroList.get(i));
+		//carroList 
+		for(Carro c : daoCarro.buscarCarro()){
+			jcCarro.addItem(c);
 		}
-
-		jcCarro.setLocation(375, 160);
-		jcCarro.setSize(120, 20);
+		jcCarro.setBounds(60, 145, 230, 25);
 		jcCarro.setSelectedIndex(-1);
-		getContentPane().add(jcCarro);
-
+		add(jcCarro);
+		
+		
+		
+		
+		lbStatus = new JLabel("Status");
+		lbStatus.setBounds(5, 170, 40, 20);
+		add(lbStatus);
+		
+		
 		jcStatus = new JComboBox<String>(status);
-		jcStatus.setLocation(195, 200);
-		jcStatus.setSize(100, 20);
+		jcStatus.setBounds(60, 170, 230, 25);
 		jcStatus.setSelectedIndex(-1);
-		getContentPane().add(jcStatus);
-		// Button
+		add(jcStatus);
+		
+
+		
+	
 		btSalvar = new JButton("Salvar");
-		btSalvar.setLocation(80, 230);
-		btSalvar.setSize(100, 30);
-		getContentPane().add(btSalvar);
+		btSalvar.setBounds(50, 210, 100, 30);
+		add(btSalvar);
 
 		btBuscar = new JButton("Buscar");
-		btBuscar.setLocation(180, 230);
-		btBuscar.setSize(100, 30);
-		getContentPane().add(btBuscar);
+		btBuscar.setBounds(155, 210, 100, 30);
+		add(btBuscar);
 
 		btExcluir = new JButton("Excluir");
-		btExcluir.setLocation(280, 230);
-		btExcluir.setSize(100, 30);
-		getContentPane().add(btExcluir);
-		//
-		getContentPane().setLayout(null);
+		btExcluir.setBounds(260, 210, 100, 30);
+		add(btExcluir);
+		
+		
+		painelFotoInstrutor = new JPanel();//TODO IMPLEMENTAR
+		painelFotoInstrutor.setBounds(370, 10, 110, 130);
+		Border bordaColorida = BorderFactory.createLineBorder(Color.GRAY);
+		Border bordaPainelFoto = BorderFactory.createTitledBorder(bordaColorida, "Foto do Instrutor");
+		painelFotoInstrutor.setBorder(bordaPainelFoto);
+		add(painelFotoInstrutor);
+		
+		
 		setSize(500, 300);
+		setLocation(10, 10);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setVisible(true);
-		setLocationRelativeTo(null);
+		setClosable(true);
+		setIconifiable(true);
 		setTitle("Cadastro Instrutor");
-		setResizable(false);
-		getContentPane().setBackground(Color.lightGray);
+		show();
 
 	}
 
@@ -288,7 +328,8 @@ public class CadastroInstrutor extends JFrame {
 
 			}
 		});
-			tfNome.addKeyListener(new KeyListener() {
+		
+		tfNome.addKeyListener(new KeyListener() {
 				@Override
 				public void keyTyped(KeyEvent e) {
 					int caracteres = 40;
@@ -308,6 +349,15 @@ public class CadastroInstrutor extends JFrame {
 					
 				}
 			});
+	
+		this.addInternalFrameListener(new InternalFrameAdapter() {
+			public void internalFrameClosing(InternalFrameEvent arg0) {
+				System.out.println("passo aqui");
+				Principal.isFrameInstrutorOpen = false;
+				
+			}
+		});
+
 	}
 
 }

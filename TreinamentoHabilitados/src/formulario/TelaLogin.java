@@ -6,6 +6,9 @@ import java.awt.Panel;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -23,6 +26,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
+import com.itextpdf.awt.geom.misc.RenderingHints.Key;
 import com.itextpdf.text.pdf.TextField;
 import com.towel.swing.img.JImagePanel;
 
@@ -46,6 +50,8 @@ public class TelaLogin extends JFrame {
 			
 			inicializaComponentes();
 			eventos();
+			tfUsuario.setText("guima");
+			jpSenha.setText("123");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -170,7 +176,15 @@ public class TelaLogin extends JFrame {
 		        }
 		      });
 		
-		//Metodo para aceitar o Enter 
+		//Metodo para aceitar o Enter
+		this.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == 13 && (tfUsuario.isFocusable() || jpSenha.isFocusable())){
+					btOk.doClick();
+				}
+				
+			}
+		});
 	}
 	
 

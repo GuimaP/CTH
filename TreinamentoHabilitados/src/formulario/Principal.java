@@ -12,6 +12,7 @@ import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -31,11 +32,15 @@ public class Principal extends JFrame {
 	private boolean painelMostrando=false;
 	private JPanel painelInformativo;
 	private JButton btAbrirInformativo;
+	
+	protected static boolean isFrameInstrutorOpen,isFrameClienteOpen;
 
 	public Principal() {
 		try{
 			inicializaComponentes();
 			definirEventos();
+			
+			isFrameClienteOpen = isFrameInstrutorOpen = false;
 		}catch (Exception e){e.printStackTrace();}
 	}
 
@@ -45,8 +50,6 @@ public class Principal extends JFrame {
 		JImagePanel fundoDeImage = new JImagePanel(new File("").getCanonicalFile()+"\\bin\\Resources\\imgs\\logo fundo.png");
 		fundoDeImage.setLayout(null);
 		setContentPane(fundoDeImage);
-		//telaFundo t = new telaFundo();
-		//setContentPane(t);
 		
 		
 		//
@@ -113,13 +116,20 @@ public class Principal extends JFrame {
 		itCadastroCliente.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new TelaCadastroCliente();
+				if(!isFrameClienteOpen){
+					isFrameClienteOpen = true;
+					getContentPane().add(new TelaCadastroCliente());
+				}
 			}
 		});
 		itCadastroFuncionario.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new CadastroInstrutor();
+				if(!isFrameInstrutorOpen){
+					isFrameInstrutorOpen = true; // difinindo que ja tem uma janela aberta 
+					getContentPane().add(new CadastroInstrutor());
+				}
+				
 				
 			}
 		});

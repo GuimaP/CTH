@@ -6,9 +6,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.text.ParseException;
+
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -89,9 +91,10 @@ public class CadastroCarro extends JFrame {
 		setSize(350, 230);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setVisible(true);
-		setLocationRelativeTo(null);
+//		setLocationRelativeTo(null);
 		setTitle("Cadastro Carro");
 		setResizable(false);
+		
 		getContentPane().setBackground(Color.lightGray);
 	}
 
