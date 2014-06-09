@@ -11,8 +11,10 @@ import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JInternalFrame.JDesktopIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -32,6 +34,7 @@ public class Principal extends JFrame {
 	private boolean painelMostrando=false;
 	private JPanel painelInformativo;
 	private JButton btAbrirInformativo;
+
 	
 	protected static boolean isFrameInstrutorOpen,isFrameClienteOpen;
 
@@ -47,9 +50,9 @@ public class Principal extends JFrame {
 	public void inicializaComponentes() throws IOException {
 		//Definindo o layout e a imagem de fundo	
 		setLayout(null);
-		JImagePanel fundoDeImage = new JImagePanel(new File("").getCanonicalFile()+"\\bin\\Resources\\imgs\\logo fundo.png");
-		fundoDeImage.setLayout(null);
-		setContentPane(fundoDeImage);
+		//JImagePanel fundoDeImage = new JImagePanel(new File("").getCanonicalFile()+"\\bin\\Resources\\imgs\\logo fundo.png");
+		JDesktopPane fundoDaPrincipal = new JDesktopPane();
+		setContentPane(fundoDaPrincipal);
 		
 		
 		//
