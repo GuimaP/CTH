@@ -1,17 +1,17 @@
 package Model.Repository;
 
+import Main.Start;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import modelo.Login;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-
-import Main.Start;
-import modelo.Login;
 
 
 public class LoginRepository {
@@ -37,6 +37,8 @@ public class LoginRepository {
 		
 		Login ls =(Login) filtro.uniqueResult();
 		session.getTransaction().commit();
+
+                
 		if(ls!= null)
 			return true;
 		

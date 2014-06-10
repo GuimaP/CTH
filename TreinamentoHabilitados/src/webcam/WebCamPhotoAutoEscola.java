@@ -38,7 +38,7 @@ import javax.swing.SwingUtilities;
  * 
  * @author Bartosz Firyn (SarXos)
  */
-public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamListener, WindowListener, UncaughtExceptionHandler, ItemListener {
+public class WebCamPhotoAutoEscola extends JFrame implements Runnable, WebcamListener, WindowListener, UncaughtExceptionHandler, ItemListener {
 
 	private static final long serialVersionUID = 1L;
         private JDialog minhaDialog;
@@ -47,8 +47,8 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamLi
 	private WebcamPicker picker = null;
         public String pathImgTirada;
         public WebCamPhotoAutoEscola(JFrame f){
-            super(f, "Auto Escola", ModalityType.APPLICATION_MODAL);
-            minhaDialog =this;
+            //super(f, "Auto Escola", ModalityType.APPLICATION_MODAL);
+            //minhaDialog =this;
             run();
         }
         
@@ -56,7 +56,7 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamLi
 	public void run() {
 
 		setTitle("Auto Escola");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 
 		//addWindowListener(this);
@@ -218,4 +218,8 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamLi
 			}
 		}
 	}
+        
+        public static void main(String[] args){ 
+            new WebCamPhotoAutoEscola(new JFrame());
+        }
 }

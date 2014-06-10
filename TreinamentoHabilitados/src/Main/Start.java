@@ -5,6 +5,7 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import formulario.*;
 import Model.Repository.ConnectionFactoryRepositoryDois;
+import javax.swing.JFrame;
 
 
 public class Start {
@@ -18,8 +19,9 @@ public class Start {
 		    	if ("Nimbus".equals(info.getName())) {
 		            System.out.println("is nimbus");
 		    		UIManager.setLookAndFeel(info.getClassName());
-		    		manager = ConnectionFactoryRepositoryDois.getManager();
-		    		new TelaLogin();
+		    		//manager = ConnectionFactoryRepositoryDois.getManager();
+		    		//new TelaLogin();
+                                new webcam.WebCamPhotoAutoEscola(new JFrame());
 		    		//new CapturaImagens();
 		    		//new WebcamViewerExample();
 		            break;
