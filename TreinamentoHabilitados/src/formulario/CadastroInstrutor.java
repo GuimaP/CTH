@@ -43,6 +43,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import javax.swing.ImageIcon;
+import javax.swing.event.MouseInputAdapter;
 import modelo.Carro;
 import modelo.Funcionario;
 import webcam.WebCamPhotoAutoEscola;
@@ -64,7 +65,7 @@ public class CadastroInstrutor extends JInternalFrame {
 	Carro[] carroVetor;
 	private DAOcarro daoCarro = new DAOcarro();
 	private Carro carro = new Carro();
-	private PainelFoto painelFotoInstrutor;
+	private JPanel painelFotoInstrutor;
         
         private JInternalFrame minhaInternal;
         
@@ -252,7 +253,7 @@ public class CadastroInstrutor extends JInternalFrame {
 		add(btExcluir);
 		
 		
-		painelFotoInstrutor = new PainelFoto();//TODO IMPLEMENTAR
+		painelFotoInstrutor = new JPanel();//TODO IMPLEMENTAR
 		painelFotoInstrutor.setBounds(370, 10, 110, 130);
 		Border bordaColorida = BorderFactory.createLineBorder(Color.GRAY);
 		Border bordaPainelFoto = BorderFactory.createTitledBorder(bordaColorida, "Foto do Instrutor");
@@ -370,9 +371,10 @@ public class CadastroInstrutor extends JInternalFrame {
 			}
 		});
                 
-                painelFotoInstrutor.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
+                painelFotoInstrutor.addMouseListener(cliqueEmFoto);
+        } 
+        private  MouseAdapter cliqueEmFoto = new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
                         if(e.getClickCount()==2){
                            
                               WebCamPhotoAutoEscola dialog = new WebCamPhotoAutoEscola(Principal.minhaFrame);
@@ -383,6 +385,11 @@ public class CadastroInstrutor extends JInternalFrame {
                               
                               PainelFoto painelComFoto = new PainelFoto(path);
                               //painelFotoInstrutor.paint(new Graphics());
+                              remove(painelFotoInstrutor);
+                              painelComFoto.setBounds(370, 10, 110, 130);
+                              Border bordaColorida = BorderFactory.createLineBorder(Color.GRAY);
+                              Border bordaPainelFoto = BorderFactory.createTitledBorder(bordaColorida, "Foto do Instrutor");
+                              painelComFoto.setBorder(bordaPainelFoto);
                               add(painelComFoto);
                               Principal.minhaFrame.repaint();
                           
@@ -391,7 +398,8 @@ public class CadastroInstrutor extends JInternalFrame {
                            
                         }
                     }
-                });
-	}
+        };
 
 }
+
+
