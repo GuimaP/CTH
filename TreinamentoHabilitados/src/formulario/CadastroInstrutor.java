@@ -46,6 +46,7 @@ import javax.swing.ImageIcon;
 import javax.swing.event.MouseInputAdapter;
 import modelo.Carro;
 import modelo.Funcionario;
+import principal.VerificadorDeCpf;
 import webcam.WebCamPhotoAutoEscola;
 
 public class CadastroInstrutor extends JInternalFrame {
@@ -272,12 +273,18 @@ public class CadastroInstrutor extends JInternalFrame {
 	}
 
 	public void definirEventos() {
+           
+            
+            
 		btSalvar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				tfNome.setText(tfNome.getText().trim());
 				tfRegistroCnh.setText(tfRegistroCnh.getText().trim());
 				tfRg.setText(tfRg.getText().trim());
+                                
+                                 VerificadorDeCpf verifica = new VerificadorDeCpf();
+                                        
 				if (tfNome.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Informar o nome");
 					lbNome.setForeground(Color.RED);
@@ -301,8 +308,9 @@ public class CadastroInstrutor extends JInternalFrame {
 							"Informar a data da Permissão");
 					lbPrimeiraCnh.setForeground(Color.RED);
 					tfPrimeiraCnh.requestFocus(true);
-				} else if (tfCpf.getValue() == null) {
-					JOptionPane.showMessageDialog(null, "Informar Cpf");
+				} else if (tfCpf.getValue() == null || 
+                                        !verifica.verificarCpf(tfCpf.getText().toString())) {
+					JOptionPane.showMessageDialog(null, "Cpf invalido");
 					lbCpf.setForeground(Color.RED);
 					tfCpf.requestFocus(true);
 				} else if (jcStatus.getSelectedIndex() == -1) {
@@ -311,6 +319,14 @@ public class CadastroInstrutor extends JInternalFrame {
 					jcStatus.requestFocus(true);
 				} else if (jcCarro.getSelectedIndex() == -1){
 					JOptionPane.showMessageDialog(null, "Carro não selecionado ou não cadastrado");
+                                        
+                                        //Teste
+                                        
+                                        
+                                        
+                                        
+                                     
+                                        
 					jcCarro.requestFocus(true);
 				}else {
 					Funcionario instrutor = new Funcionario();
