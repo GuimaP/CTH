@@ -390,7 +390,7 @@ public class CadastroInstrutor extends JInternalFrame {
                               Border bordaColorida = BorderFactory.createLineBorder(Color.GRAY);
                               Border bordaPainelFoto = BorderFactory.createTitledBorder(bordaColorida, "Foto do Instrutor");
                               painelComFoto.setBorder(bordaPainelFoto);
-                              add(painelComFoto);
+                              add(painelComFoto);//
                               Principal.minhaFrame.repaint();
                           
                            
