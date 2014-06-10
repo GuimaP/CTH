@@ -55,9 +55,9 @@ public class TelaCadastroCliente extends JInternalFrame {
 	private ButtonGroup gQ2, gQ3;
 	private JRadioButton jrQ2Yes, jrQ2No, jrQ3Yes, jrQ3No;
 	private String[] sexo = { "M", "F" };
-	private String[] escolaridade = { "Superior", "Tecnico", "Médio",
+	private String[] escolaridade = { "Superior", "Tecnico", "MÃ©dio",
 			"Fundamental" };
-	private String[] pesquisa = { "Internet", "Indicação", "Outros" };
+	private String[] pesquisa = { "Internet", "Indicaï¿½ï¿½o", "Outros" };
 	private JComboBox<String> jcSexo, jcEscolaridade, jcPesquisa;
 	private JTable table;
 	private String data;
@@ -287,7 +287,7 @@ public class TelaCadastroCliente extends JInternalFrame {
 		
 		
 
-		lbTelefone = new JLabel("  Telefone");
+		lbTelefone = new JLabel("  Tel");
 		lbTelefone.setLocation(330, 160);
 		lbTelefone.setSize(50, 15);
 		panelCliente.add(lbTelefone);
@@ -317,7 +317,7 @@ public class TelaCadastroCliente extends JInternalFrame {
 		
 		
 		
-		lbEmail = new JLabel("  Email");
+		lbEmail = new JLabel("  E-mail");
 		lbEmail.setLocation(40, 190);
 		lbEmail.setSize(50, 15);
 		panelCliente.add(lbEmail);
@@ -357,7 +357,7 @@ public class TelaCadastroCliente extends JInternalFrame {
 		
 		
 		
-		lbProfissao = new JLabel("Profissão");
+		lbProfissao = new JLabel("ProfissÃ£o");
 		lbProfissao.setLocation(240, 220);
 		lbProfissao.setSize(100, 15);
 		painelGeral.add(lbProfissao);
@@ -370,7 +370,7 @@ public class TelaCadastroCliente extends JInternalFrame {
 		
 		
 		
-		lbRegistroCnh = new JLabel("Nº Cnh");
+		lbRegistroCnh = new JLabel("NÂº Cnh");
 		lbRegistroCnh.setLocation(40, 250);
 		lbRegistroCnh.setSize(70, 15);
 		painelGeral.add(lbRegistroCnh);
@@ -398,7 +398,7 @@ public class TelaCadastroCliente extends JInternalFrame {
 		
 		
 		
-		lbPrimeiraHabilitacao = new JLabel("Dt Permissão");
+		lbPrimeiraHabilitacao = new JLabel("Dt PermissÃ£o");
 		lbPrimeiraHabilitacao.setLocation(325, 250);
 		lbPrimeiraHabilitacao.setSize(100, 15);
 		painelGeral.add(lbPrimeiraHabilitacao);
@@ -414,7 +414,7 @@ public class TelaCadastroCliente extends JInternalFrame {
 		
 		
 		
-		// Opções e Grupos de questões.
+		// Opï¿½ï¿½es e Grupos de questï¿½es.
 		lbQ1 = new JLabel("A quanto tempo nao dirige?");
 		lbQ1.setLocation(40, 280);
 		lbQ1.setSize(200, 20);
@@ -443,7 +443,7 @@ public class TelaCadastroCliente extends JInternalFrame {
 		jrQ2Yes.setLocation(170, 310);
 		jrQ2Yes.setSize(60, 20);
 		
-		jrQ2No = new JRadioButton("Não", false);
+		jrQ2No = new JRadioButton("NÃ£o", false);
 		jrQ2No.setLocation(240, 310);
 		jrQ2No.setSize(60, 20);
 		
@@ -459,7 +459,7 @@ public class TelaCadastroCliente extends JInternalFrame {
 		
 		JPanel painelQ3 = new JPanel(); //Painel para colocar os radios parar alinhar os radios
 		
-		lbQ3 = new JLabel("É possivel treinar nele?");
+		lbQ3 = new JLabel("Ã‰ possivel treinar nele?");
 		lbQ3.setLocation(40, 340);
 		lbQ3.setSize(150, 20);
 		painelGeral.add(lbQ3);
@@ -469,7 +469,7 @@ public class TelaCadastroCliente extends JInternalFrame {
 		jrQ3Yes.setLocation(190, 340);
 		jrQ3Yes.setSize(60, 20);
 		
-		jrQ3No = new JRadioButton("Não", false);
+		jrQ3No = new JRadioButton("NÃ£o", false);
 		jrQ3No.setLocation(260, 340);
 		jrQ3No.setSize(60, 20);
 		
@@ -485,7 +485,7 @@ public class TelaCadastroCliente extends JInternalFrame {
 
 		 
 		
-		lbQ4 = new JLabel("Como você soube da Karol Treinamentos?");
+		lbQ4 = new JLabel("Como vocÃª soube da Karol Treinamentos?");
 		lbQ4.setLocation(40, 370);
 		lbQ4.setSize(250, 20);
 		painelGeral.add(lbQ4);
@@ -501,7 +501,7 @@ public class TelaCadastroCliente extends JInternalFrame {
 		
 		
 
-		lbObserva = new JLabel("Observações");
+		lbObserva = new JLabel("ObservaÃ§Ãµes");
 		lbObserva.setLocation(60, 400);
 		lbObserva.setSize(120, 20);
 		painelGeral.add(lbObserva);
@@ -520,7 +520,7 @@ public class TelaCadastroCliente extends JInternalFrame {
 		
 		add(painelGeral);
 		
-		// Botão
+		// Botï¿½o
 		btSalvar = new JButton("Salvar");
 		btSalvar.setLocation(10, 570);
 		btSalvar.setSize(180, 35);
@@ -572,7 +572,7 @@ public class TelaCadastroCliente extends JInternalFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				// validações
+				// validaï¿½ï¿½es
 				tfNome.setText(tfNome.getText().trim());
 				tfData.setText(tfData.getText().trim());
 				tfLogradouro.setText(tfLogradouro.getText().trim());
@@ -634,12 +634,12 @@ public class TelaCadastroCliente extends JInternalFrame {
 					tfValidadeCnh.requestFocus(true);
 				} else if (tfPrimeiraHabilitacao.getValue() == null) {
 					JOptionPane.showMessageDialog(null,
-							"Informar a data da permição");
+							"Informar a data da permiï¿½ï¿½o");
 					lbPrimeiraHabilitacao.setForeground(Color.red);
 					tfPrimeiraHabilitacao.requestFocus(true);
 				} else if (jcPesquisa.getSelectedIndex() == -1) {
 					JOptionPane.showMessageDialog(null,
-							"Selecionar uma das opções");
+							"Selecionar uma das opÃ§Ãµes");
 					jcPesquisa.requestFocus(true);
 				} else {
 					
@@ -673,12 +673,12 @@ public class TelaCadastroCliente extends JInternalFrame {
 					if (jrQ2Yes.isSelected()) {
 						cadastro.setPesquisa2("sim");
 					} else {
-						cadastro.setPesquisa2("não");
+						cadastro.setPesquisa2("nÃ£o");
 					}
 					if (jrQ3Yes.isSelected()) {
 						cadastro.setPesquisa3("sim");
 					} else {
-						cadastro.setPesquisa3("não");
+						cadastro.setPesquisa3("nÃ£o");
 					}
 					cadastro.setPesquisa4(jcPesquisa.getSelectedItem()
 							.toString());
@@ -695,9 +695,9 @@ public class TelaCadastroCliente extends JInternalFrame {
 					//populaList();
 					limparCampos();
 
-					// TODO não esquecer de aplicar o ternario para os
+					// TODO nï¿½o esquecer de aplicar o ternario para os
 					// FORMATEDTEXTFIELD
-					// limpar os campos após o cadastro.
+					// limpar os campos apï¿½s o cadastro.
 
 				}
 

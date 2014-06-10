@@ -9,9 +9,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 public class ConnectionFactoryRepository {
-	private static final SessionFactory manager = openManger();/*Metodos estaticos já sobem prontos
-								na inicialização do programa,portanto, o atributo manager
-								já estará instanciando na inicialização
+	private static final SessionFactory manager = openManger();/*Metodos estaticos jï¿½ sobem prontos
+								na inicializaï¿½ï¿½o do programa,portanto, o atributo manager
+								jï¿½ estarï¿½ instanciando na inicializaï¿½ï¿½o
 	 							*/
 	
 	@SuppressWarnings("deprecation")
@@ -23,7 +23,7 @@ public class ConnectionFactoryRepository {
 			
 		}catch(Exception e){
 			e.printStackTrace();
-			throw new ExceptionInInitializerError(e); //Para a execução do programa...
+			throw new ExceptionInInitializerError(e); //Para a execuï¿½ï¿½o do programa...
 		}
 	}
 	

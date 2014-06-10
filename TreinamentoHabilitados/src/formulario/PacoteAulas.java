@@ -41,7 +41,7 @@ public class PacoteAulas extends JFrame {
 	private JScrollPane scroll, scTable;
 
 	private JButton btSalvar;
-	private String[] pagamento = { "Dinheiro", "Débito", "Crédito" };
+	private String[] pagamento = { "Dinheiro", "DÃ©bito", "CrÃ©dito" };
 
 	private ArrayList<Funcionario> funcionarioList = new ArrayList<Funcionario>();
 	private ArrayList<Cliente> clienteList = new ArrayList<Cliente>();
@@ -113,7 +113,7 @@ public class PacoteAulas extends JFrame {
 		lbAulas.setSize(120, 20);
 		getContentPane().add(lbAulas);
 
-		lbPreco = new JLabel("Preço Aula");
+		lbPreco = new JLabel("PreÃ§o Aula");
 		lbPreco.setLocation(220, 100);
 		lbPreco.setSize(100, 20);
 		getContentPane().add(lbPreco);

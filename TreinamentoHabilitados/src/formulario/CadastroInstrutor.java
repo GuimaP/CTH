@@ -119,7 +119,7 @@ public class CadastroInstrutor extends JInternalFrame {
 		
 			
 		
-		lbRegistroCnh = new JLabel("N� Cnh");
+		lbRegistroCnh = new JLabel("Nº Cnh");
 		lbRegistroCnh.setBounds(170, 40, 40, 20);
 		add(lbRegistroCnh);
 
@@ -142,7 +142,7 @@ public class CadastroInstrutor extends JInternalFrame {
 		add(tfValidadeCnh);
 		
 		
-		lbPrimeiraCnh = new JLabel("Dt. Permiss�o");
+		lbPrimeiraCnh = new JLabel("Permissão");
 		lbPrimeiraCnh.setBounds(170, 65, 90, 20);
 		add(lbPrimeiraCnh);
 
@@ -179,7 +179,7 @@ public class CadastroInstrutor extends JInternalFrame {
 		
 		//--
 
-		lbTelefone = new JLabel("Telefone");
+		lbTelefone = new JLabel("Tel");
 		lbTelefone.setBounds(5, 115, 60, 20);
 		add(lbTelefone);
 		
@@ -192,7 +192,7 @@ public class CadastroInstrutor extends JInternalFrame {
 		
 		
 		
-		lbCelular = new JLabel("Celular");
+		lbCelular = new JLabel(" Cel");
 		lbCelular.setBounds(165, 115, 60, 20);
 		add(lbCelular);
 
@@ -298,7 +298,7 @@ public class CadastroInstrutor extends JInternalFrame {
 					tfValidadeCnh.requestFocus(true);
 				} else if (tfPrimeiraCnh.getValue() == null) {
 					JOptionPane.showMessageDialog(null,
-							"Informar a data da Permiss�o");
+							"Informar a data da Permissão");
 					lbPrimeiraCnh.setForeground(Color.RED);
 					tfPrimeiraCnh.requestFocus(true);
 				} else if (tfCpf.getValue() == null) {
@@ -310,7 +310,7 @@ public class CadastroInstrutor extends JInternalFrame {
 					lbStatus.setForeground(Color.RED);
 					jcStatus.requestFocus(true);
 				} else if (jcCarro.getSelectedIndex() == -1){
-					JOptionPane.showMessageDialog(null, "Carro n�o selecionado ou n�o cadastrado");
+					JOptionPane.showMessageDialog(null, "Carro não selecionado ou não cadastrado");
 					jcCarro.requestFocus(true);
 				}else {
 					Funcionario instrutor = new Funcionario();
@@ -325,9 +325,9 @@ public class CadastroInstrutor extends JInternalFrame {
 							.toString());
 					instrutor.setCpf(tfCpf.getValue().toString());
 					instrutor.setRg(tfRg.getText());
-					instrutor.setTelefone(tfTelefone.getValue() == null ? "N�O H�"
+					instrutor.setTelefone(tfTelefone.getValue() == null ? "Não Há"
 							: tfTelefone.getValue().toString());
-					instrutor.setCelular(tfCelular.getValue() == null ? "N�O H�"
+					instrutor.setCelular(tfCelular.getValue() == null ? "Não Há"
 							: tfCelular.getValue().toString());
 					instrutor.setStatus(jcStatus.getSelectedItem().toString());
 					instrutor.setTbCarroPlacaCarro((Carro) jcCarro

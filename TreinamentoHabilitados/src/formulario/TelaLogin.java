@@ -89,7 +89,7 @@ public class TelaLogin extends JFrame {
 		add(btSair);
 		
 		// Label
-		lbUsuario = new JLabel("Usuário");
+		lbUsuario = new JLabel("UsuÃ¡rio");
 		lbUsuario.setSize(55, 10);
 		lbUsuario.setLocation(20, 25);
 		add(lbUsuario);
@@ -144,7 +144,7 @@ public class TelaLogin extends JFrame {
 							new Principal();
 							minhaFrame.dispose();
 						}else {
-							JOptionPane.showConfirmDialog(null, "não autenticado");
+							JOptionPane.showConfirmDialog(null, "nÃ£o autenticado");
 						}
 				
 					}catch (Exception e1){
@@ -164,15 +164,15 @@ public class TelaLogin extends JFrame {
 		
 		this.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
-				point.x = e.getX();//Pego a posição a localização da frame quando clicado
+				point.x = e.getX();//Pego a posiï¿½ï¿½o a localizaï¿½ï¿½o da frame quando clicado
 		        point.y = e.getY();
 		      }
 		});
 		
 		this.addMouseMotionListener(new MouseMotionAdapter() {
 		      public void mouseDragged(MouseEvent e) {
-		    	  Point p = minhaFrame.getLocation();//pego a localização da frame no ato de arrastar
-		          minhaFrame.setLocation(p.x + e.getX() - point.x, p.y + e.getY() - point.y); // e então eu subtraio a localização dela, mais a onde eu cliquei 
+		    	  Point p = minhaFrame.getLocation();//pego a localizaï¿½ï¿½o da frame no ato de arrastar
+		          minhaFrame.setLocation(p.x + e.getX() - point.x, p.y + e.getY() - point.y); // e entï¿½o eu subtraio a localizaï¿½ï¿½o dela, mais a onde eu cliquei 
 		        }
 		      });
 		
