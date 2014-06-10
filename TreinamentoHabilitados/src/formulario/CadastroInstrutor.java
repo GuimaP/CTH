@@ -37,8 +37,15 @@ import com.towel.swing.img.JImagePanel;
 import DAO.DAOcarro;
 import DAO.DAOinstrutor;
 import Model.Repository.ConnectionFactoryRepositoryDois;
+import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.IOException;
+import javax.swing.ImageIcon;
 import modelo.Carro;
 import modelo.Funcionario;
+import webcam.WebCamPhotoAutoEscola;
 
 public class CadastroInstrutor extends JInternalFrame {
 
@@ -57,13 +64,18 @@ public class CadastroInstrutor extends JInternalFrame {
 	Carro[] carroVetor;
 	private DAOcarro daoCarro = new DAOcarro();
 	private Carro carro = new Carro();
-	private JPanel painelFotoInstrutor;
+	private PainelFoto painelFotoInstrutor;
+        
+        private JInternalFrame minhaInternal;
+        
 	
 	
 	public CadastroInstrutor() {
 		try {
+                        minhaInternal = this;
 			inicializaComponentes();
-			definirEventos();
+                        definirEventos();
+                        
 		} catch (ParseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			return;
@@ -106,7 +118,7 @@ public class CadastroInstrutor extends JInternalFrame {
 		
 			
 		
-		lbRegistroCnh = new JLabel("Nº Cnh");
+		lbRegistroCnh = new JLabel("Nï¿½ Cnh");
 		lbRegistroCnh.setBounds(170, 40, 40, 20);
 		add(lbRegistroCnh);
 
@@ -129,7 +141,7 @@ public class CadastroInstrutor extends JInternalFrame {
 		add(tfValidadeCnh);
 		
 		
-		lbPrimeiraCnh = new JLabel("Dt. Permissão");
+		lbPrimeiraCnh = new JLabel("Dt. Permissï¿½o");
 		lbPrimeiraCnh.setBounds(170, 65, 90, 20);
 		add(lbPrimeiraCnh);
 
@@ -240,7 +252,7 @@ public class CadastroInstrutor extends JInternalFrame {
 		add(btExcluir);
 		
 		
-		painelFotoInstrutor = new JPanel();//TODO IMPLEMENTAR
+		painelFotoInstrutor = new PainelFoto();//TODO IMPLEMENTAR
 		painelFotoInstrutor.setBounds(370, 10, 110, 130);
 		Border bordaColorida = BorderFactory.createLineBorder(Color.GRAY);
 		Border bordaPainelFoto = BorderFactory.createTitledBorder(bordaColorida, "Foto do Instrutor");
@@ -285,7 +297,7 @@ public class CadastroInstrutor extends JInternalFrame {
 					tfValidadeCnh.requestFocus(true);
 				} else if (tfPrimeiraCnh.getValue() == null) {
 					JOptionPane.showMessageDialog(null,
-							"Informar a data da Permissão");
+							"Informar a data da Permissï¿½o");
 					lbPrimeiraCnh.setForeground(Color.RED);
 					tfPrimeiraCnh.requestFocus(true);
 				} else if (tfCpf.getValue() == null) {
@@ -297,7 +309,7 @@ public class CadastroInstrutor extends JInternalFrame {
 					lbStatus.setForeground(Color.RED);
 					jcStatus.requestFocus(true);
 				} else if (jcCarro.getSelectedIndex() == -1){
-					JOptionPane.showMessageDialog(null, "Carro não selecionado ou não cadastrado");
+					JOptionPane.showMessageDialog(null, "Carro nï¿½o selecionado ou nï¿½o cadastrado");
 					jcCarro.requestFocus(true);
 				}else {
 					Funcionario instrutor = new Funcionario();
@@ -312,9 +324,9 @@ public class CadastroInstrutor extends JInternalFrame {
 							.toString());
 					instrutor.setCpf(tfCpf.getValue().toString());
 					instrutor.setRg(tfRg.getText());
-					instrutor.setTelefone(tfTelefone.getValue() == null ? "NÃO HÁ"
+					instrutor.setTelefone(tfTelefone.getValue() == null ? "Nï¿½O Hï¿½"
 							: tfTelefone.getValue().toString());
-					instrutor.setCelular(tfCelular.getValue() == null ? "NÃO HÁ"
+					instrutor.setCelular(tfCelular.getValue() == null ? "Nï¿½O Hï¿½"
 							: tfCelular.getValue().toString());
 					instrutor.setStatus(jcStatus.getSelectedItem().toString());
 					instrutor.setTbCarroPlacaCarro((Carro) jcCarro
@@ -357,7 +369,29 @@ public class CadastroInstrutor extends JInternalFrame {
 				
 			}
 		});
-
+                
+                painelFotoInstrutor.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        if(e.getClickCount()==2){
+                           
+                              WebCamPhotoAutoEscola dialog = new WebCamPhotoAutoEscola(Principal.minhaFrame);
+                              String path = dialog.pathImgTirada;
+                              JOptionPane.showMessageDialog(null, path,"InformaÃ§Ã£o", JOptionPane.INFORMATION_MESSAGE);
+                              //JImagePanel img = new JImagePanel(path);
+                              //JLabel img = new JLabel(new ImageIcon(path));
+                              
+                              PainelFoto painelComFoto = new PainelFoto(path);
+                              //painelFotoInstrutor.paint(new Graphics());
+                              add(painelComFoto);
+                              Principal.minhaFrame.repaint();
+                          
+                           
+                               
+                           
+                        }
+                    }
+                });
 	}
 
 }

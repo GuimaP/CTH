@@ -34,12 +34,13 @@ public class Principal extends JFrame {
 	private boolean painelMostrando=false;
 	private JPanel painelInformativo;
 	private JButton btAbrirInformativo;
-
+        protected static JFrame minhaFrame; //Frame para setar a dialogs
 	
 	protected static boolean isFrameInstrutorOpen,isFrameClienteOpen;
 
 	public Principal() {
 		try{
+                        minhaFrame = this;
 			inicializaComponentes();
 			definirEventos();
 			
@@ -60,7 +61,7 @@ public class Principal extends JFrame {
 		//
 		menuArquivo = new JMenu("Arquivo");
 		menuUsuarioSenha = new JMenu("Nova Senha");
-		menuRelatorio = new JMenu("Relatório");
+		menuRelatorio = new JMenu("Relatï¿½rio");
 		//
 		itSair = new JMenuItem("Sair");
 		itCadastroCliente = new JMenuItem("Cadastro Aluno");

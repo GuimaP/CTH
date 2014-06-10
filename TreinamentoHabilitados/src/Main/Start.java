@@ -3,10 +3,9 @@ package Main;
 import javax.persistence.EntityManager;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
-
+import formulario.*;
 import Model.Repository.ConnectionFactoryRepositoryDois;
-import formulario.CadastroInstrutor;
-import formulario.TelaLogin;
+
 
 public class Start {
 	public static EntityManager manager;
@@ -21,6 +20,8 @@ public class Start {
 		    		UIManager.setLookAndFeel(info.getClassName());
 		    		manager = ConnectionFactoryRepositoryDois.getManager();
 		    		new TelaLogin();
+		    		//new CapturaImagens();
+		    		//new WebcamViewerExample();
 		            break;
 		        }
 		    	
