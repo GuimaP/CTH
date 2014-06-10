@@ -7,7 +7,14 @@ package principal;
  * Se o cpf for verdadeiro então retornaremos Verdadeiro do contrario o retorno será Falso.
  */
 public class VerificadorDeCpf {
+    private String cpf;
     
+    public boolean verificarCpf (String cpf){
+        boolean validado = true;
+        this.cpf = cpf;
+        
+        return validado;
+    }
     
     
     
