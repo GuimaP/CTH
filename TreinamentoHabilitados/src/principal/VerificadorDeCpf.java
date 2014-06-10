@@ -12,6 +12,14 @@ public class VerificadorDeCpf {
     public boolean verificarCpf (String cpf){
         boolean validado = true;
         this.cpf = cpf;
+        String [] vet = this.cpf.split(".");
+        this.cpf = vet[0]+vet[1];
+        
+       
+        
+        
+        
+        
         
         return validado;
     }
