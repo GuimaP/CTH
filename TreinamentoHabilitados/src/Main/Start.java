@@ -19,9 +19,9 @@ public class Start {
 		    	if ("Nimbus".equals(info.getName())) {
 		            System.out.println("is nimbus");
 		    		UIManager.setLookAndFeel(info.getClassName());
-		    		//manager = ConnectionFactoryRepositoryDois.getManager();
-		    		//new TelaLogin();
-                                new webcam.WebCamPhotoAutoEscola(new JFrame());
+		    		manager = ConnectionFactoryRepositoryDois.getManager();
+		    		new TelaLogin();
+                                //new webcam.WebCamPhotoAutoEscola(new JFrame());
 		    		//new CapturaImagens();
 		    		//new WebcamViewerExample();
 		            break;
