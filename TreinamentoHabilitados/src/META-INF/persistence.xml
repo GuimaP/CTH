@@ -20,7 +20,11 @@
 		<property name="javax.persistence.jdbc.url"
 		value="jdbc:mysql://localhost/bd_autoescola2" />
 		<property name="javax.persistence.jdbc.user" value="root" />
+
 		<property name="javax.persistence.jdbc.password" value="vitor" />
+
+		<property name="javax.persistence.jdbc.password" value="guima" />
+
 	</properties>
 	</persistence-unit>
 	

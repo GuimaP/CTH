@@ -54,7 +54,7 @@ public class Principal extends JFrame {
 		//JImagePanel fundoDeImage = new JImagePanel(new File("").getCanonicalFile()+"\\bin\\Resources\\imgs\\logo fundo.png");
 		JDesktopPane fundoDaPrincipal = new JDesktopPane();
 		setContentPane(fundoDaPrincipal);
-		
+                setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		//
 		menuBarra = new JMenuBar();
@@ -99,7 +99,7 @@ public class Principal extends JFrame {
 		setSize(1024, 720);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);		
 		setLocationRelativeTo(null);
-		setTitle("Karol Habilitados v 1.1");
+		setTitle("Karol Habilitados v 1.2.1");
 		setResizable(false);
 		setVisible(true);
 
