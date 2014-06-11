@@ -23,7 +23,7 @@
 
 		<property name="javax.persistence.jdbc.password" value="vitor" />
 
-		<property name="javax.persistence.jdbc.password" value="guima" />
+		
 
 	</properties>
 	</persistence-unit>
