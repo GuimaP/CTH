@@ -54,7 +54,7 @@ public class Principal extends JFrame {
 		//JImagePanel fundoDeImage = new JImagePanel(new File("").getCanonicalFile()+"\\bin\\Resources\\imgs\\logo fundo.png");
 		JDesktopPane fundoDaPrincipal = new JDesktopPane();
 		setContentPane(fundoDaPrincipal);
-		
+                setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		//
 		menuBarra = new JMenuBar();

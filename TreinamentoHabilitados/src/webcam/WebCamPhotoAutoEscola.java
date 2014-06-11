@@ -38,7 +38,7 @@ import javax.swing.SwingUtilities;
  * 
  * @author Bartosz Firyn (SarXos)
  */
-public class WebCamPhotoAutoEscola extends JFrame implements Runnable, WebcamListener, WindowListener, UncaughtExceptionHandler, ItemListener {
+public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamListener, WindowListener, UncaughtExceptionHandler, ItemListener {
 
 	private static final long serialVersionUID = 1L;
         private JDialog minhaDialog;
@@ -47,8 +47,8 @@ public class WebCamPhotoAutoEscola extends JFrame implements Runnable, WebcamLis
 	private WebcamPicker picker = null;
         public String pathImgTirada;
         public WebCamPhotoAutoEscola(JFrame f){
-            //super(f, "Auto Escola", ModalityType.APPLICATION_MODAL);
-            //minhaDialog =this;
+            super(f, "Auto Escola", ModalityType.APPLICATION_MODAL);
+            minhaDialog =this;
             run();
         }
         
@@ -56,7 +56,7 @@ public class WebCamPhotoAutoEscola extends JFrame implements Runnable, WebcamLis
 	public void run() {
 
 		setTitle("Auto Escola");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setLayout(new BorderLayout());
 
 		//addWindowListener(this);
@@ -82,15 +82,18 @@ public class WebCamPhotoAutoEscola extends JFrame implements Runnable, WebcamLis
 
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                            Webcam webcam = Webcam.getDefault();
+                            Webcam webcam = picker.getSelectedWebcam();
+                            System.out.println(webcam.getName());
                             webcam.open();
                             BufferedImage image = webcam.getImage();
                             
                              try {
                                 JOptionPane.showMessageDialog(null, "Cliq");
-                                ImageIO.write(image, "JPG", new File("test.jpg"));
                                 
-                                pathImgTirada =new File("").getCanonicalPath()+ "\\test.jpg";
+                                
+                                pathImgTirada =new File("").getCanonicalPath()+ "\\src\\Resources\\FotosInstrutor\\test.jpg";
+                                ImageIO.write(image, "JPG", new File(pathImgTirada));
+                                
                                  JOptionPane.showMessageDialog(minhaDialog, "Foto tirada","Informação", JOptionPane.INFORMATION_MESSAGE);
                                  JOptionPane.showMessageDialog(minhaDialog, pathImgTirada,"Informação", JOptionPane.INFORMATION_MESSAGE);
                                  minhaDialog.dispose();
@@ -130,11 +133,14 @@ public class WebCamPhotoAutoEscola extends JFrame implements Runnable, WebcamLis
 	@Override
 	public void webcamClosed(WebcamEvent we) {
 		System.out.println("webcam closed");
+                
 	}
 
 	@Override
 	public void webcamDisposed(WebcamEvent we) {
 		System.out.println("webcam disposed");
+                panel.stop();
+                webcam.close();
 	}
 
 	@Override
@@ -153,6 +159,9 @@ public class WebCamPhotoAutoEscola extends JFrame implements Runnable, WebcamLis
 
 	@Override
 	public void windowClosing(WindowEvent e) {
+            System.out.println("aqui");
+            panel.stop();
+            webcam.close();
 	}
 
 	@Override
