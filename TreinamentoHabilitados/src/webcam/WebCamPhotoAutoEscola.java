@@ -94,8 +94,8 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamLi
                                 pathImgTirada =new File("").getCanonicalPath()+ "\\src\\Resources\\FotosInstrutor\\test.jpg";
                                 ImageIO.write(image, "JPG", new File(pathImgTirada));
                                 
-                                 JOptionPane.showMessageDialog(minhaDialog, "Foto tirada","Informação", JOptionPane.INFORMATION_MESSAGE);
-                                 JOptionPane.showMessageDialog(minhaDialog, pathImgTirada,"Informação", JOptionPane.INFORMATION_MESSAGE);
+                                 JOptionPane.showMessageDialog(minhaDialog, "Foto tirada","InformaÃ§Ã£o", JOptionPane.INFORMATION_MESSAGE);
+                                 JOptionPane.showMessageDialog(minhaDialog, pathImgTirada,"InformaÃ§Ã£o", JOptionPane.INFORMATION_MESSAGE);
                                  minhaDialog.dispose();
                             } catch (IOException ex) {
                                  Logger.getLogger(tirarFoto.class.getName()).log(Level.SEVERE, null, ex);
