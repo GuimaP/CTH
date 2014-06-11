@@ -49,7 +49,7 @@ import modelo.Funcionario;
 import principal.VerificadorDeCpf;
 import webcam.WebCamPhotoAutoEscola;
 
-public class CadastroInstrutor extends JInternalFrame {
+public class FormCadastroInstrutor extends JInternalFrame {
 
 	private JLabel lbNome, lbData, lbRegistroCnh, lbValidadeCnh, lbPrimeiraCnh,
 			lbTelefone, lbCelular, lbRg, lbCpf, lbCarro, lbStatus;
@@ -72,7 +72,7 @@ public class CadastroInstrutor extends JInternalFrame {
         
 	
 	
-	public CadastroInstrutor() {
+	public FormCadastroInstrutor() {
 		try {
                         minhaInternal = this;
 			inicializaComponentes();

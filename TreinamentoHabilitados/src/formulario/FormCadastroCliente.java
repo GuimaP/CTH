@@ -40,7 +40,7 @@ import principal.CadastroCliente;
 import DAO.DAOcliente;
 import Model.Repository.ConnectionFactoryRepositoryDois;
 
-public class TelaCadastroCliente extends JInternalFrame {
+public class FormCadastroCliente extends JInternalFrame {
 	private JLabel lbNome, lbEmail, lbEscolaridade, lbProfissao, lbNascimento,
 			lbTelefone, lbPrimeiraHabilitacao, lbValidadeCnh, lbRegistroCnh,
 			lbLogradouro, lbBairro, lbNumero, lbCep, lbRg, lbCpf, lbSexo,
@@ -74,7 +74,7 @@ public class TelaCadastroCliente extends JInternalFrame {
 	private JPanel panelCliente,painelGeral;
 	
 
-	public TelaCadastroCliente() {
+	public FormCadastroCliente() {
 
 		try {
 			Cliente c = new Cliente();

@@ -27,16 +27,16 @@ import com.towel.swing.img.JImagePanel;
 public class Principal extends JFrame {
 
 	private JMenuBar menuBarra;
-	private JMenu menuArquivo, menuUsuarioSenha, menuRelatorio;
+	private JMenu menuArquivo, menuAgendamento, menuRelatorio;
 	private JMenuItem itSair, itCadastroCliente, itCadastroFuncionario,
-			itCalendario, itNovaSenha, itCadastroPacote, itCadastroCarro;
+			itCalendario, itAgendamento, itCadastroPacote, itCadastroCarro;
 	private JLabel redefinirSenha;
 	private boolean painelMostrando=false;
 	private JPanel painelInformativo;
 	private JButton btAbrirInformativo;
         protected static JFrame minhaFrame; //Frame para setar a dialogs
 	
-	protected static boolean isFrameInstrutorOpen,isFrameClienteOpen, isFramePacoteAulas;
+	protected static boolean isFrameInstrutorOpen,isFrameClienteOpen, isFrameCadastroPacote, isFrameAgendamento;
 
 	public Principal() {
 		try{
@@ -44,7 +44,7 @@ public class Principal extends JFrame {
 			inicializaComponentes();
 			definirEventos();
 			
-			isFrameClienteOpen = isFrameInstrutorOpen = isFramePacoteAulas = false;
+			isFrameClienteOpen = isFrameInstrutorOpen = isFrameCadastroPacote  = isFrameAgendamento = false;
 		}catch (Exception e){e.printStackTrace();}
 	}
 
@@ -60,14 +60,14 @@ public class Principal extends JFrame {
 		menuBarra = new JMenuBar();
 		//
 		menuArquivo = new JMenu("Arquivo");
-		menuUsuarioSenha = new JMenu("Nova Senha");
+		menuAgendamento = new JMenu("Agendamento");
 		menuRelatorio = new JMenu("Relatório");
 		//
 		itSair = new JMenuItem("Sair");
 		itCadastroCliente = new JMenuItem("Cadastro Aluno");
-		itCadastroFuncionario = new JMenuItem("Cadastro Instrutor");
+		itCadastroFuncionario = new JMenuItem("Cadastro Pacote");
 		itCalendario = new JMenuItem("Calendario");
-		itNovaSenha = new JMenuItem("Redefinir Senha");
+		itAgendamento = new JMenuItem("Agendar Aula");
 		itCadastroPacote = new JMenuItem("Cadastro Pacote");
 		itCadastroCarro = new JMenuItem("Cadastro Carro");
 		//
@@ -77,10 +77,10 @@ public class Principal extends JFrame {
 		menuArquivo.add(itCadastroCarro);
 		menuArquivo.add(itCalendario);
 		menuArquivo.add(itSair);
-		menuUsuarioSenha.add(itNovaSenha);
+		menuAgendamento.add(itAgendamento);
 		//
 		menuBarra.add(menuArquivo);
-		menuBarra.add(menuUsuarioSenha);
+		menuBarra.add(menuAgendamento);
 		menuBarra.add(menuRelatorio);
 		//
 		
@@ -122,7 +122,7 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(!isFrameClienteOpen){
 					isFrameClienteOpen = true;
-					getContentPane().add(new TelaCadastroCliente());
+					getContentPane().add(new FormCadastroCliente());
 				}
 			}
 		});
@@ -131,31 +131,35 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(!isFrameInstrutorOpen){
 					isFrameInstrutorOpen = true; // difinindo que ja tem uma janela aberta 
-					getContentPane().add(new CadastroInstrutor());
+					getContentPane().add(new FormCadastroInstrutor());
 				}
 				
 				
 			}
 		});
 	
-	itNovaSenha.addActionListener(new ActionListener() {
+	itAgendamento.addActionListener(new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
+			if(!isFrameAgendamento){
+					isFrameAgendamento = true; // difinindo que ja tem uma janela aberta 
+					getContentPane().add(new FormAgendamento());
+                                        
 		}
+                }
 	});
 	itCadastroCarro.addActionListener(new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			new CadastroCarro();
+			new FormCadastroCarro();
 			
 		}
 	});
 	itCadastroPacote.addActionListener(new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			if(!isFramePacoteAulas){
-					isFramePacoteAulas = true; // difinindo que ja tem uma janela aberta 
+			if(!isFrameCadastroPacote){
+					isFrameCadastroPacote = true; // difinindo que ja tem uma janela aberta 
 					getContentPane().add(new FormCadastroPacote());
                         }
 		}

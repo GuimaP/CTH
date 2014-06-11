@@ -19,7 +19,7 @@ import javax.swing.text.MaskFormatter;
 import DAO.DAOcarro;
 import modelo.Carro;
 
-public class CadastroCarro extends JFrame {
+public class FormCadastroCarro extends JFrame {
 
 	private JLabel lbAno, lbMarca, lbModelo, lbPlaca;
 	private JTextField tfAno, tfMarca, tfModelo;
@@ -27,7 +27,7 @@ public class CadastroCarro extends JFrame {
 	private MaskFormatter maskPalca;
 	private JButton btSalvar;
 
-	public CadastroCarro() {
+	public FormCadastroCarro() {
 
 		try {
 			inicializaComponentes();
