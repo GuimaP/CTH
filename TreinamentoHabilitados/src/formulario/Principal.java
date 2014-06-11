@@ -36,7 +36,7 @@ public class Principal extends JFrame {
 	private JButton btAbrirInformativo;
         protected static JFrame minhaFrame; //Frame para setar a dialogs
 	
-	protected static boolean isFrameInstrutorOpen,isFrameClienteOpen;
+	protected static boolean isFrameInstrutorOpen,isFrameClienteOpen, isFramePacoteAulas;
 
 	public Principal() {
 		try{
@@ -44,7 +44,7 @@ public class Principal extends JFrame {
 			inicializaComponentes();
 			definirEventos();
 			
-			isFrameClienteOpen = isFrameInstrutorOpen = false;
+			isFrameClienteOpen = isFrameInstrutorOpen = isFramePacoteAulas = false;
 		}catch (Exception e){e.printStackTrace();}
 	}
 
@@ -154,7 +154,10 @@ public class Principal extends JFrame {
 	itCadastroPacote.addActionListener(new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			new PacoteAulas();
+			if(!isFramePacoteAulas){
+					isFramePacoteAulas = true; // difinindo que ja tem uma janela aberta 
+					getContentPane().add(new FormCadastroPacote());
+                        }
 		}
 	});
 	

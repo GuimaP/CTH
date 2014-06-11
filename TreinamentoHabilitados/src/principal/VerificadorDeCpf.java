@@ -46,6 +46,8 @@ public class VerificadorDeCpf {
        dig9 = Integer.parseInt(sub9);
        
        //Digito Verificador informado pelo usuario
+       // Esta sendo transformado em Int 
+       
        dig10 = Integer.parseInt(sub10);
        dig11 = Integer.parseInt(sub11);
        
