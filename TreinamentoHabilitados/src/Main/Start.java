@@ -4,7 +4,7 @@ import javax.persistence.EntityManager;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import formulario.*;
-import Model.Repository.ConnectionFactoryRepositoryDois;
+import Model.Repository.ConnectionFactoryRepository;
 import javax.swing.JFrame;
 
 
@@ -20,7 +20,7 @@ public class Start {
 		            System.out.println("is nimbus");
 		    		UIManager.setLookAndFeel(info.getClassName());
 
-		    	manager = ConnectionFactoryRepositoryDois.getManager();
+		    	manager = ConnectionFactoryRepository.getManager();
 		    		
                                 new TelaLogin();
 

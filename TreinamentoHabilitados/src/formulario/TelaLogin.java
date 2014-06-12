@@ -123,28 +123,24 @@ public class TelaLogin extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Border borderVermelha = BorderFactory.createLineBorder(Color.red);
-				Border borderPreta = BorderFactory.createLineBorder(Color.black);
 				tfUsuario.setBorder(null);
 				jpSenha.setBorder(null);
 				if(tfUsuario.getText().trim().equals("")){
 					tfUsuario.setBorder(borderVermelha);
-				}else if(jpSenha.getText().trim().equals("")){
+				}else if(String.valueOf(jpSenha.getPassword()).trim().equals("")){
 					jpSenha.setBorder(borderVermelha);
 				}else{
 					try {
 						Login l = new Login();
 						l.setUsuario(tfUsuario.getText().trim());
 						l.setSenha(String.valueOf(jpSenha.getPassword()));
-						LoginRepository autentica = new LoginRepository();
-					
-						JTextArea a = new JTextArea();
-					
-					
-						if(autentica.isAutentica(l)){
+						LoginRepository loginRepository = new LoginRepository();
+                                                
+						if(loginRepository.isAutentica(l)){
 							new Principal();
 							minhaFrame.dispose();
 						}else {
-							JOptionPane.showConfirmDialog(null, "não autenticado");
+							JOptionPane.showMessageDialog(null, "não autenticado");
 						}
 				
 					}catch (Exception e1){

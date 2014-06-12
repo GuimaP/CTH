@@ -17,12 +17,12 @@ public class VerificadorDeCpf {
         int somaDig;
         this.cpf = cpf;
         
-        String [] vet = this.cpf.split("\\.");   // Instruções para 
-        this.cpf =  vet[0]+vet[1]+vet[2];       // Tirar os pontos e o traço da String do cpf
+        String [] vet = this.cpf.split("\\.");   // InstruÃ§Ãµes para 
+        this.cpf =  vet[0]+vet[1]+vet[2];       // Tirar os pontos e o tra~o da String do cpf
         vet = this.cpf.split("\\-");            // que foi inserido na txtCpf dos forms
         this.cpf = vet[0]+vet[1];
        
-       sub1 = this.cpf.substring(0, 1);  // Instruções para quebrar  
+       sub1 = this.cpf.substring(0, 1);  // InstruÃ§Ãµes para quebrar  
        sub2 = this.cpf.substring(1, 2);  // Cada caracter da String 
        sub3 = this.cpf.substring(2, 3);  // e dividi-los individualmente.
        sub4 = this.cpf.substring(3, 4);
@@ -35,7 +35,7 @@ public class VerificadorDeCpf {
        sub11 = this.cpf.substring(10, 11);
        
        
-       dig1 = Integer.parseInt(sub1);   // Instruções para transformar
+       dig1 = Integer.parseInt(sub1);   // InstruÃ§Ãµes para transformar
        dig2 = Integer.parseInt(sub2);   // String em Int
        dig3 = Integer.parseInt(sub3);
        dig4 = Integer.parseInt(sub4);
@@ -53,8 +53,8 @@ public class VerificadorDeCpf {
        
        
        
-       // Abaixo começa a logica de verificação da veracidade do cpf
-       // informado pelo usuario em qualquer campo da aplicação que exiga tal dado
+       // Abaixo comeÃ§a a logica de verificaÃ§Ã£o da veracidade do cpf
+       // informado pelo usuario em qualquer campo da aplicaÃ§Ã£o que exiga tal dado
        
        dig1 = dig1*10;
        dig2 = dig2*9;
@@ -76,13 +76,13 @@ public class VerificadorDeCpf {
            dv1 = (-dv1) + 11;
        }
        dvAux = dv1; // dvAux armazena o primeiro digito verificador
-                    // Pois se não o seu valor será perdido porque ele participa
-                    // da verificação do segundo digito verificador.
+                    // Pois se nÃ£o o seu valor serÃ¡ perdido porque ele participa
+                    // da verificaÃ§Ã£o do segundo digito verificador.
        
        
        
-       // Começaremos a verificação do segundo digito verificador, retornaremos
-       // assim os valores iniciais dos digitoa antes da multiplicação
+       // ComeÃ§aremos a verificaÃ§Ã£o do segundo digito verificador, retornaremos
+       // assim os valores iniciais dos digitoa antes da multiplicaÃ§Ã£o
        
        dig1 = Integer.parseInt(sub1);   
        dig2 = Integer.parseInt(sub2);   
@@ -117,7 +117,7 @@ public class VerificadorDeCpf {
         }
         
         
-        // Faz a verificação do cpf digitado pelo usuario.
+        // Faz a verificaï¿½ï¿½o do cpf digitado pelo usuario.
         
         if(this.cpf.equals("00000000000")){
             return validado = false;

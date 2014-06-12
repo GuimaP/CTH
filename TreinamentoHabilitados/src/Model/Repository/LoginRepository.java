@@ -24,7 +24,7 @@ public class LoginRepository {
 	public boolean isAutentica(Login Usuario){
 		
 		//Query q = manager.createQuery("FROM Login l order by l.usuario");
-		Session session = (Session) ConnectionFactoryRepositoryDois.getManager().getDelegate();
+		Session session = (Session) ConnectionFactoryRepository.getManager().getDelegate();
 		try{
 		
 			session.getTransaction().begin();

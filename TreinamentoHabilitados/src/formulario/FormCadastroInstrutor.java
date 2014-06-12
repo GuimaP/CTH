@@ -1,17 +1,12 @@
 package formulario;
 
 import java.awt.Color;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.ContainerListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +15,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -29,21 +23,13 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
-import javax.swing.event.InternalFrameListener;
 import javax.swing.text.MaskFormatter;
-
-import com.towel.swing.img.JImagePanel;
-
 import DAO.DAOcarro;
 import DAO.DAOinstrutor;
-import Model.Repository.ConnectionFactoryRepositoryDois;
-import java.awt.Graphics;
+import Model.Repository.ConnectionFactoryRepository;
+import Model.Repository.RepositoryInstrutor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.io.IOException;
-import javax.swing.ImageIcon;
-import javax.swing.event.MouseInputAdapter;
 import modelo.Carro;
 import modelo.Funcionario;
 import principal.VerificadorDeCpf;
@@ -61,11 +47,11 @@ public class FormCadastroInstrutor extends JInternalFrame {
 	private JComboBox<Carro> jcCarro;
 	private JComboBox<String> jcStatus;
 	private JButton btSalvar, btBuscar, btExcluir;
-	private String[] status = { "Ativo", "Inativo" };
+	private String[] status = { "Ativo", "Inativo" }; //Substituir por enums
 	List<Carro> carroList;
-	Carro[] carroVetor;
+	Carro[] carroVetor; //Ver pra que serve. spaoksaposa
 	private DAOcarro daoCarro = new DAOcarro();
-	private Carro carro = new Carro();
+	private Carro carro;
 	private JPanel painelFotoInstrutor;
         
         private JInternalFrame minhaInternal;
@@ -74,22 +60,18 @@ public class FormCadastroInstrutor extends JInternalFrame {
 	
 	public FormCadastroInstrutor() {
 		try {
-                        minhaInternal = this;
-			inicializaComponentes();
-                        definirEventos();
+                    inicializaComponentes();
+                    definirEventos();
                         
-		} catch (ParseException e) {
+		} catch (ParseException | SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
-			return;
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage());
-			return;
-
 		}
 	}
 
 	public void inicializaComponentes() throws ParseException, SQLException {
-		// Label
+            carro = new Carro();
+            minhaInternal = this;
+            // Label
 		setLayout(null);
 		
 		
@@ -180,7 +162,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 		
 		//--
 
-		lbTelefone = new JLabel("Tel");
+		lbTelefone = new JLabel("Telefone");
 		lbTelefone.setBounds(5, 115, 60, 20);
 		add(lbTelefone);
 		
@@ -193,7 +175,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 		
 		
 		
-		lbCelular = new JLabel(" Cel");
+		lbCelular = new JLabel("Celular");
 		lbCelular.setBounds(165, 115, 60, 20);
 		add(lbCelular);
 
@@ -285,7 +267,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
                                 
                                  VerificadorDeCpf verifica = new VerificadorDeCpf();
                                         
-				if (tfNome.getText().isEmpty()) {
+				if (tfNome.getText().isEmpty()) { // Validações, verifico se está vazio
 					JOptionPane.showMessageDialog(null, "Informar o nome");
 					lbNome.setForeground(Color.RED);
 					tfNome.requestFocus(true);
@@ -319,39 +301,41 @@ public class FormCadastroInstrutor extends JInternalFrame {
 					jcStatus.requestFocus(true);
 				} else if (jcCarro.getSelectedIndex() == -1){
 					JOptionPane.showMessageDialog(null, "Carro não selecionado ou não cadastrado");
-                                        
-                                        //Teste
-                                        
-                                        
-                                        
-                                        
-                                     
-                                        
-					jcCarro.requestFocus(true);
+                                        jcCarro.requestFocus(true);
 				}else {
 					Funcionario instrutor = new Funcionario();
-					// populando o objeto
+					
+                                        // populando o objeto
 					instrutor.setNome(tfNome.getText());
 					Date dt = new Date(tfData.getValue().toString());
 					instrutor.setData(dt);
 					instrutor.setCnh(tfRegistroCnh.getText());
-					instrutor
-							.setValidadeCnh(tfValidadeCnh.getText().toString());
+					instrutor.setValidadeCnh(tfValidadeCnh.getText().toString());
 					instrutor.setPrimeiraCnh(tfPrimeiraCnh.getValue()
 							.toString());
+                                        
 					instrutor.setCpf(tfCpf.getValue().toString());
 					instrutor.setRg(tfRg.getText());
 					instrutor.setTelefone(tfTelefone.getValue() == null ? "Não Há"
 							: tfTelefone.getValue().toString());
-					instrutor.setCelular(tfCelular.getValue() == null ? "Não Há"
+					
+                                        instrutor.setCelular(tfCelular.getValue() == null ? "Não Há"
 							: tfCelular.getValue().toString());
 					instrutor.setStatus(jcStatus.getSelectedItem().toString());
-					instrutor.setTbCarroPlacaCarro((Carro) jcCarro
+					
+                                        instrutor.setTbCarroPlacaCarro((Carro) jcCarro
 							.getSelectedItem());
-					DAOinstrutor daoInstrutor = new DAOinstrutor();
-					//daoInstrutor.inserir(instrutor);
-					EntityManager em = ConnectionFactoryRepositoryDois.getManager();
-					em.persist(instrutor);
+					//DAOinstrutor daoInstrutor = new DAOinstrutor();
+
+                                        RepositoryInstrutor persistencia =
+                                               new RepositoryInstrutor(ConnectionFactoryRepository.getManager());
+                                        try{
+                                            persistencia.adicionar(instrutor);
+                                        }catch(SQLException err){
+                                            JOptionPane.showMessageDialog(null, err.getMessage());
+                                        }
+                                        
+					
 
 				}
 

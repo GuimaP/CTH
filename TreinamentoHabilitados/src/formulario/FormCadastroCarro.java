@@ -17,6 +17,8 @@ import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
 import DAO.DAOcarro;
+import Model.Repository.ConnectionFactoryRepository;
+import javax.persistence.EntityManager;
 import modelo.Carro;
 
 public class FormCadastroCarro extends JFrame {
@@ -120,9 +122,13 @@ public class FormCadastroCarro extends JFrame {
 					carro.setMarca(tfMarca.getText());
 					carro.setModelo(tfModelo.getText());
 					carro.setPlaca(tfPlaca.getValue().toString());
-					DAOcarro daoCarro = new DAOcarro();
-					daoCarro.inserir(carro);
-				}
+//					DAOcarro daoCarro = new DAOcarro();
+//					daoCarro.inserir(carro);
+                                        EntityManager em = ConnectionFactoryRepository.getManager();
+                                        em.getTransaction().begin();
+                                        em.persist(carro);
+                                        em.getTransaction().commit();
+				}   
 			}
 		});
 		tfAno.addKeyListener(new KeyListener() {

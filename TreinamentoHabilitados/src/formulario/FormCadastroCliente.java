@@ -38,7 +38,7 @@ import modelo.Endereco;
 import modelo.ModeloTable;
 import principal.CadastroCliente;
 import DAO.DAOcliente;
-import Model.Repository.ConnectionFactoryRepositoryDois;
+import Model.Repository.ConnectionFactoryRepository;
 
 public class FormCadastroCliente extends JInternalFrame {
 	private JLabel lbNome, lbEmail, lbEscolaridade, lbProfissao, lbNascimento,
@@ -687,7 +687,7 @@ public class FormCadastroCliente extends JInternalFrame {
 					// inserindo no banco
 					//daoCliente = new DAOcliente();
 					//daoCliente.inserir(cliente, cnh, endereco, cadastro);
-					EntityManager em = ConnectionFactoryRepositoryDois.getManager();
+					EntityManager em = ConnectionFactoryRepository.getManager();
 					em.getTransaction().begin();
 					em.persist(cadastro);
 					em.getTransaction().commit();
