@@ -6,6 +6,7 @@
 package formulario;
 
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
@@ -29,8 +30,11 @@ public class FormCadastroPacote extends JInternalFrame {
     private JTextField tfDescricao, tfAulas, tfPrecoAula, tfPrecoPacote;
     
     private JButton btSalvar, btBuscar, btExcluir;
-
+    
+    public static boolean isDialogBuscaPacoteOpen;
+    
     public FormCadastroPacote() {
+        isDialogBuscaPacoteOpen = false;
         inicializaComponentes();
         definirEventos();
     }
@@ -149,7 +153,7 @@ public class FormCadastroPacote extends JInternalFrame {
         btBuscar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // implementar dialog de busca
+                // implantar dialog
             }
         });
         btExcluir.addActionListener(new ActionListener() {
