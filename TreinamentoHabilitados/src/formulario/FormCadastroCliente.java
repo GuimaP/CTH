@@ -39,6 +39,7 @@ import modelo.ModeloTable;
 import principal.CadastroCliente;
 import DAO.DAOcliente;
 import Model.Repository.ConnectionFactoryRepository;
+import principal.VerificadorDeCpf;
 
 public class FormCadastroCliente extends JInternalFrame {
 	private JLabel lbNome, lbEmail, lbEscolaridade, lbProfissao, lbNascimento,
@@ -585,7 +586,9 @@ public class FormCadastroCliente extends JInternalFrame {
 				tfEmail.setText(tfEmail.getText().trim());
 				tfProfissao.setText(tfProfissao.getText().trim());
 				tfQuestao1.setText(tfQuestao1.getText().trim());
-
+                                
+                                VerificadorDeCpf verificador = new VerificadorDeCpf();
+                                
 				if (tfNome.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Informar o nome");
 					lbNome.setForeground(Color.red);
@@ -618,8 +621,9 @@ public class FormCadastroCliente extends JInternalFrame {
 				} else if (jcSexo.getSelectedIndex() == -1) {
 					JOptionPane.showMessageDialog(null, "Informar o sexo");
 					jcSexo.requestFocus(true);
-				} else if (tfCpf.getValue() == null) {
-					JOptionPane.showMessageDialog(null, "Informar o cpf");
+				} else if (tfCpf.getValue() == null || 
+                                        !verificador.verificarCpf(tfCpf.getValue().toString())) {
+					JOptionPane.showMessageDialog(null, "Cpf invalido");
 					lbCpf.setForeground(Color.red);
 					tfCpf.requestFocus(true);
 				} else if (tfRegistroCnh.getText().isEmpty()) {
