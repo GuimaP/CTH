@@ -1,11 +1,14 @@
-package modelo;
+    package modelo;
 
 import java.util.Date;
+import javax.persistence.CascadeType;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 
@@ -24,7 +27,9 @@ public class Funcionario {
 	private String telefone;
 	private String celular;
 	private String status;
-	@OneToOne	
+        
+	@OneToOne
+        @PrimaryKeyJoinColumn(name = "placa")//Digo que é uma chave estrangeira ...
 	private Carro tbCarroPlacaCarro;
 	
 	public Carro getTbCarroPlacaCarro() {

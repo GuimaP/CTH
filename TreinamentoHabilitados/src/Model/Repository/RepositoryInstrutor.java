@@ -24,9 +24,9 @@ public class RepositoryInstrutor{
     public void adicionar(Funcionario obj) throws SQLException{
        
         if(connection != null){ //Verifico se possui uma conexao criada
-//            connection.getTransaction().begin();//Inicio uma transação
+            connection.getTransaction().begin();//Inicio uma transação
             connection.persist(obj);
-//            connection.getTransaction().commit();// e finalizo ela
+            connection.getTransaction().commit();// e finalizo ela
         }else { //se não eu lanço uma Exceptions
 //            connection.getTransaction().rollback();
             throw new SQLException("Houve um erro ao conectar a bas de dados"

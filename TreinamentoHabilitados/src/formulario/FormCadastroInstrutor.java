@@ -30,6 +30,7 @@ import Model.Repository.ConnectionFactoryRepository;
 import Model.Repository.RepositoryInstrutor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Collections;
 import modelo.Carro;
 import modelo.Funcionario;
 import principal.VerificadorDeCpf;
@@ -55,15 +56,18 @@ public class FormCadastroInstrutor extends JInternalFrame {
 	private JPanel painelFotoInstrutor;
         
         private JInternalFrame minhaInternal;
-        
+        private String diretorioParaSalvar;
 	
 	
 	public FormCadastroInstrutor() {
 		try {
+                    
+                    diretorioParaSalvar = new java.io.File("").getCanonicalPath()+"\\Resources\\imgs";
                     inicializaComponentes();
                     definirEventos();
+                    
                         
-		} catch (ParseException | SQLException e) {
+		} catch (ParseException | SQLException | java.io.IOException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 	}
@@ -325,15 +329,18 @@ public class FormCadastroInstrutor extends JInternalFrame {
 					
                                         instrutor.setTbCarroPlacaCarro((Carro) jcCarro
 							.getSelectedItem());
+                                        
+                                        JOptionPane.showMessageDialog(null, instrutor.getTbCarroPlacaCarro().getPlaca());
 					//DAOinstrutor daoInstrutor = new DAOinstrutor();
-
-                                        RepositoryInstrutor persistencia =
+                                        
+                                         RepositoryInstrutor persistencia =
                                                new RepositoryInstrutor(ConnectionFactoryRepository.getManager());
                                         try{
                                             persistencia.adicionar(instrutor);
                                         }catch(SQLException err){
                                             JOptionPane.showMessageDialog(null, err.getMessage());
                                         }
+                                    
                                         
 					
 
@@ -377,8 +384,12 @@ public class FormCadastroInstrutor extends JInternalFrame {
             public void mouseClicked(MouseEvent e) {
                         if(e.getClickCount()==2){
                            
-                              WebCamPhotoAutoEscola dialog = new WebCamPhotoAutoEscola(Principal.minhaFrame);
-                              String path = dialog.pathImgTirada;
+                              WebCamPhotoAutoEscola dialog = new WebCamPhotoAutoEscola(Principal.minhaFrame,diretorioParaSalvar,tfNome.getText());
+                              String path="";
+                              path = dialog.pathImgTirada;
+                              if(path.isEmpty()){
+                                
+                              }else{
                               JOptionPane.showMessageDialog(null, path,"Informação", JOptionPane.INFORMATION_MESSAGE);
                               //JImagePanel img = new JImagePanel(path);
                               //JLabel img = new JLabel(new ImageIcon(path));
@@ -390,9 +401,10 @@ public class FormCadastroInstrutor extends JInternalFrame {
                               Border bordaColorida = BorderFactory.createLineBorder(Color.GRAY);
                               Border bordaPainelFoto = BorderFactory.createTitledBorder(bordaColorida, "Foto do Instrutor");
                               painelComFoto.setBorder(bordaPainelFoto);
+                              painelComFoto.addMouseListener(this);
                               add(painelComFoto);//
                               Principal.minhaFrame.repaint();
-                          
+                              }
                            
                                
                            

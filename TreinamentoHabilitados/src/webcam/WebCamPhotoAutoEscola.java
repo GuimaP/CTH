@@ -8,6 +8,7 @@ import com.github.sarxos.webcam.WebcamPicker;
 import com.github.sarxos.webcam.WebcamResolution;
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Image;
+import com.itextpdf.text.log.SysoCounter;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -45,11 +46,46 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamLi
 	private Webcam webcam = null;
 	private WebcamPanel panel = null;
 	private WebcamPicker picker = null;
-        public String pathImgTirada;
-        public WebCamPhotoAutoEscola(JFrame f){
+        public String pathImgTirada="";
+        private String diretorioParaSalvar,nameFile;
+        public WebCamPhotoAutoEscola(JFrame f,String path,String nameFile){
             super(f, "Auto Escola", ModalityType.APPLICATION_MODAL);
+            diretorioParaSalvar = path;
+            this.nameFile = nameFile;
             minhaDialog =this;
             run();
+            this.addWindowListener(new WindowListener() {
+
+                @Override
+                public void windowOpened(WindowEvent e) {}
+
+                @Override
+                public void windowClosing(WindowEvent e) {
+                     System.out.println("Saindo");
+                }
+
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    System.out.println("Saiu");
+                    panel.stop();
+                    remove(panel);
+                    webcam.close();
+                    System.out.println(webcam.isOpen());
+                    
+                }
+
+                @Override
+                public void windowIconified(WindowEvent e) {}
+
+                @Override
+                public void windowDeiconified(WindowEvent e) {}
+
+                @Override
+                public void windowActivated(WindowEvent e) { }
+
+                @Override
+                public void windowDeactivated(WindowEvent e) {}
+            });
         }
         
 	@Override
@@ -91,11 +127,11 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamLi
                                 JOptionPane.showMessageDialog(null, "Cliq");
                                 
                                 
-                                pathImgTirada =new File("").getCanonicalPath()+ "\\src\\Resources\\FotosInstrutor\\test.jpg";
-                                ImageIO.write(image, "JPG", new File(pathImgTirada));
-                                
-                                 JOptionPane.showMessageDialog(minhaDialog, "Foto tirada","InformaÃ§Ã£o", JOptionPane.INFORMATION_MESSAGE);
-                                 JOptionPane.showMessageDialog(minhaDialog, pathImgTirada,"InformaÃ§Ã£o", JOptionPane.INFORMATION_MESSAGE);
+//                                pathImgTirada =new File("").getCanonicalPath()+ "\\src\\Resources\\FotosInstrutor\\test.jpg";
+                                ImageIO.write(image, "JPG", new File(diretorioParaSalvar+"\\"+nameFile+".jpg"));
+                                 pathImgTirada = diretorioParaSalvar+"\\"+nameFile+".jpg";
+                                 JOptionPane.showMessageDialog(minhaDialog, "Foto tirada","Informação", JOptionPane.INFORMATION_MESSAGE);
+                                 JOptionPane.showMessageDialog(minhaDialog, diretorioParaSalvar,"Informação", JOptionPane.INFORMATION_MESSAGE);
                                  minhaDialog.dispose();
                             } catch (IOException ex) {
                                  Logger.getLogger(tirarFoto.class.getName()).log(Level.SEVERE, null, ex);
@@ -139,8 +175,7 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamLi
 	@Override
 	public void webcamDisposed(WebcamEvent we) {
 		System.out.println("webcam disposed");
-                panel.stop();
-                webcam.close();
+                
 	}
 
 	@Override
@@ -154,14 +189,14 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamLi
 
 	@Override
 	public void windowClosed(WindowEvent e) {
-		webcam.close();
+            System.out.println("Fechou janela");
+            
 	}
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-            System.out.println("aqui");
-            panel.stop();
-            webcam.close();
+            System.out.println("Fechou janela aqui");
+            
 	}
 
 	@Override
@@ -229,6 +264,6 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamLi
 	}
         
         public static void main(String[] args){ 
-            new WebCamPhotoAutoEscola(new JFrame());
+           // new WebCamPhotoAutoEscola(new JFrame());
         }
 }

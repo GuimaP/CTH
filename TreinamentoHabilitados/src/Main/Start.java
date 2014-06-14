@@ -20,10 +20,10 @@ public class Start {
 		            System.out.println("is nimbus");
 		    		UIManager.setLookAndFeel(info.getClassName());
 
-		    	manager = ConnectionFactoryRepository.getManager();
+                                //manager = ConnectionFactoryRepository.getManager();
 		    		
-                                new TelaLogin();
-
+//                                new TelaLogin();
+                                new Principal();
                                 //new webcam.WebCamPhotoAutoEscola(new JFrame());
 		    		//new CapturaImagens();
 		    		//new WebcamViewerExample();

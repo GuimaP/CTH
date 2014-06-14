@@ -9,6 +9,7 @@ package formulario;
 import java.awt.Color;
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -21,18 +22,13 @@ public class PainelFoto extends JPanel {
         this.path = path;
     }
 
-    public PainelFoto(){
-        
-    }
+    
     @Override
-    public void paint(Graphics g) {
+    public synchronized void paint(Graphics g) {
         super.paint(g); //To change body of generated methods, choose Tools | Templates.
-         if(!path.equals("")&&!path.equals(null)){
-             g.drawImage(new ImageIcon(path).getImage(),0,0,this.getWidth(),this.getHeight(),this);
-        }else {
-            this.setBackground(Color.GRAY);
-            super.paint(g);
-        }
+        JOptionPane.showMessageDialog(this, path);
+        g.drawImage(new ImageIcon(path).getImage(),0,0,this.getWidth(),this.getHeight(),this);
+        
     }
     
     
