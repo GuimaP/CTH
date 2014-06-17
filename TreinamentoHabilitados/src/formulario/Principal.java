@@ -27,14 +27,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
-import javax.swing.event.TreeExpansionEvent;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.event.TreeWillExpandListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.ExpandVetoException;
-import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
 
@@ -47,8 +41,10 @@ public class Principal extends JFrame {
 	private JLabel redefinirSenha;
 	private boolean painelMostrando=false;
 	private JPanel painelInformativo,painelLateralGuia;
-	private JButton btAbrirInformativo;
+	private JButton btAbrirInformativo,btAbrirMenuLateral;
         protected static JFrame minhaFrame; //Frame para setar a dialogs
+        private JToolBar barraLateral;
+        private JScrollPane sp;
         
         private JTree jtreeAtalhos;
 	
@@ -101,18 +97,7 @@ public class Principal extends JFrame {
 		menuBarra.add(menuRelatorio);
 		//
 		
-		btAbrirInformativo = new JButton("<<");
-		btAbrirInformativo.setBounds(1024 - 48,40 , 50, 30);
-		add(btAbrirInformativo);
-		
-                //Painel para informativos
-		painelInformativo = new JPanel();
-		painelInformativo.setBounds(1024, 0, 300, 650);
-		painelInformativo.setBackground(Color.GRAY);
-                painelInformativo.setVisible(true);
-		add(painelInformativo);
-		
-		
+//		
                 
                 
                 DefaultMutableTreeNode root = new DefaultMutableTreeNode("Inicio");
@@ -134,20 +119,28 @@ public class Principal extends JFrame {
                 emailItens.add(fav2);
                 
                 
+                
                 jtreeAtalhos = new JTree(root);
                 //jtreeAtalhos.setEnabled(false);
                 jtreeAtalhos.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
                 jtreeAtalhos.setCellRenderer(new MeuModeloTree());
                 jtreeAtalhos.expandRow(0);
+                sp = new JScrollPane(jtreeAtalhos);
                 
-                JScrollPane sp = new JScrollPane(jtreeAtalhos);
-                JToolBar barraLateral = new JToolBar();
+                btAbrirMenuLateral = new JButton(">>");
+                btAbrirMenuLateral.setFocusCycleRoot(true);
+                btAbrirMenuLateral.setBounds((sp.getWidth()+sp.getX())+10, 10, 45, 30);
+                add(btAbrirMenuLateral);
+                
+                
+                barraLateral = new JToolBar();
                 barraLateral.setEnabled(false);
                 barraLateral.setLayout(null);
                 barraLateral.setBounds(0,0, 170, minhaFrame.getHeight());
-                sp.setBounds(8, 0, barraLateral.getWidth()-5, barraLateral.getHeight()-50);
+                sp.setBounds(-(barraLateral.getWidth()), 0, barraLateral.getWidth()-5, barraLateral.getHeight()-50);
                 barraLateral.add(sp);
                 add(barraLateral);
+                
                 
                 
 		
@@ -160,7 +153,65 @@ public class Principal extends JFrame {
 	}
 
 	public void definirEventos() {
-		itSair.addActionListener(new ActionListener() {
+            
+        btAbrirMenuLateral.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if(!painelMostrando){
+                    painelMostrando = true;
+                    Thread t = new Thread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            int XAtual = sp.getX(); //Local atual do view
+                            int XFinal = 6; //O Destino final que deve estar.
+                            int posXButton = btAbrirMenuLateral.getX()-20;
+                            while(XAtual <= XFinal){ //Enquanto o atual n chegar no final
+                                try {
+                                    XAtual++;
+                                    posXButton++;
+                                    
+                                    sp.setLocation(XAtual, sp.getY());
+                                    btAbrirMenuLateral.setLocation(posXButton, btAbrirMenuLateral.getY());
+                                    Thread.sleep(2);
+                                } catch (InterruptedException ex) {
+                                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                            btAbrirMenuLateral.setText("<<");    
+                        }
+                    });
+                    t.start();
+                }else {
+                    painelMostrando = false;
+                    Thread t = new Thread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            int XAtual = sp.getX(); //Local atual do view
+                            int XFinal = -(barraLateral.getWidth());
+                            int posXButton = btAbrirMenuLateral.getX();
+                            
+                            while(XAtual >= XFinal){ //Enquanto o atual n chegar no final
+                                try {
+                                    XAtual--;
+                                    posXButton--;
+                                    
+                                    sp.setLocation(XAtual, sp.getY());
+                                    btAbrirMenuLateral.setLocation(posXButton+20, btAbrirMenuLateral.getY());
+                                    Thread.sleep(2);
+                                } catch (InterruptedException ex) {
+                                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                            btAbrirMenuLateral.setText(">>");    
+                        }
+                    });
+                    t.start();
+                }
+            }
+        });
+            
+        itSair.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (JOptionPane.showConfirmDialog(rootPane, "deseja sair?",
@@ -171,7 +222,7 @@ public class Principal extends JFrame {
 			}
 		});
 
-		itCadastroCliente.addActionListener(new ActionListener() {
+	itCadastroCliente.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(!isFrameClienteOpen){
@@ -180,7 +231,7 @@ public class Principal extends JFrame {
 				}
 			}
 		});
-		itCadastroFuncionario.addActionListener(new ActionListener() {
+	itCadastroFuncionario.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(!isFrameInstrutorOpen){
@@ -221,68 +272,7 @@ public class Principal extends JFrame {
                 }
 	});
 	
-	btAbrirInformativo.addActionListener(new ActionListener() 
-        {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                if(painelMostrando== false){ // verifica se o painel está escondido ou não
-                    painelMostrando = true;
-                    Thread t = new Thread(new Runnable() 
-                    {
-                        public void run() 
-                        {		
-                            int localizacao = painelInformativo.getX();
-                            int localizacaoBt = btAbrirInformativo.getX();
-                                    
-                            while(localizacao >= 770){ //até que localização devo parar 
-                                try {	
-                                    localizacao--;//Localização do frame vai decrementando
-                                    localizacaoBt--; //e a do botão também
-                                
-                                    btAbrirInformativo.setLocation(localizacaoBt, 40); //vou abrindo de pouco em pocuo
-                                    Thread.sleep(2);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                                 btAbrirInformativo.setText(">>");//Mudo o texto
-			}
-                    });
-		
-                    
-                        t.start(); // inicio a minha thread aqui
-                    }else{ //Se não ,a eu acrescento para esconder 
-                        painelMostrando = false; 
-                       
-			System.out.println("Tentand fechar");
-			Thread t = new Thread(new Runnable() {
-                            public void run() {
-						
-                                int localizacao = 770;
-				int localizacaoBt = btAbrirInformativo.getX();
-						
-				while(localizacao < 1024){
-                                    try {	
-					localizacao++;
-					localizacaoBt++;
-					painelInformativo.setLocation(localizacao, 0);	
-					btAbrirInformativo.setLocation(localizacaoBt, 40);
-                                        Thread.sleep(2);
-                                    } catch (InterruptedException e) {
-					e.printStackTrace();
-                                    }
-                                }
-                                btAbrirInformativo.setText("<<");
-                            }
-					
-                        });
-			
-                        t.start();
-			
-		}
-			
-            }
-        });
+	
         
         this.addWindowListener(new WindowListener() {
 

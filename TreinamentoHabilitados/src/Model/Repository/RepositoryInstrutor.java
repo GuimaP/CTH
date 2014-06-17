@@ -28,9 +28,8 @@ public class RepositoryInstrutor{
             connection.persist(obj);
             connection.getTransaction().commit();// e finalizo ela
         }else { //se não eu lanço uma Exceptions
-//            connection.getTransaction().rollback();
-            throw new SQLException("Houve um erro ao conectar a bas de dados"
-                    + "\n Descrição do erro");
+            connection.getTransaction().rollback(); //e dou rollback na transaction
+            throw new SQLException("Houve um erro ao conectar a base de dados");
             
         }
         

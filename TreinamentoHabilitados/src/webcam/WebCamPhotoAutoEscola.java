@@ -48,9 +48,10 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamLi
 	private WebcamPicker picker = null;
         public String pathImgTirada="";
         private String diretorioParaSalvar,nameFile;
-        public WebCamPhotoAutoEscola(JFrame f,String path,String nameFile){
-            super(f, "Auto Escola", ModalityType.APPLICATION_MODAL);
-            diretorioParaSalvar = path;
+        
+        public WebCamPhotoAutoEscola(JFrame minhaFrame, String strPath, String strNameFile) {
+            super(minhaFrame, "Auto Escola", ModalityType.APPLICATION_MODAL);
+            diretorioParaSalvar = strPath;
             this.nameFile = nameFile;
             minhaDialog =this;
             run();
@@ -87,6 +88,8 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamLi
                 public void windowDeactivated(WindowEvent e) {}
             });
         }
+
+    
         
 	@Override
 	public void run() {
