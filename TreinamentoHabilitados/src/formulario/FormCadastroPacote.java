@@ -32,7 +32,7 @@ public class FormCadastroPacote extends JInternalFrame {
 
     private JButton btSalvar, btBuscar, btExcluir;
 
-    private JTabbedPane abaGeral, abaBusca;
+    private JTabbedPane aba;
 
     private JPanel pnGeral, pnBusca;
 
@@ -49,76 +49,77 @@ public class FormCadastroPacote extends JInternalFrame {
         
         pnGeral = new JPanel();
         pnBusca = new JPanel();
+        
+        
 
         //Descricao;
         lbDescricao = new JLabel("Descrição");
         lbDescricao.setSize(100, 20);  //100 20
         lbDescricao.setLocation(5, 60); //5 60
-        add(lbDescricao);
+        pnGeral.add(lbDescricao);
 
         tfDescricao = new JTextField();
         tfDescricao.setSize(300, 25); //300 25
         tfDescricao.setLocation(70, 60); // 70 60
-        add(tfDescricao);
+        pnGeral.add(tfDescricao);
 
         //Aulas
         lbAulas = new JLabel("Nº Aulas");
         lbAulas.setSize(100, 20);
         lbAulas.setLocation(5, 90);
-        add(lbAulas);
+        pnGeral.add(lbAulas);
 
         tfAulas = new JTextField();
         tfAulas.setSize(50, 25);
         tfAulas.setLocation(70, 90);
-        add(tfAulas);
+        pnGeral.add(tfAulas);
 
         //Preço Aula
         lbPrecoAula = new JLabel("Preço Aula");
         lbPrecoAula.setSize(100, 20);
         lbPrecoAula.setLocation(5, 140);
-        add(lbPrecoAula);
+        pnGeral.add(lbPrecoAula);
 
         tfPrecoAula = new JTextField();
         tfPrecoAula.setSize(80, 25);
         tfPrecoAula.setLocation(70, 140);
-        add(tfPrecoAula);
+        pnGeral.add(tfPrecoAula);
 
         //Preço Pacote
         lbPrecoPacote = new JLabel("Pacote");
         lbPrecoPacote.setSize(100, 20);
         lbPrecoPacote.setLocation(5, 170);
-        add(lbPrecoPacote);
+        pnGeral.add(lbPrecoPacote);
 
         tfPrecoPacote = new JTextField();
         tfPrecoPacote.setSize(80, 25);
         tfPrecoPacote.setLocation(70, 170);
-        add(tfPrecoPacote);
+        pnGeral.add(tfPrecoPacote);
 
         //Botão
         btSalvar = new JButton("Salvar");
         btSalvar.setSize(100, 30);
         btSalvar.setLocation(30, 200);
-        add(btSalvar);
+        pnGeral.add(btSalvar);
 
         btBuscar = new JButton("Buscar");
         btBuscar.setSize(100, 30);
         btBuscar.setLocation(140, 200);
-        add(btBuscar);
+        pnGeral.add(btBuscar);
 
         btExcluir = new JButton("Excluir");
         btExcluir.setSize(100, 30);
         btExcluir.setLocation(250, 200);
-        add(btExcluir);
-
-        abaGeral = new JTabbedPane();
-        abaGeral.setBounds(1, 1, 385, 295);
-        abaGeral.addTab("Cadastro", pnGeral);
-        add(abaGeral);
+        pnGeral.add(btExcluir);
         
-        abaBusca = new JTabbedPane();
-        abaBusca.setBounds(75, 1, 385, 295);
-        abaBusca.addTab("  Busca ", pnBusca);
-        add(abaBusca);
+       
+        aba = new JTabbedPane();
+        aba.setBounds(1, 1, 385, 295);
+        aba.addTab("Cadastro", pnGeral);
+        aba.addTab(" Busca  ", pnBusca);
+        add(aba);
+        
+        
 
         getContentPane().setLayout(null);
         setSize(390, 300);
