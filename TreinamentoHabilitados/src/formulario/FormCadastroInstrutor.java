@@ -36,6 +36,7 @@ import javax.swing.JFrame;
 import modelo.Carro;
 import modelo.Funcionario;
 import principal.VerificadorDeCpf;
+import webcam.WebCamPhotoAutoEscola;
 
 
 public class FormCadastroInstrutor extends JInternalFrame {
@@ -62,6 +63,50 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
 
         public FormCadastroInstrutor() {
+        this.cliqueEmFoto = new MouseAdapter() {
+            private Object webcam;
+            public void mouseClicked(MouseEvent e) {
+                
+                try {
+                    if(e.getClickCount()==2){
+                        
+                        //WebCamPhotoAutoEscola dialog = new WebCamPhotoAutoEscola(Principal.minhaFrame,diretorioParaSalvar,tfNome.getText());
+                        
+                        
+                        
+                        String strPath;
+                        
+                        strPath = new java.io.File("").getCanonicalPath()+ "\\bin\\Resources\\FotosInstrutor";
+                        
+                        String strNameFile = tfNome.getText();
+                        WebCamPhotoAutoEscola dialog = new WebCamPhotoAutoEscola(Principal.minhaFrame,strPath,strNameFile);
+                        
+                        String path="";
+                        path = dialog.pathImgTirada;
+                        if(path.isEmpty()){
+                            
+                        }else{
+                            JOptionPane.showMessageDialog(null, path,"Informação", JOptionPane.INFORMATION_MESSAGE);
+                            //JImagePanel img = new JImagePanel(path);
+                            //JLabel img = new JLabel(new ImageIcon(path));
+                            
+                            PainelFoto painelComFoto = new PainelFoto(path);
+                            //painelFotoInstrutor.paint(new Graphics());
+                            remove(painelFotoInstrutor);
+                            painelComFoto.setBounds(370, 10, 110, 130);
+                            Border bordaColorida = BorderFactory.createLineBorder(Color.GRAY);
+                            Border bordaPainelFoto = BorderFactory.createTitledBorder(bordaColorida, "Foto do Instrutor");
+                            painelComFoto.setBorder(bordaPainelFoto);
+                            painelComFoto.addMouseListener(this);
+                            add(painelComFoto);//
+                            Principal.minhaFrame.repaint();
+                        }
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(FormCadastroInstrutor.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        };
                 try {
 
                     diretorioParaSalvar = new java.io.File("").getCanonicalPath()+"\\Resources\\imgs";
@@ -384,50 +429,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
                 painelFotoInstrutor.addMouseListener(cliqueEmFoto);
         } 
-        private  MouseAdapter cliqueEmFoto = new MouseAdapter() {
-            private Object webcam;
-            public void mouseClicked(MouseEvent e) {
-
-                try { 
-                if(e.getClickCount()==2){
-
-                              //WebCamPhotoAutoEscola dialog = new WebCamPhotoAutoEscola(Principal.minhaFrame,diretorioParaSalvar,tfNome.getText());
-
-
-
-                                String strPath;
-
-                                strPath = new java.io.File("").getCanonicalPath()+ "\\bin\\Resources\\FotosInstrutor";
-
-                                String strNameFile = tfNome.getText();
-                                webcam.WebCamPhotoAutoEscola dialog = new webcam.WebCamPhotoAutoEscola(Principal.minhaFrame,strPath,strNameFile);
-
-                              String path="";
-                              path = dialog.pathImgTirada;
-                              if(path.isEmpty()){
-
-                              }else{
-                              JOptionPane.showMessageDialog(null, path,"Informação", JOptionPane.INFORMATION_MESSAGE);
-                              //JImagePanel img = new JImagePanel(path);
-                              //JLabel img = new JLabel(new ImageIcon(path));
-
-                              PainelFoto painelComFoto = new PainelFoto(path);
-                              //painelFotoInstrutor.paint(new Graphics());
-                              remove(painelFotoInstrutor);
-                              painelComFoto.setBounds(370, 10, 110, 130);
-                              Border bordaColorida = BorderFactory.createLineBorder(Color.GRAY);
-                              Border bordaPainelFoto = BorderFactory.createTitledBorder(bordaColorida, "Foto do Instrutor");
-                              painelComFoto.setBorder(bordaPainelFoto);
-                              painelComFoto.addMouseListener(this);
-                              add(painelComFoto);//
-                              Principal.minhaFrame.repaint();
-                              }
-                        }
-                } catch (IOException ex) {
-                                Logger.getLogger(FormCadastroInstrutor.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-        };
+        private  MouseAdapter cliqueEmFoto;
 
 }
 

@@ -1,6 +1,8 @@
 package Model.Repository;
 
 import Main.Start;
+import java.sql.SQLClientInfoException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,13 +23,15 @@ public class LoginRepository {
 	}
 	
 	
-	public boolean isAutentica(Login Usuario){
-		
+	public boolean isAutentica(Login Usuario) throws SQLException, Exception{
+		boolean isDoSomething = false;
 		//Query q = manager.createQuery("FROM Login l order by l.usuario");
 		Session session = (Session) ConnectionFactoryRepository.getManager().getDelegate();
 		try{
-		
-			session.getTransaction().begin();
+                if(session.isConnected()){
+                
+                session.getTransaction().begin();
+                isDoSomething = true;
 		Criteria filtro= session.createCriteria(Login.class);
 		filtro.add(Restrictions.eq("usuario", Usuario.getUsuario()));		
 		filtro.add(Restrictions.eq("senha", Usuario.getSenha()));
@@ -43,14 +47,18 @@ public class LoginRepository {
 			return true;
 		
 		return false;
-		
+                }else {
+                    throw new SQLException("Não foi possivel se conectar na base de Dados");
+                }
 		}catch (Exception e){
-			session.getTransaction().rollback();
-			e.printStackTrace();
+			if(isDoSomething){
+                            session.getTransaction().rollback();
+                        }
+			throw new Exception(e);
 		}finally{
 			
 		
 		}
-		return false;
+		
 	}
 }

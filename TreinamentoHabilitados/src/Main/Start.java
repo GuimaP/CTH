@@ -9,13 +9,15 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import formulario.TelaLogin;
+import java.sql.SQLException;
+import javax.swing.UnsupportedLookAndFeelException;
 
 
 
 public class Start {
     protected static boolean isLoading = true;
 	public static EntityManager manager;
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ClassNotFoundException, InstantiationException {
 		try {
 		  
 			
@@ -28,20 +30,22 @@ public class Start {
 
                                 @Override
                                 public void run() {
+                                    String[] mensagens = {"Carregando...","Mais Alguns Instantes..."};
                                     JFrame janela= new JFrame("Carregando");
                                     janela.setUndecorated(true);
                                     janela.setSize(200,200);
                                     JLabel lb = new JLabel("Carregando");
                                     janela.add(lb);
+                                    janela.setLocationRelativeTo(null);
                                     janela.setVisible(true);
-                                    
+                                    int cont = 0;
                                     while(Start.isLoading){
                                         try {
-                                            lb.setText("Mais Alguns Instantes...");
-                                            Thread.sleep(3*1000);
-                                            Thread.sleep(3*1000);
-                                            lb.setText("Mais Alguns Instantes...");
-                                        Thread.sleep(3*1000);
+                                            lb.setText(mensagens[(cont%2)]);
+                                            Thread.sleep(1*1000);
+                                            cont++;
+                                            
+                                        Thread.sleep(1000);
                                         } catch (InterruptedException ex) {
                                             Logger.getLogger(Start.class.getName()).log(Level.SEVERE, null, ex);
                                         }
@@ -64,6 +68,8 @@ public class Start {
 		        }
 		    	
 		   }
-		} catch (Exception e) {}
+		} catch (SQLException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+                    e.printStackTrace();
+                }
 	}
 }
