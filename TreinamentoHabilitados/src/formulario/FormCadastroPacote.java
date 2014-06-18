@@ -48,69 +48,70 @@ public class FormCadastroPacote extends JInternalFrame {
         // Paineis das abas
         
         pnGeral = new JPanel();
+        pnGeral.setLayout(null);
         pnBusca = new JPanel();
+        pnBusca.setLayout(null);
         
         
-
+        
+        //Componentes da Aba de Cadastro
         //Descricao;
         lbDescricao = new JLabel("Descrição");
         lbDescricao.setSize(100, 20);  //100 20
-        lbDescricao.setLocation(5, 60); //5 60
+        lbDescricao.setLocation(5, 20); //5 60
         pnGeral.add(lbDescricao);
 
         tfDescricao = new JTextField();
         tfDescricao.setSize(300, 25); //300 25
-        tfDescricao.setLocation(70, 60); // 70 60
+        tfDescricao.setLocation(70, 20); // 70 60
         pnGeral.add(tfDescricao);
 
         //Aulas
         lbAulas = new JLabel("Nº Aulas");
         lbAulas.setSize(100, 20);
-        lbAulas.setLocation(5, 90);
+        lbAulas.setLocation(5, 50);
         pnGeral.add(lbAulas);
 
         tfAulas = new JTextField();
         tfAulas.setSize(50, 25);
-        tfAulas.setLocation(70, 90);
+        tfAulas.setLocation(70, 50);
         pnGeral.add(tfAulas);
 
         //Preço Aula
         lbPrecoAula = new JLabel("Preço Aula");
         lbPrecoAula.setSize(100, 20);
-        lbPrecoAula.setLocation(5, 140);
+        lbPrecoAula.setLocation(5, 100);
         pnGeral.add(lbPrecoAula);
 
         tfPrecoAula = new JTextField();
         tfPrecoAula.setSize(80, 25);
-        tfPrecoAula.setLocation(70, 140);
+        tfPrecoAula.setLocation(70, 100);
         pnGeral.add(tfPrecoAula);
 
         //Preço Pacote
         lbPrecoPacote = new JLabel("Pacote");
         lbPrecoPacote.setSize(100, 20);
-        lbPrecoPacote.setLocation(5, 170);
+        lbPrecoPacote.setLocation(5, 130);
         pnGeral.add(lbPrecoPacote);
 
         tfPrecoPacote = new JTextField();
         tfPrecoPacote.setSize(80, 25);
-        tfPrecoPacote.setLocation(70, 170);
+        tfPrecoPacote.setLocation(70, 130);
         pnGeral.add(tfPrecoPacote);
 
         //Botão
         btSalvar = new JButton("Salvar");
         btSalvar.setSize(100, 30);
-        btSalvar.setLocation(30, 200);
+        btSalvar.setLocation(140, 160);
         pnGeral.add(btSalvar);
 
-        btBuscar = new JButton("Buscar");
-        btBuscar.setSize(100, 30);
-        btBuscar.setLocation(140, 200);
-        pnGeral.add(btBuscar);
-
-        btExcluir = new JButton("Excluir");
+        
+        // Componentes da Aba de Busca
+        
+        btExcluir = new JButton("Excluir");      
         btExcluir.setSize(100, 30);
-        btExcluir.setLocation(250, 200);
-        pnGeral.add(btExcluir);
+        btExcluir.setLocation(140, 160);
+        pnBusca.add(btExcluir);
         
        
         aba = new JTabbedPane();
@@ -122,7 +123,7 @@ public class FormCadastroPacote extends JInternalFrame {
         
 
         getContentPane().setLayout(null);
-        setSize(390, 300);
+        setSize(390, 280);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);
         setClosable(true);
@@ -164,18 +165,7 @@ public class FormCadastroPacote extends JInternalFrame {
 
             }
         });
-        btBuscar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // implantar dialog
-            }
-        });
-        btExcluir.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // implementar o botao excluir atraves do objeto selecionado na dialog de busca
-            }
-        });
+    
     }
 
 }
