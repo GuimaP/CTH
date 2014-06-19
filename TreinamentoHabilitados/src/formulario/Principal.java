@@ -310,8 +310,6 @@ public class Principal extends JFrame {
             super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus); //To change body of generated methods, choose Tools | Templates.
             DefaultMutableTreeNode no = (DefaultMutableTreeNode) value;
             String texto = no.getUserObject().toString();
-            System.out.println(texto);
-            
             if(texto.equals("Inicio")){
                  try {
                     ImageIcon img = new ImageIcon(new File("").getCanonicalPath()+"\\bin\\Resources\\icons\\inicio.png");

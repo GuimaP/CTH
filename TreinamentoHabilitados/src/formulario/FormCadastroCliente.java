@@ -39,6 +39,8 @@ import modelo.ModeloTable;
 import principal.CadastroCliente;
 import DAO.DAOcliente;
 import Model.Repository.ConnectionFactoryRepository;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import principal.VerificadorDeCpf;
 
 public class FormCadastroCliente extends JInternalFrame {
@@ -691,10 +693,16 @@ public class FormCadastroCliente extends JInternalFrame {
 					// inserindo no banco
 					//daoCliente = new DAOcliente();
 					//daoCliente.inserir(cliente, cnh, endereco, cadastro);
-					EntityManager em = ConnectionFactoryRepository.getManager();
-					em.getTransaction().begin();
+					EntityManager em;
+                                    try {
+                                        em = ConnectionFactoryRepository.getManager();
+                                        em.getTransaction().begin();
 					em.persist(cadastro);
 					em.getTransaction().commit();
+                                    } catch (SQLException ex) {
+                                        Logger.getLogger(FormCadastroCliente.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+					
 					
 					//populaList();
 					limparCampos();

@@ -18,18 +18,28 @@ import javax.swing.JPanel;
  */
 public class PainelFoto extends JPanel {    
     private String path="";
+    int cont=0;
     public PainelFoto(String path){
         this.path = path;
     }
 
     
     @Override
-    public synchronized void paint(Graphics g) {
+    public void paint(Graphics g) {
         super.paint(g); //To change body of generated methods, choose Tools | Templates.
-        JOptionPane.showMessageDialog(this, path);
+        System.out.println("Pintando a painel" + path + " !" + ++cont);
         g.drawImage(new ImageIcon(path).getImage(),0,0,this.getWidth(),this.getHeight(),this);
         
     }
+//
+//    @Override
+//    public void update(Graphics g) {
+//        super.update(g); //To change body of generated methods, choose Tools | Templates.
+//        System.out.println("Atualizando a painel" + path + " !");
+//        g.drawImage(new ImageIcon(path).getImage(),0,0,this.getWidth(),this.getHeight(),this);
+//    }
+//    
+//    
     
     
 }
