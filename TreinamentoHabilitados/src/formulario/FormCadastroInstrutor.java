@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -213,9 +214,15 @@ public class FormCadastroInstrutor extends JInternalFrame {
         add(btExcluir);
         java.io.File f = new java.io.File(dirMyPicture);
         if (f.exists()) {
-            painelFotoInstrutor = new PainelFoto(dirMyPicture);//TODO IMPLEMENTAR
+            BufferedImage img=null;
+            try {
+                img = ImageIO.read(f);
+            } catch (IOException ex) {
+                Logger.getLogger(FormCadastroInstrutor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            painelFotoInstrutor = new PainelFoto(img);//TODO IMPLEMENTAR
         } else {
-            painelFotoInstrutor = new PainelFoto("");
+            painelFotoInstrutor = new PainelFoto();
         }
         painelFotoInstrutor.setBounds(370, 10, 110, 130);
         Border bordaColorida = BorderFactory.createLineBorder(Color.GRAY);
@@ -268,6 +275,10 @@ public class FormCadastroInstrutor extends JInternalFrame {
 //                            remove(painelFotoInstrutor);
                             getContentPane().removeAll();
                             inicializaComponentes();
+                            minhaInternal.revalidate();
+                            minhaInternal.repaint();
+                            Principal.minhaFrame.revalidate();
+                            Principal.minhaFrame.repaint();
                             /*PainelFoto p = new PainelFoto(path);
                              p.setToolTipText("Foto do Instrutor");
                              p.setBounds(370, 10, 110, 130);

@@ -54,7 +54,7 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamLi
         
         
     }
-
+    
 
     @Override
     public void run() {

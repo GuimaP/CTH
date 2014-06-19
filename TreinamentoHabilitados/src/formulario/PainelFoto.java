@@ -8,6 +8,7 @@ package formulario;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -18,17 +19,21 @@ import javax.swing.JPanel;
  */
 public class PainelFoto extends JPanel {    
     private String path="";
+    private BufferedImage img;
     int cont=0;
-    public PainelFoto(String path){
-        this.path = path;
+    public PainelFoto(BufferedImage img){
+        this.img = img;
     }
-
+    
+    public PainelFoto(){
+        
+    }
     
     @Override
     public void paint(Graphics g) {
         super.paint(g); //To change body of generated methods, choose Tools | Templates.
         System.out.println("Pintando a painel" + path + " !" + ++cont);
-        g.drawImage(new ImageIcon(path).getImage(),0,0,this.getWidth(),this.getHeight(),this);
+        g.drawImage(img,0,0,this.getWidth(),this.getHeight(),this);
         
     }
 //
