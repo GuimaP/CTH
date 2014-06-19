@@ -4,10 +4,18 @@ import DAO.DAOcarro;
 import DAO.DAOinstrutor;
 import Model.Repository.ConnectionFactoryRepository;
 import Model.Repository.RepositoryInstrutor;
+import com.itextpdf.text.log.SysoCounter;
+import com.towel.swing.calendar.CalendarView;
+import com.towel.swing.calendar.DatePicker;
 import com.towel.swing.img.JImagePanel;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -15,13 +23,16 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -29,6 +40,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -43,6 +55,11 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.text.MaskFormatter;
 import modelo.Carro;
 import modelo.Funcionario;
+import net.sourceforge.jdatepicker.JDateComponentFactory;
+import net.sourceforge.jdatepicker.JDatePanel;
+import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
+import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
+import net.sourceforge.jdatepicker.impl.UtilDateModel;
 import principal.VerificadorDeCpf;
 import webcam.WebCamPhotoAutoEscola;
 
@@ -57,7 +74,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
             maskTelefone, maskCelular, maskCpf, maskRg;
     private JComboBox<Carro> jcCarro;
     private JComboBox<String> jcStatus;
-    private JButton btSalvar, btBuscar, btExcluir;
+    private JButton btSalvar, btBuscar, btExcluir, btShowCalendar;
     private String[] status = {"Ativo", "Inativo"}; //Substituir por enums
     List<Carro> carroList;
     Carro[] carroVetor; //Ver pra que serve. spaoksaposa
@@ -69,11 +86,12 @@ public class FormCadastroInstrutor extends JInternalFrame {
     private String dirMyPicture;
     private MouseAdapter cliqueEmFoto;
 
+    private JDatePickerImpl datePicker;
+
     public FormCadastroInstrutor() {
         try {
             dirMyPicture = "";
             inicializaComponentes();
-            
 
         } catch (ParseException | SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
@@ -99,12 +117,18 @@ public class FormCadastroInstrutor extends JInternalFrame {
         lbData.setBounds(5, 40, 40, 20);
         add(lbData);
 
-        maskData = new MaskFormatter("##/##/####");
-        maskData.setPlaceholderCharacter('_');
-        tfData = new JFormattedTextField(maskData);
-        tfData.setBounds(60, 40, 100, 25);
-        add(tfData);
+//        maskData = new MaskFormatter("##/##/####");
+//        maskData.setPlaceholderCharacter('_');
+//        tfData = new JFormattedTextField(maskData);
+//        tfData.setBounds(60, 40, 100, 25);
+//        add(tfData);
 
+        UtilDateModel model = new UtilDateModel();
+        JDatePanelImpl datePanel = new JDatePanelImpl(model);
+        JDatePickerImpl datePicker = new JDatePickerImpl(datePanel);
+        datePicker.setBounds(60, 40, 100, 30);
+        add(datePicker);
+        
         lbRegistroCnh = new JLabel("Nº Cnh");
         lbRegistroCnh.setBounds(170, 40, 40, 20);
         add(lbRegistroCnh);
@@ -115,72 +139,72 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
         //--
         lbValidadeCnh = new JLabel("Validade");
-        lbValidadeCnh.setBounds(5, 65, 60, 20);
+        lbValidadeCnh.setBounds(5, 75, 60, 20);
         add(lbValidadeCnh);
 
         maskValidadeCnh = new MaskFormatter("##/##/####");
         maskValidadeCnh.setPlaceholderCharacter('_');
         tfValidadeCnh = new JFormattedTextField(maskValidadeCnh);
-        tfValidadeCnh.setBounds(60, 65, 100, 25);
+        tfValidadeCnh.setBounds(60, 75, 100, 25);
         add(tfValidadeCnh);
 
         lbPrimeiraCnh = new JLabel("Permissão");
-        lbPrimeiraCnh.setBounds(170, 65, 90, 20);
+        lbPrimeiraCnh.setBounds(170, 75, 90, 20);
         add(lbPrimeiraCnh);
 
         maskPrimeiraCnh = new MaskFormatter("##/##/####");
         maskPrimeiraCnh.setPlaceholderCharacter('_');
         tfPrimeiraCnh = new JFormattedTextField(maskPrimeiraCnh);
-        tfPrimeiraCnh.setBounds(255, 65, 100, 25);
+        tfPrimeiraCnh.setBounds(255, 75, 100, 25);
         add(tfPrimeiraCnh);
 
         //--
         lbRg = new JLabel("Rg");
-        lbRg.setBounds(5, 90, 40, 20);
+        lbRg.setBounds(5, 100, 40, 20);
         add(lbRg);
 
         maskRg = new MaskFormatter("##.###.###.-A");
         maskRg.setPlaceholder("_");
         maskRg.setValidCharacters("0123456789Xx");
         tfRg = new JFormattedTextField(maskRg);
-        tfRg.setBounds(60, 90, 100, 25);
+        tfRg.setBounds(60, 100, 100, 25);
         add(tfRg);
 
         lbCpf = new JLabel("Cpf");
-        lbCpf.setBounds(170, 90, 40, 20);
+        lbCpf.setBounds(170, 100, 40, 20);
         add(lbCpf);
 
         maskCpf = new MaskFormatter("###.###.###-##");
         maskCpf.setPlaceholderCharacter('_');
         tfCpf = new JFormattedTextField(maskCpf);
-        tfCpf.setBounds(255, 90, 100, 25);
+        tfCpf.setBounds(255, 100, 100, 25);
         add(tfCpf);
 
         //--
         lbTelefone = new JLabel("Telefone");
-        lbTelefone.setBounds(5, 115, 60, 20);
+        lbTelefone.setBounds(5, 125, 60, 20);
         add(lbTelefone);
 
         maskTelefone = new MaskFormatter("(##)####-####");
         maskTelefone.setPlaceholderCharacter('_');
         tfTelefone = new JFormattedTextField(maskTelefone);
-        tfTelefone.setBounds(60, 115, 100, 25);
+        tfTelefone.setBounds(60, 125, 100, 25);
         add(tfTelefone);
 
         lbCelular = new JLabel("Celular");
-        lbCelular.setBounds(165, 115, 60, 20);
+        lbCelular.setBounds(165, 125, 60, 20);
         add(lbCelular);
 
         maskCelular = new MaskFormatter("(##)#-####-####");
         maskCelular.setPlaceholderCharacter('_');
         tfCelular = new JFormattedTextField(maskCelular);
-        tfCelular.setBounds(255, 115, 100, 25);
+        tfCelular.setBounds(255, 125, 100, 25);
         add(tfCelular);
 
         //---- Fim dos Dados do CLiente
         //--
         lbCarro = new JLabel("Carro");
-        lbCarro.setBounds(5, 145, 40, 20);
+        lbCarro.setBounds(5, 155, 40, 20);
         add(lbCarro);
 
         jcCarro = new JComboBox<Carro>();
@@ -188,33 +212,33 @@ public class FormCadastroInstrutor extends JInternalFrame {
         for (Carro c : daoCarro.buscarCarro()) {
             jcCarro.addItem(c);
         }
-        jcCarro.setBounds(60, 145, 230, 25);
+        jcCarro.setBounds(60, 155, 230, 25);
         jcCarro.setSelectedIndex(-1);
         add(jcCarro);
 
         lbStatus = new JLabel("Status");
-        lbStatus.setBounds(5, 170, 40, 20);
+        lbStatus.setBounds(5, 180, 40, 20);
         add(lbStatus);
 
         jcStatus = new JComboBox<String>(status);
-        jcStatus.setBounds(60, 170, 230, 25);
+        jcStatus.setBounds(60, 180, 230, 25);
         jcStatus.setSelectedIndex(-1);
         add(jcStatus);
 
         btSalvar = new JButton("Salvar");
-        btSalvar.setBounds(50, 210, 100, 30);
+        btSalvar.setBounds(50, 220, 100, 30);
         add(btSalvar);
 
         btBuscar = new JButton("Buscar");
-        btBuscar.setBounds(155, 210, 100, 30);
+        btBuscar.setBounds(155, 220, 100, 30);
         add(btBuscar);
 
         btExcluir = new JButton("Excluir");
-        btExcluir.setBounds(260, 210, 100, 30);
+        btExcluir.setBounds(260, 220, 100, 30);
         add(btExcluir);
         java.io.File f = new java.io.File(dirMyPicture);
         if (f.exists()) {
-            BufferedImage img=null;
+            BufferedImage img = null;
             try {
                 img = ImageIO.read(f);
             } catch (IOException ex) {
@@ -230,14 +254,17 @@ public class FormCadastroInstrutor extends JInternalFrame {
         painelFotoInstrutor.setBorder(bordaPainelFoto);
         add(painelFotoInstrutor);
 
-        setSize(500, 300);
-        setLocation(10, 10);
+        pack();
+        setSize(600, 300);
+        setLocation(60, 10);
+        
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setClosable(true);
         setIconifiable(true);
         setTitle("Cadastro Instrutor");
-        show();
-        
+        setVisible(true);
+        requestFocusInWindow();
+
         definirEventos();
 
     }
@@ -290,7 +317,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
                              getContentPane().add(p);//
                              getContentPane().repaint();
                              */
-                           // Principal.minhaFrame.repaint();
+                            // Principal.minhaFrame.repaint();
 
                         }
 

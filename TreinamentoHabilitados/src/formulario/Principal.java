@@ -46,6 +46,7 @@ public class Principal extends JFrame {
         private JToolBar barraLateral;
         private JScrollPane sp;
         
+        private int POSXButoon;
         private JTree jtreeAtalhos;
 	
 	protected static boolean isFrameInstrutorOpen,isFrameClienteOpen, isFrameCadastroPacote, isFrameAgendamento;
@@ -129,7 +130,7 @@ public class Principal extends JFrame {
                 
                 btAbrirMenuLateral = new JButton(">>");
                 btAbrirMenuLateral.setFocusCycleRoot(true);
-                btAbrirMenuLateral.setBounds((sp.getWidth()+sp.getX())+10, 10, 45, 30);
+                btAbrirMenuLateral.setBounds((sp.getWidth()+sp.getX()), 10, 45, 30);
                 add(btAbrirMenuLateral);
                 
                 
@@ -139,10 +140,11 @@ public class Principal extends JFrame {
                 barraLateral.setBounds(0,0, 170, minhaFrame.getHeight());
                 sp.setBounds(-(barraLateral.getWidth()), 0, barraLateral.getWidth()-5, barraLateral.getHeight()-50);
                 barraLateral.add(sp);
+                barraLateral.setVisible(false);
                 add(barraLateral);
                 
                 
-                
+                POSXButoon = btAbrirMenuLateral.getX();
 		
 		setJMenuBar(menuBarra);		
 		setLocationRelativeTo(null);
@@ -156,7 +158,7 @@ public class Principal extends JFrame {
             
         btAbrirMenuLateral.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if(!painelMostrando){
+                if(!painelMostrando){ //ABRINDO O PAINEL
                     painelMostrando = true;
                     Thread t = new Thread(new Runnable() {
 
@@ -164,9 +166,11 @@ public class Principal extends JFrame {
                         public void run() {
                             int XAtual = sp.getX(); //Local atual do view
                             int XFinal = 6; //O Destino final que deve estar.
-                            int posXButton = btAbrirMenuLateral.getX()-20;
+                            int posXButton = POSXButoon-10;
+                            barraLateral.setVisible(true);
                             while(XAtual <= XFinal){ //Enquanto o atual n chegar no final
                                 try {
+                                    
                                     XAtual++;
                                     posXButton++;
                                     
@@ -177,11 +181,12 @@ public class Principal extends JFrame {
                                     Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                             }
+                            
                             btAbrirMenuLateral.setText("<<");    
                         }
                     });
                     t.start();
-                }else {
+                }else { //FECHANDO
                     painelMostrando = false;
                     Thread t = new Thread(new Runnable() {
 
@@ -189,7 +194,7 @@ public class Principal extends JFrame {
                         public void run() {
                             int XAtual = sp.getX(); //Local atual do view
                             int XFinal = -(barraLateral.getWidth());
-                            int posXButton = btAbrirMenuLateral.getX();
+                            int posXButton = btAbrirMenuLateral.getX()-10;
                             
                             while(XAtual >= XFinal){ //Enquanto o atual n chegar no final
                                 try {
@@ -203,6 +208,7 @@ public class Principal extends JFrame {
                                     Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                             }
+                            barraLateral.setVisible(false);
                             btAbrirMenuLateral.setText(">>");    
                         }
                     });
