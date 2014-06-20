@@ -51,6 +51,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.text.MaskFormatter;
@@ -126,9 +128,10 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
         UtilDateModel model = new UtilDateModel();
         JDatePanelImpl datePanel = new JDatePanelImpl(model);
-        JDatePickerImpl datePicker = new JDatePickerImpl(datePanel);
+        datePicker = new JDatePickerImpl(datePanel);
         datePicker.setBounds(60, 40, 110, 30);
         add(datePicker);
+        System.out.print(datePicker);
         
         lbRegistroCnh = new JLabel("Nº Cnh");
         lbRegistroCnh.setBounds(200, 40, 40, 20);
@@ -349,7 +352,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
                     JOptionPane.showMessageDialog(null, "Informar o nome");
                     lbNome.setForeground(Color.RED);
                     tfNome.requestFocus(true);
-                } else if (tfData.getValue() == null) {
+                } else if (datePicker.getModel().getValue() == null) {
                     JOptionPane.showMessageDialog(null, "Informar a data");
                     lbData.setForeground(Color.RED);
                     tfData.requestFocus(true);
@@ -386,7 +389,8 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
                         // populando o objeto
                         instrutor.setNome(tfNome.getText());
-                        Date dt = new Date(tfData.getValue().toString());
+                        Date dt =(Date) datePicker.getModel().getValue();
+                        System.out.println(dt.toString());
                         instrutor.setData(dt);
                         instrutor.setCnh(tfRegistroCnh.getText());
                         instrutor.setValidadeCnh(tfValidadeCnh.getText().toString());
@@ -454,7 +458,15 @@ public class FormCadastroInstrutor extends JInternalFrame {
         });
 
         painelFotoInstrutor.addMouseListener(cliqueEmFoto);
+        
+        datePicker.addActionListener(new ActionListener() {
 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Date c = (Date) datePicker.getModel().getValue();
+                System.out.println(c.toString());
+            }
+        });
     }
 
 }
