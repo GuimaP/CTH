@@ -3,6 +3,7 @@ package formulario;
 import DAO.DAOcarro;
 import DAO.DAOinstrutor;
 import Model.Repository.ConnectionFactoryRepository;
+import Model.Repository.Repository;
 import Model.Repository.RepositoryInstrutor;
 import com.itextpdf.text.log.SysoCounter;
 import com.towel.swing.calendar.CalendarView;
@@ -126,11 +127,11 @@ public class FormCadastroInstrutor extends JInternalFrame {
         UtilDateModel model = new UtilDateModel();
         JDatePanelImpl datePanel = new JDatePanelImpl(model);
         JDatePickerImpl datePicker = new JDatePickerImpl(datePanel);
-        datePicker.setBounds(60, 40, 100, 30);
+        datePicker.setBounds(60, 40, 110, 30);
         add(datePicker);
         
         lbRegistroCnh = new JLabel("Nº Cnh");
-        lbRegistroCnh.setBounds(170, 40, 40, 20);
+        lbRegistroCnh.setBounds(200, 40, 40, 20);
         add(lbRegistroCnh);
 
         tfRegistroCnh = new JTextField();
@@ -209,7 +210,8 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
         jcCarro = new JComboBox<Carro>();
         //carroList 
-        for (Carro c : daoCarro.buscarCarro()) {
+        List<Carro> lista = (List<Carro>) new Repository<Carro>().pegarTodos(new Carro());
+        for (Carro c : lista) {
             jcCarro.addItem(c);
         }
         jcCarro.setBounds(60, 155, 230, 25);
@@ -255,7 +257,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
         add(painelFotoInstrutor);
 
         pack();
-        setSize(600, 300);
+        setSize(500, 300);
         setLocation(60, 10);
         
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);

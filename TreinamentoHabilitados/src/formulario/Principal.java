@@ -1,19 +1,15 @@
 package formulario;
 
-import java.awt.Color;
+import Testes.Calendario;
 import java.awt.Component;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.awt.event.WindowStateListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
@@ -278,7 +274,14 @@ public class Principal extends JFrame {
                 }
 	});
 	
-	
+	itCalendario.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("cliq");
+                getContentPane().add(new formulario.Calendario.Calendario());
+            }
+        });
         
         this.addWindowListener(new WindowListener() {
 

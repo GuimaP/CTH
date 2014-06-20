@@ -18,6 +18,7 @@ import javax.swing.text.MaskFormatter;
 
 import DAO.DAOcarro;
 import Model.Repository.ConnectionFactoryRepository;
+import Model.Repository.Repository;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -128,10 +129,8 @@ public class FormCadastroCarro extends JFrame {
                                         carro.setPlaca(tfPlaca.getValue().toString());
 //					DAOcarro daoCarro = new DAOcarro();
 //					daoCarro.inserir(carro);
-                                        EntityManager em = ConnectionFactoryRepository.getManager();
-                                        em.getTransaction().begin();
-                                        em.persist(carro);
-                                        em.getTransaction().commit();
+                                        Repository<modelo.Carro> repo = new Repository<Carro>();
+                                        repo.Adicionar(carro);
                                     } catch (SQLException ex) {
                                         Logger.getLogger(FormCadastroCarro.class.getName()).log(Level.SEVERE, null, ex);
                                     }

@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import formulario.TelaLogin;
+import java.awt.BorderLayout;
 import java.sql.SQLException;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -33,9 +34,9 @@ public class Start {
                                     String[] mensagens = {"Carregando...","Mais Alguns Instantes..."};
                                     JFrame janela= new JFrame("Carregando");
                                     janela.setUndecorated(true);
-                                    janela.setSize(200,200);
+                                    janela.setSize(200,50);
                                     JLabel lb = new JLabel("Carregando");
-                                    janela.add(lb);
+                                    janela.add(lb,BorderLayout.CENTER);
                                     janela.setLocationRelativeTo(null);
                                     janela.setVisible(true);
                                     int cont = 0;

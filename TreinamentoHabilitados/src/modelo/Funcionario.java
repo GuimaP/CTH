@@ -29,7 +29,7 @@ public class Funcionario {
 	private String status;
         
 	@OneToOne
-        @PrimaryKeyJoinColumn(name = "placa")//Digo que é uma chave estrangeira ...
+        @JoinColumn(name = "placa")//Digo que é uma chave estrangeira ...
 	private Carro tbCarroPlacaCarro;
 	
 	public Carro getTbCarroPlacaCarro() {
