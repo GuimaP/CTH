@@ -35,7 +35,7 @@ import javax.swing.text.MaskFormatter;
 import modelo.Cliente;
 import modelo.Cnh;
 import modelo.Endereco;
-import modelo.ModeloTable;
+import modelo.ModeloTableCliente;
 import principal.CadastroCliente;
 import DAO.DAOcliente;
 import Model.Repository.ConnectionFactoryRepository;
@@ -132,7 +132,7 @@ public class FormCadastroCliente extends JInternalFrame {
 				l = daoCliente.buscarTodos();
 
 				listCliente = l;
-				table.setModel(new ModeloTable(listCliente));
+				table.setModel(new ModeloTableCliente(listCliente));
 			}
 		} catch (SQLException e1) {
 
@@ -550,7 +550,7 @@ public class FormCadastroCliente extends JInternalFrame {
 
 		
 		// Table
-		table = new JTable(new ModeloTable(listCliente));
+		table = new JTable(new ModeloTableCliente(listCliente));
 		scTable = new JScrollPane(table);
 		scTable.setSize(350, 480);
 		scTable.setLocation(430, 80);

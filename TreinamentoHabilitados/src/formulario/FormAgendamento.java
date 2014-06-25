@@ -17,7 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import modelo.Cliente;
-import modelo.ModeloTable;
+import modelo.ModeloTableCliente;
 
 /**
  *
@@ -67,7 +67,7 @@ public class FormAgendamento extends JInternalFrame{
         panelAluno.add(tfBusca);
         
         
-        tabelaAluno = new JTable(new ModeloTable(listCliente));
+        tabelaAluno = new JTable(new ModeloTableCliente(listCliente));
         scroll = new JScrollPane(tabelaAluno);
         scroll.setSize(280, 150);
         scroll.setLocation(20, 100);
