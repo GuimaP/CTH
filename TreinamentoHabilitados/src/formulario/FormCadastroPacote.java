@@ -7,8 +7,10 @@ package formulario;
 
 import java.awt.Color;
 import java.awt.Dialog;
+import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
@@ -16,9 +18,13 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
+import modelo.ModeloTablePacote;
+import modelo.Pacote;
 
 /**
  *
@@ -36,6 +42,14 @@ public class FormCadastroPacote extends JInternalFrame {
 
     private JPanel pnGeral, pnBusca;
 
+    private JTable tabela;
+
+    private JScrollPane scroll;
+
+    private ArrayList<Pacote> listPacote = new ArrayList<Pacote>();
+
+    private Pacote pacote;
+
     public static boolean isDialogBuscaPacoteOpen;
 
     public FormCadastroPacote() {
@@ -44,16 +58,24 @@ public class FormCadastroPacote extends JInternalFrame {
         definirEventos();
     }
 
+    public void populaList() {
+        for (Pacote p : listPacote) {
+
+        }
+    }
+
+    public void limparCampos() {
+
+    }
+
     public void inicializaComponentes() {
         // Paineis das abas
-        
+
         pnGeral = new JPanel();
         pnGeral.setLayout(null);
         pnBusca = new JPanel();
         pnBusca.setLayout(null);
-        
-        
-        
+
         //Componentes da Aba de Cadastro
         //Descricao;
         lbDescricao = new JLabel("Descrição");
@@ -105,25 +127,27 @@ public class FormCadastroPacote extends JInternalFrame {
         btSalvar.setLocation(140, 160);
         pnGeral.add(btSalvar);
 
-        
         // Componentes da Aba de Busca
-        
-        btExcluir = new JButton("Excluir");      
+        tabela = new JTable(new ModeloTablePacote(listPacote));
+        scroll = new JScrollPane(tabela);
+        scroll.setSize(371, 150);
+        scroll.setLocation(2, 5);
+        pnBusca.add(scroll);
+
+        btExcluir = new JButton("Excluir");
         btExcluir.setSize(100, 30);
         btExcluir.setLocation(140, 160);
         pnBusca.add(btExcluir);
-        
-       
+
         aba = new JTabbedPane();
         aba.setBounds(1, 1, 385, 295);
         aba.addTab("Cadastro", pnGeral);
         aba.addTab(" Busca  ", pnBusca);
         add(aba);
-        
-        
 
         getContentPane().setLayout(null);
         setSize(390, 280);
+        setLocation(60, 10);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);
         setClosable(true);
@@ -165,7 +189,7 @@ public class FormCadastroPacote extends JInternalFrame {
 
             }
         });
-    
+
     }
 
 }
