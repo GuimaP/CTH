@@ -48,6 +48,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
@@ -90,6 +91,11 @@ public class FormCadastroInstrutor extends JInternalFrame {
     private MouseAdapter cliqueEmFoto;
 
     private JDatePickerImpl datePicker;
+    
+    
+    private JTabbedPane aba;
+    
+    private JPanel pnGeral, pnBusca;
 
     public FormCadastroInstrutor() {
         try {
@@ -102,6 +108,14 @@ public class FormCadastroInstrutor extends JInternalFrame {
     }
 
     public void inicializaComponentes() throws ParseException, SQLException {
+        // Paineis da aba
+        pnGeral = new JPanel();
+        pnGeral.setLayout(null);
+        pnBusca = new JPanel();
+        pnBusca.setLayout(null);
+        
+        
+        
         carro = new Carro();
         minhaInternal = this;
         // Label
@@ -109,16 +123,16 @@ public class FormCadastroInstrutor extends JInternalFrame {
         //---Dados do Cliente
         lbNome = new JLabel("Nome");
         lbNome.setBounds(5, 10, 40, 20);
-        add(lbNome);
+        pnGeral.add(lbNome);
 
         tfNome = new JTextField();
         tfNome.setBounds(50, 10, 305, 25);
-        add(tfNome);
+        pnGeral.add(tfNome);
 
         //---
         lbData = new JLabel("Data");
         lbData.setBounds(5, 40, 40, 20);
-        add(lbData);
+        pnGeral.add(lbData);
 
 //        maskData = new MaskFormatter("##/##/####");
 //        maskData.setPlaceholderCharacter('_');
@@ -130,86 +144,86 @@ public class FormCadastroInstrutor extends JInternalFrame {
         JDatePanelImpl datePanel = new JDatePanelImpl(model);
         datePicker = new JDatePickerImpl(datePanel);
         datePicker.setBounds(60, 40, 110, 30);
-        add(datePicker);
+        pnGeral.add(datePicker);
         System.out.print(datePicker);
         
         lbRegistroCnh = new JLabel("Nº Cnh");
         lbRegistroCnh.setBounds(200, 40, 40, 20);
-        add(lbRegistroCnh);
+        pnGeral.add(lbRegistroCnh);
 
         tfRegistroCnh = new JTextField();
         tfRegistroCnh.setBounds(255, 40, 100, 25);
-        add(tfRegistroCnh);
+        pnGeral.add(tfRegistroCnh);
 
         //--
         lbValidadeCnh = new JLabel("Validade");
         lbValidadeCnh.setBounds(5, 75, 60, 20);
-        add(lbValidadeCnh);
+        pnGeral.add(lbValidadeCnh);
 
         maskValidadeCnh = new MaskFormatter("##/##/####");
         maskValidadeCnh.setPlaceholderCharacter('_');
         tfValidadeCnh = new JFormattedTextField(maskValidadeCnh);
         tfValidadeCnh.setBounds(60, 75, 100, 25);
-        add(tfValidadeCnh);
+        pnGeral.add(tfValidadeCnh);
 
         lbPrimeiraCnh = new JLabel("Permissão");
         lbPrimeiraCnh.setBounds(170, 75, 90, 20);
-        add(lbPrimeiraCnh);
+        pnGeral.add(lbPrimeiraCnh);
 
         maskPrimeiraCnh = new MaskFormatter("##/##/####");
         maskPrimeiraCnh.setPlaceholderCharacter('_');
         tfPrimeiraCnh = new JFormattedTextField(maskPrimeiraCnh);
         tfPrimeiraCnh.setBounds(255, 75, 100, 25);
-        add(tfPrimeiraCnh);
+        pnGeral.add(tfPrimeiraCnh);
 
         //--
         lbRg = new JLabel("Rg");
         lbRg.setBounds(5, 100, 40, 20);
-        add(lbRg);
+        pnGeral.add(lbRg);
 
         maskRg = new MaskFormatter("##.###.###.-A");
         maskRg.setPlaceholder("_");
         maskRg.setValidCharacters("0123456789Xx");
         tfRg = new JFormattedTextField(maskRg);
         tfRg.setBounds(60, 100, 100, 25);
-        add(tfRg);
+        pnGeral.add(tfRg);
 
         lbCpf = new JLabel("Cpf");
         lbCpf.setBounds(170, 100, 40, 20);
-        add(lbCpf);
+        pnGeral.add(lbCpf);
 
         maskCpf = new MaskFormatter("###.###.###-##");
         maskCpf.setPlaceholderCharacter('_');
         tfCpf = new JFormattedTextField(maskCpf);
         tfCpf.setBounds(255, 100, 100, 25);
-        add(tfCpf);
+        pnGeral.add(tfCpf);
 
         //--
         lbTelefone = new JLabel("Telefone");
         lbTelefone.setBounds(5, 125, 60, 20);
-        add(lbTelefone);
+        pnGeral.add(lbTelefone);
 
         maskTelefone = new MaskFormatter("(##)####-####");
         maskTelefone.setPlaceholderCharacter('_');
         tfTelefone = new JFormattedTextField(maskTelefone);
         tfTelefone.setBounds(60, 125, 100, 25);
-        add(tfTelefone);
+        pnGeral.add(tfTelefone);
 
         lbCelular = new JLabel("Celular");
         lbCelular.setBounds(165, 125, 60, 20);
-        add(lbCelular);
+        pnGeral.add(lbCelular);
 
         maskCelular = new MaskFormatter("(##)#-####-####");
         maskCelular.setPlaceholderCharacter('_');
         tfCelular = new JFormattedTextField(maskCelular);
         tfCelular.setBounds(255, 125, 100, 25);
-        add(tfCelular);
+        pnGeral.add(tfCelular);
 
         //---- Fim dos Dados do CLiente
         //--
         lbCarro = new JLabel("Carro");
         lbCarro.setBounds(5, 155, 40, 20);
-        add(lbCarro);
+        pnGeral.add(lbCarro);
 
         jcCarro = new JComboBox<Carro>();
         //carroList 
@@ -219,28 +233,28 @@ public class FormCadastroInstrutor extends JInternalFrame {
         }
         jcCarro.setBounds(60, 155, 230, 25);
         jcCarro.setSelectedIndex(-1);
-        add(jcCarro);
+        pnGeral.add(jcCarro);
 
         lbStatus = new JLabel("Status");
         lbStatus.setBounds(5, 180, 40, 20);
-        add(lbStatus);
+        pnGeral.add(lbStatus);
 
         jcStatus = new JComboBox<String>(status);
         jcStatus.setBounds(60, 180, 230, 25);
         jcStatus.setSelectedIndex(-1);
-        add(jcStatus);
+        pnGeral.add(jcStatus);
 
         btSalvar = new JButton("Salvar");
         btSalvar.setBounds(50, 220, 100, 30);
-        add(btSalvar);
+        pnGeral.add(btSalvar);
 
         btBuscar = new JButton("Buscar");
         btBuscar.setBounds(155, 220, 100, 30);
-        add(btBuscar);
+        pnGeral.add(btBuscar);
 
         btExcluir = new JButton("Excluir");
         btExcluir.setBounds(260, 220, 100, 30);
-        add(btExcluir);
+        pnGeral.add(btExcluir);
         java.io.File f = new java.io.File(dirMyPicture);
         if (f.exists()) {
             BufferedImage img = null;
@@ -257,10 +271,18 @@ public class FormCadastroInstrutor extends JInternalFrame {
         Border bordaColorida = BorderFactory.createLineBorder(Color.GRAY);
         Border bordaPainelFoto = BorderFactory.createTitledBorder(bordaColorida, "Foto do Instrutor");
         painelFotoInstrutor.setBorder(bordaPainelFoto);
-        add(painelFotoInstrutor);
+        pnGeral.add(painelFotoInstrutor);
 
+        aba = new JTabbedPane();
+        aba.setBounds(1, 1, 490, 295);
+        aba.addTab("Cadastro", pnGeral);
+        aba.addTab(" Busca  ", pnBusca);
+        add(aba);
+        
+        
+        
         pack();
-        setSize(500, 300);
+        setSize(500, 360);
         setLocation(60, 10);
         
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);

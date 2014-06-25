@@ -2,7 +2,7 @@ package modelo;
 
 public class Pacote {
 
-    private String Descricao;
+    private String descricao;
     private String aulas;
     private String precoAula;
     private String precoPacote;
@@ -24,11 +24,11 @@ public class Pacote {
     }
 
     public String getDescricao() {
-        return Descricao;
+        return descricao;
     }
 
     public void setDescricao(String Descricao) {
-        this.Descricao = Descricao;
+        this.descricao = Descricao;
     }
 
     public String getAulas() {
@@ -39,4 +39,9 @@ public class Pacote {
         this.aulas = aulas;
     }
 
+    @Override
+    public String toString() {
+        return (descricao);
+    }
+    
 }
