@@ -18,10 +18,10 @@
 		<property name="javax.persistence.jdbc.driver"
 		value="com.mysql.jdbc.Driver" />
 		<property name="javax.persistence.jdbc.url"
-		value="jdbc:mysql://localhost/bd_autoescola2" />
-		<property name="javax.persistence.jdbc.user" value="root" />
+		value="jdbc:mysql://db4free.net/dbguimateste" />
+		<property name="javax.persistence.jdbc.user" value="guima" />
 
-		<property name="javax.persistence.jdbc.password" value="vitor" />
+		<property name="javax.persistence.jdbc.password" value="1q2w3e" />
 
 		
 
