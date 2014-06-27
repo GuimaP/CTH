@@ -29,6 +29,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -48,7 +49,9 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
@@ -59,6 +62,7 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.text.MaskFormatter;
 import modelo.Carro;
 import modelo.Funcionario;
+import modelo.ModeloTableFuncionario;
 import net.sourceforge.jdatepicker.JDateComponentFactory;
 import net.sourceforge.jdatepicker.JDatePanel;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
@@ -78,7 +82,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
             maskTelefone, maskCelular, maskCpf, maskRg;
     private JComboBox<Carro> jcCarro;
     private JComboBox<String> jcStatus;
-    private JButton btSalvar, btBuscar, btExcluir, btShowCalendar;
+    private JButton btSalvar, btExcluir, btShowCalendar;
     private String[] status = {"Ativo", "Inativo"}; //Substituir por enums
     List<Carro> carroList;
     Carro[] carroVetor; //Ver pra que serve. spaoksaposa
@@ -96,6 +100,14 @@ public class FormCadastroInstrutor extends JInternalFrame {
     private JTabbedPane aba;
     
     private JPanel pnGeral, pnBusca;
+    
+    private ArrayList<Funcionario> listFunc = new ArrayList<Funcionario>();
+    
+    private JTable tabela;
+    
+    private JScrollPane scroll;
+    
+    
 
     public FormCadastroInstrutor() {
         try {
@@ -114,7 +126,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
         pnBusca = new JPanel();
         pnBusca.setLayout(null);
         
-        
+        // Componentes da aba "Geral"
         
         carro = new Carro();
         minhaInternal = this;
@@ -245,16 +257,12 @@ public class FormCadastroInstrutor extends JInternalFrame {
         pnGeral.add(jcStatus);
 
         btSalvar = new JButton("Salvar");
-        btSalvar.setBounds(50, 220, 100, 30);
+        btSalvar.setBounds(180, 220, 100, 30);
         pnGeral.add(btSalvar);
 
-        btBuscar = new JButton("Buscar");
-        btBuscar.setBounds(155, 220, 100, 30);
-        pnGeral.add(btBuscar);
+        
 
-        btExcluir = new JButton("Excluir");
-        btExcluir.setBounds(260, 220, 100, 30);
-        pnGeral.add(btExcluir);
+       
         java.io.File f = new java.io.File(dirMyPicture);
         if (f.exists()) {
             BufferedImage img = null;
@@ -272,7 +280,19 @@ public class FormCadastroInstrutor extends JInternalFrame {
         Border bordaPainelFoto = BorderFactory.createTitledBorder(bordaColorida, "Foto do Instrutor");
         painelFotoInstrutor.setBorder(bordaPainelFoto);
         pnGeral.add(painelFotoInstrutor);
-
+        
+        // Componentes da aba "Busca"
+        
+        btExcluir = new JButton("Excluir");
+        btExcluir.setBounds(180, 220, 100, 30);
+        pnBusca.add(btExcluir);
+        
+        tabela = new JTable(new ModeloTableFuncionario(listFunc));
+        scroll = new JScrollPane(tabela);
+        scroll.setLocation(2, 5);
+        scroll.setSize(482, 210);
+        pnBusca.add(scroll);
+        
         aba = new JTabbedPane();
         aba.setBounds(1, 1, 490, 295);
         aba.addTab("Cadastro", pnGeral);
@@ -282,7 +302,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
         
         
         pack();
-        setSize(500, 360);
+        setSize(500, 340);
         setLocation(60, 10);
         
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);

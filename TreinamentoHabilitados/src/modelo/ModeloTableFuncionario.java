@@ -4,12 +4,12 @@ import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
-public class ModeloTableFun extends AbstractTableModel{
+public class ModeloTableFuncionario extends AbstractTableModel{
 	
 	ArrayList<Funcionario> func;
-	String [] colunas = {"Nome"};
+	String [] colunas = {"Nome", "Cpf","Telefone","Celular"};
 	
-	public ModeloTableFun(ArrayList<Funcionario> func){
+	public ModeloTableFuncionario(ArrayList<Funcionario> func){
 		this.func = func;
 		
 	}
@@ -26,6 +26,12 @@ public class ModeloTableFun extends AbstractTableModel{
 		switch (columnIndex){
 		case 0:
 			return func.get(rowIndex).getNome();
+                case 1:
+                    return func.get(rowIndex).getCpf();
+                case 2: 
+                    return func.get(rowIndex).getTelefone();
+                case 3: 
+                    return func.get(rowIndex).getCelular();
 		default:
 			break;
 		}

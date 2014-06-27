@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import javax.jws.WebParam.Mode;
 import javax.swing.table.AbstractTableModel;
 
-public class ModeloTable extends AbstractTableModel {
+public class ModeloTableCliente extends AbstractTableModel {
 
 	ArrayList<Cliente> cliente;
 	String[] colunas = { "Aluno", "Cpf"};
 
-	public ModeloTable(ArrayList<Cliente> cliente) {
+	public ModeloTableCliente(ArrayList<Cliente> cliente) {
 		this.cliente = cliente;
 	}
 
