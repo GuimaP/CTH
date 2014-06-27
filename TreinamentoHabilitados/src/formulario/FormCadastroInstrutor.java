@@ -323,7 +323,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
                         //WebCamPhotoAutoEscola dialog = new WebCamPhotoAutoEscola(Principal.minhaFrame,diretorioParaSalvar,tfNome.getText());
                         //Antes de arbrir a camera, eu salvo todas as informações para restaura depois
                         populaObjInstrutor();
-                        
+
                         FuncionarioController.saveInformacao(instrutor);
 
                         String strPath;
@@ -333,6 +333,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
                         String strNameFile = tfNome.getText();
                         WebCamPhotoAutoEscola dialog = new WebCamPhotoAutoEscola(Principal.minhaFrame, strPath, strNameFile);
                         String path = "";
+                        populaCampos();
                         path = dialog.caminhoDaImagem;
 
                         if (!path.isEmpty()) {
@@ -491,70 +492,101 @@ public class FormCadastroInstrutor extends JInternalFrame {
     }
 
     private void populaObjInstrutor() {
-        try{
-        if (!tfNome.getText().isEmpty()) {
-            instrutor.setNome(tfNome.getText());
-        }
+        try {
+            if (!tfNome.getText().isEmpty()) {
+                instrutor.setNome(tfNome.getText());
+            }
 
-        if (datePicker.getModel().getValue() != null) {
-            Date dt = (Date) datePicker.getModel().getValue();
-            System.out.println(dt.toString());
-            instrutor.setData(dt);
-        }
+            if (datePicker.getModel().getValue() != null) {
+                Date dt = (Date) datePicker.getModel().getValue();
+                System.out.println(dt.toString());
+                instrutor.setData(dt);
+            }
 
-        if (!tfRegistroCnh.getText().isEmpty()) {
-            instrutor.setCnh(tfRegistroCnh.getText());
-        }
+            if (!tfRegistroCnh.getText().isEmpty()) {
+                instrutor.setCnh(tfRegistroCnh.getText());
+            }
 
-        if (tfValidadeCnh.getValue() != null) {
-            instrutor.setValidadeCnh(tfValidadeCnh.getText().toString());
-        }
+            if (tfValidadeCnh.getValue() != null) {
+                instrutor.setValidadeCnh(tfValidadeCnh.getText().toString());
+            }
 
-        if (tfPrimeiraCnh.getValue() != null) {
-            instrutor.setPrimeiraCnh(tfPrimeiraCnh.getValue().toString());
-        }
+            if (tfPrimeiraCnh.getValue() != null) {
+                instrutor.setPrimeiraCnh(tfPrimeiraCnh.getValue().toString());
+            }
 
-        if (tfCpf.getValue() != null) {
-            instrutor.setCpf(tfCpf.getValue().toString());
-        }
+            if (tfCpf.getValue() != null) {
+                instrutor.setCpf(tfCpf.getValue().toString());
+            }
 
-        if (tfRg.getValue() != null) {
-            instrutor.setRg(tfRg.getText());
-        }
+            if (tfRg.getValue() != null) {
+                instrutor.setRg(tfRg.getText());
+            }
 
-        instrutor.setTelefone(tfTelefone.getValue() == null ? "Não Há"
-                : tfTelefone.getValue().toString());
+            instrutor.setTelefone(tfTelefone.getValue() == null ? "Não Há"
+                    : tfTelefone.getValue().toString());
 
-        instrutor.setCelular(tfCelular.getValue() == null ? "Não Há"
-                : tfCelular.getValue().toString());
+            instrutor.setCelular(tfCelular.getValue() == null ? "Não Há"
+                    : tfCelular.getValue().toString());
 
-        if (jcStatus.getSelectedIndex() != -1) {
-            instrutor.setStatus(jcStatus.getSelectedItem().toString());
-        }
+            if (jcStatus.getSelectedIndex() != -1) {
+                instrutor.setStatus(jcStatus.getSelectedItem().toString());
+            }
 
-        if (jcCarro.getSelectedIndex() != -1) {
-            instrutor.setTbCarroPlacaCarro((Carro) jcCarro
-                    .getSelectedItem());
-        }
-        //Pegando os bytes para salvar a imagem
-        java.io.File f = new java.io.File(dirMyPicture);
-        //Verifica se existe uma foto ja tirada
-        if (f.exists()) {
-            byte[] bImg = new byte[(int) f.length()]; //Pegando o tamanho de bytes da imagem;
-            FileInputStream imgStream = new FileInputStream(f);
-            imgStream.read(bImg);
-            imgStream.close();
-            instrutor.setImage(bImg);
-        }
-        }catch(IOException e){
+            if (jcCarro.getSelectedIndex() != -1) {
+                instrutor.setTbCarroPlacaCarro((Carro) jcCarro
+                        .getSelectedItem());
+            }
+            //Pegando os bytes para salvar a imagem
+            java.io.File f = new java.io.File(dirMyPicture);
+            //Verifica se existe uma foto ja tirada
+            if (f.exists()) {
+                byte[] bImg = new byte[(int) f.length()]; //Pegando o tamanho de bytes da imagem;
+                FileInputStream imgStream = new FileInputStream(f);
+                imgStream.read(bImg);
+                imgStream.close();
+                instrutor.setImage(bImg);
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
-    
-    private void populaCampos(){
-        tfNome.setText(instrutor.getNome());
-        tfRegistroCnh.setText(instrutor.getCnh());
+
+    private void populaCampos() {
+        if (!instrutor.getNome().isEmpty()) {
+            tfNome.setText(instrutor.getNome());
+        }
+
+        if (!instrutor.getCelular().isEmpty()) {
+            tfRegistroCnh.setText(instrutor.getCnh());
+        }
         
+        if(!instrutor.getCelular().isEmpty()){
+            tfCelular.setText(instrutor.getCelular());
+        }
+        
+        if(!instrutor.getCpf().isEmpty()){
+            tfCpf.setText(instrutor.getCpf());
+        }
+        
+        if(!instrutor.getValidadeCnh().isEmpty()){
+            tfValidadeCnh.setText(instrutor.getValidadeCnh());
+        }
+        
+        if(instrutor.getData() != null){
+            int day = instrutor.getData().getDay();
+            int month = instrutor.getData().getMonth();
+            int year = instrutor.getData().getYear();
+            
+            datePicker.getModel().setDate(day, month, year);
+        }
+        
+        if(instrutor.getTbCarroPlacaCarro()!= null){
+            jcCarro.setSelectedItem(instrutor.getTbCarroPlacaCarro());
+        }
+        
+        
+
     }
 }

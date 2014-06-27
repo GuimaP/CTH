@@ -24,9 +24,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
- * Proof of concept of how to handle webcam video stream from Java
- * link : https://github.com/sarxos/webcam-capture/blob/master/README.md
-* @author Bartosz Firyn (SarXos)
+ * Proof of concept of how to handle webcam video stream from Java link :
+ * https://github.com/sarxos/webcam-capture/blob/master/README.md
+ *
+ * @author Bartosz Firyn (SarXos)
  */
 public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamListener, WindowListener, UncaughtExceptionHandler, ItemListener {
 
@@ -36,26 +37,32 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamLi
     private Webcam webcam = null;
     private WebcamPanel panel = null;
     private WebcamPicker picker = null;
-    private JButton btTakePicture,btSair;
+    private JButton btTakePicture, btSair;
+
+    private boolean sucess = true;
     
-    private String diretorioParaSalvar,nomeArquivo;
-    
+    private String diretorioParaSalvar, nomeArquivo;
+
     public String caminhoDaImagem;
+
     public WebCamPhotoAutoEscola(JFrame minhaFrame, String strPath, String strNameFile) {
         super(minhaFrame);
-        
+
         caminhoDaImagem = ""; // inicializando a variavel
         diretorioParaSalvar = strPath;
         nomeArquivo = strNameFile;
         run();
         //setModalityType(ModalityType.APPLICATION_MODAL);
+        if(!sucess){
+            this.dispose();
+        }else {
         setModal(true);
         pack();
         setVisible(true);
+        }
         
-        
+
     }
-    
 
     @Override
     public void run() {
@@ -72,45 +79,47 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamLi
         webcam = picker.getSelectedWebcam();
 
         if (webcam == null) {
-            System.out.println("No webcams found...");
-            System.exit(1);
-        }
+            JOptionPane.showConfirmDialog(this, "Não foi encontrado uma Web cam conectada");
+            sucess = false;
+            
+
+        }else {
 
         webcam.setViewSize(WebcamResolution.VGA.getSize());
         webcam.addWebcamListener(WebCamPhotoAutoEscola.this);
 
         panel = new WebcamPanel(webcam, false);
         panel.setFPSDisplayed(false);
-        
+
         btTakePicture = new JButton("Tirar Foto");
         btTakePicture.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
                     System.out.println("cliq");
-                    java.io.File f = new java.io.File(diretorioParaSalvar+"\\"+nomeArquivo+".jpg");
-                    if(f.exists())
+                    java.io.File f = new java.io.File(diretorioParaSalvar + "\\" + nomeArquivo + ".jpg");
+                    if (f.exists()) {
                         f.delete();
-                    
+                    }
+
                     BufferedImage img = webcam.getImage();
                     ImageIO.write(img, "jpg", f);
                     caminhoDaImagem = f.toString();
-                    
+
                     dispose();
-                }catch(java.io.IOException err){JOptionPane.showMessageDialog(null, err.getMessage());}
+                } catch (java.io.IOException err) {
+                    JOptionPane.showMessageDialog(null, err.getMessage());
+                }
             }
         });
-        btSair = new  JButton("Sair");
-        
+        btSair = new JButton("Sair");
+
         JPanel painelButtons = new JPanel();
-        painelButtons.add(btTakePicture,BorderLayout.EAST);
-        painelButtons.add(btSair,BorderLayout.WEST);
-        
-        add(painelButtons,BorderLayout.SOUTH);
+        painelButtons.add(btTakePicture, BorderLayout.EAST);
+        painelButtons.add(btSair, BorderLayout.WEST);
+
+        add(painelButtons, BorderLayout.SOUTH);
         add(picker, BorderLayout.NORTH);
         add(panel, BorderLayout.CENTER);
-        
-
-        
 
         Thread t = new Thread() {
 
@@ -123,11 +132,9 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamLi
         t.setDaemon(true);
         t.setUncaughtExceptionHandler(this);
         t.start();
-        
-        
-    }
+        }
 
-    
+    }
 
     @Override
     public void webcamOpen(WebcamEvent we) {
@@ -156,7 +163,9 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamLi
 
     @Override
     public void windowClosed(WindowEvent e) {
-        webcam.close();
+        if (webcam != null) {
+            webcam.close();
+        }
     }
 
     @Override

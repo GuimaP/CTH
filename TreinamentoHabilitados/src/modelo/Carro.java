@@ -1,5 +1,6 @@
 package modelo;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -7,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="tb_carro")
-public class Carro {
+public class Carro implements Serializable{
 	private long ano;
 	private String marca;
 	private String modelo;
