@@ -1,20 +1,22 @@
     package modelo;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.CascadeType;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
 
 
 @Entity
-
-public class Funcionario {
+public class Funcionario implements Serializable{
 	
 	private String nome;
 	private Date data;
@@ -28,11 +30,38 @@ public class Funcionario {
 	private String celular;
 	private String status;
         
+        @Lob
+        @Column(name="image", nullable = false,columnDefinition = "mediumblob")
+        private byte[] image;
+        
 	@OneToOne
         @JoinColumn(name = "placa")//Digo que é uma chave estrangeira ...
 	private Carro tbCarroPlacaCarro;
 	
-	public Carro getTbCarroPlacaCarro() {
+	public void setImage(byte[] image){
+            this.image = image;
+        }
+        
+        public void getImage(){
+            try {
+                // Image img = Image.getInstance(image);
+                
+                //Especifico o diretorio que vai salvar a imagem
+                FileOutputStream out = new FileOutputStream("C:\\Users\\Guima\\git\\tccsenai\\TreinamentoHabilitados\\tccsenai\\TreinamentoHabilitados\\src\\Resources\\FotosInstrutor\\test.jpg");
+                //Apontos o vetor de bytes da imagem
+                out.write(image);
+                //Fecho o meninão aqui
+                out.close();
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Funcionario.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(Funcionario.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+        
+        
+        public Carro getTbCarroPlacaCarro() {
 		return tbCarroPlacaCarro;
 	}
 	public void setTbCarroPlacaCarro(Carro tbCarroPlacaCarro) {

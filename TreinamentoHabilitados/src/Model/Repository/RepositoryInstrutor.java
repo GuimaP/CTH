@@ -15,6 +15,18 @@ public class RepositoryInstrutor{
         this.connection = connection;
    };
     
+    
+    public Funcionario findInstrutorSingle(String cpf){
+        Funcionario f =null;
+        if(connection != null){
+            EntityManager em = connection;
+            f = em.find(Funcionario.class, cpf);
+            return f;
+            
+        }
+        
+        return f;
+    }
     /**
      *@author Guilherme
      * @throws java.sql.SQLException

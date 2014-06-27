@@ -1,5 +1,6 @@
 package webcam;
 
+import Controller.FuncionarioController;
 import java.awt.BorderLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -136,6 +137,7 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamLi
     @Override
     public void webcamClosed(WebcamEvent we) {
         System.out.println("webcam closed");
+        FuncionarioController.loadInformacao();
     }
 
     @Override

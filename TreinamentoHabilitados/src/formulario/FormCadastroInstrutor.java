@@ -1,5 +1,6 @@
 package formulario;
 
+import Controller.FuncionarioController;
 import DAO.DAOcarro;
 import DAO.DAOinstrutor;
 import Model.Repository.ConnectionFactoryRepository;
@@ -26,6 +27,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -95,23 +98,23 @@ public class FormCadastroInstrutor extends JInternalFrame {
     private MouseAdapter cliqueEmFoto;
 
     private JDatePickerImpl datePicker;
-    
-    
+
     private JTabbedPane aba;
-    
+
     private JPanel pnGeral, pnBusca;
-    
+
     private ArrayList<Funcionario> listFunc = new ArrayList<Funcionario>();
-    
+
     private JTable tabela;
-    
+
     private JScrollPane scroll;
-    
-    
+
+    private Funcionario instrutor;
 
     public FormCadastroInstrutor() {
         try {
             dirMyPicture = "";
+            instrutor = new Funcionario();
             inicializaComponentes();
 
         } catch (ParseException | SQLException e) {
@@ -125,9 +128,8 @@ public class FormCadastroInstrutor extends JInternalFrame {
         pnGeral.setLayout(null);
         pnBusca = new JPanel();
         pnBusca.setLayout(null);
-        
+
         // Componentes da aba "Geral"
-        
         carro = new Carro();
         minhaInternal = this;
         // Label
@@ -151,14 +153,13 @@ public class FormCadastroInstrutor extends JInternalFrame {
 //        tfData = new JFormattedTextField(maskData);
 //        tfData.setBounds(60, 40, 100, 25);
 //        add(tfData);
-
         UtilDateModel model = new UtilDateModel();
         JDatePanelImpl datePanel = new JDatePanelImpl(model);
         datePicker = new JDatePickerImpl(datePanel);
         datePicker.setBounds(60, 40, 110, 30);
         pnGeral.add(datePicker);
         System.out.print(datePicker);
-        
+
         lbRegistroCnh = new JLabel("Nº Cnh");
         lbRegistroCnh.setBounds(200, 40, 40, 20);
         pnGeral.add(lbRegistroCnh);
@@ -260,9 +261,6 @@ public class FormCadastroInstrutor extends JInternalFrame {
         btSalvar.setBounds(180, 220, 100, 30);
         pnGeral.add(btSalvar);
 
-        
-
-       
         java.io.File f = new java.io.File(dirMyPicture);
         if (f.exists()) {
             BufferedImage img = null;
@@ -280,31 +278,28 @@ public class FormCadastroInstrutor extends JInternalFrame {
         Border bordaPainelFoto = BorderFactory.createTitledBorder(bordaColorida, "Foto do Instrutor");
         painelFotoInstrutor.setBorder(bordaPainelFoto);
         pnGeral.add(painelFotoInstrutor);
-        
+
         // Componentes da aba "Busca"
-        
         btExcluir = new JButton("Excluir");
         btExcluir.setBounds(180, 220, 100, 30);
         pnBusca.add(btExcluir);
-        
+
         tabela = new JTable(new ModeloTableFuncionario(listFunc));
         scroll = new JScrollPane(tabela);
         scroll.setLocation(2, 5);
         scroll.setSize(482, 210);
         pnBusca.add(scroll);
-        
+
         aba = new JTabbedPane();
         aba.setBounds(1, 1, 490, 295);
         aba.addTab("Cadastro", pnGeral);
         aba.addTab(" Busca  ", pnBusca);
         add(aba);
-        
-        
-        
+
         pack();
         setSize(500, 340);
         setLocation(60, 10);
-        
+
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setClosable(true);
         setIconifiable(true);
@@ -326,6 +321,11 @@ public class FormCadastroInstrutor extends JInternalFrame {
                     if (e.getClickCount() == 2) {
 
                         //WebCamPhotoAutoEscola dialog = new WebCamPhotoAutoEscola(Principal.minhaFrame,diretorioParaSalvar,tfNome.getText());
+                        //Antes de arbrir a camera, eu salvo todas as informações para restaura depois
+                        populaObjInstrutor();
+                        
+                        FuncionarioController.saveInformacao(instrutor);
+
                         String strPath;
 
                         strPath = new java.io.File("").getCanonicalPath() + "\\src\\Resources\\FotosInstrutor";
@@ -427,37 +427,16 @@ public class FormCadastroInstrutor extends JInternalFrame {
                     jcCarro.requestFocus(true);
                 } else {
                     try {
-                        Funcionario instrutor = new Funcionario();
+                        //Funcionario instrutor = new Funcionario();
 
                         // populando o objeto
-                        instrutor.setNome(tfNome.getText());
-                        Date dt =(Date) datePicker.getModel().getValue();
-                        System.out.println(dt.toString());
-                        instrutor.setData(dt);
-                        instrutor.setCnh(tfRegistroCnh.getText());
-                        instrutor.setValidadeCnh(tfValidadeCnh.getText().toString());
-                        instrutor.setPrimeiraCnh(tfPrimeiraCnh.getValue()
-                                .toString());
-
-                        instrutor.setCpf(tfCpf.getValue().toString());
-                        instrutor.setRg(tfRg.getText());
-                        instrutor.setTelefone(tfTelefone.getValue() == null ? "Não Há"
-                                : tfTelefone.getValue().toString());
-
-                        instrutor.setCelular(tfCelular.getValue() == null ? "Não Há"
-                                : tfCelular.getValue().toString());
-                        instrutor.setStatus(jcStatus.getSelectedItem().toString());
-
-                        instrutor.setTbCarroPlacaCarro((Carro) jcCarro
-                                .getSelectedItem());
-
-                        JOptionPane.showMessageDialog(null, instrutor.getTbCarroPlacaCarro().getPlaca());
-                        //DAOinstrutor daoInstrutor = new DAOinstrutor();
-
+                        populaObjInstrutor();
                         RepositoryInstrutor persistencia
                                 = new RepositoryInstrutor(ConnectionFactoryRepository.getManager());
 
                         persistencia.adicionar(instrutor);
+
+                        minhaInternal.dispose();
 
                     } catch (SQLException ex) {
                         ex.printStackTrace();;
@@ -500,7 +479,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
         });
 
         painelFotoInstrutor.addMouseListener(cliqueEmFoto);
-        
+
         datePicker.addActionListener(new ActionListener() {
 
             @Override
@@ -511,4 +490,71 @@ public class FormCadastroInstrutor extends JInternalFrame {
         });
     }
 
+    private void populaObjInstrutor() {
+        try{
+        if (!tfNome.getText().isEmpty()) {
+            instrutor.setNome(tfNome.getText());
+        }
+
+        if (datePicker.getModel().getValue() != null) {
+            Date dt = (Date) datePicker.getModel().getValue();
+            System.out.println(dt.toString());
+            instrutor.setData(dt);
+        }
+
+        if (!tfRegistroCnh.getText().isEmpty()) {
+            instrutor.setCnh(tfRegistroCnh.getText());
+        }
+
+        if (tfValidadeCnh.getValue() != null) {
+            instrutor.setValidadeCnh(tfValidadeCnh.getText().toString());
+        }
+
+        if (tfPrimeiraCnh.getValue() != null) {
+            instrutor.setPrimeiraCnh(tfPrimeiraCnh.getValue().toString());
+        }
+
+        if (tfCpf.getValue() != null) {
+            instrutor.setCpf(tfCpf.getValue().toString());
+        }
+
+        if (tfRg.getValue() != null) {
+            instrutor.setRg(tfRg.getText());
+        }
+
+        instrutor.setTelefone(tfTelefone.getValue() == null ? "Não Há"
+                : tfTelefone.getValue().toString());
+
+        instrutor.setCelular(tfCelular.getValue() == null ? "Não Há"
+                : tfCelular.getValue().toString());
+
+        if (jcStatus.getSelectedIndex() != -1) {
+            instrutor.setStatus(jcStatus.getSelectedItem().toString());
+        }
+
+        if (jcCarro.getSelectedIndex() != -1) {
+            instrutor.setTbCarroPlacaCarro((Carro) jcCarro
+                    .getSelectedItem());
+        }
+        //Pegando os bytes para salvar a imagem
+        java.io.File f = new java.io.File(dirMyPicture);
+        //Verifica se existe uma foto ja tirada
+        if (f.exists()) {
+            byte[] bImg = new byte[(int) f.length()]; //Pegando o tamanho de bytes da imagem;
+            FileInputStream imgStream = new FileInputStream(f);
+            imgStream.read(bImg);
+            imgStream.close();
+            instrutor.setImage(bImg);
+        }
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
+    }
+    
+    private void populaCampos(){
+        tfNome.setText(instrutor.getNome());
+        tfRegistroCnh.setText(instrutor.getCnh());
+        
+    }
 }

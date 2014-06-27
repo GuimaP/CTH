@@ -30,6 +30,8 @@ public class LoginRepository {
 		try{
                 if(session.isConnected()){
                 
+                
+                    
                 session.getTransaction().begin();
                 isDoSomething = true;
 		Criteria filtro= session.createCriteria(Login.class);
