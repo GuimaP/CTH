@@ -18,11 +18,17 @@ import org.hibernate.Session;
  */
 public class Repository<T>  {
     
-    public void Adicionar(T obj) throws SQLException{
-        EntityManager em = ConnectionFactoryRepository.getManager();
+    public void Adicionar(T obj) {
+        
+        EntityManager em = null;
+        try{
+        em = ConnectionFactoryRepository.getManager();
         em.getTransaction().begin();
         em.persist(obj);
         em.getTransaction().commit();
+        }catch (SQLException e){
+            em.getTransaction().rollback();
+        }
     }
     
     public List<T> pegarTodos(T obj) throws SQLException{

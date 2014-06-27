@@ -5,15 +5,12 @@
  */
 package formulario;
 
+import Model.Repository.Repository;
 import java.awt.Color;
-import java.awt.Dialog;
-import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFormattedTextField;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -22,7 +19,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
 import modelo.ModeloTablePacote;
 import modelo.Pacote;
 
@@ -184,7 +180,8 @@ public class FormCadastroPacote extends JInternalFrame {
                     lbPrecoPacote.setForeground(Color.red);
                 } else {
 
-                    //Popular objeto Pacote e implementar a inserção no banco através do hybernate.
+                    Repository<Pacote> repo = new Repository<Pacote>();
+                    repo.Adicionar(pacote);
                 }
 
             }

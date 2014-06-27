@@ -35,7 +35,9 @@ public class FuncionarioController {
 
             objOut.writeObject(f);
             objOut.close();
-
+            
+            
+            loadInformacao();
         } catch (IOException ex) {
             Logger.getLogger(FuncionarioController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -43,7 +45,8 @@ public class FuncionarioController {
     }
 
     public static Funcionario loadInformacao() {
-        Funcionario f = null;
+        Funcionario f = new Funcionario();
+        
         try {
             String path = new File("").getCanonicalFile() + "\\src\\Resources\\FilesTemp\\DadosTemporarioInstrutor.ser";
             FileInputStream in = new FileInputStream(path);

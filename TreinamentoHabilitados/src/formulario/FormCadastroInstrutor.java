@@ -2,52 +2,31 @@ package formulario;
 
 import Controller.FuncionarioController;
 import DAO.DAOcarro;
-import DAO.DAOinstrutor;
 import Model.Repository.ConnectionFactoryRepository;
 import Model.Repository.Repository;
 import Model.Repository.RepositoryInstrutor;
-import com.itextpdf.text.log.SysoCounter;
-import com.towel.swing.calendar.CalendarView;
-import com.towel.swing.calendar.DatePicker;
-import com.towel.swing.img.JImagePanel;
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -56,18 +35,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.text.MaskFormatter;
 import modelo.Carro;
 import modelo.Funcionario;
 import modelo.ModeloTableFuncionario;
-import net.sourceforge.jdatepicker.JDateComponentFactory;
-import net.sourceforge.jdatepicker.JDatePanel;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
@@ -323,7 +297,6 @@ public class FormCadastroInstrutor extends JInternalFrame {
                         //WebCamPhotoAutoEscola dialog = new WebCamPhotoAutoEscola(Principal.minhaFrame,diretorioParaSalvar,tfNome.getText());
                         //Antes de arbrir a camera, eu salvo todas as informações para restaura depois
                         populaObjInstrutor();
-
                         FuncionarioController.saveInformacao(instrutor);
 
                         String strPath;
@@ -333,7 +306,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
                         String strNameFile = tfNome.getText();
                         WebCamPhotoAutoEscola dialog = new WebCamPhotoAutoEscola(Principal.minhaFrame, strPath, strNameFile);
                         String path = "";
-                        populaCampos();
+
                         path = dialog.caminhoDaImagem;
 
                         if (!path.isEmpty()) {
@@ -348,12 +321,17 @@ public class FormCadastroInstrutor extends JInternalFrame {
 //                            painelFotoInstrutor.addMouseListener(this);
 //                            add(painelFotoInstrutor);
 //                            remove(painelFotoInstrutor);
+                            
+                            FuncionarioController.loadInformacao();
+                            
                             getContentPane().removeAll();
                             inicializaComponentes();
                             minhaInternal.revalidate();
                             minhaInternal.repaint();
                             Principal.minhaFrame.revalidate();
                             Principal.minhaFrame.repaint();
+                            
+                            populaCampos();
                             /*PainelFoto p = new PainelFoto(path);
                              p.setToolTipText("Foto do Instrutor");
                              p.setBounds(370, 10, 110, 130);

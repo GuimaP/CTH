@@ -15,14 +15,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
-
-import DAO.DAOcarro;
-import Model.Repository.ConnectionFactoryRepository;
 import Model.Repository.Repository;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.EntityManager;
 import modelo.Carro;
 
 public class FormCadastroCarro extends JFrame {
@@ -127,8 +123,6 @@ public class FormCadastroCarro extends JFrame {
                                         carro.setMarca(tfMarca.getText());
                                         carro.setModelo(tfModelo.getText());
                                         carro.setPlaca(tfPlaca.getValue().toString());
-//					DAOcarro daoCarro = new DAOcarro();
-//					daoCarro.inserir(carro);
                                         Repository<modelo.Carro> repo = new Repository<Carro>();
                                         repo.Adicionar(carro);
                                     } catch (SQLException ex) {
