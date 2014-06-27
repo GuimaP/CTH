@@ -117,17 +117,13 @@ public class FormCadastroCarro extends JFrame {
 					lbMarca.setForeground(Color.RED);
 					tfMarca.requestFocus(true);
 				} else {
-                                    try {
-                                        Carro carro = new Carro();
-                                        carro.setAno(Long.parseLong(tfAno.getText()));
-                                        carro.setMarca(tfMarca.getText());
-                                        carro.setModelo(tfModelo.getText());
-                                        carro.setPlaca(tfPlaca.getValue().toString());
-                                        Repository<modelo.Carro> repo = new Repository<Carro>();
-                                        repo.Adicionar(carro);
-                                    } catch (SQLException ex) {
-                                        Logger.getLogger(FormCadastroCarro.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
+                                    Carro carro = new Carro();
+                                    carro.setAno(Long.parseLong(tfAno.getText()));
+                                    carro.setMarca(tfMarca.getText());
+                                    carro.setModelo(tfModelo.getText());
+                                    carro.setPlaca(tfPlaca.getValue().toString());
+                                    Repository<modelo.Carro> repo = new Repository<Carro>();
+                                    repo.Adicionar(carro);
 				}   
 			}
 		});
