@@ -107,7 +107,7 @@ public class Principal extends JFrame {
                 
                 DefaultMutableTreeNode emailItens = new DefaultMutableTreeNode("E-mail");
                 DefaultTreeCellRenderer imgEmail = new DefaultTreeCellRenderer();
-                imgEmail.setLeafIcon(new ImageIcon("Resources/imgs/logo fundo.jog"));
+                imgEmail.setLeafIcon(new ImageIcon("Resources/imgs/logo fundo.jpg"));
                 root.add(emailItens);
                 
                 DefaultMutableTreeNode fav1 = new DefaultMutableTreeNode("Arquivos1");
@@ -328,43 +328,30 @@ public class Principal extends JFrame {
             DefaultMutableTreeNode no = (DefaultMutableTreeNode) value;
             String texto = no.getUserObject().toString();
             if(texto.equals("Inicio")){
-                 try {
-                    ImageIcon img = new ImageIcon(new File("").getCanonicalPath()+"\\bin\\Resources\\icons\\inicio.png");
-                    setIcon(img);
-                    setToolTipText(texto);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                ImageIcon img = new ImageIcon(Principal.class.getResource("/Resources/icons/")+"inicio.jpg");
+                System.out.println(img.toString());
+                setIcon(img);
+                setToolTipText(texto);
                 
             
             }else if(texto.contains("E-mail")){
-                try {
-                    ImageIcon img = new ImageIcon(new File("").getCanonicalPath()+"\\bin\\Resources\\icons\\email.png");
-                    setIcon(img);
-                    setToolTipText(texto);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                ImageIcon img = new ImageIcon(Principal.class.getResource("/Resources/icons/")+"email.png");
+                                System.out.println(img.toString());
+
+                setIcon(img);
+                setToolTipText(texto);
             }if(texto.contains("Favoritos")){
-                try {
-                    ImageIcon img = new ImageIcon(new File("").getCanonicalPath()+"\\bin\\Resources\\icons\\Favoritos.png");
-                    setIcon(img);
-                    setToolTipText(texto);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                ImageIcon img = new ImageIcon(Principal.class.getResource("/Resources/icons/")+texto+".png");
+                                System.out.println(img.toString());
+
+                setIcon(img);
+                setToolTipText(texto);
             }if(texto.contains("Tarefas")){
-                try {
-                    ImageIcon img = new ImageIcon(new File("").getCanonicalPath()+"\\bin\\Resources\\icons\\Tarefas.png");
-                    setIcon(img);
-                    setToolTipText(texto);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                ImageIcon img = new ImageIcon(Principal.class.getResource("/Resources/icons/")+texto+".png");
+                                System.out.println(img.toString());
+
+                setIcon(img);
+                setToolTipText(texto);
             }
         
             return this;

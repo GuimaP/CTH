@@ -35,6 +35,7 @@ public class Start {
                                     JFrame janela= new JFrame("Carregando");
                                     janela.setUndecorated(true);
                                     janela.setSize(200,50);
+                                    janela.setDefaultCloseOperation(0);
                                     JLabel lb = new JLabel("Carregando");
                                     janela.add(lb,BorderLayout.CENTER);
                                     janela.setLocationRelativeTo(null);
