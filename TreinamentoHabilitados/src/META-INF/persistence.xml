@@ -11,18 +11,9 @@
 		value="org.hibernate.dialect.MySQLDialect" />
 		<property name="hibernate.hbm2ddl.auto" value="update" />
 		<property name="hibernate.show_sql" value="true" />
-		<property name="hibernate.format_sql" value="true" />
-
-		
-        
-		
 		<property name="javax.persistence.jdbc.driver"
 		value="com.mysql.jdbc.Driver" />
-		<property name="javax.persistence.jdbc.url"
-		value="jdbc:mysql://db4free.net/dbguimateste" />
-		<property name="javax.persistence.jdbc.user" value="guima" />
-
-		<property name="javax.persistence.jdbc.password" value="1q2w3e" />
+		
 
 		
 

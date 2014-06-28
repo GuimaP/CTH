@@ -1,6 +1,6 @@
 package formulario;
 
-import Testes.Calendario;
+import formulario.Calendario.Calendario;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -141,10 +141,18 @@ public class Principal extends JFrame {
                 
                 
                 POSXButoon = btAbrirMenuLateral.getX();
+                
+                
+                Calendario painelCalendario = new Calendario();
+                
+                painelCalendario.setSize(400, 200);
+                painelCalendario.setLocation(minhaFrame.getWidth() - painelCalendario.getWidth(),100);
+                
+                add(painelCalendario);
 		
 		setJMenuBar(menuBarra);		
 		setLocationRelativeTo(null);
-		setTitle("Karol Habilitados v 1.2.1");
+		setTitle("Karol Habilitados v 1.2.2");
 		setResizable(false);
 		setVisible(true);
 

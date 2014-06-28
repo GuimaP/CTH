@@ -57,14 +57,14 @@ public class Start {
                                 }
                             });
                                 t.start();
+                                
                                 manager = ConnectionFactoryRepository.getManager();
+                                
+                                
+                                
 		    		isLoading = false;
-                                new TelaLogin();
-                                //new Principal();
-                                //new webcam.WebCamPhotoAutoEscola(new JFrame());
-		    		//new CapturaImagens();
-		    		//new WebcamViewerExample();
-                                //new FormCadastroPacote();
+                                TelaLogin tela = new TelaLogin();
+                                System.out.println(Start.class.getClass().getResource("/"));
 		            break;
 		        }
 		    	
@@ -74,3 +74,21 @@ public class Start {
                 }
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -5,6 +5,7 @@ import DAO.DAOcarro;
 import Model.Repository.ConnectionFactoryRepository;
 import Model.Repository.Repository;
 import Model.Repository.RepositoryInstrutor;
+import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,11 +14,13 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -42,9 +45,6 @@ import javax.swing.text.MaskFormatter;
 import modelo.Carro;
 import modelo.Funcionario;
 import modelo.ModeloTableFuncionario;
-import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
-import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
-import net.sourceforge.jdatepicker.impl.UtilDateModel;
 import principal.VerificadorDeCpf;
 import webcam.WebCamPhotoAutoEscola;
 
@@ -71,18 +71,18 @@ public class FormCadastroInstrutor extends JInternalFrame {
     private String dirMyPicture;
     private MouseAdapter cliqueEmFoto;
 
-    private JDatePickerImpl datePicker;
+
 
     private JTabbedPane aba;
 
     private JPanel pnGeral, pnBusca;
 
     private ArrayList<Funcionario> listFunc = new ArrayList<Funcionario>();
-
+    
     private JTable tabela;
 
     private JScrollPane scroll;
-
+    private JDateChooser dateChooser;
     private Funcionario instrutor;
 
     public FormCadastroInstrutor() {
@@ -127,12 +127,24 @@ public class FormCadastroInstrutor extends JInternalFrame {
 //        tfData = new JFormattedTextField(maskData);
 //        tfData.setBounds(60, 40, 100, 25);
 //        add(tfData);
-        UtilDateModel model = new UtilDateModel();
-        JDatePanelImpl datePanel = new JDatePanelImpl(model);
-        datePicker = new JDatePickerImpl(datePanel);
-        datePicker.setBounds(60, 40, 110, 30);
-        pnGeral.add(datePicker);
-        System.out.print(datePicker);
+//        UtilDateModel model = new UtilDateModel();
+//        JDatePanelImpl datePanel = new JDatePanelImpl(model);
+//        datePicker = new JDatePickerImpl(datePanel);
+//        datePicker.setBounds(60, 40, 110, 30);
+//        pnGeral.add(datePicker);
+//        System.out.print(datePicker);
+        
+        dateChooser = new JDateChooser();
+        Calendar minimo = Calendar.getInstance();
+        minimo.set(Calendar.YEAR,1900);
+        minimo.set(Calendar.MONTH,1);
+        minimo.set(Calendar.DATE, 1);
+        dateChooser.setMinSelectableDate(minimo.getTime());
+        Date dataAtual = new Date(System.currentTimeMillis());
+        dateChooser.setMaxSelectableDate(dataAtual);
+        dateChooser.setBounds(60, 70, 110, 30);
+        dateChooser.setSize(130, 25);
+        add(dateChooser);
 
         lbRegistroCnh = new JLabel("Nº Cnh");
         lbRegistroCnh.setBounds(200, 40, 40, 20);
@@ -235,17 +247,17 @@ public class FormCadastroInstrutor extends JInternalFrame {
         btSalvar.setBounds(180, 220, 100, 30);
         pnGeral.add(btSalvar);
 
-        java.io.File f = new java.io.File(dirMyPicture);
-        if (f.exists()) {
-            BufferedImage img = null;
-            try {
-                img = ImageIO.read(f);
+        java.io.File f = new java.io.File(dirMyPicture);//Verifico se existe alguma diretorio
+        if (f.exists()) { //Verifica se tem alguma foto existente para carregar
+            BufferedImage img = null; 
+            try { 
+                img = ImageIO.read(f);//Tento ler o arquivo e carregar numa imagem.
             } catch (IOException ex) {
                 Logger.getLogger(FormCadastroInstrutor.class.getName()).log(Level.SEVERE, null, ex);
             }
-            painelFotoInstrutor = new PainelFoto(img);//TODO IMPLEMENTAR
+            painelFotoInstrutor = new PainelFoto(img);//e passo como parametro para desenhar na tela
         } else {
-            painelFotoInstrutor = new PainelFoto();
+        painelFotoInstrutor = new PainelFoto();
         }
         painelFotoInstrutor.setBounds(370, 10, 110, 130);
         Border bordaColorida = BorderFactory.createLineBorder(Color.GRAY);
@@ -294,63 +306,47 @@ public class FormCadastroInstrutor extends JInternalFrame {
                 try {
                     if (e.getClickCount() == 2) {
 
-                        //WebCamPhotoAutoEscola dialog = new WebCamPhotoAutoEscola(Principal.minhaFrame,diretorioParaSalvar,tfNome.getText());
+                        
                         //Antes de arbrir a camera, eu salvo todas as informações para restaura depois
                         populaObjInstrutor();
                         FuncionarioController.saveInformacao(instrutor);
 
                         String strPath;
+                        
+                        strPath = FormCadastroInstrutor.class.getResource("/Resources/FotosInstrutor").getPath();
+                        System.out.println(strPath);
 
-                        strPath = new java.io.File("").getCanonicalPath() + "\\src\\Resources\\FotosInstrutor";
-
-                        String strNameFile = tfNome.getText();
+                        String strNameFile = tfNome.getText(); //Pego o nome que será a imagem
+                        
+                        //Instancio a janela de Cam
                         WebCamPhotoAutoEscola dialog = new WebCamPhotoAutoEscola(Principal.minhaFrame, strPath, strNameFile);
-                        String path = "";
+                        String path = "";//Inicializo a Variavel
 
+                        //Pego o caminho da imagem;
                         path = dialog.caminhoDaImagem;
-
-                        if (!path.isEmpty()) {
-                            System.out.println("Imagem tirada:" + path);
-                            dirMyPicture = path;
-//                            painelFotoInstrutor = null;
-//                            painelFotoInstrutor = new JPanel();
-//                            painelFotoInstrutor.setBounds(370, 10, 110, 130);
-//                            Border bordaColorida = BorderFactory.createLineBorder(Color.GRAY);
-//                            Border bordaPainelFoto = BorderFactory.createTitledBorder(bordaColorida, "Foto do Instrutor");
-//                            painelFotoInstrutor.setBorder(bordaPainelFoto);
-//                            painelFotoInstrutor.addMouseListener(this);
-//                            add(painelFotoInstrutor);
-//                            remove(painelFotoInstrutor);
+                        
+                        //Crio um File a partir da foto
+                        File fotoTirada = new File(path);
+                        
+                        //Verifica se existe uma foto, pois pode muito bem o fulano não ter tirado uma foto.
+                        if (!path.isEmpty() & fotoTirada.exists()) {
+                            System.out.println("Imagem tirada:" + path); //Log...
                             
-                            FuncionarioController.loadInformacao();
-                            
-                            getContentPane().removeAll();
-                            inicializaComponentes();
-                            minhaInternal.revalidate();
-                            minhaInternal.repaint();
+                            dirMyPicture = path;//passo o path para a variavel Global...
+                            getContentPane().removeAll(); //Removo todos os componentes...
+                            inicializaComponentes(); // Redesenho todos os commponentes...
+                            minhaInternal.revalidate(); //revalido as alterações
+                            minhaInternal.repaint(); //e "Atualizo"
                             Principal.minhaFrame.revalidate();
                             Principal.minhaFrame.repaint();
                             
-                            populaCampos();
-                            /*PainelFoto p = new PainelFoto(path);
-                             p.setToolTipText("Foto do Instrutor");
-                             p.setBounds(370, 10, 110, 130);
-                             Border bordaColorida = BorderFactory.createLineBorder(Color.GRAY);
-                             Border bordaPainelFoto = BorderFactory.createTitledBorder(bordaColorida, "Foto do Instrutor");
-                             p.setBorder(bordaPainelFoto);
-                             p.addMouseListener(this);
-                             //painelFotoInstrutor.repaint();
-                             getContentPane().add(p);//
-                             getContentPane().repaint();
-                             */
-                            // Principal.minhaFrame.repaint();
+                            FuncionarioController.loadInformacao(); //Recupero os dados do meu arquivo temporario
+                            populaCampos(); //E populo os campos 
 
                         }
 
                     }
 
-                } catch (IOException err) {
-                    err.printStackTrace();
                 } catch (ParseException ex) {
                     Logger.getLogger(FormCadastroInstrutor.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (SQLException ex) {
@@ -373,7 +369,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
                     JOptionPane.showMessageDialog(null, "Informar o nome");
                     lbNome.setForeground(Color.RED);
                     tfNome.requestFocus(true);
-                } else if (datePicker.getModel().getValue() == null) {
+                } else if (dateChooser.getDate() == null) {
                     JOptionPane.showMessageDialog(null, "Informar a data");
                     lbData.setForeground(Color.RED);
                     tfData.requestFocus(true);
@@ -404,7 +400,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
                 } else if (jcCarro.getSelectedIndex() == -1) {
                     JOptionPane.showMessageDialog(null, "Carro não selecionado ou não cadastrado");
                     jcCarro.requestFocus(true);
-                } else {
+                }else {
                     try {
                         //Funcionario instrutor = new Funcionario();
 
@@ -459,14 +455,6 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
         painelFotoInstrutor.addMouseListener(cliqueEmFoto);
 
-        datePicker.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Date c = (Date) datePicker.getModel().getValue();
-                System.out.println(c.toString());
-            }
-        });
     }
 
     private void populaObjInstrutor() {
@@ -475,10 +463,8 @@ public class FormCadastroInstrutor extends JInternalFrame {
                 instrutor.setNome(tfNome.getText());
             }
 
-            if (datePicker.getModel().getValue() != null) {
-                Date dt = (Date) datePicker.getModel().getValue();
-                System.out.println(dt.toString());
-                instrutor.setData(dt);
+            if (dateChooser.getDate() != null) {
+                instrutor.setData(dateChooser.getDate());
             }
 
             if (!tfRegistroCnh.getText().isEmpty()) {
@@ -495,7 +481,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
             if (tfCpf.getValue() != null) {
                 instrutor.setCpf(tfCpf.getValue().toString());
-            }
+            }else {instrutor.setCpf("");}
 
             if (tfRg.getValue() != null) {
                 instrutor.setRg(tfRg.getText());
@@ -553,11 +539,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
         }
         
         if(instrutor.getData() != null){
-            int day = instrutor.getData().getDay();
-            int month = instrutor.getData().getMonth();
-            int year = instrutor.getData().getYear();
-            
-            datePicker.getModel().setDate(day, month, year);
+            dateChooser.setDate(instrutor.getData());
         }
         
         if(instrutor.getTbCarroPlacaCarro()!= null){

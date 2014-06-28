@@ -18,20 +18,20 @@ import javax.persistence.OneToOne;
 @Entity
 public class Funcionario implements Serializable{
 	
-	private String nome;
+	private String nome="";
 	private Date data;
-	private String cnh;
-	private String validadeCnh;
-	private String primeiraCnh;
-	private String rg;
+	private String cnh="";
+	private String validadeCnh="";
+	private String primeiraCnh="";
+	private String rg="";
 	@Id
-	private String cpf;
-	private String telefone;
-	private String celular;
-	private String status;
+	private String cpf="";
+	private String telefone="";
+	private String celular="";
+	private String status="";
         
         @Lob
-        @Column(name="image", nullable = false,columnDefinition = "mediumblob")
+        @Column(name="image", nullable = true,columnDefinition = "mediumblob")
         private byte[] image;
         
 	@OneToOne

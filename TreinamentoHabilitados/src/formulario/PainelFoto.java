@@ -25,9 +25,8 @@ public class PainelFoto extends JPanel {
         this.img = img;
     }
     
-    public PainelFoto(){
-        
-    }
+    public PainelFoto(){}
+    
     
     @Override
     public void paint(Graphics g) {
