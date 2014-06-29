@@ -314,7 +314,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
                         String strPath;
                         
                         strPath = FormCadastroInstrutor.class.getResource("/Resources/FotosInstrutor").getPath();
-                        System.out.println(strPath);
+                        JOptionPane.showMessageDialog(rootPane, strPath);
 
                         String strNameFile = tfNome.getText(); //Pego o nome que será a imagem
                         

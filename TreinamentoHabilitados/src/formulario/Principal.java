@@ -329,27 +329,20 @@ public class Principal extends JFrame {
             String texto = no.getUserObject().toString();
             if(texto.equals("Inicio")){
                 ImageIcon img = new ImageIcon(Principal.class.getResource("/Resources/icons/").getPath()+"inicio.jpg");
-                System.out.println(img.toString());
                 setIcon(img);
                 setToolTipText(texto);
                 
             
             }else if(texto.contains("E-mail")){
                 ImageIcon img = new ImageIcon(Principal.class.getResource("/Resources/icons/").getPath()+"email.png");
-                                
-
                 setIcon(img);
                 setToolTipText(texto);
             }if(texto.contains("Favoritos")){
                 ImageIcon img = new ImageIcon(Principal.class.getResource("/Resources/icons/").getPath()+texto+".png");
-                                
-
                 setIcon(img);
                 setToolTipText(texto);
             }if(texto.contains("Tarefas")){
                 ImageIcon img = new ImageIcon(Principal.class.getResource("/Resources/icons/").getPath()+texto+".png");
-                                
-
                 setIcon(img);
                 setToolTipText(texto);
             }

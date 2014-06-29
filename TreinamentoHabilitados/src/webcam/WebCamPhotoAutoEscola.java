@@ -1,19 +1,24 @@
 package webcam;
 
 import Controller.FuncionarioController;
+
 import java.awt.BorderLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.Serializable;
 import java.lang.Thread.UncaughtExceptionHandler;
+
 import javax.swing.JFrame;
+
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamEvent;
 import com.github.sarxos.webcam.WebcamListener;
 import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamPicker;
 import com.github.sarxos.webcam.WebcamResolution;
+
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +26,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
+
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -33,7 +39,7 @@ import javax.swing.JPanel;
  *
  * @author Bartosz Firyn (SarXos)
  */
-public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamListener, WindowListener, UncaughtExceptionHandler, ItemListener {
+public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamListener, WindowListener, UncaughtExceptionHandler, ItemListener,Serializable {
     
     public String pathImgTirada;
     private static final long serialVersionUID = 1L;
@@ -85,7 +91,7 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamLi
         webcam = picker.getSelectedWebcam();
         
         if (webcam == null) {
-            JOptionPane.showConfirmDialog(this, "NÃ£o foi encontrado uma Web cam conectada");
+            JOptionPane.showConfirmDialog(this, "Não foi encontrado uma Web cam conectada");
             sucess = false;
             
         } else {
@@ -101,7 +107,8 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamLi
                 public void actionPerformed(ActionEvent e) {
                     try {
                         System.out.println("cliq");
-                        java.io.File f = new java.io.File(diretorioParaSalvar + "\\" + nomeArquivo + ".jpg");
+                        JOptionPane.showMessageDialog(rootPane, diretorioParaSalvar + "/" + nomeArquivo + ".jpg");
+                        java.io.File f = new java.io.File(diretorioParaSalvar + "/" + nomeArquivo + ".jpg");
                         if (f.exists()) {
                             f.delete();
                         }
@@ -117,13 +124,7 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamLi
                 }
             });
             btSair = new JButton("Sair");
-            btSair.addActionListener(new ActionListener() {
-                
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    minhaDialog.dispose();
-                }
-            });
+            //btSair.addActionListener(evt -> minhaDialog.dispose());
             
             JPanel painelButtons = new JPanel();
             painelButtons.add(btTakePicture, BorderLayout.EAST);
@@ -165,12 +166,13 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamLi
     @Override
     public void webcamOpen(WebcamEvent we) {
         System.out.println("webcam open");
+        JOptionPane.showMessageDialog(rootPane, "open");
     }
     
     @Override
     public void webcamClosed(WebcamEvent we) {
         System.out.println("webcam closed");
-        FuncionarioController.loadInformacao();
+        JOptionPane.showMessageDialog(rootPane, "open");
     }
     
     @Override
