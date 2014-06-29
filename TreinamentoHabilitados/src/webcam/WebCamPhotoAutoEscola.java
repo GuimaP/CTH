@@ -106,8 +106,6 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamLi
             btTakePicture.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        System.out.println("cliq");
-                        JOptionPane.showMessageDialog(rootPane, diretorioParaSalvar + "/" + nomeArquivo + ".jpg");
                         java.io.File f = new java.io.File(diretorioParaSalvar + "/" + nomeArquivo + ".jpg");
                         if (f.exists()) {
                             f.delete();
