@@ -13,7 +13,7 @@ public class LogController {
 	public static void insertLog(Exception e){
 		 try{
 		 Date dt = new Date(System.currentTimeMillis());
-         String nameFile = "log-" + dt + ".txt"; //Montro um nome de arquivo de acordo com o dia do log
+         String nameFile = "log-" + new SimpleDateFormat("dd//MM/yy").format(dt) + ".txt"; //Montro um nome de arquivo de acordo com o dia do log
          String dirPath = Start.class.getClass().getResource("/").getPath() + nameFile; //Monto o caminho que será salvo esse arquivo
          
          

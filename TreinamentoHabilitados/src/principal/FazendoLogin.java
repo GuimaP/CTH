@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import DAO.DAOlogin;
-import modelo.Login;
+import Model.Login;
 
 public class FazendoLogin {
 

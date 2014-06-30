@@ -10,10 +10,10 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import Model.Cliente;
+import Model.Cnh;
+import Model.Endereco;
 import principal.CadastroCliente;
-import modelo.Cliente;
-import modelo.Cnh;
-import modelo.Endereco;
 
 
 

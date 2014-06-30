@@ -1,6 +1,8 @@
 package Model.Repository;
 
 import Main.Start;
+import Model.Login;
+
 import java.sql.SQLClientInfoException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -10,7 +12,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-import modelo.Login;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;

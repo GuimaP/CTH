@@ -1,8 +1,10 @@
 package Main;
 
+import Controller.ConfigController;
 import Controller.LogController;
 import Model.Repository.ConnectionFactoryRepository;
-import formulario.TelaLogin;
+import View.Principal;
+import View.TelaLogin;
 
 import java.awt.BorderLayout;
 import java.io.File;
@@ -21,6 +23,7 @@ import javax.swing.JFrame;
 
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -53,6 +56,7 @@ public class Start {
                             janela.add(lb, BorderLayout.CENTER);
                             janela.setLocationRelativeTo(null);
                             janela.setVisible(true);
+                            janela.setIconImage(ConfigController.defineIcon());
                             int cont = 0;
                             while (Start.isLoading) {
                                 try {
@@ -78,11 +82,12 @@ public class Start {
                     isLoading = false;
                     TelaLogin tela = new TelaLogin();
                     
+                    new Principal();
                     break;
                 }
 
             }
-        } catch (SQLException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+        } catch (IllegalAccessException | UnsupportedLookAndFeelException | SQLException e) {
             LogController.insertLog(e);
             e.printStackTrace();
         }

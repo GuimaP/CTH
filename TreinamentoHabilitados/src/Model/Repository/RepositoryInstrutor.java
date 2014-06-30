@@ -1,8 +1,13 @@
 package Model.Repository;
 
 import java.sql.SQLException;
+
 import javax.persistence.EntityManager;
-import modelo.Funcionario;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+
+import Model.Funcionario;
 
 /**
  *@author Guima
@@ -46,4 +51,10 @@ public class RepositoryInstrutor{
         }
         
     }
+    
+  public java.util.List<Funcionario> getAll (){
+	  Session s = (Session)connection.getDelegate();
+	 Criteria c = s.createCriteria(Funcionario.class);
+	  return c.list();
+  }
 }

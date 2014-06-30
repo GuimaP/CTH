@@ -6,9 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import modelo.Cliente;
-import modelo.Cnh;
-import modelo.Endereco;
+import Model.Cliente;
+import Model.Cnh;
+import Model.Endereco;
 
 @Entity
 public class CadastroCliente {

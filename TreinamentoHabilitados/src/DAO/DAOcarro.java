@@ -5,8 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.JOptionPane;
-import modelo.Carro;
+
+import Model.Carro;
 
 public class DAOcarro extends DAOconexao {
 	private DAOconexao banco;

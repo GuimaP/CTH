@@ -16,8 +16,10 @@ import java.io.ObjectOutputStream;
 import java.io.Writer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.tools.FileObject;
-import modelo.Funcionario;
+
+import Model.Funcionario;
 
 /**
  *

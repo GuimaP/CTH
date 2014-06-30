@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
-import modelo.Login;
+import Model.Login;
 
 public class DAOlogin extends DAOconexao {
 	private DAOconexao banco;

@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JOptionPane;
 
-import modelo.Carro;
-import modelo.Funcionario;
+import Model.Carro;
+import Model.Funcionario;
 
 public class DAOinstrutor extends DAOconexao {
 	private DAOconexao banco;
