@@ -6,10 +6,14 @@ import Model.Repository.ConnectionFactoryRepository;
 import View.Principal;
 import View.TelaLogin;
 
+import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Window;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
@@ -33,104 +37,138 @@ import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import com.ibm.media.ShowDocumentEvent;
+
 public class Start {
 
-    protected static boolean isLoading = true;
-    public static EntityManager manager;
-    
+	protected static boolean isLoading = true;
+	public static EntityManager manager;
 
-    public static void main(String[] args) throws ClassNotFoundException, InstantiationException {
-        try {
+	public static void main(String[] args) throws ClassNotFoundException,
+			InstantiationException {
+		try {
 
-            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                System.out.println(info.getName());
-                if ("Nimbus".equals(info.getName())) {
-                    System.out.println("is nimbus");
-                    UIManager.setLookAndFeel(info.getClassName());
-                    Thread t = new Thread(new Runnable() {
+			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+				System.out.println(info.getName());
+				if ("Nimbus".equals(info.getName())) {
+					System.out.println("is nimbus");
+					UIManager.setLookAndFeel(info.getClassName());
+					Thread t = new Thread(new Runnable() {
 
-                        @Override
-                        public void run() {
-                            String[] mensagens = {"Carregando...", "Mais Alguns Instantes..."};
-                            JFrame janela = new JFrame("Carregando");
-                            janela.setContentPane(new MyPainelInvisible());
-                            janela.setUndecorated(true);
-                            janela.setSize(300, 250);
-                            janela.setOpacity(0.0f); //Deixando Transparente                            
-                            janela.setDefaultCloseOperation(EXIT_ON_CLOSE);
-                            JLabel lb = new JLabel("Carregando");
-                            //lb.setOpaque(true);
-                            //janela.add(lb, BorderLayout.CENTER);
-                            janela.setLocationRelativeTo(null);
-                            janela.setVisible(true);
-                            janela.setIconImage(ConfigController.defineIcon());
-                            
-                            int cont = 0;
-                            while (Start.isLoading) {
-                                try {
-                                    lb.setText(mensagens[(cont % 2)]);
-                                    Thread.sleep(1 * 1000);
-                                    cont++;
+						@Override
+						public void run() {
+							String[] mensagens = { ".              Carregando...",
+									". Mais Alguns Instantes..." };
+							JFrame janela = new JFrame("Carregando");
+							// janela.setContentPane(new MyPainelInvisible());
+							janela.setUndecorated(true);
+							janela.setSize(400, 400);
+							janela.setOpacity(0.4f);
+							janela.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-                                    Thread.sleep(1000);
-                                } catch (InterruptedException ex) {
-                                    Logger.getLogger(Start.class.getName()).log(Level.SEVERE, null, ex);
-                                }
+							janela.setLocationRelativeTo(null);
 
-                            }
-                            janela.dispose();
-                        }
-                        
-                        class MyPainelInvisible extends JPanel{
+							janela.setBackground(new Color(0,0,0,2)); //Fundo da Frame deixa transparente
+							janela.setContentPane(new MyPainelInvisible()); //Defino a imagem como opaque e visivel
+							janela.setLayout(new BorderLayout());
+							JLabel lb = new JLabel("Carregando");
+							Font f = new Font("Arial", Font.BOLD,26);
+							lb.setForeground(Color.black);
+							lb.setFont(f);
+							
+							janela.getContentPane().add(lb);
+							janela.setAlwaysOnTop(true);
 
-                        	public MyPainelInvisible() {
-								setForeground(Color.black);
-								setBackground(new Color(0, 0, 200, 255));
+							janela.setVisible(true);
+							janela.setIconImage(ConfigController.defineIcon());
+
+							int cont = 0;
+							while (Start.isLoading) {
+								try {
+									lb.setText(mensagens[(cont % 2)]);
+									Thread.sleep(1 * 1000);
+									cont++;
+
+									Thread.sleep(1000);
+								} catch (InterruptedException ex) {
+									Logger.getLogger(Start.class.getName())
+											.log(Level.SEVERE, null, ex);
+								}
+
 							}
-                        		
-                        	@Override
-                        	public void paint(Graphics g) {
-                        		super.paintComponents(g);
-                        		java.awt.Image img = new javax.swing.ImageIcon
-                        				(Start.class.getResource("/Resources/icons").getPath()+"/loading.gif").getImage();
-                        		g.drawImage(img,0,0,this.getWidth(),this.getHeight(),this);
-                        		
-                        		
-                        		
-                        		// desenha um retângulo em toda a extensão do painel  
-                                //g.fillRect( 0, 0, getWidth(), getHeight() ); 
-                        	}
-                        	
-                        }
-                        
-                        
+							janela.dispose();
+						}
+						/*
+						 * http://stackoverflow.com/questions/11703794/how-to-set-jframe-background-transparent-but-jpanel-or-jlabel-background-opaque
+						 */
+					
+						class MyPainelInvisible extends JPanel {
 
-                    });
-                    t.start();
-                    System.out.println("Inicando Log");
-                    //LogController.insertLog(new Exception("Iniciando"));
-                   
-                    manager = ConnectionFactoryRepository.getManager();
+							public MyPainelInvisible() {
+								setOpaque(false);
+								
+							}
 
-                    isLoading = false;
-                    TelaLogin tela = new TelaLogin();
-                    
-//                    new Principal();
-                    break;
-                }
+							@Override
+							public void paint(Graphics g) {
+								super.paintComponents(g);
+								java.awt.Image img = new javax.swing.ImageIcon(
+										getClass().getResource(
+												"/Resources/icons").getPath()
+												+ "/loading.gif").getImage();
+								g.drawImage(img, 0, 0, this.getWidth(),
+										this.getHeight(), this);
+							}
+							
+							@Override
+						    protected void paintComponent(Graphics g) {
 
-            }
-        } catch (IllegalAccessException | UnsupportedLookAndFeelException | SQLException e) {
-            LogController.insertLog(e);
-            e.printStackTrace();
-        }
-        
-    }
-    
-    
+						        // Allow super to paint
+						        super.paintComponent(g);
+
+						        // Apply our own painting effect
+						        Graphics2D g2d = (Graphics2D) g.create();
+						        // 50% transparent Alpha
+						        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.9f));
+
+						        g2d.setColor(getBackground());
+						        g2d.fill(getBounds());
+
+						        g2d.dispose();
+
+						    }
+
+
+						}
+
+					});
+					t.start();
+					System.out.println("Inicando Log");
+					// LogController.insertLog(new Exception("Iniciando"));
+
+					manager = ConnectionFactoryRepository.getManager();
+
+					isLoading = false;
+					TelaLogin tela = new TelaLogin();
+
+				//	new Principal();
+					break;
+				}
+
+			}
+		} catch (IllegalAccessException | UnsupportedLookAndFeelException
+				| SQLException e) {
+			LogController.insertLog(e);
+			e.printStackTrace();
+		}
+
+	}
+
 }

@@ -9,6 +9,7 @@ import Main.Start;
 import Model.Tarefa;
 import Model.Enums.Prioridade;
 import Model.Repository.Repository;
+import Model.Repository.RepositoryTarefa;
 
 import com.toedter.calendar.JCalendar;
 
@@ -197,8 +198,6 @@ public class PainelCalendarioAgendamento extends JPanel {
 			
 			LocalTime hora = LocalTime.of(hours, minutes);
 			
-//			java.util.Calendar dt = calendario.getDate();
-			
 			String data = new SimpleDateFormat("dd/MM/yyyy").format(calendario.getDate());
 			String[]vtrData = data.split("/");
 			int dia = Integer.parseInt(vtrData[0]);
@@ -212,10 +211,17 @@ public class PainelCalendarioAgendamento extends JPanel {
 			task.setDescricao(tfDescricaoTarefa.getText());
 			task.setPrioridade(Prioridade.Alta);
 			
-			Repository<Tarefa> repo = new Repository<Tarefa>();
+			RepositoryTarefa repo = new RepositoryTarefa();
 			repo.Adicionar(task);
-			hideNewTask();
 			
+			hideNewTask();
+			myPanel.setSize(myPanel.getWidth(), myPanel.getHeight()- 145);
+			
+		});
+		
+		calendario.getDayChooser().addPropertyChangeListener("day",evt -> {
+			java.util.Date dt = calendario.getDate();
+			new RepositoryTarefa().getAllTarefasToday(dt);
 		});
 	}
 
