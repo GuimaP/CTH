@@ -10,6 +10,7 @@ import Model.Tarefa;
 import Model.Enums.Prioridade;
 import Model.Repository.Repository;
 import Model.Repository.RepositoryTarefa;
+import Testes.painelTeste1;
 
 import com.toedter.calendar.JCalendar;
 
@@ -44,20 +45,27 @@ import javax.swing.SpinnerNumberModel;
  */
 public class PainelCalendarioAgendamento extends JPanel {
 
-	private JButton btCloseTask, btAgendarTarefa,btSaveTask;
+	private JButton btAgendarTarefa;
+	private JLabel btSaveTask, btCloseTask;
 	private JTable tbTarefas;
 	private JCalendar calendario;
 
 	private JTextField tfDataSelecionada;
 	private JTextArea tfDescricaoTarefa;
 	private JSpinner spHora, spMinutos;
+	private boolean areOpen;
 
-	private JPanel myPanel;
+	private JPanel myPanel, painelNewTask, painelCalendario;
 
 	private JScrollPane spDescricao;
+	private ImageIcon imgClose;
+
+	private java.util.Date dateSelcionada;
 
 	public PainelCalendarioAgendamento() {
-
+		imgClose = new ImageIcon(PainelCalendarioAgendamento.class.getResource(
+				"/Resources/icons").getPath()
+				+ "/closeDesc.png");
 		initComponents();
 		defineEvents();
 
@@ -66,13 +74,14 @@ public class PainelCalendarioAgendamento extends JPanel {
 	private void initComponents() {
 
 		myPanel = this; // para manipulação da Panel dentro de eventos...
-		setSize(385, 260);
+		setSize(385, 360);
 		setLayout(null);
-		setBackground(new Color(0,0,0,60));
+		setBackground(new Color(0, 0, 0, 30));
+		setOpaque(true);
 
-		JPanel jp = new JPanel();
-		jp.setLayout(new GridLayout(1, 1));
-		jp.setBounds(0, 5, myPanel.getWidth(), 210);
+		painelCalendario = new JPanel();
+		painelCalendario.setLayout(new GridLayout(1, 1));
+		painelCalendario.setBounds(0, 5, myPanel.getWidth(), 210);
 
 		calendario = new JCalendar();
 		calendario.setWeekdayForeground(Color.GRAY);
@@ -85,9 +94,9 @@ public class PainelCalendarioAgendamento extends JPanel {
 		min.add(Calendar.YEAR, 1900);
 		min.add(Calendar.MONTH, 1);
 		min.add(Calendar.DATE, 1);
-		jp.add(calendario);
+		painelCalendario.add(calendario);
 
-		add(jp);
+		add(painelCalendario);
 
 		btAgendarTarefa = new JButton("Agendar Tarefa");
 		javax.swing.ImageIcon img = new javax.swing.ImageIcon(Start.class
@@ -99,57 +108,119 @@ public class PainelCalendarioAgendamento extends JPanel {
 				220);
 		add(btAgendarTarefa);
 
-		tfDataSelecionada = new JTextField();
+		setVisible(true);
+
+	}
+
+	private void createNewTaskMenu() {
+
+		painelNewTask = new JPanel();
+		painelNewTask.removeAll();
+		painelNewTask.setLayout(null);
+		painelNewTask.setOpaque(false);
+		painelNewTask.setBackground(new Color(90, 90, 90, 255));
+		painelNewTask.setBounds(0, painelCalendario.getHeight() + 50,
+				painelCalendario.getWidth() - 20, 140);
+
+		tfDataSelecionada = new JTextField("");
 		tfDataSelecionada.setEnabled(false);
-		tfDataSelecionada.setBounds(10, jp.getHeight() + 50, 100, 25);
+		tfDataSelecionada.setBounds(10, 10, 100, 25);
 		tfDataSelecionada.setVisible(false);
-		add(tfDataSelecionada);
+		tfDataSelecionada.setText(new SimpleDateFormat("dd/MM/yyyy")
+				.format(calendario.getDate()));
+		painelNewTask.add(tfDataSelecionada);
 
 		tfDescricaoTarefa = new JTextArea();
 		tfDescricaoTarefa.setLineWrap(true);
 		tfDescricaoTarefa.setWrapStyleWord(true);
 		spDescricao = new JScrollPane(tfDescricaoTarefa);
-		spDescricao.setSize(myPanel.getWidth() - 20, 50);
+		spDescricao.setSize(painelNewTask.getWidth() - 20, 50);
 		spDescricao.setLocation(10, tfDataSelecionada.getY() + 30);
 		spDescricao.setToolTipText("Insira a Descrição da Tarefa");
 		spDescricao.setVisible(false); // Escondo os detalhes de Agendamento
-		add(spDescricao);
+		painelNewTask.add(spDescricao);
 
-		SpinnerNumberModel spModelHora,spModelMinutos;
+		SpinnerNumberModel spModelHora, spModelMinutos;
 		LocalTime horaAtual = LocalTime.now();
-		spModelHora = new SpinnerNumberModel(horaAtual.getHour(), 00, 24, 1); /** http://docs.oracle.com/javase/tutorial/uiswing/components/spinner.html **/
-		spModelMinutos = new SpinnerNumberModel(horaAtual.getMinute(),00,59,1);
-		
+		spModelHora = new SpinnerNumberModel(horaAtual.getHour(), 00, 24, 1);
+		/**
+		 * http://docs.oracle.com/javase/tutorial/uiswing/components/spinner.
+		 * html
+		 **/
+		spModelMinutos = new SpinnerNumberModel(horaAtual.getMinute(), 00, 59,
+				1);
+
 		spHora = new JSpinner(spModelHora);
-		spHora.setBounds(tfDataSelecionada.getX() + tfDataSelecionada.getWidth() + 5,
+		spHora.setBounds(
+				tfDataSelecionada.getX() + tfDataSelecionada.getWidth() + 5,
 				tfDataSelecionada.getY(), 45, 30);
 		spHora.setVisible(false);
-		add(spHora);
-		
+		painelNewTask.add(spHora);
+
 		spMinutos = new JSpinner(spModelMinutos);
-		spMinutos.setBounds(spHora.getX() + spHora.getWidth() + 5, spHora.getY(), 45, 30);
+		spMinutos.setBounds(spHora.getX() + spHora.getWidth() + 5,
+				spHora.getY(), 45, 30);
 		spMinutos.setVisible(false);
-		add(spMinutos);
-		
-		ImageIcon imgClose = new ImageIcon(PainelCalendarioAgendamento.class.getResource("/Resources/icons").getPath()+"/closeDesc.png");
-		btCloseTask = new JButton(imgClose);
+		painelNewTask.add(spMinutos);
+
+		btCloseTask = new JLabel(imgClose);
 		btCloseTask.setSize(30, 30);
-		btCloseTask.setLocation(myPanel.getWidth() - 40, spMinutos.getY());
-		btCloseTask.setContentAreaFilled(false);
+		btCloseTask
+				.setLocation(painelNewTask.getWidth() - 40, spMinutos.getY());
 		btCloseTask.setVisible(false);
-		btCloseTask.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); //Mudo o cursor quando estiver em cima do botão
-		add(btCloseTask);
-		
-		ImageIcon imgSave = new ImageIcon(PainelCalendarioAgendamento.class.getResource("/Resources/icons").getPath()+"/iconSaveTask.png");
-		btSaveTask = new JButton(imgSave);
+		btCloseTask.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); 
+		btCloseTask.setBackground(new Color(0, 0, 0, 0));
+		btCloseTask.setOpaque(false);
+		painelNewTask.add(btCloseTask);
+
+		ImageIcon imgSave = new ImageIcon(PainelCalendarioAgendamento.class
+				.getResource("/Resources/icons").getPath()
+				+ "/iconSaveTask.png");
+
+		btSaveTask = new JLabel(imgSave);
 		btSaveTask.setSize(imgSave.getIconWidth(), imgSave.getIconHeight());
-		btSaveTask.setContentAreaFilled(false);
-		btSaveTask.setLocation(myPanel.getWidth() - 70, spDescricao.getY() + spDescricao.getHeight());
+		btCloseTask.setBackground(new Color(0, 0, 0, 0));
+		btSaveTask.setLocation(painelNewTask.getWidth() - 60,
+				spDescricao.getY() - 10 + spDescricao.getHeight());
 		btSaveTask.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btSaveTask.setOpaque(false);
 		btSaveTask.setVisible(false);
-		add(btSaveTask);
+		btSaveTask.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+				
+				dateSelcionada = calendario.getDate();
+				LocalDateTime time = LocalDateTime.now();
+				time.withYear(dateSelcionada.getYear());
+				time.withMonth(dateSelcionada.getMonth());
+				time.withDayOfMonth(dateSelcionada.getDate());
+				time.withHour(dateSelcionada.getHours());
+				time.withMinute(dateSelcionada.getMinutes());
+				
+				Tarefa t = new Tarefa();
+				t.setDescricao(tfDescricaoTarefa.getText());
+				t.setPrioridade(Prioridade.Alta);
+				t.setDataTarefa(time);
+				RepositoryTarefa repoTarefa = new RepositoryTarefa();
+				repoTarefa.Adicionar(t);
+				hideNewTask();
+				calendario.setDate(new java.util.Date(System.currentTimeMillis()));
+			}
+		});
 		
-		setVisible(true);
+		painelNewTask.add(btSaveTask);
+
+		btCloseTask.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+				hideNewTask();
+
+			}
+		});
+
+		add(painelNewTask);
 
 	}
 
@@ -162,91 +233,68 @@ public class PainelCalendarioAgendamento extends JPanel {
 	}
 
 	private void defineEvents() {
-		btAgendarTarefa.addActionListener(evt -> {
-			showNewTask();
-			myPanel.setSize(myPanel.getWidth(), myPanel.getHeight()+ 145);
-			tfDataSelecionada.setText(new SimpleDateFormat("dd/MM/yyyy")
-					.format(calendario.getDate()));
-		});
-		//Aplico o efeito de mouse em cima do botão fechar
-		btCloseTask.addMouseListener(new MouseAdapter() {
-			public void mouseEntered(MouseEvent e) {
-				super.mouseEntered(e);
-				javax.swing.ImageIcon img = 
-						new javax.swing.ImageIcon(PainelCalendarioAgendamento.class.getResource("/Resources/icons").getPath()
-								+"/closeDescOn.png");
-				btCloseTask.setIcon(img);
-			}
-			public void mouseExited(MouseEvent e) {
-				super.mouseExited(e);
-				javax.swing.ImageIcon img = 
-						new javax.swing.ImageIcon(PainelCalendarioAgendamento.class.getResource("/Resources/icons").getPath()
-								+"/closeDesc.png");
-				btCloseTask.setIcon(img);
-			}
-		});
-		
-		btCloseTask.addActionListener(evt -> {
-			hideNewTask();
-			myPanel.setSize(myPanel.getWidth(), myPanel.getHeight()- 145);
-		});
-		
-		btSaveTask.addActionListener(evt -> {
-			Tarefa task = new Tarefa();
-			
-			int hours = Integer.parseInt(spHora.getValue().toString());
-			int minutes = Integer.parseInt(spMinutos.getValue().toString());
-			
-			LocalTime hora = LocalTime.of(hours, minutes);
-			
-			String data = new SimpleDateFormat("dd/MM/yyyy").format(calendario.getDate());
-			String[]vtrData = data.split("/");
-			int dia = Integer.parseInt(vtrData[0]);
-			int mes = Integer.parseInt(vtrData[1]);
-			int ano = Integer.parseInt(vtrData[2]);
-			LocalDate dataCompromisso = LocalDate.of(ano, mes, dia);
-		
-			LocalDateTime taskTime = dataCompromisso.atTime(hora);
 
-			task.setDataTarefa(taskTime);
-			task.setDescricao(tfDescricaoTarefa.getText());
-			task.setPrioridade(Prioridade.Alta);
-			
-			RepositoryTarefa repo = new RepositoryTarefa();
-			repo.Adicionar(task);
-			
-			hideNewTask();
-			myPanel.setSize(myPanel.getWidth(), myPanel.getHeight()- 145);
-			
-		});
-		
-		calendario.getDayChooser().addPropertyChangeListener("day",evt -> {
+		calendario.getDayChooser().addPropertyChangeListener("day", evt -> {
 			java.util.Date dt = calendario.getDate();
 			new RepositoryTarefa().getAllTarefasToday(dt);
 		});
+
+		btAgendarTarefa.addActionListener(evt -> {
+			showNewTask();
+
+		});
+
 	}
 
 	/**
 	 * Evento para mostrar os campos para inserir uma nova tarefa
 	 */
 	private void showNewTask() {
+		if(areOpen){
+			myPanel.setSize(myPanel.getWidth(), myPanel.getHeight() + 145);
+		}
+		areOpen = true;
+		createNewTaskMenu();
 		tfDataSelecionada.setVisible(true);
 		spDescricao.setVisible(true);
 		spHora.setVisible(true);
 		spMinutos.setVisible(true);
 		btCloseTask.setVisible(true);
 		btSaveTask.setVisible(true);
+		painelNewTask.setVisible(true);
+		
+		
+		
+		Color c = new Color(0, 0, 0, 30);
+		myPanel.setBackground(c);
+		myPanel.revalidate();
+		myPanel.repaint();
+		Principal.minhaFrame.revalidate();
+		Principal.minhaFrame.repaint();
+
 	}
 
 	/**
 	 * Para esconder os campos da nova tarefa
 	 */
 	private void hideNewTask() {
+		areOpen = false;
+		if(!areOpen){
+		myPanel.setSize(myPanel.getWidth(), myPanel.getHeight() - 145);
+		}
 		tfDataSelecionada.setVisible(false);
 		spDescricao.setVisible(false);
 		spHora.setVisible(false);
 		spMinutos.setVisible(false);
 		btCloseTask.setVisible(false);
 		btSaveTask.setVisible(false);
+		painelNewTask.setVisible(false);
+		
+		
+		painelNewTask.removeAll();
+		myPanel.revalidate();
+		myPanel.repaint();
+		Principal.minhaFrame.revalidate();
+		Principal.minhaFrame.repaint();
 	}
 }

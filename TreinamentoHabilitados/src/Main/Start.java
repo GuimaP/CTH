@@ -90,7 +90,7 @@ public class Start {
 							
 							lb.setFont(ConfigController.definePrincipalFont(30f, Font.BOLD));
 							lb.setForeground(Color.black);
-							
+							janela.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 							
 							
 							janela.getContentPane().add(lb);
