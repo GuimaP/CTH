@@ -70,34 +70,40 @@ public class TelaLogin extends JFrame {
         setResizable(false);
         setUndecorated(true);
         
+        
         setIconImage(ConfigController.defineIcon());
 
         // Button
         btOk = new JButton("Logar");
         btOk.setSize(80, 30);
         btOk.setLocation(100, 90);
+        btOk.setFont(ConfigController.definePrincipalFont(14f, Font.PLAIN));
         add(btOk);
 
         btSair = new JButton("Sair");
         btSair.setSize(80, 30);
         btSair.setLocation(200, 90);
+        btSair.setFont(ConfigController.definePrincipalFont(14f, Font.PLAIN));
         add(btSair);
 
         // Label
         lbUsuario = new JLabel("Usuário");
         lbUsuario.setSize(55, 10);
         lbUsuario.setLocation(20, 25);
+        lbUsuario.setFont(ConfigController.definePrincipalFont(14f, Font.PLAIN));
         add(lbUsuario);
 
         lbSenha = new JLabel("Senha");
         lbSenha.setSize(60, 10);
         lbSenha.setLocation(20, 55);
+        lbSenha.setFont(ConfigController.definePrincipalFont(14f, Font.PLAIN));
         add(lbSenha);
 
         // TextField
         tfUsuario = new JTextField();
         tfUsuario.setSize(160, 30);
         tfUsuario.setLocation(100, 22);
+        tfUsuario.setFont(ConfigController.definePrincipalFont(14f, Font.PLAIN));
         add(tfUsuario);
 
         jpSenha = new JPasswordField();

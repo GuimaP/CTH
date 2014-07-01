@@ -11,8 +11,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.Window;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -21,7 +23,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -60,6 +65,8 @@ public class Start {
 				if ("Nimbus".equals(info.getName())) {
 					System.out.println("is nimbus");
 					UIManager.setLookAndFeel(info.getClassName());
+
+					
 					Thread t = new Thread(new Runnable() {
 
 						@Override
@@ -68,6 +75,7 @@ public class Start {
 									". Mais Alguns Instantes..." };
 							JFrame janela = new JFrame("Carregando");
 							// janela.setContentPane(new MyPainelInvisible());
+							janela.setIconImage(ConfigController.defineIcon());
 							janela.setUndecorated(true);
 							janela.setSize(400, 400);
 							janela.setOpacity(0.4f);
@@ -79,15 +87,17 @@ public class Start {
 							janela.setContentPane(new MyPainelInvisible()); //Defino a imagem como opaque e visivel
 							janela.setLayout(new BorderLayout());
 							JLabel lb = new JLabel("Carregando");
-							Font f = new Font("Arial", Font.BOLD,26);
+							
+							lb.setFont(ConfigController.definePrincipalFont(30f, Font.BOLD));
 							lb.setForeground(Color.black);
-							lb.setFont(f);
+							
+							
 							
 							janela.getContentPane().add(lb);
 							janela.setAlwaysOnTop(true);
 
 							janela.setVisible(true);
-							janela.setIconImage(ConfigController.defineIcon());
+							
 
 							int cont = 0;
 							while (Start.isLoading) {
@@ -165,7 +175,7 @@ public class Start {
 			}
 		} catch (IllegalAccessException | UnsupportedLookAndFeelException
 				| SQLException e) {
-			LogController.insertLog(e);
+			//LogController.insertLog(e);
 			e.printStackTrace();
 		}
 

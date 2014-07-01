@@ -68,6 +68,7 @@ public class PainelCalendarioAgendamento extends JPanel {
 		myPanel = this; // para manipulação da Panel dentro de eventos...
 		setSize(385, 260);
 		setLayout(null);
+		setBackground(new Color(0,0,0,60));
 
 		JPanel jp = new JPanel();
 		jp.setLayout(new GridLayout(1, 1));
