@@ -62,10 +62,11 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamLi
         diretorioParaSalvar = strPath;
         nomeArquivo = strNameFile;
         point = new Point();
-        //setModalityType(ModalityType.APPLICATION_MODAL);
         if (!sucess) {
-            this.dispose();
+            System.out.println("tem que sair");
+        	dispose();
         } else {
+        	
             run();
             setUndecorated(true);
             setLocationRelativeTo(null);
@@ -226,7 +227,7 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable, WebcamLi
     public void itemStateChanged(ItemEvent e) {
         if (e.getItem() != webcam) {
             if (webcam != null) {
-                
+                 
                 panel.stop();
                 
                 remove(panel);

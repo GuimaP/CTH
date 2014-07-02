@@ -13,8 +13,8 @@ import Model.Tarefa;
 public class RepositoryTarefa extends Repository<Model.Tarefa> {
 	public java.util.List<Model.Tarefa> getAllTarefasToday(java.time.LocalDateTime dt){
 		try{
-			EntityManager em = Model.Repository.ConnectionFactoryRepository.getManager();
-			Session s =(Session) em.getDelegate();
+			
+			Session s =(Session) ConnectionFactoryConfig.getSession().getCurrentSession();
 			java.util.Date date = new java.util.Date(dt.getYear()-1900,dt.getMonthValue()-1 , dt.getDayOfMonth());
 			Criteria filtro = s.createCriteria(Tarefa.class);
 			filtro.add(Restrictions.eq("dataCompromisso", date));
@@ -33,12 +33,14 @@ public class RepositoryTarefa extends Repository<Model.Tarefa> {
 	
 	public java.util.List<Model.Tarefa> getAllTarefasToday(java.util.Date dt){
 		try{
-			EntityManager em = Model.Repository.ConnectionFactoryRepository.getManager();
-			Session s =(Session) em.getDelegate();
+			Session session = Model.Repository.ConnectionFactoryConfig.getSession().getCurrentSession();
+			session.beginTransaction();
 			java.util.Date date = new java.util.Date(dt.getYear(),dt.getMonth(),dt.getDate());
-			Criteria filtro = s.createCriteria(Tarefa.class);
+			Criteria filtro = session.createCriteria(Tarefa.class);
 			filtro.add(Restrictions.eq("dataCompromisso", date));
 			java.util.List<Tarefa> list = filtro.list();
+			session.getTransaction().commit();
+			
 			System.out.println(date);
 			System.out.println("aospdksapokdsao");
 			System.out.println(list);

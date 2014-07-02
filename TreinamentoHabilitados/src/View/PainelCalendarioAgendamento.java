@@ -260,7 +260,7 @@ public class PainelCalendarioAgendamento extends JPanel {
 				t.setDescricao(tfDescricaoTarefa.getText());
 				t.setPrioridade(Prioridade.Alta);
 				t.setDataCompromisso(dateSelcionada);
-				repoTarefa.Adicionar(t);
+				repoTarefa.adicionar(t);
 				hideNewTask();
 				calendario.setDate(new java.util.Date(System.currentTimeMillis()));
 			}

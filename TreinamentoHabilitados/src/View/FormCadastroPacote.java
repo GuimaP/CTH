@@ -183,7 +183,7 @@ public class FormCadastroPacote extends JInternalFrame {
                 } else {
 
                     Repository<Pacote> repo = new Repository<Pacote>();
-                    repo.Adicionar(pacote);
+                    repo.adicionar(pacote);
                 }
 
             }

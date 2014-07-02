@@ -13,7 +13,7 @@ import Model.Funcionario;
  *@author Guima
  * Classe responsavel pela Persistencia da Base de dados
  */
-public class RepositoryInstrutor{
+public class RepositoryInstrutor extends Repository<Model.Funcionario> {
     private EntityManager connection;
     
     public RepositoryInstrutor(EntityManager connection){ //Recebo uma conexão ja criada
@@ -38,23 +38,5 @@ public class RepositoryInstrutor{
      * @params Objeto para Persistencia com a Classe
      * 
      */
-    public void adicionar(Funcionario obj) throws SQLException{
-       
-        if(connection != null){ //Verifico se possui uma conexao criada
-            connection.getTransaction().begin();//Inicio uma transação
-            connection.persist(obj);
-            connection.getTransaction().commit();// e finalizo ela
-        }else { //se não eu lanço uma Exceptions
-            connection.getTransaction().rollback(); //e dou rollback na transaction
-            throw new SQLException("Houve um erro ao conectar a base de dados");
-            
-        }
-        
-    }
     
-  public java.util.List<Funcionario> getAll (){
-	  Session s = (Session)connection.getDelegate();
-	 Criteria c = s.createCriteria(Funcionario.class);
-	  return c.list();
-  }
 }

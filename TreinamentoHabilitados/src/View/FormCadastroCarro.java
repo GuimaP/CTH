@@ -125,7 +125,7 @@ public class FormCadastroCarro extends JFrame {
                                     carro.setModelo(tfModelo.getText());
                                     carro.setPlaca(tfPlaca.getValue().toString());
                                     Repository<Model.Carro> repo = new Repository<Carro>();
-                                    repo.Adicionar(carro);
+                                    repo.adicionar(carro);
 				}   
 			}
 		});

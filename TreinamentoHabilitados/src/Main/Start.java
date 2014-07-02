@@ -2,6 +2,7 @@ package Main;
 
 import Controller.ConfigController;
 import Controller.LogController;
+import Model.Repository.ConnectionFactoryConfig;
 import Model.Repository.ConnectionFactoryRepository;
 import View.Principal;
 import View.TelaLogin;
@@ -34,6 +35,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
+import javax.management.RuntimeErrorException;
 import javax.persistence.EntityManager;
 import javax.swing.JFrame;
 
@@ -43,18 +45,22 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import org.hibernate.Session;
+import org.hibernate.exception.GenericJDBCException;
+
 import com.ibm.media.ShowDocumentEvent;
 
 public class Start {
 
 	protected static boolean isLoading = true;
-	public static EntityManager manager;
+	public static Session session;
 
 	public static void main(String[] args) throws ClassNotFoundException,
 			InstantiationException {
@@ -74,7 +80,6 @@ public class Start {
 							String[] mensagens = { ".              Carregando...",
 									". Mais Alguns Instantes..." };
 							JFrame janela = new JFrame("Carregando");
-							// janela.setContentPane(new MyPainelInvisible());
 							janela.setIconImage(ConfigController.defineIcon());
 							janela.setUndecorated(true);
 							janela.setSize(400, 400);
@@ -163,7 +168,8 @@ public class Start {
 					System.out.println("Inicando Log");
 					// LogController.insertLog(new Exception("Iniciando"));
 
-					manager = ConnectionFactoryRepository.getManager();
+					ConnectionFactoryConfig.openManger();
+					session = ConnectionFactoryConfig.getSession().openSession();
 
 					isLoading = false;
 					TelaLogin tela = new TelaLogin();
@@ -173,10 +179,12 @@ public class Start {
 				}
 
 			}
-		} catch (IllegalAccessException | UnsupportedLookAndFeelException
-				| SQLException e) {
+		} catch (IllegalAccessException | UnsupportedLookAndFeelException e) {
 			//LogController.insertLog(e);
 			e.printStackTrace();
+		}catch (GenericJDBCException e) {
+			JOptionPane.showMessageDialog(null, "Falha ao conectar no banco");
+			throw new ExceptionInInitializerError(e);
 		}
 
 	}

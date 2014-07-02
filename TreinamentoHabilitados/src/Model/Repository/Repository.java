@@ -8,9 +8,12 @@ package Model.Repository;
 
 import java.sql.SQLException;
 import java.util.List;
+
 import javax.persistence.EntityManager;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -18,29 +21,33 @@ import org.hibernate.Session;
  */
 public class Repository<T>  {
     
-    public void Adicionar(T obj) {
+    public void adicionar(T obj) {
         
         EntityManager em = null;
-        try{
-        em = ConnectionFactoryRepository.getManager();
-        em.getTransaction().begin();
-        em.persist(obj);
-        em.getTransaction().commit();
-        }catch (SQLException e){
-            em.getTransaction().rollback();
-        }
+        Session session = ConnectionFactoryConfig.getSession().getCurrentSession(); 
+        session.getTransaction().begin();
+        session.persist(obj);
+        session.getTransaction().commit();
     }
     
     public List<T> pegarTodos(T obj) throws SQLException{
         List<T> lista = null;
-        EntityManager em = ConnectionFactoryRepository.getManager();
-        Session session = (Session) em.getDelegate();
+        Session session = ConnectionFactoryConfig.getSession().getCurrentSession();
+        session.beginTransaction();
         session.createCriteria(obj.getClass());
         Criteria c = session.createCriteria(obj.getClass());
         lista = c.list();
+        session.getTransaction().commit();
         
         return lista;
     }
     
+   public void atualizar (T obj){
+	   Session s = ConnectionFactoryConfig.getSession().getCurrentSession();
+	   s.beginTransaction();
+	   s.merge(obj);
+	   s.getTransaction().commit();
+	   
+   }
     
 }

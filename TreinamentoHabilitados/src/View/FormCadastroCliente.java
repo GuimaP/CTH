@@ -604,7 +604,7 @@ public class FormCadastroCliente extends JInternalFrame {
                     cadastro.setObservacao(observa.getText());
 
                     Repository<Cliente> repo = new Repository<Cliente>();
-                    repo.Adicionar(cliente);
+                    repo.adicionar(cliente);
 
                     //populaList();
                     limparCampos();

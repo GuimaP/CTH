@@ -10,6 +10,6 @@ package Model.Repository;
  *
  * @author Guima
  */
-public class RepositoryCarro {
+public class RepositoryCarro extends Repository<Model.Carro>{
     
 }
