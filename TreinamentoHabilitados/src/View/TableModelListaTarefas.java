@@ -9,7 +9,7 @@ import Model.Tarefa;
 
 public class TableModelListaTarefas extends AbstractTableModel {
 
-	private String colunas[] = {"Data","Hora","Descrição"};
+	private String colunas[] = {"Data","Hora","Descrição "};
 	private List<Tarefa> listaTarefas;
 	public TableModelListaTarefas(List<Tarefa> lista ) {
 		this.listaTarefas = lista;
