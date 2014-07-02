@@ -132,12 +132,12 @@ public class FormCadastroInstrutor extends JInternalFrame {
         dcDataNascimento.setMinSelectableDate(minimo.getTime());
         Date dataAtual = new Date(System.currentTimeMillis());
         dcDataNascimento.setMaxSelectableDate(dataAtual);
-        dcDataNascimento.setBounds(60, 70, 110, 30);
-        dcDataNascimento.setSize(130, 25);
-        add(dcDataNascimento);
+        dcDataNascimento.setBounds(60, 40, 120, 25);
+        
+        pnGeral.add(dcDataNascimento);
 
         lbRegistroCnh = new JLabel("Nº Cnh");
-        lbRegistroCnh.setBounds(200, 40, 40, 20);
+        lbRegistroCnh.setBounds(213, 40, 40, 20);
         pnGeral.add(lbRegistroCnh);
 
         tfRegistroCnh = new JTextField();
@@ -146,7 +146,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
         //--
         lbValidadeCnh = new JLabel("Validade");
-        lbValidadeCnh.setBounds(5, 75, 60, 20);
+        lbValidadeCnh.setBounds(5, 70, 60, 20);
         pnGeral.add(lbValidadeCnh);
 
 //        maskValidadeCnh = new MaskFormatter("##/##/####");
@@ -156,17 +156,17 @@ public class FormCadastroInstrutor extends JInternalFrame {
 //        pnGeral.add(tfValidadeCnh);
         dcDataValidadeCnh = new JDateChooser();
         dcDataValidadeCnh.setMinSelectableDate(minimo.getTime());
-        dcDataValidadeCnh.setBounds(60, 100, 130, 25);
-        add(dcDataValidadeCnh);
+        dcDataValidadeCnh.setBounds(60, 70, 120, 25);
+        pnGeral.add(dcDataValidadeCnh);
 
         lbPrimeiraCnh = new JLabel("Permissção");
-        lbPrimeiraCnh.setBounds(170, 75, 90, 20);
+        lbPrimeiraCnh.setBounds(185, 70, 90, 20);
         pnGeral.add(lbPrimeiraCnh);
 
         maskPrimeiraCnh = new MaskFormatter("##/##/####");
         maskPrimeiraCnh.setPlaceholderCharacter('_');
         tfPrimeiraCnh = new JFormattedTextField(maskPrimeiraCnh);
-        tfPrimeiraCnh.setBounds(255, 75, 100, 25);
+        tfPrimeiraCnh.setBounds(255, 70, 100, 25);
         pnGeral.add(tfPrimeiraCnh);
 
         //--
@@ -182,7 +182,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
         pnGeral.add(tfRg);
 
         lbCpf = new JLabel("Cpf");
-        lbCpf.setBounds(170, 100, 40, 20);
+        lbCpf.setBounds(230, 100, 40, 20);
         pnGeral.add(lbCpf);
 
         maskCpf = new MaskFormatter("###.###.###-##");
@@ -203,7 +203,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
         pnGeral.add(tfTelefone);
 
         lbCelular = new JLabel("Celular");
-        lbCelular.setBounds(165, 125, 60, 20);
+        lbCelular.setBounds(210, 125, 60, 20);
         pnGeral.add(lbCelular);
 
         maskCelular = new MaskFormatter("(##)#-####-####");

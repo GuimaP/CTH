@@ -1,0 +1,23 @@
+voce já tinha dado commit cara, tanto que o ultimo commit é de 18 minutos atrás...
+
+caso voce não consiga pelo programa voce abre o Git Shell e faz o seguinte
+
+Para atualizar o repositorio 
+git init
+<Vai falar que ta reinicializando o repositorio>
+
+git pull origin 
+
+2º digite " git init" para iinicializar a conexão com o github
+
+3º Digite " git add * " para adicionar todos os arquivos modificados...
+
+4º Digite "git status " para ver os arquivos que estão na fila parar serem salvos...
+
+5º Digite "git commit -m '<Sua Mensagem sobre o commit>'
+
+6º e finalmente " git push origin " pra poder dar um "salvar" nos seus arquivos.,
+
+
+
+suave mano depois abre o projeto e da uma olhada no formcadastropacote e do instrutor
