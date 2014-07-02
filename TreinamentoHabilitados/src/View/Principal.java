@@ -148,14 +148,14 @@ public class Principal extends JFrame {
 
 		painelCalendario = new PainelCalendarioAgendamento();
 		painelCalendario.setLocation(
-				minhaFrame.getWidth() - painelCalendario.getWidth()-10, 100); //Definindo ele no canto esquerdo da tela
+				minhaFrame.getWidth() - painelCalendario.getWidth()-20, 100); //Definindo ele no canto esquerdo da tela
 
 		add(painelCalendario);
 
 		setJMenuBar(menuBarra);
 		setLocationRelativeTo(null);
 		setTitle("Karol Habilitados v 1.2.2");
-		setResizable(false);
+		//setResizable(false);
 		setVisible(true);
 
 	}

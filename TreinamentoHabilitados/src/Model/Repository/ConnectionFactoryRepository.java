@@ -14,6 +14,7 @@ public class ConnectionFactoryRepository {
     private static EntityManager openEntity() {
         Map<String, String> map = new HashMap<String, String>();
         map.put("javax.persistence.jdbc.url", "jdbc:mysql://db4free.net/dbguimateste");
+//        map.put("javax.persistence.jdbc.url", "jdbc:mysql://localhost/dbguimateste");
         map.put("javax.persistence.jdbc.user", "guima");
         map.put("javax.persistence.jdbc.password", "1q2w3e");
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("autoEscolaNew",map);
