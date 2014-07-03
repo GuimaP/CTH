@@ -67,7 +67,8 @@ public class FormCadastroInstrutor extends JInternalFrame {
     private String[] status = {"Ativo", "Inativo"}; //Substituir por enums
     List<Carro> carroList;
 //    Carro[] carroVetor; //Ver pra que serve. spaoksaposa
-    private DAOcarro daoCarro = new DAOcarro();
+    private DAOcarro daoCarro = new DAOcarro(); 
+    
     private Carro carro;
     private PainelFoto painelFotoInstrutor;
 

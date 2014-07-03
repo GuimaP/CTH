@@ -74,6 +74,8 @@ public class Principal extends JFrame {
 		//
 		menuBarra = new JMenuBar();
 		//
+		
+		
 		menuArquivo = new JMenu("Arquivo");
 		menuAgendamento = new JMenu("Agendamento");
 		menuRelatorio = new JMenu("Relatório");

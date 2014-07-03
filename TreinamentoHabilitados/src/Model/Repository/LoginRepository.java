@@ -24,7 +24,7 @@ public class LoginRepository {
 
 	public boolean isAutentica(Login Usuario) throws SQLException, Exception {
 		Session session = ConnectionFactoryConfig.getSession()
-				.openSession();
+				.getCurrentSession();
 		Login ls = null;
 		session.getTransaction().begin();
 		try {
