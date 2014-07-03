@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 import Model.Funcionario;
 
@@ -14,18 +15,17 @@ import Model.Funcionario;
  * Classe responsavel pela Persistencia da Base de dados
  */
 public class RepositoryInstrutor extends Repository<Model.Funcionario> {
-    private EntityManager connection;
-    
-    public RepositoryInstrutor(EntityManager connection){ //Recebo uma conexão ja criada
-        this.connection = connection;
-   };
-    
+   
     
     public Funcionario findInstrutorSingle(String cpf){
-        Funcionario f =null;
-        if(connection != null){
-            EntityManager em = connection;
-            f = em.find(Funcionario.class, cpf);
+    	Session session = ConnectionFactoryConfig.getSession();//.getCurrentSession();
+    	Funcionario f =null;
+        if(session != null){
+            session.beginTransaction();
+            Criteria filtro = session.createCriteria(Funcionario.class);
+            filtro.add(Restrictions.eq("cpf", cpf));
+            f = (Funcionario) filtro.uniqueResult();
+            session.getTransaction().commit();
             return f;
             
         }

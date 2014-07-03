@@ -69,6 +69,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 //    Carro[] carroVetor; //Ver pra que serve. spaoksaposa
     private DAOcarro daoCarro = new DAOcarro(); 
     
+    
     private Carro carro;
     private PainelFoto painelFotoInstrutor;
 
@@ -126,10 +127,10 @@ public class FormCadastroInstrutor extends JInternalFrame {
         pnGeral.add(lbData);
         
         dcDataNascimento = new JDateChooser();
-<<<<<<< HEAD
+
         dcDataNascimento.setBounds(60, 40, 120, 25);
         //dcDataNascimento.setSize(130, 25);
-=======
+
         Calendar minimo = Calendar.getInstance();
         minimo.set(Calendar.YEAR,1900);
         minimo.set(Calendar.MONTH,1);
@@ -139,7 +140,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
         dcDataNascimento.setMaxSelectableDate(dataAtual);
         dcDataNascimento.setBounds(60, 40, 120, 25);
         
->>>>>>> 3a889bc5b83dc7b6b90457058164d9d8cf843811
+
         pnGeral.add(dcDataNascimento);
 
         lbRegistroCnh = new JLabel("N∫ Cnh");
@@ -161,20 +162,21 @@ public class FormCadastroInstrutor extends JInternalFrame {
 //        tfValidadeCnh.setBounds(60, 75, 100, 25);
 //        pnGeral.add(tfValidadeCnh);
         dcDataValidadeCnh = new JDateChooser();
-<<<<<<< HEAD
+
         dcDataValidadeCnh.setBounds(60, 75, 120, 25);
         pnGeral.add(dcDataValidadeCnh);
 
         lbPrimeiraCnh = new JLabel("Permiss„o");
         lbPrimeiraCnh.setBounds(180, 75, 90, 20);
-=======
+
         dcDataValidadeCnh.setMinSelectableDate(minimo.getTime());
         dcDataValidadeCnh.setBounds(60, 70, 120, 25);
         pnGeral.add(dcDataValidadeCnh);
 
         lbPrimeiraCnh = new JLabel("PermissÁ„o");
         lbPrimeiraCnh.setBounds(185, 70, 90, 20);
->>>>>>> 3a889bc5b83dc7b6b90457058164d9d8cf843811
+
+        
         pnGeral.add(lbPrimeiraCnh);
 
         maskPrimeiraCnh = new MaskFormatter("##/##/####");
@@ -409,20 +411,13 @@ public class FormCadastroInstrutor extends JInternalFrame {
                     JOptionPane.showMessageDialog(null, "Carro n„o selecionado ou n√£o cadastrado");
                     jcCarro.requestFocus(true);
                 }else {
-                    try {
-                        // populando o objeto
-                        populaObjInstrutor();
-                        RepositoryInstrutor persistencia
-                                = new RepositoryInstrutor(ConnectionFactoryRepository.getManager());
+                    // populando o objeto
+					populaObjInstrutor();
+					RepositoryInstrutor persistencia = new RepositoryInstrutor();
 
-                        persistencia.adicionar(instrutor);
+					persistencia.adicionar(instrutor);
 
-                        minhaInternal.dispose();
-
-                    } catch (SQLException ex) {
-                    	LogController.insertLog(ex);
-                    	ex.printStackTrace();
-                    }
+					minhaInternal.dispose();
 
                 }
 

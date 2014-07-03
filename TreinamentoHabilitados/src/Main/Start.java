@@ -169,7 +169,7 @@ public class Start {
 					// LogController.insertLog(new Exception("Iniciando"));
 
 //					ConnectionFactoryConfig.openManger();
-					session = ConnectionFactoryConfig.getSession().openSession();
+					ConnectionFactoryConfig.generateSession();//.openSession();
 
 					isLoading = false;
 					TelaLogin tela = new TelaLogin();

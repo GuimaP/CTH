@@ -54,6 +54,7 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable,
 	private boolean sucess = true;
 
 	
+	
 	private String diretorioParaSalvar, nomeArquivo;
 
 	public String caminhoDaImagem;

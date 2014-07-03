@@ -94,13 +94,15 @@ public class PainelCalendarioAgendamento extends JPanel {
 		repoTarefa = new RepositoryTarefa();
 		isShowingList = false; // Digo que a lista de Tarefas não está sendo
 								// mostrada
+		
 		initComponents();
 		defineEvents();
 
 	}
 
 	private void initComponents() {
-
+		try {
+			
 		myPanel = this; // para manipulação da Panel dentro de eventos...
 		setSize(TAMANHO);
 		setLayout(null);
@@ -119,6 +121,7 @@ public class PainelCalendarioAgendamento extends JPanel {
 		calendario.setTodayButtonVisible(true);
 		calendario.setTodayButtonText("Hoje");
 		calendario.getDayChooser().setAlwaysFireDayProperty(true);
+		dateSelcionada = calendario.getDate();
 		painelCalendario.add(calendario);
 
 		add(painelCalendario);
@@ -134,17 +137,23 @@ public class PainelCalendarioAgendamento extends JPanel {
 				(myPanel.getWidth() / 2) - (btAgendarTarefa.getWidth() / 2),
 				220);
 		add(btAgendarTarefa);
-
-		lbCloseTask = new JLabel(imgClose);
-
+		
+		
+		createListTask();
+		
 		setVisible(true);
+		
+		} catch (Throwable e) {
+			
+			e.printStackTrace();
+		}
 
 	}
 
 	private void defineEvents() {
 		calendario.getDayChooser().addPropertyChangeListener("day", evt -> {
 			try {
-				dateSelcionada = calendario.getDate();
+					dateSelcionada = calendario.getDate();
 				if (areOpen) {
 					hideNewTask();
 				}
@@ -163,9 +172,12 @@ public class PainelCalendarioAgendamento extends JPanel {
 	}	);
 
 		btAgendarTarefa.addActionListener(evt -> {
-
+			dateSelcionada = calendario.getDate();
 			if (!areOpen) { // Mostra somente, se n estiver aberto
-					showNewTask();
+				if(painelNewTask == null){
+					createNewTaskMenu();
+				}
+				showNewTask();
 				}
 
 			});
@@ -203,6 +215,8 @@ public class PainelCalendarioAgendamento extends JPanel {
 		SpinnerNumberModel spModelHora, spModelMinutos;
 		LocalTime horaAtual = LocalTime.now();
 		spModelHora = new SpinnerNumberModel(horaAtual.getHour(), 00, 24, 1);
+		
+		
 		/**
 		 * http://docs.oracle.com/javase/tutorial/uiswing/components/spinner.
 		 * html
@@ -284,10 +298,10 @@ public class PainelCalendarioAgendamento extends JPanel {
 	 * Metodo responsavel pela criação das listas de tarefas do dia...
 	 */
 	private void createListTask() throws Throwable {
+		painelListaTarefa = new JPanel();
 		isShowingList = true; 
 		painelCalendario.remove(painelListaTarefa);
 		painelListaTarefa.removeAll();
-		painelListaTarefa = new JPanel();
 		painelListaTarefa.setLayout(new GridLayout(1, 1));
 
 		tbTarefas = new JTable();
@@ -386,11 +400,11 @@ public class PainelCalendarioAgendamento extends JPanel {
 	 * Evento para mostrar os campos para inserir uma nova tarefa
 	 */
 	private void showNewTask() {
-		areOpen = true;
+		
 		if (painelNewTask == null) {
 			createNewTaskMenu();
 		}
-
+		areOpen = true;
 		tfDataSelecionada.setVisible(true);
 		spDescricao.setVisible(true);
 		spHora.setVisible(true);

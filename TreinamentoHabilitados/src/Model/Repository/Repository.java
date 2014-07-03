@@ -24,7 +24,7 @@ public class Repository<T>  {
     public void adicionar(T obj) {
         
         EntityManager em = null;
-        Session session = ConnectionFactoryConfig.getSession().getCurrentSession(); 
+        Session session = ConnectionFactoryConfig.getSession();//getCurrentSession(); 
         session.getTransaction().begin();
         session.persist(obj);
         session.getTransaction().commit();
@@ -32,7 +32,7 @@ public class Repository<T>  {
     
     public List<T> pegarTodos() throws SQLException{
         List<T> lista = null;
-        Session session = ConnectionFactoryConfig.getSession().getCurrentSession();
+        Session session = ConnectionFactoryConfig.getSession();//getCurrentSession();
         session.beginTransaction();
         session.createCriteria(this.getClass());
         Criteria c = session.createCriteria(this.getClass());
@@ -44,7 +44,7 @@ public class Repository<T>  {
     }
     
    public void atualizar (T obj){
-	   Session s = ConnectionFactoryConfig.getSession().getCurrentSession();
+	   Session s = ConnectionFactoryConfig.getSession();//.getCurrentSession();
 	   s.beginTransaction();
 	   s.merge(obj);
 	   s.getTransaction().commit();
