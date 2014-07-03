@@ -6,13 +6,18 @@
 
 	<persistence-unit name="autoEscolaNew" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		
 		<properties>
-		<property name="hibernate.dialect"
-		value="org.hibernate.dialect.MySQLDialect" />
-		<property name="hibernate.hbm2ddl.auto" value="update" />
-		<property name="hibernate.show_sql" value="true" />
 		<property name="javax.persistence.jdbc.driver"
 		value="com.mysql.jdbc.Driver" />
+		<property name="hibernate.dialect"
+		value="org.hibernate.dialect.MySQLDialect" />
+		<!-- <property name="connection.url" value="jdbc:mysql://185.27.134.191:3306/guimahos_autoescola"/>
+		<property name="connection.username" value="guimahos_guima"/>
+		<property name="connection.password" value="1q2w3e"/>-->
+		<property name="hibernate.hbm2ddl.auto" value="update" />
+		<property name="hibernate.show_sql" value="true" />
+		
 		
 
 		

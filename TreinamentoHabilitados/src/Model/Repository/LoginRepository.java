@@ -24,18 +24,22 @@ public class LoginRepository {
 
 	public boolean isAutentica(Login Usuario) throws SQLException, Exception {
 		Session session = ConnectionFactoryConfig.getSession()
-				.getCurrentSession();
+				.openSession();
 		Login ls = null;
+		session.getTransaction().begin();
 		try {
 
-			session.getTransaction().begin();
+			
 			Criteria filtro = session.createCriteria(Login.class);
 			filtro.add(Restrictions.eq("usuario", Usuario.getUsuario()));
 			filtro.add(Restrictions.eq("senha", Usuario.getSenha()));
 			ls = (Login) filtro.uniqueResult();
 			session.getTransaction().commit();
+			session.close();
+			
+		} catch (Exception e) {
 
-		} catch (Exception e) {/*Handled Exception*/ e.printStackTrace();}
+			e.printStackTrace();}
 		
 		return ls != null;
 	}

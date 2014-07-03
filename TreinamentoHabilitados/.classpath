@@ -41,6 +41,7 @@
 	<classpathentry kind="lib" path="Jars/lti-civil.jar"/>
 	<classpathentry kind="lib" path="Jars/mediaplayer.jar"/>
 	<classpathentry kind="lib" path="Jars/mysql-connector-java-5.1.26-bin.jar"/>
+	<classpathentry kind="lib" path="Jars/postgresql-9.3-1101.jdbc4.jar"/>
 	<classpathentry kind="lib" path="Jars/slf4j-api-1.7.2.jar"/>
 	<classpathentry kind="lib" path="Jars/swt.jar"/>
 	<classpathentry kind="lib" path="Jars/towel-v1.2.2.jar"/>

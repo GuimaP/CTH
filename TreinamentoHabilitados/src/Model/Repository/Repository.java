@@ -30,15 +30,16 @@ public class Repository<T>  {
         session.getTransaction().commit();
     }
     
-    public List<T> pegarTodos(T obj) throws SQLException{
+    public List<T> pegarTodos() throws SQLException{
         List<T> lista = null;
         Session session = ConnectionFactoryConfig.getSession().getCurrentSession();
         session.beginTransaction();
-        session.createCriteria(obj.getClass());
-        Criteria c = session.createCriteria(obj.getClass());
+        session.createCriteria(this.getClass());
+        Criteria c = session.createCriteria(this.getClass());
         lista = c.list();
         session.getTransaction().commit();
         
+        session.close();
         return lista;
     }
     

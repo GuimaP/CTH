@@ -26,10 +26,12 @@ public class ConnectionFactoryRepository {
 //        map.put("javax.persistence.jdbc.url", "jdbc:mysql://db4free.net/dbguimateste");
 //    	map.put("javax.persistence.jdbc.user", "guima");
 //      map.put("javax.persistence.jdbc.password", "1q2w3e");
-    	String dbName = "dbguimateste";
-    	String dbUserName = "guima";
+    	String dbName = "guimahos_autoescola";
+    	String dbUserName = "guimahos_guima";
     	String dbPassword = "1q2w3e";
-        map.put("javax.persistence.jdbc.url", "jdbc:mysql://db4free.net:3306/" + dbName + "?user=" + dbUserName + "&password=" + dbPassword + "&useUnicode=true&characterEncoding=UTF-8");
+    	
+    	
+        map.put("javax.persistence.jdbc.url", "jdbc:mysql://185.27.134.191:3306/" + dbName + "?user=" + dbUserName + "&password=" + dbPassword + "&useUnicode=true&characterEncoding=UTF-8");
 
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("autoEscolaNew",map);
         entityManager =  factory.createEntityManager();

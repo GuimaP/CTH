@@ -125,16 +125,9 @@ public class FormCadastroInstrutor extends JInternalFrame {
         pnGeral.add(lbData);
         
         dcDataNascimento = new JDateChooser();
-        Calendar minimo = Calendar.getInstance();
-        minimo.set(Calendar.YEAR,1900);
-        minimo.set(Calendar.MONTH,1);
-        minimo.set(Calendar.DATE, 1);
-        dcDataNascimento.setMinSelectableDate(minimo.getTime());
-        Date dataAtual = new Date(System.currentTimeMillis());
-        dcDataNascimento.setMaxSelectableDate(dataAtual);
-        dcDataNascimento.setBounds(60, 70, 110, 30);
-        dcDataNascimento.setSize(130, 25);
-        add(dcDataNascimento);
+        dcDataNascimento.setBounds(60, 40, 120, 25);
+        //dcDataNascimento.setSize(130, 25);
+        pnGeral.add(dcDataNascimento);
 
         lbRegistroCnh = new JLabel("Nº Cnh");
         lbRegistroCnh.setBounds(200, 40, 40, 20);
@@ -155,12 +148,11 @@ public class FormCadastroInstrutor extends JInternalFrame {
 //        tfValidadeCnh.setBounds(60, 75, 100, 25);
 //        pnGeral.add(tfValidadeCnh);
         dcDataValidadeCnh = new JDateChooser();
-        dcDataValidadeCnh.setMinSelectableDate(minimo.getTime());
-        dcDataValidadeCnh.setBounds(60, 100, 130, 25);
-        add(dcDataValidadeCnh);
+        dcDataValidadeCnh.setBounds(60, 75, 120, 25);
+        pnGeral.add(dcDataValidadeCnh);
 
-        lbPrimeiraCnh = new JLabel("Permissção");
-        lbPrimeiraCnh.setBounds(170, 75, 90, 20);
+        lbPrimeiraCnh = new JLabel("Permissão");
+        lbPrimeiraCnh.setBounds(180, 75, 90, 20);
         pnGeral.add(lbPrimeiraCnh);
 
         maskPrimeiraCnh = new MaskFormatter("##/##/####");
@@ -220,7 +212,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
         jcCarro = new JComboBox<Carro>();
         //carroList 
-        List<Carro> lista = (List<Carro>) new Repository<Carro>().pegarTodos(new Carro());
+        List<Carro> lista = (List<Carro>) new Repository<Carro>().pegarTodos();
         for (Carro c : lista) {
             jcCarro.addItem(c);
         }

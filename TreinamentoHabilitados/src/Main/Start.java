@@ -168,7 +168,7 @@ public class Start {
 					System.out.println("Inicando Log");
 					// LogController.insertLog(new Exception("Iniciando"));
 
-					ConnectionFactoryConfig.openManger();
+//					ConnectionFactoryConfig.openManger();
 					session = ConnectionFactoryConfig.getSession().openSession();
 
 					isLoading = false;

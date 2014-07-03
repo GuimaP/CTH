@@ -12,7 +12,7 @@ import Model.Repository.ConnectionFactoryRepository;
 public class testeSession {
 	public static void main(String[] args) {
 		try{
-		Session s = ConnectionFactoryConfig.getSession().openSession();
+		Session s = (Session)ConnectionFactoryRepository.getManager().getDelegate();//.getSession().openSession();
 		Login l = new Login();
 		l.setUsuario("guima");
 		l.setSenha("123");
