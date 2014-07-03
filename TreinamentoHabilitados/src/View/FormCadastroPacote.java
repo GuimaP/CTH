@@ -76,7 +76,7 @@ public class FormCadastroPacote extends JInternalFrame {
 
         //Componentes da Aba de Cadastro
         //Descricao;
-        lbDescricao = new JLabel("DescriÃ§Ã£o");
+        lbDescricao = new JLabel("Descrição");
         lbDescricao.setSize(100, 20);  //100 20
         lbDescricao.setLocation(5, 20); //5 60
         pnGeral.add(lbDescricao);
@@ -87,7 +87,7 @@ public class FormCadastroPacote extends JInternalFrame {
         pnGeral.add(tfDescricao);
 
         //Aulas
-        lbAulas = new JLabel("NÂº Aulas");
+        lbAulas = new JLabel("Nº Aulas");
         lbAulas.setSize(100, 20);
         lbAulas.setLocation(5, 50);
         pnGeral.add(lbAulas);
@@ -98,7 +98,7 @@ public class FormCadastroPacote extends JInternalFrame {
         pnGeral.add(tfAulas);
 
         //PreÃ§o Aula
-        lbPrecoAula = new JLabel("PreÃ§o Aula");
+        lbPrecoAula = new JLabel("Preço Aula");
         lbPrecoAula.setSize(100, 20);
         lbPrecoAula.setLocation(5, 100);
         pnGeral.add(lbPrecoAula);
@@ -165,7 +165,7 @@ public class FormCadastroPacote extends JInternalFrame {
                 tfPrecoPacote.setText(tfPrecoPacote.getText().trim());
 
                 if (tfDescricao.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Informar descriÃ§Ã£o");
+                    JOptionPane.showMessageDialog(null, "Informar descrição");
                     tfDescricao.requestFocus();
                     lbDescricao.setForeground(Color.red);
                 } else if (tfAulas.getText().isEmpty()) {
@@ -173,11 +173,11 @@ public class FormCadastroPacote extends JInternalFrame {
                     tfAulas.requestFocus();
                     lbAulas.setForeground(Color.red);
                 } else if (tfPrecoAula.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Informar o preÃ§o da aula");
+                    JOptionPane.showMessageDialog(null, "Informar o preço da aula");
                     tfPrecoAula.requestFocus();
                     lbPrecoAula.setForeground(Color.red);
                 } else if (tfPrecoPacote.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Informar o preÃ§o do pacote");
+                    JOptionPane.showMessageDialog(null, "Informar o preço do pacote");
                     tfPrecoPacote.requestFocus();
                     lbPrecoPacote.setForeground(Color.red);
                 } else {

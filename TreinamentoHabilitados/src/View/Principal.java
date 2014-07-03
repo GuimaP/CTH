@@ -48,7 +48,7 @@ public class Principal extends JFrame {
 	private JTree jtreeAtalhos;
 
 	protected static boolean isFrameInstrutorOpen, isFrameClienteOpen,
-			isFrameCadastroPacote, isFrameAgendamento;
+			isFrameCadastroPacote, isFrameAgendamento, isFrameCarro;
 
 	public Principal() {
 		try {
@@ -56,7 +56,8 @@ public class Principal extends JFrame {
 			inicializaComponentes();
 			definirEventos();
 
-			isFrameClienteOpen = isFrameInstrutorOpen = isFrameCadastroPacote = isFrameAgendamento = false;
+			isFrameClienteOpen = isFrameInstrutorOpen = isFrameCadastroPacote = isFrameAgendamento 
+					= isFrameCarro = false;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -282,7 +283,10 @@ public class Principal extends JFrame {
 		itCadastroCarro.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new FormCadastroCarro();
+				if (!isFrameCarro){
+					isFrameCarro = true; 
+					getContentPane().add(new FormCadastroCarro());
+				}
 			}
 		});
 

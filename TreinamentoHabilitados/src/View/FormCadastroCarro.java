@@ -13,6 +13,10 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
@@ -23,14 +27,19 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class FormCadastroCarro extends JFrame {
+public class FormCadastroCarro extends JInternalFrame {
 
 	private JLabel lbAno, lbMarca, lbModelo, lbPlaca;
 	private JTextField tfAno, tfMarca, tfModelo;
 	private JFormattedTextField tfPlaca;
 	private MaskFormatter maskPalca;
 	private JButton btSalvar;
-
+	private JPanel pnGeral, pnBusca;
+	private JTable tabela;
+	private JScrollPane scroll;
+	private JTabbedPane abas;
+	
+	
 	public FormCadastroCarro() {
 
 		try {
@@ -43,63 +52,78 @@ public class FormCadastroCarro extends JFrame {
 	}
 
 	public void inicializaComponentes() throws ParseException {
+		//Paineis 
+		pnGeral = new JPanel();
+		pnGeral.setLayout(null);
+		pnBusca = new JPanel();
+		pnBusca.setLayout(null);
+		
+		
 		// label
 		lbAno = new JLabel("Ano");
 		lbAno.setLocation(40, 40);
 		lbAno.setSize(30, 20);
-		getContentPane().add(lbAno);
+		pnGeral.add(lbAno);
 
 		lbMarca = new JLabel("Marca");
 		lbMarca.setLocation(155, 40);
 		lbMarca.setSize(100, 20);
-		getContentPane().add(lbMarca);
+		pnGeral.add(lbMarca);
 
 		lbModelo = new JLabel("Modelo");
 		lbModelo.setLocation(40, 80);
 		lbModelo.setSize(100, 20);
-		getContentPane().add(lbModelo);
+		pnGeral.add(lbModelo);
 
 		lbPlaca = new JLabel("Placa");
 		lbPlaca.setLocation(200, 80);
 		lbPlaca.setSize(100, 20);
-		getContentPane().add(lbPlaca);
+		pnGeral.add(lbPlaca);
 		// text
 		tfAno = new JTextField();
 		tfAno.setLocation(70, 40);
 		tfAno.setSize(70, 20);
-		getContentPane().add(tfAno);
+		pnGeral.add(tfAno);
 
 		tfMarca = new JTextField();
 		tfMarca.setLocation(200, 40);
 		tfMarca.setSize(70, 20);
-		getContentPane().add(tfMarca);
+		pnGeral.add(tfMarca);
 
 		tfModelo = new JTextField();
 		tfModelo.setLocation(95, 80);
 		tfModelo.setSize(70, 20);
-		getContentPane().add(tfModelo);
+		pnGeral.add(tfModelo);
 
 		maskPalca = new MaskFormatter("***-####");
 		maskPalca.setPlaceholderCharacter('_');
 		tfPlaca = new JFormattedTextField(maskPalca);
 		tfPlaca.setLocation(250, 80);
 		tfPlaca.setSize(60, 20);
-		getContentPane().add(tfPlaca);
+		pnGeral.add(tfPlaca);
 		// Button
 		btSalvar = new JButton("Salvar");
 		btSalvar.setLocation(120, 140);
 		btSalvar.setSize(100, 30);
-		getContentPane().add(btSalvar);
-
-		getContentPane().setLayout(null);
-		setSize(350, 230);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setVisible(true);
-//		setLocationRelativeTo(null);
-		setTitle("Cadastro Carro");
-		setResizable(false);
+		pnGeral.add(btSalvar);
 		
-		getContentPane().setBackground(Color.lightGray);
+		
+		abas = new JTabbedPane();
+		abas.setBounds(1, 1, 345, 225);
+		abas.addTab("Cadastro", pnGeral);
+		abas.addTab("Busca", pnBusca);
+		add(abas);
+
+		 // PAINEL//
+        getContentPane().setLayout(null);
+        setSize(350, 230);
+        setLocation(40, 10);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setVisible(true);
+        setClosable(true);
+        setTitle("Cadastro Carro");
+        setResizable(false);
+        setIconifiable(true);
 	}
 
 	public void definirEventos() {
