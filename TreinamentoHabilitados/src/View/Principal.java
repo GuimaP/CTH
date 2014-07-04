@@ -338,12 +338,12 @@ public class Principal extends JFrame {
 
 			@Override
 			public void windowActivated(WindowEvent e) {
-				
+				painelCalendario.rederenzarTela();
 			}
 
 			@Override
 			public void windowDeactivated(WindowEvent e) {
-				painelCalendario.rederenzarTela();
+				
 				
 			}
 		});
