@@ -237,7 +237,17 @@ public class PainelCalendarioAgendamento extends JPanel {
 			});
 		
 		
+		
+		
+		
 
+	}
+	
+	protected void rederenzarTela(){
+		
+		if(isShowingList){
+			showPainelList();
+		}
 	}
 
 	private void createNewTaskMenu() {
@@ -479,7 +489,7 @@ public class PainelCalendarioAgendamento extends JPanel {
  * Caso o menu de New Task esteja aberto
 				//Vou limpa-lo e mandar redesenha-lo para que fique no tamanho certo
  */
-	private void redimensionaNewTask(){
+	 void redimensionaNewTask(){
 				if(areOpen){
 					hideNewTask();
 					painelNewTask = null;
