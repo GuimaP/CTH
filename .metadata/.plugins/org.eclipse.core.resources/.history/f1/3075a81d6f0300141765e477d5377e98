@@ -108,12 +108,12 @@ public class FormCadastroCarro extends JInternalFrame {
 		
 		// Button
 		btSalvar = new JButton("Salvar");
-		btSalvar.setLocation(70, 135);
+		btSalvar.setLocation(120, 140);
 		btSalvar.setSize(100, 30);
 		pnGeral.add(btSalvar);
 
 		abas = new JTabbedPane();
-		abas.setBounds(1, 1, 245, 255);
+		abas.setBounds(1, 1, 345, 225);
 		abas.addTab("Cadastro", pnGeral);
 		abas.addTab("Busca", pnBusca);
 		add(abas);
@@ -121,7 +121,7 @@ public class FormCadastroCarro extends JInternalFrame {
 		// PAINEL//
 		getContentPane().setLayout(null);
 		setSize(250, 260);
-		setLocation(50, 10);
+		setLocation(40, 10);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setVisible(true);
 		setClosable(true);
