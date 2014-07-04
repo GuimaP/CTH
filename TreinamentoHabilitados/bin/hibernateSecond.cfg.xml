@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+    
+        <!-- Configurando as propriedades de conexão do Banco -->
+        <!-- <property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://db4free.net:3306/dbguimateste</property>
+		<property name="connection.username">guima</property>
+		<property name="connection.password">1q2w3e</property>
+        -->
+<hibernate-configuration>
+    <session-factory>
+    <!--
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.username">xjnrxpchqjdwip</property>
+        <property name="hibernate.connection.password">fba7MMmO8xDSZNxyDLGWLr899w</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://ec2-54-243-50-213.compute-1.amazonaws.com:5432/d2tsrm3gj27pvi</property>
+        <property name="hibernate.connection.requireSSL">true</property>-->
+    	
+       <property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+       <!--  <property name="connection.url">jdbc:mysql://185.27.134.191:3306/guimahos_autoescola</property>
+		<property name="connection.username">guimahos_guima</property>
+		<property name="connection.password">1q2w3e</property>
+		--> 
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://db4free.net:3306/dbguimateste</property>
+		<property name="connection.username">guima</property>
+		<property name="connection.password">1q2w3e</property>
+		
+		
+		
+        <property name="current_session_context_class">thread</property>
+        <property name="hibernate.max_fetch_depth" >3</property>
+        <!-- Configurando Pool de conexão -->
+        <property name="c3po.min_size">1</property>
+        <property name="c3po.max_size">1</property>
+        <property name="c3po.timeout">300</property>
+        <property name="c3po.max_statements">100</property>
+        <property name="c3po.idle_test_period">3000</property>
+        
+        <!-- cache configuration 
+         <property name="hibernate.ejb.classcache.org.hibernate.ejb.test.Item" value="read-write"/>
+         <property name="hibernate.ejb.collectioncache.org.hibernate.ejb.test.Item.distributors" value="read-write, RegionName"/>
+        -->
+        <!-- Debug do MySQL -->
+        <property name="show_sql">false</property>
+        <property name="format_sql">false</property>
+        <property name="generate_statistics">false</property>
+        <property name="use_sql_comments">false</property>
+    </session-factory>
+</hibernate-configuration>
+
+
+		
+		
