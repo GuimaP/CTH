@@ -79,7 +79,7 @@ public class Principal extends JFrame {
 		
 		menuArquivo = new JMenu("Arquivo");
 		menuAgendamento = new JMenu("Agendamento");
-		menuRelatorio = new JMenu("RelatÃ³rio");
+		menuRelatorio = new JMenu("Relatório");
 		//
 		itSair = new JMenuItem("Sair");
 		itCadastroCliente = new JMenuItem("Cadastro Aluno");

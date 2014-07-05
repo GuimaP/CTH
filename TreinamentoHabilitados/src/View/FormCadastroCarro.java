@@ -21,9 +21,11 @@ import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
 import Model.Carro;
+import Model.ModelTableCarro;
 import Model.Repository.Repository;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,11 +35,13 @@ public class FormCadastroCarro extends JInternalFrame {
 	private JTextField tfAno, tfMarca, tfModelo;
 	private JFormattedTextField tfPlaca;
 	private MaskFormatter maskPalca;
-	private JButton btSalvar;
+	private JButton btSalvar, btExcluir;
 	private JPanel pnGeral, pnBusca;
 	private JTable tabela;
 	private JScrollPane scroll;
 	private JTabbedPane abas;
+	
+	private ArrayList<Carro> listCarro = new ArrayList<Carro>();
 
 	public FormCadastroCarro() {
 
@@ -101,26 +105,35 @@ public class FormCadastroCarro extends JInternalFrame {
 		tfPlaca.setLocation(60, 100);
 		tfPlaca.setSize(70, 25);
 		pnGeral.add(tfPlaca);
-		
-
-		
-
-		
 		// Button
 		btSalvar = new JButton("Salvar");
 		btSalvar.setLocation(70, 135);
 		btSalvar.setSize(100, 30);
 		pnGeral.add(btSalvar);
 
+		//Componentes do pnBusca.
+		
+		tabela = new JTable(new ModelTableCarro(listCarro));
+		scroll = new JScrollPane(tabela);
+		scroll.setSize(220, 120);
+		scroll.setLocation(7, 10);
+		pnBusca.add(scroll);
+		
+		btExcluir = new JButton("Excluir");
+		btExcluir.setLocation(70, 135);
+		btExcluir.setSize(100, 30);
+		pnBusca.add(btExcluir);
+		
+		//-----------------------------------//
 		abas = new JTabbedPane();
-		abas.setBounds(1, 1, 245, 255);
+		abas.setBounds(1, 1, 245, 245);
 		abas.addTab("Cadastro", pnGeral);
 		abas.addTab("Busca", pnBusca);
 		add(abas);
 
 		// PAINEL//
 		getContentPane().setLayout(null);
-		setSize(250, 260);
+		setSize(250, 250);
 		setLocation(50, 10);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setVisible(true);
