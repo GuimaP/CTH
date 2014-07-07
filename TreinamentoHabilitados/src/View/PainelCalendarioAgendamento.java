@@ -12,6 +12,8 @@ import Model.Repository.Repository;
 import Model.Repository.RepositoryTarefa;
 import Testes.painelTeste1;
 
+import java.awt.Point;
+
 import com.sun.media.rtsp.protocol.PauseMessage;
 import com.toedter.calendar.JCalendar;
 
@@ -20,9 +22,15 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -32,9 +40,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.SimpleFormatter;
 
+import javax.faces.view.Location;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -45,6 +58,11 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+import javax.transaction.Transactional.TxType;
 
 import org.hibernate.Hibernate;
 
@@ -57,14 +75,11 @@ public class PainelCalendarioAgendamento extends JPanel {
 	private RepositoryTarefa repoTarefa;
 
 	private final Dimension TAMANHO = new Dimension(385, 300);
+	private final Point LOCALIZAO;
 
 	private JButton btAgendarTarefa;
 	private JTable tbTarefas;
 	private JCalendar calendario;
-
-	// Lista de Tarefas
-	private JPanel painelListaTarefa;
-	private boolean isShowingList;
 
 	// Criação de Novas Tarefas
 	private JTextField tfDataSelecionada;
@@ -73,28 +88,33 @@ public class PainelCalendarioAgendamento extends JPanel {
 	private boolean areOpen;
 	private JLabel lbSaveTask, lbCloseTask;
 	private JPanel painelNewTask;
+	private JScrollPane spDescricao;
+	private JComboBox<Prioridade> cbPrioridade;
 
+	// --
 	private JPanel myPanel;
+	// --
 
 	// Criação tabela de calendario
 	private JPanel painelCalendario;
 	private JLabel lbFecharCalendario;
-
-	private JScrollPane spDescricao;
 	private ImageIcon imgClose;
+	// Lista de Tarefas
+	private JPanel painelListaTarefa;
+	private boolean isShowingList;
 
 	private java.util.Date dateSelcionada;
 
-	public PainelCalendarioAgendamento() {
+	public PainelCalendarioAgendamento(Point l) {
 		isShowingList = false;
+		LOCALIZAO = l;
+		imgClose = new ImageIcon(getClass().getResource("/Resources/icons")
+				.getPath() + "/closeDesc.png");
+		repoTarefa = new RepositoryTarefa(); // Inicio o repositorio da Classe
+		isShowingList = false; // por default ele não está mostrando a lista de
+								// tarefas
+		areOpen = false; // o mesmo para o menu de NOVA TAREFA
 
-		imgClose = new ImageIcon(PainelCalendarioAgendamento.class.getResource(
-				"/Resources/icons").getPath()
-				+ "/closeDesc.png");
-		repoTarefa = new RepositoryTarefa();
-		isShowingList = false; // Digo que a lista de Tarefas não está sendo
-								// mostrada
-		
 		initComponents();
 		defineEvents();
 
@@ -102,86 +122,132 @@ public class PainelCalendarioAgendamento extends JPanel {
 
 	private void initComponents() {
 		try {
-			
-		myPanel = this; // para manipulação da Panel dentro de eventos...
-		setSize(TAMANHO);
-		setLayout(null);
-		setBackground(new Color(0, 0, 0, 40));
-		setOpaque(true);
 
-		painelCalendario = new JPanel();
-		painelCalendario.setBounds(0, 5, myPanel.getWidth(), 210);
-		painelCalendario.setLayout(null);
+			myPanel = this; // para manipulação da Panel dentro de eventos...
+			setSize(TAMANHO);
+			setLayout(null);
+			setBackground(new Color(0, 0, 0, 40));
+			setOpaque(true);
 
-		calendario = new JCalendar();
-		calendario.setWeekdayForeground(Color.GRAY);
-		calendario.setCalendar(Calendar.getInstance());
-		calendario.setSize(painelCalendario.getWidth(),
-				painelCalendario.getHeight());
-		calendario.setTodayButtonVisible(true);
-		calendario.setTodayButtonText("Hoje");
-		calendario.getDayChooser().setAlwaysFireDayProperty(true);
-		dateSelcionada = calendario.getDate();
-		painelCalendario.add(calendario);
+			painelCalendario = new JPanel();
+			painelCalendario.setBounds(0, 5, myPanel.getWidth(), 210);
+			painelCalendario.setLayout(null);
 
-		add(painelCalendario);
+			calendario = new JCalendar();
+			calendario.setWeekdayForeground(Color.GRAY);
+			calendario.setCalendar(Calendar.getInstance());
+			calendario.setSize(painelCalendario.getWidth(),
+					painelCalendario.getHeight());
+			calendario.setTodayButtonVisible(true); // Mostrando o botão HOJE do
+													// JCalendar
+			calendario.setTodayButtonText("Hoje");
+			calendario.getDayChooser().setAlwaysFireDayProperty(true);
+			painelCalendario.add(calendario); // Adicionando o objeto
 
-		painelListaTarefa = new JPanel();
-		painelNewTask = new JPanel();
+			add(painelCalendario);
 
-		javax.swing.ImageIcon img = new javax.swing.ImageIcon(Start.class
-				.getResource("/Resources/icons").getPath() + "/Tarefas.png");
-		btAgendarTarefa = new JButton("Agendar Tarefa", img);
-		btAgendarTarefa.setSize(140, 30);
-		btAgendarTarefa.setLocation(
-				(myPanel.getWidth() / 2) - (btAgendarTarefa.getWidth() / 2),
-				220);
-		add(btAgendarTarefa);
-		
-		
-		createListTask();
-		
-		setVisible(true);
-		
+			javax.swing.ImageIcon img = new javax.swing.ImageIcon(getClass()
+					.getResource("/Resources/icons").getPath() + "/Tarefas.png"); // Pegando
+																					// a
+																					// imagem
+																					// do
+																					// diretorio
+			btAgendarTarefa = new JButton("Agendar Tarefa", img);
+			btAgendarTarefa.setSize(140, 30);
+			btAgendarTarefa.setLocation((myPanel.getWidth() / 2)
+					- (btAgendarTarefa.getWidth() / 2), 220);
+			add(btAgendarTarefa);
+
+			lbFecharCalendario = new JLabel(imgClose); // Botão para fechar a
+														// list de calendar
+			lbFecharCalendario.setBounds(5, btAgendarTarefa.getY(), 30, 30);
+			lbFecharCalendario.setCursor(Cursor
+					.getPredefinedCursor(Cursor.HAND_CURSOR));
+			lbFecharCalendario.setVisible(false);
+			add(lbFecharCalendario);
+
+			// dateSelcionada = calendario.getDate(); //Passo uma data para que
+			// seja feita a busca de tarefas do dia...
+			// createListTask(); //Crio a minha Lista de Tarefas...
+
+			setLocation(LOCALIZAO);
+			setVisible(true);
+
 		} catch (Throwable e) {
-			
+
 			e.printStackTrace();
 		}
 
 	}
 
 	private void defineEvents() {
-		calendario.getDayChooser().addPropertyChangeListener("day", evt -> {
-			try {
-					dateSelcionada = calendario.getDate();
-				if (areOpen) {
-					hideNewTask();
-				}
+		calendario.getDayChooser().addPropertyChangeListener(
+				"day",
+				evt -> {
+					try {
+						dateSelcionada = calendario.getDate();
+						if (painelListaTarefa == null) {
+							createListTask();
+							showPainelList();
+						}
 
-				if (!isShowingList) { // Mostra somente, se n estiver aberto
-					createListTask();
-				} else {
-					atualizaLista(repoTarefa.getAllTarefasToday(dateSelcionada));
+						if (areOpen) {
+							tfDataSelecionada.setText(new SimpleDateFormat(
+									"dd/MM/yyyy").format(dateSelcionada));
+							tfDataSelecionada.setBorder(BorderFactory
+									.createLineBorder(Color.YELLOW));
+						}
+
+						if (!isShowingList) { // Mostra somente, se n estiver
+												// aberto
+							showPainelList();
+						} else {
+							atualizaLista(repoTarefa
+									.getAllTarefasToday(dateSelcionada));
+						}
+					} catch (Throwable erro) {
+						erro.printStackTrace();
+						JOptionPane.showMessageDialog(
+								this,
+								"Ops, Ocorreu um erro, entre em contato com o Administrador do Sistema,\n"
+										+ "Descrição do erro: \n"
+										+ erro.getMessage());
+					}
+				});
+
+		lbFecharCalendario.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+				if (isShowingList) {
+					hidePainelList();
 				}
-		} catch (Throwable erro) {
-			erro.printStackTrace();
-			JOptionPane.showMessageDialog(this,
-					"Ops, Ocorreu um erro, entre em contato com o Administrador do Sistema,\n"
-							+ "Descrição do erro: \n" + erro.getMessage());
-		}
-	}	);
+			}
+		});
 
 		btAgendarTarefa.addActionListener(evt -> {
 			dateSelcionada = calendario.getDate();
 			if (!areOpen) { // Mostra somente, se n estiver aberto
-				if(painelNewTask == null){
-					createNewTaskMenu();
-				}
-				showNewTask();
+					if (painelNewTask == null) {
+						createNewTaskMenu();
+					}
+					showNewTask();
 				}
 
 			});
+		
+		
+		
+		
+		
 
+	}
+	
+	protected void rederenzarTela(){
+		
+		if(isShowingList){
+			showPainelList();
+		}
 	}
 
 	private void createNewTaskMenu() {
@@ -215,8 +281,7 @@ public class PainelCalendarioAgendamento extends JPanel {
 		SpinnerNumberModel spModelHora, spModelMinutos;
 		LocalTime horaAtual = LocalTime.now();
 		spModelHora = new SpinnerNumberModel(horaAtual.getHour(), 00, 24, 1);
-		
-		
+
 		/**
 		 * http://docs.oracle.com/javase/tutorial/uiswing/components/spinner.
 		 * html
@@ -243,8 +308,9 @@ public class PainelCalendarioAgendamento extends JPanel {
 				.setLocation(painelNewTask.getWidth() - 40, spMinutos.getY());
 		lbCloseTask.setVisible(false);
 		lbCloseTask.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		lbCloseTask.setBackground(new Color(0, 0, 0, 0));
+		lbCloseTask.setBackground(new Color(0, 0, 0, 0)); // Deixo Transparente
 		lbCloseTask.setOpaque(true);
+		lbCloseTask.setToolTipText("Fechar Nova Tarefa");
 		painelNewTask.add(lbCloseTask);
 
 		ImageIcon imgSave = new ImageIcon(PainelCalendarioAgendamento.class
@@ -253,7 +319,7 @@ public class PainelCalendarioAgendamento extends JPanel {
 
 		lbSaveTask = new JLabel(imgSave);
 		lbSaveTask.setSize(imgSave.getIconWidth(), imgSave.getIconHeight());
-		lbCloseTask.setBackground(new Color(0, 0, 0, 0));
+		lbSaveTask.setBackground(new Color(0, 0, 0, 0)); // Deixo Transparente
 		lbSaveTask.setLocation(painelNewTask.getWidth() - 60,
 				spDescricao.getY() - 10 + spDescricao.getHeight());
 		lbSaveTask.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -268,7 +334,7 @@ public class PainelCalendarioAgendamento extends JPanel {
 
 				Tarefa t = new Tarefa();
 				t.setDescricao(tfDescricaoTarefa.getText());
-				t.setPrioridade(Prioridade.Alta);
+				t.setPrioridade((Prioridade) cbPrioridade.getSelectedItem());
 				t.setDataCompromisso(dateSelcionada);
 				repoTarefa.adicionar(t);
 				hideNewTask();
@@ -278,6 +344,28 @@ public class PainelCalendarioAgendamento extends JPanel {
 		});
 
 		painelNewTask.add(lbSaveTask);
+
+		cbPrioridade = new JComboBox<Prioridade>(new DefaultComboBoxModel(
+				Prioridade.values()));
+		cbPrioridade.setBounds(spMinutos.getX() + spMinutos.getWidth(),
+				spMinutos.getY(), 80, 30);
+		
+		cbPrioridade.addActionListener(evt -> {
+			System.out.println("cliq"); // TODO teste
+				cbPrioridade.repaint();
+				cbPrioridade.revalidate();
+				painelNewTask.repaint();
+				painelNewTask.revalidate();
+				myPanel.repaint();
+				myPanel.revalidate();
+				Principal.minhaFrame.repaint();
+				Principal.minhaFrame.revalidate();
+			});
+		
+
+		cbPrioridade.setVisible(false);
+
+		painelNewTask.add(cbPrioridade);
 
 		lbCloseTask.addMouseListener(new MouseAdapter() {
 			@Override
@@ -299,7 +387,7 @@ public class PainelCalendarioAgendamento extends JPanel {
 	 */
 	private void createListTask() throws Throwable {
 		painelListaTarefa = new JPanel();
-		isShowingList = true; 
+		isShowingList = true;
 		painelCalendario.remove(painelListaTarefa);
 		painelListaTarefa.removeAll();
 		painelListaTarefa.setLayout(new GridLayout(1, 1));
@@ -312,7 +400,7 @@ public class PainelCalendarioAgendamento extends JPanel {
 		List<Tarefa> lista = new ArrayList<Tarefa>();// Inicio a lista
 		lista = repoTarefa.getAllTarefasToday(dateSelcionada);
 		atualizaLista(lista);
-		
+
 		int widhtMyPaine = myPanel.getWidth() + 310;
 		int heightMyPaine = myPanel.getHeight();
 		myPanel.setSize(widhtMyPaine, heightMyPaine);
@@ -350,10 +438,10 @@ public class PainelCalendarioAgendamento extends JPanel {
 
 	private void showPainelList() {
 		try {
-			if (painelListaTarefa == null) {
-				createListTask();
-			}
-
+			lbFecharCalendario.setVisible(true);
+			
+			redimensionaNewTask();
+			
 			painelListaTarefa.repaint();
 			painelListaTarefa.revalidate();
 
@@ -367,6 +455,7 @@ public class PainelCalendarioAgendamento extends JPanel {
 
 			Principal.minhaFrame.repaint();
 			Principal.minhaFrame.revalidate();
+
 		} catch (Throwable erro) {
 			erro.printStackTrace();
 			JOptionPane.showMessageDialog(this,
@@ -376,18 +465,38 @@ public class PainelCalendarioAgendamento extends JPanel {
 	}
 
 	private void hidePainelList() {
+
 		painelCalendario.remove(painelListaTarefa);
-		painelCalendario.setSize(TAMANHO);
-
-		painelCalendario.repaint();
-		painelCalendario.revalidate();
-
-		Color c = new Color(0, 0, 0, 60);
-		myPanel.setBackground(c);
-		myPanel.repaint();
-		myPanel.revalidate();
+		painelCalendario.setSize(TAMANHO.width, painelCalendario.getHeight());
+		this.setSize(TAMANHO.width,this.getHeight());
+		this.setLocation(LOCALIZAO);
+		lbFecharCalendario.setVisible(false);
+		
+		redimensionaNewTask();
+		
+		this.revalidate();
+//		painelCalendario.repaint();
+//		painelCalendario.revalidate();
+//
+//		Color c = new Color(0, 0, 0, 60);
+//		myPanel.setBackground(c);
+//		myPanel.repaint();
+//		myPanel.revalidate();
+		painelListaTarefa = null;
 	}
-
+	
+/**
+ * Caso o menu de New Task esteja aberto
+				//Vou limpa-lo e mandar redesenha-lo para que fique no tamanho certo
+ */
+	 void redimensionaNewTask(){
+				if(areOpen){
+					hideNewTask();
+					painelNewTask = null;
+					showNewTask();
+				}
+	}
+	
 	private void mostrar() {
 		// TODO AÇÃO PARA MOSTRAR O CALENDARIO INTEIRO
 	}
@@ -400,7 +509,7 @@ public class PainelCalendarioAgendamento extends JPanel {
 	 * Evento para mostrar os campos para inserir uma nova tarefa
 	 */
 	private void showNewTask() {
-		
+
 		if (painelNewTask == null) {
 			createNewTaskMenu();
 		}
@@ -412,6 +521,7 @@ public class PainelCalendarioAgendamento extends JPanel {
 		lbCloseTask.setVisible(true);
 		lbSaveTask.setVisible(true);
 		painelNewTask.setVisible(true);
+		cbPrioridade.setVisible(true);
 
 		myPanel.setSize(myPanel.getWidth(), myPanel.getHeight() + 125);
 
@@ -432,10 +542,12 @@ public class PainelCalendarioAgendamento extends JPanel {
 	private void hideNewTask() {
 
 		areOpen = false;
+
 		tfDataSelecionada.setVisible(false);
 		spDescricao.setVisible(false);
 		spHora.setVisible(false);
 		spMinutos.setVisible(false);
+		cbPrioridade.setVisible(false);
 		lbCloseTask.setVisible(false);
 		lbSaveTask.setVisible(false);
 		painelNewTask.setVisible(false);
@@ -444,12 +556,11 @@ public class PainelCalendarioAgendamento extends JPanel {
 		myPanel.setBackground(c);
 		myPanel.setSize(myPanel.getWidth(), myPanel.getHeight() - 125);
 
-		painelNewTask.removeAll();
-		painelNewTask.validate();
 		painelNewTask.repaint();
 		myPanel.revalidate();
 		myPanel.repaint();
 		Principal.minhaFrame.revalidate();
 		Principal.minhaFrame.repaint();
+		painelNewTask = null;
 	}
 }

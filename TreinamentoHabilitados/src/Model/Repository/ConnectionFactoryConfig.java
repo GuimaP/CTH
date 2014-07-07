@@ -18,10 +18,8 @@ public class ConnectionFactoryConfig {
 	
 		public static SessionFactory openManger(){
 					Configuration cfg = new Configuration();
-			 		cfg.configure("hibernate.cfg.xml");
 			 		
-			 		
-			 		
+					cfg.configure("hibernate.cfg.xml");
 			 		cfg.addAnnotatedClass(Login.class); //Informando ao Hibernate as classes anotadas.
 			 		cfg.addAnnotatedClass(Carro.class);
 			 		cfg.addAnnotatedClass(Cliente.class);
@@ -29,6 +27,7 @@ public class ConnectionFactoryConfig {
 			 		cfg.addAnnotatedClass(Tarefa.class);
 			 		cfg.addAnnotatedClass(Login.class);
 			 		cfg.addAnnotatedClass(Login.class);
+			 		cfg.addAnnotatedClass(Pacote.class);
 			 		return cfg.buildSessionFactory();
 			 	}
 			 	

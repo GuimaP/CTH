@@ -18,7 +18,7 @@ import Main.Start;
 
 public class ConfigController {
 	public static java.awt.Image defineIcon(){
-		java.awt.Image img =new ImageIcon(Start.class.getResource("/Resources/icons").getPath()+"/logo.png").getImage();
+		java.awt.Image img =new ImageIcon(ConfigController.class.getResource("/Resources/icons").getPath()+"/logo.png").getImage();
 		return img;
 	}
 	
@@ -33,4 +33,6 @@ public class ConfigController {
 
 		return fonte;
 	}
+
+	 
 }

@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="lib" path="Jars/activation.jar"/>
 	<classpathentry kind="lib" path="Jars/ant-jmf.jar"/>
 	<classpathentry kind="lib" path="Jars/antlr-2.7.7.jar"/>
 	<classpathentry kind="lib" path="Jars/bridj-0.7-20131007.003529-54.jar"/>
@@ -39,6 +40,7 @@
 	<classpathentry kind="lib" path="Jars/lti-civil-noswt.jar"/>
 	<classpathentry kind="lib" path="Jars/lti-civil-noutils.jar"/>
 	<classpathentry kind="lib" path="Jars/lti-civil.jar"/>
+	<classpathentry kind="lib" path="Jars/mail.jar"/>
 	<classpathentry kind="lib" path="Jars/mediaplayer.jar"/>
 	<classpathentry kind="lib" path="Jars/mysql-connector-java-5.1.26-bin.jar"/>
 	<classpathentry kind="lib" path="Jars/postgresql-9.3-1101.jdbc4.jar"/>

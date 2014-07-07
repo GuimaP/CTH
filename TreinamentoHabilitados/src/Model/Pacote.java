@@ -1,10 +1,26 @@
 package Model;
 
-public class Pacote {
+import javax.annotation.Generated;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
+import org.hibernate.annotations.GeneratorType;
+
+@Entity
+public class Pacote {
+	@Id//Digo que é uma ID
+	@GeneratedValue //E que vai ser gerado automaticamente
+	private long idPacote;
+	
+	@Column(nullable=false) //Não pode ser nula o valor
     private String descricao;
+	@Column(nullable=false)
     private String aulas;
+	@Column(nullable=false)
     private String precoAula;
+	@Column(nullable=false)
     private String precoPacote;
 
     public String getPrecoAula() {
