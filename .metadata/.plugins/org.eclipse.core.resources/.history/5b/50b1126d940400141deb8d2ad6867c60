@@ -116,7 +116,7 @@ public class FormCadastroCarro extends JInternalFrame {
 		tabela = new JTable(new ModelTableCarro(listCarro));
 		scroll = new JScrollPane(tabela);
 		scroll.setSize(220, 120);
-		scroll.setLocation(7, 10);
+		scroll.setLocation(7, 20);
 		pnBusca.add(scroll);
 		
 		btExcluir = new JButton("Excluir");

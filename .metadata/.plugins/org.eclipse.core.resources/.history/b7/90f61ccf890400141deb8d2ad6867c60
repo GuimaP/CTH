@@ -15,7 +15,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public class ModeloTablePacote extends AbstractTableModel{
     ArrayList<Pacote> listPacote;
-    String[] colunas = {"Descrição", "Aulas", "Preço"};
+    String[] colunas = {"DescriÃ§Ã£o", "Aulas", "PreÃ§o"};
         
     public ModeloTablePacote(ArrayList<Pacote> listPacote){
         this.listPacote = listPacote;

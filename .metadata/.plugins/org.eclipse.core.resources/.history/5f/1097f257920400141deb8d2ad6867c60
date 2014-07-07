@@ -35,7 +35,7 @@ public class FormCadastroCarro extends JInternalFrame {
 	private JTextField tfAno, tfMarca, tfModelo;
 	private JFormattedTextField tfPlaca;
 	private MaskFormatter maskPalca;
-	private JButton btSalvar, btExcluir;
+	private JButton btSalvar;
 	private JPanel pnGeral, pnBusca;
 	private JTable tabela;
 	private JScrollPane scroll;
@@ -114,26 +114,20 @@ public class FormCadastroCarro extends JInternalFrame {
 		//Componentes do pnBusca.
 		
 		tabela = new JTable(new ModelTableCarro(listCarro));
-		scroll = new JScrollPane(tabela);
-		scroll.setSize(220, 120);
-		scroll.setLocation(7, 10);
+		scroll = new JScrollPane();
+		scroll.setSize(220, 150);
+		scroll.setLocation(7, 20);
 		pnBusca.add(scroll);
 		
-		btExcluir = new JButton("Excluir");
-		btExcluir.setLocation(70, 135);
-		btExcluir.setSize(100, 30);
-		pnBusca.add(btExcluir);
-		
-		//-----------------------------------//
 		abas = new JTabbedPane();
-		abas.setBounds(1, 1, 245, 245);
+		abas.setBounds(1, 1, 245, 255);
 		abas.addTab("Cadastro", pnGeral);
 		abas.addTab("Busca", pnBusca);
 		add(abas);
 
 		// PAINEL//
 		getContentPane().setLayout(null);
-		setSize(250, 250);
+		setSize(250, 260);
 		setLocation(50, 10);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setVisible(true);
