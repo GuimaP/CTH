@@ -67,8 +67,7 @@ public class EmailController {
 		this.port = port;
 		this.isSsl = ssl;
 		this.hostRecieve = hostRecieve;
-		this.user = "guiihpr@gmail.com";
-		this.pass = "!Q@W#E162738";
+	
 
 		authenticOnEmail();
 
