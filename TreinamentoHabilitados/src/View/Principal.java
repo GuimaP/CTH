@@ -1,14 +1,22 @@
 package View;
 
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.LayoutManager;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.event.WindowStateListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,13 +31,32 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeSelectionModel;
 
+
+
+
+
+
+
+
+
+import com.sun.media.rtsp.protocol.PauseMessage;
+
 import Controller.ConfigController;
+import Controller.EmailController;
+import Model.tbEmail;
+
 
 public class Principal extends JFrame {
 
@@ -48,6 +75,9 @@ public class Principal extends JFrame {
 
 	private int POSXButoon;
 	private JTree jtreeAtalhos;
+	
+	private EmailController email;
+	private JPanel painelEmail;
 
 	protected static boolean isFrameInstrutorOpen, isFrameClienteOpen,
 			isFrameCadastroPacote, isFrameAgendamento, isFrameCarro;
@@ -55,6 +85,8 @@ public class Principal extends JFrame {
 	public Principal() {
 		try {
 			minhaFrame = this;
+			email = 
+					new EmailController("smtp.gmail.com","imap.gmail.com",465,true);
 			inicializaComponentes();
 			definirEventos();
 
@@ -119,12 +151,21 @@ public class Principal extends JFrame {
 		DefaultMutableTreeNode emailItens = new DefaultMutableTreeNode("E-mail");
 		DefaultTreeCellRenderer imgEmail = new DefaultTreeCellRenderer();
 		imgEmail.setLeafIcon(new ImageIcon("Resources/imgs/logo fundo.jpg"));
-		root.add(emailItens);
+		
 
-		DefaultMutableTreeNode fav1 = new DefaultMutableTreeNode("Arquivos1");
-		DefaultMutableTreeNode fav2 = new DefaultMutableTreeNode("Arquivos1");
-		emailItens.add(fav1);
-		emailItens.add(fav2);
+//		DefaultMutableTreeNode fav1 = new DefaultMutableTreeNode("Arquivos1");
+//		DefaultMutableTreeNode fav2 = new DefaultMutableTreeNode("Arquivos1");
+//		emailItens.add(fav1);
+//		emailItens.add(fav2);
+		
+ 		java.util.List<String> lsEmail =  email.getListagemEmail();
+		for(String e : lsEmail){
+			System.out.println("- "+ e);
+			DefaultMutableTreeNode dmFolder = new DefaultMutableTreeNode(e);
+			emailItens.add(dmFolder);
+		}
+		
+		root.add(emailItens);
 
 		jtreeAtalhos = new JTree(root);
 		// jtreeAtalhos.setEnabled(false);
@@ -132,22 +173,28 @@ public class Principal extends JFrame {
 				TreeSelectionModel.SINGLE_TREE_SELECTION);
 		jtreeAtalhos.setCellRenderer(new MeuModeloTree());
 		jtreeAtalhos.expandRow(0);
-		sp = new JScrollPane(jtreeAtalhos);
+		
 
-		btAbrirMenuLateral = new JButton(">>");
-		btAbrirMenuLateral.setFocusCycleRoot(true);
-		btAbrirMenuLateral.setBounds((sp.getWidth() + sp.getX()), 10, 45, 30);
-		add(btAbrirMenuLateral);
+		painelEmail = new JPanel(); //INICANDO O PAINEL
 
 		barraLateral = new JToolBar();
 		barraLateral.setEnabled(false);
 		barraLateral.setLayout(null);
 		barraLateral.setBounds(0, 0, 170, minhaFrame.getHeight());
+		barraLateral.setVisible(false);
+		
+		sp = new JScrollPane(jtreeAtalhos);
+		sp.setBounds(0, 0, 170, barraLateral.getHeight());
 		sp.setBounds(-(barraLateral.getWidth()), 0,
 				barraLateral.getWidth() - 5, barraLateral.getHeight() - 50);
 		barraLateral.add(sp);
-		barraLateral.setVisible(false);
+		
 		add(barraLateral);
+		
+		btAbrirMenuLateral = new JButton(">>");
+		btAbrirMenuLateral.setFocusCycleRoot(true);
+		btAbrirMenuLateral.setBounds((sp.getWidth() + sp.getX()), 10, 45, 30);
+		add(btAbrirMenuLateral);
 
 		POSXButoon = btAbrirMenuLateral.getX();
 
@@ -165,6 +212,51 @@ public class Principal extends JFrame {
 	}
 
 	public void definirEventos() {
+		
+		jtreeAtalhos.addTreeSelectionListener(new TreeSelectionListener() {
+			
+			@Override
+			public void valueChanged(TreeSelectionEvent arg0) {
+				System.out.println(arg0.getNewLeadSelectionPath());
+				final int  WIDTH_TAMANHO = 300;
+					if("[Inicio, E-mail, INBOX]".equalsIgnoreCase(arg0.getNewLeadSelectionPath().toString())){
+						System.out.println("eh inbox");
+						java.awt.Dimension d = barraLateral.getSize();
+						Point p = barraLateral.getLocation();
+//						sp.setSize(d.width+100, d.height);
+//						sp.setLocation(p.x+100,p.y);
+						//barraLateral.setLocation(p.x+100, p.y);
+						java.awt.Dimension d2 = barraLateral.getSize();
+						barraLateral.setSize(d2.width+WIDTH_TAMANHO, d2.height);
+						btAbrirMenuLateral.setLocation(btAbrirMenuLateral.getX()+WIDTH_TAMANHO, btAbrirMenuLateral.getY());
+						
+						
+						painelEmail.removeAll();
+						painelEmail.setLayout(new GridLayout(1,1));
+						
+						List<String> ls = email.getListagemEmail();
+						JTable tb = new JTable(new tbEmail(ls));
+						JScrollPane spe = new JScrollPane(tb);
+
+						
+						painelEmail.add(spe);
+						painelEmail.setSize(WIDTH_TAMANHO, barraLateral.getHeight());
+						painelEmail.setLocation(jtreeAtalhos.getWidth()+10, 0);
+						painelEmail.setBackground(Color.white);
+						barraLateral.add(painelEmail);
+						
+						
+						minhaFrame.revalidate();
+						minhaFrame.repaint();
+						
+						
+						
+						
+						
+					}
+				
+			}
+		});
 
 		btAbrirMenuLateral.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -176,6 +268,7 @@ public class Principal extends JFrame {
 						public void run() {
 							int XAtual = sp.getX(); // Local atual do view
 							int XFinal = 6; // O Destino final que deve estar.
+							int XPainel =painelEmail.getX();
 							int posXButton = POSXButoon - 10;
 							barraLateral.setVisible(true);
 							while (XAtual <= XFinal) { // Enquanto o atual n
@@ -183,9 +276,12 @@ public class Principal extends JFrame {
 								try {
 
 									XAtual++;
+									XPainel++;
 									posXButton++;
+									
 
 									sp.setLocation(XAtual, sp.getY());
+									painelEmail.setLocation(XPainel, painelEmail.getY());
 									btAbrirMenuLateral.setLocation(posXButton,
 											btAbrirMenuLateral.getY());
 									Thread.sleep(2);
@@ -208,14 +304,17 @@ public class Principal extends JFrame {
 							int XAtual = sp.getX(); // Local atual do view
 							int XFinal = -(barraLateral.getWidth());
 							int posXButton = btAbrirMenuLateral.getX() - 10;
+							int XPainel = painelEmail.getX();
 
 							while (XAtual >= XFinal) { // Enquanto o atual n
 														// chegar no final
 								try {
 									XAtual--;
 									posXButton--;
+									XPainel--;
 
 									sp.setLocation(XAtual, sp.getY());
+									painelEmail.setLocation(XPainel, painelEmail.getY());
 									btAbrirMenuLateral.setLocation(
 											posXButton + 20,
 											btAbrirMenuLateral.getY());
