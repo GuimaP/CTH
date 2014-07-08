@@ -695,13 +695,13 @@ public class Principal extends JFrame {
 				int numeroDeMsgs;
 				numeroDeMsgs = 0; //inicializando
 				List<MensagemEmail>lsNovosEmails = new ArrayList<MensagemEmail>();
-				DefaultMutableTreeNode dm = (DefaultMutableTreeNode) jtree.getModel();
+				DefaultMutableTreeNode dm = (DefaultMutableTreeNode) jtree.getLastSelectedPathComponent();
 				int emailsNovos = 0;
 				while(true){
 					
 				lsNovosEmails = email.countUnredMessages("INBOX");
 				if(lsNovosEmails.size() > emailsNovos){
-						System.out.println("chego");
+						
 				}
 						
 						emailsNovos = lsNovosEmails.size();
