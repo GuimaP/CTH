@@ -2,6 +2,7 @@ package Main;
 
 import Controller.ConfigController;
 import Controller.LogController;
+import Model.Login;
 import Model.Repository.ConnectionFactoryConfig;
 import Model.Repository.ConnectionFactoryRepository;
 import View.Principal;
@@ -73,108 +74,111 @@ public class Start {
 					UIManager.setLookAndFeel(info.getClassName());
 
 					
-					Thread t = new Thread(new Runnable() {
-
-						@Override
-						public void run() {
-							String[] mensagens = { ".              Carregando...",
-									". Mais Alguns Instantes..." };
-							JFrame janela = new JFrame("Carregando");
-							janela.setIconImage(ConfigController.defineIcon());
-							janela.setUndecorated(true);
-							janela.setSize(400, 400);
-							janela.setOpacity(0.4f);
-							janela.setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-							janela.setLocationRelativeTo(null);
-
-							janela.setBackground(new Color(0,0,0,2)); //Fundo da Frame deixa transparente
-							janela.setContentPane(new MyPainelInvisible()); //Defino a imagem como opaque e visivel
-							janela.setLayout(new BorderLayout());
-							JLabel lb = new JLabel("Carregando");
-							
-							lb.setFont(ConfigController.definePrincipalFont(30f, Font.BOLD));
-							lb.setForeground(Color.black);
-							janela.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-							
-							
-							janela.getContentPane().add(lb);
-							janela.setAlwaysOnTop(true);
-
-							janela.setVisible(true);
-							
-
-							int cont = 0;
-							while (Start.isLoading) {
-								try {
-									lb.setText(mensagens[(cont % 2)]);
-									Thread.sleep(1 * 1000);
-									cont++;
-
-									Thread.sleep(1000);
-								} catch (InterruptedException ex) {
-									Logger.getLogger(Start.class.getName())
-											.log(Level.SEVERE, null, ex);
-								}
-
-							}
-							janela.dispose();
-						}
+//					Thread t = new Thread(new Runnable() {
+//
+//						@Override
+//						public void run() {
+//							String[] mensagens = { ".              Carregando...",
+//									". Mais Alguns Instantes..." };
+//							JFrame janela = new JFrame("Carregando");
+//							janela.setIconImage(ConfigController.defineIcon());
+//							janela.setUndecorated(true);
+//							janela.setSize(400, 400);
+//							janela.setOpacity(0.4f);
+//							janela.setDefaultCloseOperation(EXIT_ON_CLOSE);
+//
+//							janela.setLocationRelativeTo(null);
+//
+//							janela.setBackground(new Color(0,0,0,2)); //Fundo da Frame deixa transparente
+//							janela.setContentPane(new MyPainelInvisible()); //Defino a imagem como opaque e visivel
+//							janela.setLayout(new BorderLayout());
+//							JLabel lb = new JLabel("Carregando");
+//							
+//							lb.setFont(ConfigController.definePrincipalFont(30f, Font.BOLD));
+//							lb.setForeground(Color.black);
+//							janela.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+//							
+//							
+//							janela.getContentPane().add(lb);
+//							janela.setAlwaysOnTop(true);
+//
+//							janela.setVisible(true);
+//							
+//
+//							int cont = 0;
+//							while (Start.isLoading) {
+//								try {
+//									lb.setText(mensagens[(cont % 2)]);
+//									Thread.sleep(1 * 1000);
+//									cont++;
+//
+//									Thread.sleep(1000);
+//								} catch (InterruptedException ex) {
+//									Logger.getLogger(Start.class.getName())
+//											.log(Level.SEVERE, null, ex);
+//								}
+//
+//							}
+//							janela.dispose();
+//						}
 						/*
 						 * http://stackoverflow.com/questions/11703794/how-to-set-jframe-background-transparent-but-jpanel-or-jlabel-background-opaque
 						 */
-					
-						class MyPainelInvisible extends JPanel {
-
-							public MyPainelInvisible() {
-								setOpaque(false);
-								
-							}
-
-							@Override
-							public void paint(Graphics g) {
-								super.paintComponents(g);
-								java.awt.Image img = new javax.swing.ImageIcon(
-										getClass().getResource(
-												"/Resources/icons").getPath()
-												+ "/loading.gif").getImage();
-								g.drawImage(img, 0, 0, this.getWidth(),
-										this.getHeight(), this);
-							}
-							
-							@Override
-						    protected void paintComponent(Graphics g) {
-
-						        // Allow super to paint
-						        super.paintComponent(g);
-
-						        // Apply our own painting effect
-						        Graphics2D g2d = (Graphics2D) g.create();
-						        // 50% transparent Alpha
-						        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.9f));
-
-						        g2d.setColor(getBackground());
-						        g2d.fill(getBounds());
-
-						        g2d.dispose();
-
-						    }
-
-
-						}
-
-					});
-					t.start();
+//					
+//						class MyPainelInvisible extends JPanel {
+//
+//							public MyPainelInvisible() {
+//								setOpaque(false);
+//								
+//							}
+//
+//							@Override
+//							public void paint(Graphics g) {
+//								super.paintComponents(g);
+//								java.awt.Image img = new javax.swing.ImageIcon(
+//										getClass().getResource(
+//												"/Resources/icons").getPath()
+//												+ "/loading.gif").getImage();
+//								g.drawImage(img, 0, 0, this.getWidth(),
+//										this.getHeight(), this);
+//							}
+//							
+//							@Override
+//						    protected void paintComponent(Graphics g) {
+//
+//						        // Allow super to paint
+//						        super.paintComponent(g);
+//
+//						        // Apply our own painting effect
+//						        Graphics2D g2d = (Graphics2D) g.create();
+//						        // 50% transparent Alpha
+//						        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.9f));
+//
+//						        g2d.setColor(getBackground());
+//						        g2d.fill(getBounds());
+//
+//						        g2d.dispose();
+//
+//						    }
+//
+//
+//						}
+//
+//					});
+//					t.start();
 					System.out.println("Inicando Log");
 					// LogController.insertLog(new Exception("Iniciando"));
 
-//					ConnectionFactoryConfig.openManger();
-					ConnectionFactoryConfig.generateSession();//.openSession();
+					
+//					ConnectionFactoryConfig.generateSession();//.openSession();
 
 					isLoading = false;
-					TelaLogin tela = new TelaLogin();
+//					TelaLogin tela = new TelaLogin();
 
-				//	new Principal();
+					Login l = new Login();
+					l.setUsuario("guima");
+					l.setSenha("123");
+					new Principal(l);
 					break;
 				}
 

@@ -22,7 +22,7 @@ public class initPrincipal {
 			e.printStackTrace();
 		}
 
-		new View.Principal();
+//		new View.Principal();
 
 	}
 }

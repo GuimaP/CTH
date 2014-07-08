@@ -139,7 +139,7 @@ public class TelaLogin extends JFrame {
                         LoginRepository loginRepository = new LoginRepository();
 
                         if (loginRepository.isAutentica(l)) {
-                            new Principal();
+                            new Principal(l);
                             minhaFrame.dispose();
                         } else {
                             JOptionPane.showMessageDialog(null, "Usuario ou senhae incorretos");

@@ -6,7 +6,9 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.mail.Address;
@@ -34,6 +36,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.search.FlagTerm;
 import javax.mail.Message;
 
 import org.eclipse.swt.layout.GridLayout;
@@ -43,12 +46,14 @@ import org.w3c.dom.ls.LSSerializer;
 
 import Model.GroupEmails;
 import Model.MensagemEmail;
+import Model.UsuarioEmail;
 import antlr.debug.MessageEvent;
 
 import com.itextpdf.awt.geom.misc.Messages;
 import com.itextpdf.text.pdf.FdfReader;
 import com.sun.faces.facelets.tag.jstl.core.ForEachHandler;
 import com.sun.mail.imap.IMAPFolder;
+import com.sun.mail.imap.IMAPFolder.FetchProfileItem;
 import com.sun.mail.pop3.POP3SSLStore;
 
 public class EmailController {
@@ -62,25 +67,41 @@ public class EmailController {
 	private Folder folderInbox;
 	private Session session;
 
-	public EmailController(String host, String hostRecieve, int port,
-			boolean ssl) {
-		this.host = host;
-		this.port = port;
-		this.isSsl = ssl;
-		this.hostRecieve = hostRecieve;
-		this.user = "guima.teste.p@gmail.com";
-		this.pass = "guimateste";
+	public EmailController(UsuarioEmail e) {
+		this.host = e.getHost();
+		this.port = e.getPort();
+		this.isSsl = e.isSsl();
+		this.hostRecieve = e.getHostReceive();
+		this.user = e.getUser();
+		this.pass = e.getPass();
 	
 
 		authenticOnEmail();
 		// PEGAR DE UM ARQUIVO CRIPTOGRAFADO E SERIALIZADO.
 	}
 
-	public EmailController() {
+	public String getUser(){
+		return this.user;
+	}
+	
+	public Map<String,List<String>> getEmails(){
+		Map<String,List<String>> map = new HashMap<String, List<String>>();
+		try{
+			Folder[] folders = store.getDefaultFolder().list();
+			
+			for(Folder f: folders){
+				System.out.println(f.getName());
+				List<String>lsEmails = listarViewEmails(f.getName());
+				map.put(f.getName(),lsEmails);
+			}
+		}catch(MessagingException e){
+			
+		}
+		return map;
 		
-
 	}
 
+	
 	public List<Folder> listarFolders() {
 		List<Folder> lsFolders = new ArrayList<Folder>();
 		try {
@@ -97,7 +118,7 @@ public class EmailController {
 		return lsFolders;
 	}
 	
-	public List<String> getListagemEmail(){
+	public List<String> getListagemFolders(){
 		List<String>listFolders = new ArrayList<String>();
 		try{
 		Store store = session.getStore("imaps");
@@ -125,18 +146,40 @@ public class EmailController {
 	 * @param Folder
 	 * @return Retorna uma visão de itens do E-mail
 	 */
-	public List<String> listarViewEmails(Folder f) {
+	public List<String> listarViewEmails(String name) {
 		List<String> ls = new ArrayList<String>();
 		try {
-			Message[] msgs = f.getMessages();
+			if(!"[Gmail]".equalsIgnoreCase(name)){
+			Folder folder = store.getFolder(name);
+			
+			FetchProfile fp = new FetchProfile();
+			fp.add(FetchProfileItem.ENVELOPE);
+			fp.add(FetchProfileItem.FLAGS);
+			fp.add(FetchProfileItem.SIZE);
+			folder.open(Folder.READ_ONLY);
+			Message[] msgs = folder.getMessages();
+			
 			int total = msgs.length - 1;
 			for (int i = total; i > 0; i--) {
-				String from = msgs[i].getFrom().toString();
+				boolean isRecent = msgs[i].getFlags().contains(Flags.Flag.RECENT); //Verifico se eh uma mensagem n lida
+				String from = "";
+				if(isRecent){ //Se for recente coloco a tag html pra deixar em negrito
+					from += "<html><b>";
+				}
+				Address[] vtrAdres = msgs[i].getFrom();
+				for(Address a : vtrAdres){
+					from += a.toString();
+				}
+				
+				if(isRecent){//Verifico de novo para fechar a tag
+					from += "</b></html>";
+				}
 				String assunto = msgs[i].getSubject();
 				String dataRecebida = new SimpleDateFormat("dd/MM/yyyy -  hh:mm").format(msgs[i].getReceivedDate());
 				ls.add("De: " + from + "  - " + dataRecebida + "\n" + assunto);
 			}
-			f.close(true);
+		}
+
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
@@ -226,21 +269,21 @@ public class EmailController {
 	}
 
 
-	public void abrirFolder(String name){
-		try{
-		System.out.println(name);
-		Folder folder = (IMAPFolder) store.getFolder(name);
-		folder.open(Folder.READ_ONLY);
-		Message[] msg = folder.getMessages();
-		int total = msg.length -1;
-		for(int i = total; i > 0 ;i--){
-			System.out.println(readEmail(msg[i]));
-		}
-		}catch(MessagingException e){
-			e.printStackTrace();
-		}
-	}
-	
+//	public void abrirFolder(String name){
+//		try{
+//		System.out.println(name);
+//		Folder folder = (IMAPFolder) store.getFolder(name);
+//		folder.open(Folder.READ_ONLY);
+//		Message[] msg = folder.getMessages();
+//		int total = msg.length -1;
+//		for(int i = total; i > 0 ;i--){
+//			System.out.println(readEmail(msg[i]));
+//		}
+//		}catch(MessagingException e){
+//			e.printStackTrace();
+//		}
+//	}
+//	
 	
 	/**
 	 * 
@@ -430,18 +473,42 @@ public class EmailController {
 
 	}
 
-	public int countUnredMessages() {
-		try {
-			return folderInbox.getUnreadMessageCount();
-		} catch (MessagingException e) {
-			return -1;
+	public synchronized List<MensagemEmail> countUnredMessages(String name) {
+		List<MensagemEmail>listEmail = new ArrayList<MensagemEmail>();
+		try{
+		Folder folderEmail = store.getFolder(name); //Abro o diretorio de acordo com o nome da pasta
+		 folderEmail.open(Folder.READ_ONLY ); //Abro para somente leitura
+		Message messages[] = folderEmail.search(new FlagTerm(new Flags( //Filtro apenas todas as mensagens que n foram vistas
+                Flags.Flag.SEEN), false));
+		
+		FetchProfile fp = new FetchProfile(); 
+        fp.add(FetchProfile.Item.ENVELOPE); 
+        fp.add(FetchProfile.Item.CONTENT_INFO);
+        
+        folderEmail.fetch(messages, fp); //Atualizo o folder
+        
+        
+        for(Message m : messages){ //e pego todas as mensagens e mostro 
+        	MensagemEmail msg = readEmail(m);
+        	System.out.println(msg.getFrom());
+        	listEmail.add(msg);
+        }
+        
+        System.out.println("No. of Unread Messages : " + messages.length + "\n "+ listEmail.size());
+        
+		}catch(MessagingException e){
+			e.printStackTrace();
 		}
+		
+        
+        
+        return listEmail;
 	}
 
 	public static void main(String[] args) {
 		try {
-			EmailController email = 
-					new EmailController("smtp.gmail.com","imap.gmail.com",465,true);
+//			EmailController email = 
+//					new EmailController("smtp.gmail.com","imap.gmail.com",465,true);
 //		List<Folder> f = email.listarFolders();
 //		for(Folder fo : f){
 //			System.out.println(fo);
@@ -456,8 +523,9 @@ public class EmailController {
 //		}
 //		
 //		email.abrirFolder("[Gmail]");
-		System.out.println( email.getListagemEmail());
-		
+//		System.out.println( email.getListagemFolders());
+//		email.countUnredMessages("INBOX");
+//		
 
 		} catch (Exception er) {
 			er.printStackTrace();
