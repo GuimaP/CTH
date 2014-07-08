@@ -21,6 +21,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -52,6 +53,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
+
 
 
 
@@ -634,16 +636,20 @@ public class Principal extends JFrame {
 			try {
 				int numeroDeMsgs;
 				numeroDeMsgs = 0; //inicializando
-				
+				List<MensagemEmail>lsNovosEmails = new ArrayList<MensagemEmail>();
+				int emailsNovos = 0;
 				while(true){
 					
-				
-						jtable.revalidate();
+				lsNovosEmails = email.countUnredMessages("INBOX");
+				if(lsNovosEmails.size() > emailsNovos){
+					
+				}
+						
+					jtable.revalidate();
 						Principal.minhaFrame.repaint();
-					}
-					Thread.sleep(1000*60); //Espera 1 minutos para executar de novo
-					numeroDeMsgs = lsEmail.size();
-				}	
+						Thread.sleep(1000*60); //Espera 1 minutos para executar de novo
+					
+			}
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
