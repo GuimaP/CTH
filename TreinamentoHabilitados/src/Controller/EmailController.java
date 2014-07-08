@@ -163,20 +163,20 @@ public class EmailController {
 			for (int i = total; i > 0; i--) {
 				boolean isRecent = msgs[i].getFlags().contains(Flags.Flag.RECENT); //Verifico se eh uma mensagem n lida
 				String from = "";
-				if(isRecent){ //Se for recente coloco a tag html pra deixar em negrito
-					from += "<html><b>";
-				}
+			
 				Address[] vtrAdres = msgs[i].getFrom();
 				for(Address a : vtrAdres){
 					from += a.toString();
 				}
 				
-				if(isRecent){//Verifico de novo para fechar a tag
-					from += "</b></html>";
-				}
+				
 				String assunto = msgs[i].getSubject();
 				String dataRecebida = new SimpleDateFormat("dd/MM/yyyy -  hh:mm").format(msgs[i].getReceivedDate());
-				ls.add("De: " + from + "  - " + dataRecebida + "\n" + assunto);
+				if(isRecent){
+					ls.add("<html><b>De: " + from + "  - " + dataRecebida + "\n" + assunto+"</b></html>");
+				}else {
+					ls.add("De: " + from + "  - " + dataRecebida + "\n" + assunto);
+				}
 			}
 		}
 
@@ -476,6 +476,10 @@ public class EmailController {
 	public synchronized List<MensagemEmail> countUnredMessages(String name) {
 		List<MensagemEmail>listEmail = new ArrayList<MensagemEmail>();
 		try{
+			if(!store.isConnected()){
+				store.connect(this.hostRecieve,this.user, this.pass);
+			}	
+		
 		Folder folderEmail = store.getFolder(name); //Abro o diretorio de acordo com o nome da pasta
 		 folderEmail.open(Folder.READ_ONLY ); //Abro para somente leitura
 		Message messages[] = folderEmail.search(new FlagTerm(new Flags( //Filtro apenas todas as mensagens que n foram vistas
@@ -490,7 +494,7 @@ public class EmailController {
         
         for(Message m : messages){ //e pego todas as mensagens e mostro 
         	MensagemEmail msg = readEmail(m);
-        	System.out.println(msg.getFrom());
+        	System.out.println(msg.getFrom().toString());
         	listEmail.add(msg);
         }
         
@@ -498,6 +502,9 @@ public class EmailController {
         
 		}catch(MessagingException e){
 			e.printStackTrace();
+		}finally{
+			
+			
 		}
 		
         
