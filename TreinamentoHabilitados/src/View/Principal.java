@@ -538,9 +538,9 @@ public class Principal extends JFrame {
 		private EmailController email;
 		private JTree jtree;
 		
-		public CheckNewMessages(JTable jTreeTable, JTree jtreeAtalhos){
+		public CheckNewMessages(JTable Table, JTree jtreeAtalhos){
 			
-			this.jtable = jTreeTable;
+			this.jtable = Table;
 			this.jtree = jtreeAtalhos;
 			
 			
@@ -637,15 +637,7 @@ public class Principal extends JFrame {
 				
 				while(true){
 					
-					List<MensagemEmail>lsEmail = email.countUnredMessages("INBOX");
-					
-					if(lsEmail.size() > numeroDeMsgs){
-						ModelTableEmail model = (ModelTableEmail) this.jtable.getModel();
-						lsEmail.forEach(m ->{
-							model.addItem(m);
-							System.out.println(m.getSubject());
-						});
-						jtable.setModel(model);
+				
 						jtable.revalidate();
 						Principal.minhaFrame.repaint();
 					}

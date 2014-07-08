@@ -51,4 +51,14 @@ public ModelTableEmail(List<String>ls) {
 		this.fireTableDataChanged(); //Notifico que houve uma alteração na tabela
 	}
 	
+	@Override
+		public boolean isCellEditable(int rowIndex, int columnIndex) {
+			return false;
+		}
+	
+	@Override
+	public Class<?> getColumnClass(int columnIndex) {
+		return String.class;
+	}
+	
 }
