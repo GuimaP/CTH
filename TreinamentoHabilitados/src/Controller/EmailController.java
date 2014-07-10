@@ -146,9 +146,13 @@ public class EmailController {
 	 * @param Folder
 	 * @return Retorna uma visão de itens do E-mail
 	 */
-	public List<String> listarViewEmails(String name) {
+	public synchronized List<String> listarViewEmails(String name) {
 		List<String> ls = new ArrayList<String>();
 		try {
+			if(!store.isConnected()){
+				store.connect(this.hostRecieve,this.user, this.pass);
+			}	
+			
 			if(!"[Gmail]".equalsIgnoreCase(name)){
 			Folder folder = store.getFolder(name);
 			
@@ -161,7 +165,7 @@ public class EmailController {
 			
 			int total = msgs.length - 1;
 			for (int i = total; i > 0; i--) {
-				boolean isRecent = msgs[i].getFlags().contains(Flags.Flag.RECENT); //Verifico se eh uma mensagem n lida
+				boolean isRecent = msgs[i].getFlags().contains(Flags.Flag.SEEN);
 				String from = "";
 			
 				Address[] vtrAdres = msgs[i].getFrom();
@@ -172,10 +176,10 @@ public class EmailController {
 				
 				String assunto = msgs[i].getSubject();
 				String dataRecebida = new SimpleDateFormat("dd/MM/yyyy -  hh:mm").format(msgs[i].getReceivedDate());
-				if(isRecent){
-					ls.add("<html><b>De: " + from + "  - " + dataRecebida + "\n" + assunto+"</b></html>");
+				if(!isRecent){
+					ls.add("<html><b>De: " + from + "  - Assunto: " + assunto+" - "+ dataRecebida+"</b></html>");
 				}else {
-					ls.add("De: " + from + "  - " + dataRecebida + "\n" + assunto);
+					ls.add("De: " + from + "  - Assunto: " + assunto + " - " + dataRecebida);
 				}
 			}
 		}
@@ -196,14 +200,14 @@ public class EmailController {
 		MensagemEmail msgEmail = new MensagemEmail();
 		try {
 
-			String to = "-- \nTO: ";
-			String from = "FROM: ";
+			
 			String recipients = "COM COPIA PARA: ";
 			String subject = "SUBJECT: ";
 			String body = "";
 
 			subject = msg.getSubject();
 			msgEmail.setSubject(subject);
+			boolean isRecente = msg.getFlags().contains(Flags.Flag.SEEN); 
 
 			Address[] endr = null;
 
@@ -255,9 +259,12 @@ public class EmailController {
 					s = "Nothing";
 					unread = true;
 				}
+				
 
-				msgEmail.setTexto(abrirMensagem(msg));
+//				msgEmail.setTexto(abrirMensagem(msg));
 			}
+			boolean unread = !isRecente;
+			msgEmail.setUnread(unread);
 
 		} catch (MessagingException e) {
 
@@ -494,7 +501,7 @@ public class EmailController {
         
         for(Message m : messages){ //e pego todas as mensagens e mostro 
         	MensagemEmail msg = readEmail(m);
-        	System.out.println(msg.getFrom().toString());
+//        	System.out.println(msg.getFrom().toString());
         	listEmail.add(msg);
         }
         

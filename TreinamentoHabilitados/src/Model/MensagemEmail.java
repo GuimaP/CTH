@@ -1,5 +1,6 @@
 package Model;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.mail.Address;
@@ -10,7 +11,14 @@ public class MensagemEmail {
 	private String subject;
 	private String texto;
 	private boolean isUnread;
+	private Date dataRecebida;
 	
+	public Date getDataRecebida() {
+		return dataRecebida;
+	}
+	public void setDataRecebida(Date dataRecebida) {
+		this.dataRecebida = dataRecebida;
+	}
 	public boolean isUnread() {
 		return isUnread;
 	}

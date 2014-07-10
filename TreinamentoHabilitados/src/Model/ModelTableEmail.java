@@ -41,14 +41,11 @@ public ModelTableEmail(List<String>ls) {
 			return columns[column];
 		}
 	
-	public void addItem(MensagemEmail m){
-		String strNewMsg = "<html><b> De: ";
-		for(Address a : m.getFrom()){
-			strNewMsg += a.toString();
-		}
-		strNewMsg += "</b></html>";
-		lsEmails.add(strNewMsg);
-		this.fireTableDataChanged(); //Notifico que houve uma alteração na tabela
+
+	
+	
+	public List<String> getList(){
+		return lsEmails;
 	}
 	
 	@Override

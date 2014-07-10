@@ -3,6 +3,7 @@ package View;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
@@ -21,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -29,8 +31,21 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
+
+
+
+
+
 import javassist.expr.NewArray;
 
+
+
+
+
+
+
+import javax.mail.Address;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
@@ -45,6 +60,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
+import javax.swing.border.LineBorder;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
@@ -63,20 +81,22 @@ import javax.swing.tree.TreeSelectionModel;
 
 
 
-
-
-
-
-
-
-
-
-
-
 import antlr.TreeParserSharedInputState;
+
+
+
+
+
+
 
 import com.itextpdf.text.log.SysoCounter;
 import com.sun.media.rtsp.protocol.PauseMessage;
+
+
+
+
+
+
 
 import Controller.ConfigController;
 import Controller.EmailController;
@@ -84,7 +104,6 @@ import Model.Login;
 import Model.MensagemEmail;
 import Model.ModelTableEmail;
 import Model.UsuarioEmail;
-
 
 public class Principal extends JFrame {
 
@@ -102,15 +121,17 @@ public class Principal extends JFrame {
 	private PainelCalendarioAgendamento painelCalendario;
 
 	private int POSXButoon;
-	protected  JTree jtreeAtalhos;
-	
+	protected JTree jtreeAtalhos;
+
 	private EmailController email;
 	protected JPanel painelEmail;
 	private JTable jTableEmails;
-	private List<String>listaEmails;
-	private HashMap<String,List<String>> mapEmails;
+	private List<String> listaEmails;
+	private HashMap<String, List<String>> mapEmails;
 	protected Login loginUser;
 	
+	private Thread gerenciaEmal;
+
 	protected static boolean isFrameInstrutorOpen, isFrameClienteOpen,
 			isFrameCadastroPacote, isFrameAgendamento, isFrameCarro;
 
@@ -118,13 +139,15 @@ public class Principal extends JFrame {
 		try {
 			minhaFrame = this;
 			UsuarioEmail user;
-			File fileEmailsEmails = new File(getClass().getResource("/Resources/FilesConfig")+"/email-"+usuario.getUsuario()+".ser");
-			if(fileEmailsEmails.exists()){
-				FileInputStream input = new FileInputStream(fileEmailsEmails);	
+			File fileEmailsEmails = new File(getClass().getResource(
+					"/Resources/FilesConfig")
+					+ "/email-" + usuario.getUsuario() + ".ser");
+			if (fileEmailsEmails.exists()) {
+				FileInputStream input = new FileInputStream(fileEmailsEmails);
 				ObjectInputStream obj = new ObjectInputStream(input);
 				user = (UsuarioEmail) obj.readObject();
 				obj.close();
-			}else{
+			} else {
 				user = new UsuarioEmail();
 				user.setHost("smtp.gmail.com");
 				user.setHostReceive("imap.gmail.com");
@@ -132,30 +155,36 @@ public class Principal extends JFrame {
 				user.setSsl(true);
 				user.setUser("guima.teste.p@gmail.com");
 				user.setPass("guimateste");
-				
-				
-				
+
 				FileOutputStream ou = new FileOutputStream("te.ser");
 				ObjectOutputStream os = new ObjectOutputStream(ou);
 				os.writeObject(user);
 				os.flush();
-				os.close(); //TODO APLICAR CRIPTOGRAFIA
-				
+				os.close(); // TODO APLICAR CRIPTOGRAFIA
+
 			}
-			
+
 			this.email = new EmailController(user);
-		
-			
+
 			this.loginUser = usuario;
 			inicializaComponentes();
 
 			definirEventos();
+
 			
-			Thread gerenciaEmal = new Thread(new CheckNewMessages(jTableEmails,jtreeAtalhos	,painelEmail));
+
+			
+			System.out.println("iniciando a thread");
+			gerenciaEmal = new Thread(new CheckNewMessages(jTableEmails,
+					jtreeAtalhos, painelEmail,email));
+			gerenciaEmal.setDaemon(true);
 			gerenciaEmal.start();
 			
-			isFrameClienteOpen = isFrameInstrutorOpen = isFrameCadastroPacote = isFrameAgendamento 
-					= isFrameCarro = false;
+			System.out.println("ao que parece iniciou a thread");
+			
+			
+
+			isFrameClienteOpen = isFrameInstrutorOpen = isFrameCadastroPacote = isFrameAgendamento = isFrameCarro = false;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -169,12 +198,11 @@ public class Principal extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(1024, 720);
 		setIconImage(ConfigController.defineIcon());
-		
+
 		//
 		menuBarra = new JMenuBar();
 		//
-		
-		
+
 		menuArquivo = new JMenu("Arquivo");
 		menuAgendamento = new JMenu("Agendamento");
 		menuRelatorio = new JMenu("Relatorio");
@@ -191,34 +219,15 @@ public class Principal extends JFrame {
 		menuArquivo.add(itCadastroFuncionario);
 		menuArquivo.add(itCadastroPacote);
 		menuArquivo.add(itCadastroCarro);
-		menuArquivo.add(itCalendario);
+//		menuArquivo.add(itCalendario);
 		menuArquivo.add(itSair);
 		menuAgendamento.add(itAgendamento);
 		//
 		menuBarra.add(menuArquivo);
 		menuBarra.add(menuAgendamento);
 		menuBarra.add(menuRelatorio);
-		//
 
-		//
 
-		
-//		imgEmail.setLeafIcon(new ImageIcon("Resources/imgs/logo fundo.jpg"));
-		
-
-//		DefaultMutableTreeNode fav1 = new DefaultMutableTreeNode("Arquivos1");
-//		DefaultMutableTreeNode fav2 = new DefaultMutableTreeNode("Arquivos1");
-//		emailItens.add(fav1);
-//		emailItens.add(fav2);
-		
-// 		java.util.List<String> lsEmail =  email.getListagemFolders();
-//		for(String e : lsEmail){
-//			System.out.println("- "+ e);
-//			DefaultMutableTreeNode dmFolder = new DefaultMutableTreeNode(e);
-//			emailItens.add(dmFolder);
-//		}
-		
-		
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Inicio");
 
 		DefaultMutableTreeNode favItens = new DefaultMutableTreeNode(
@@ -228,19 +237,15 @@ public class Principal extends JFrame {
 		DefaultMutableTreeNode tarefaItens = new DefaultMutableTreeNode(
 				"Tarefas");
 		root.add(tarefaItens);
-		
-		DefaultMutableTreeNode dmEmail = new DefaultMutableTreeNode(
-				"E-mail");
-		
-		
-		
-		 List<String>folders = email.getListagemFolders();
-		 folders.forEach(fo ->{
-			 DefaultMutableTreeNode dm = new DefaultMutableTreeNode(fo); 
-			 dmEmail.add(dm);
-		 });
-	
-		
+
+		DefaultMutableTreeNode dmEmail = new DefaultMutableTreeNode("E-mail");
+
+		List<String> folders = email.getListagemFolders();
+		folders.forEach(fo -> {
+			DefaultMutableTreeNode dm = new DefaultMutableTreeNode(fo);
+			dmEmail.add(dm);
+		});
+
 		root.add(dmEmail);
 
 		jtreeAtalhos = new JTree(root);
@@ -248,42 +253,46 @@ public class Principal extends JFrame {
 				TreeSelectionModel.SINGLE_TREE_SELECTION);
 		jtreeAtalhos.setCellRenderer(new MeuModeloTree());
 		jtreeAtalhos.expandRow(60);
-		
-//
-		painelEmail = new JPanel(); //INICANDO O PAINEL
+
+		//
+		painelEmail = new JPanel(); // INICANDO O PAINEL
+		painelEmail.setLayout(new GridLayout(1, 1));
 
 		barraLateral = new JToolBar();
 		barraLateral.setEnabled(false);
 		barraLateral.setLayout(null);
-		barraLateral.setBounds(0, 0, 170, minhaFrame.getHeight());
+		barraLateral.setSize(170,minhaFrame.getHeight()-60);
+		barraLateral.setLocation(-(barraLateral.getWidth()),0);
 		barraLateral.setVisible(false);
-		
+
 		sp = new JScrollPane(jtreeAtalhos);
-		sp.setBounds(0, 0, 170, barraLateral.getHeight());
-		sp.setBounds(-(barraLateral.getWidth()), 0,
-				barraLateral.getWidth() - 5, barraLateral.getHeight() - 50);
+		sp.setBounds(barraLateral.getX(), 0, 170, barraLateral.getHeight());
+//		sp.setBounds((barraLateral.getWidth()), 0,
+//				barraLateral.getWidth() - 5, barraLateral.getHeight());
 		barraLateral.add(sp);
-		
+
 		add(barraLateral);
-		
+
 		btAbrirMenuLateral = new JButton(">>");
 		btAbrirMenuLateral.setFocusCycleRoot(true);
-		btAbrirMenuLateral.setBounds((sp.getWidth() + sp.getX()), 10, 45, 30);
+		btAbrirMenuLateral.setBounds(5, 10, 45, 30);
 		add(btAbrirMenuLateral);
 
 		POSXButoon = btAbrirMenuLateral.getX();
 
 		java.awt.Point p = new Point(minhaFrame.getWidth() - 405, 100);
-		painelCalendario = new PainelCalendarioAgendamento(p);//Definindo ele no canto esquerdo da tela
+		painelCalendario = new PainelCalendarioAgendamento(p);/* Definindo ele
+																												 * no canto
+																												 * esquerdo da
+																												 * tela
+																												*/
 		
+		 jTableEmails = new JTable(new ModelTableEmail(new ArrayList<String>()));
+		 
+		 jTableEmails.setRowHeight(20);
+		 JScrollPane spe = new JScrollPane(jTableEmails);
 		
-//		jTableEmails = new JTable();
-//		jTableEmails.setRowHeight(60);
-//		JScrollPane spe = new JScrollPane(jTableEmails);
-//
-//		painelEmail.add(spe);
-//		
-		
+		 painelEmail.add(spe);
 		
 
 		add(painelCalendario);
@@ -291,37 +300,41 @@ public class Principal extends JFrame {
 		setJMenuBar(menuBarra);
 		setLocationRelativeTo(null);
 		setTitle("Karol Habilitados v 1.2.2");
-		//setResizable(false);
+		// setResizable(false);
 		setVisible(true);
 
 	}
 
 	public void definirEventos() {
-		
+
 		btAbrirMenuLateral.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				if (!painelMostrando) { // ABRINDO O PAINEL
+					System.out.println(gerenciaEmal.isAlive());
+					
 					painelMostrando = true;
 					Thread t = new Thread(new Runnable() {
 
 						@Override
 						public void run() {
 							int XAtual = sp.getX(); // Local atual do view
-							int XFinal = 6; // O Destino final que deve estar.
-							int XPainel =painelEmail.getX();
-							int posXButton = POSXButoon - 10;
+							int XFinal = 0; // O Destino final que deve estar.
+//							int XPainel = painelEmail.getX();
+							int posXButton = btAbrirMenuLateral.getX();
 							barraLateral.setVisible(true);
 							while (XAtual <= XFinal) { // Enquanto o atual n
 														// chegar no final
 								try {
-
+									System.out.println(posXButton+"\n"+XAtual + "\n ---");
 									XAtual++;
-									XPainel++;
+//									XPainel++;
 									posXButton++;
-									
 
 									sp.setLocation(XAtual, sp.getY());
-									painelEmail.setLocation(XPainel, painelEmail.getY());
+									barraLateral.setLocation(XAtual, barraLateral.getY());
+//									painelEmail.setLocation(XPainel,
+//											painelEmail.getY());
 									btAbrirMenuLateral.setLocation(posXButton,
 											btAbrirMenuLateral.getY());
 									Thread.sleep(2);
@@ -336,34 +349,63 @@ public class Principal extends JFrame {
 					});
 					t.start();
 				} else { // FECHANDO
+					
 					painelMostrando = false;
 					Thread t = new Thread(new Runnable() {
 
 						@Override
 						public void run() {
+//							int XAtual = sp.getX(); // Local atual do view
+//							int XFinal = -(barraLateral.getWidth()); // Local
+//																		// atual
+//																		// do
+//																		// Container
+//																		// Barra
+//							int posXButton = btAbrirMenuLateral.getX(); // Pego
+//																		// a
+//																		// posição
+//																		// do
+//																		// button
+//																		// para
+//																		// poder
+//																		// move-lo
+//							int XPainel = painelEmail.getX();
 							int XAtual = sp.getX(); // Local atual do view
-							int XFinal = -(barraLateral.getWidth()); //Local atual do Container Barra
-							int posXButton = btAbrirMenuLateral.getX(); //Pego a posição do button para poder move-lo
-							int XPainel = painelEmail.getX();
+							int XFinal = -(barraLateral.getWidth()); // O Destino final que deve estar.
+//							int XPainel = painelEmail.getX();
+							int posXButton = barraLateral.getWidth();
+							
 
 							while (XAtual >= XFinal) { // Enquanto o atual n
 														// chegar no final
 								try {
 									XAtual--;
 									posXButton--;
-									XPainel--;
-
+//									XPainel--;
+									
+									
 									sp.setLocation(XAtual, sp.getY());
-									painelEmail.setLocation(XPainel, painelEmail.getY());
-									btAbrirMenuLateral.setLocation(
-											posXButton + 20,
+									barraLateral.setLocation(XAtual, barraLateral.getY());
+//									painelEmail.setLocation(XPainel,
+//											painelEmail.getY());
+									btAbrirMenuLateral.setLocation(posXButton,
 											btAbrirMenuLateral.getY());
 									Thread.sleep(2);
+
+//									sp.setLocation(XAtual, sp.getY());
+//									painelEmail.setLocation(XPainel,
+//											painelEmail.getY());
+//									btAbrirMenuLateral.setLocation(
+//											posXButton + 20,
+//											btAbrirMenuLateral.getY());
+//									Thread.sleep(2);
 								} catch (InterruptedException ex) {
 									Logger.getLogger(Principal.class.getName())
 											.log(Level.SEVERE, null, ex);
 								}
 							}
+							btAbrirMenuLateral.setLocation(posXButton + 5,
+									btAbrirMenuLateral.getY());
 							barraLateral.setVisible(false);
 							btAbrirMenuLateral.setText(">>");
 						}
@@ -372,67 +414,65 @@ public class Principal extends JFrame {
 				}
 			}
 		});
-	
-		 jtreeAtalhos.addTreeSelectionListener(new TreeSelectionListener() {
-				
-				@Override
-				public void valueChanged(TreeSelectionEvent evt) {
-					System.out.println(evt.getNewLeadSelectionPath());
-					final int  WIDTH_TAMANHO = 300;
-						if("[Inicio, E-mail, INBOX]".equalsIgnoreCase(evt.getNewLeadSelectionPath().toString())){
-//							java.awt.Dimension d = barraLateral.getSize();
-//							Point p = barraLateral.getLocation();
-//							sp.setSize(d.width+100, d.height);
-//							sp.setLocation(p.x+100,p.y);
-//							barraLateral.setLocation(p.x+100, p.y);
-							java.awt.Dimension d2 = barraLateral.getSize();
-							barraLateral.setSize(d2.width+WIDTH_TAMANHO, d2.height);
-							btAbrirMenuLateral.setLocation(btAbrirMenuLateral.getX()+WIDTH_TAMANHO, btAbrirMenuLateral.getY());
-							
-							
-							painelEmail.removeAll();
-							painelEmail.setLayout(new GridLayout(1,1));
-							
-							
-							
-							
-							
-							
-							
-							String[]itens = evt.getNewLeadSelectionPath().toString().split(",");
-							String nameFolder =  itens[itens.length-1];
-							nameFolder = nameFolder.replace(']', ' ');
-							nameFolder = nameFolder.replace(" ", "");
-							System.out.println(nameFolder);
-							
-							
-							List<String> ls = email.listarViewEmails(nameFolder);
-							jTableEmails = new JTable(new ModelTableEmail(ls));
-							jTableEmails.setRowHeight(60);
-							JScrollPane spe = new JScrollPane(jTableEmails);
 
-							
-							painelEmail.add(spe);
-							painelEmail.setSize(WIDTH_TAMANHO, barraLateral.getHeight());
-							painelEmail.setLocation(jtreeAtalhos.getWidth()+10, 0);
-							painelEmail.setBackground(Color.white);
-							barraLateral.add(painelEmail);
-							
-							
-							minhaFrame.revalidate();
-							minhaFrame.repaint();
-							
-							
-							
-							
-							
-						}
+		jtreeAtalhos.addTreeSelectionListener(new TreeSelectionListener() {
+
+			@Override
+			public void valueChanged(TreeSelectionEvent evt) {
+				System.out.println(evt.getNewLeadSelectionPath());
+				final int WIDTH_TAMANHO = 300;
+				if ("[Inicio, E-mail, INBOX]".equalsIgnoreCase(evt
+						.getNewLeadSelectionPath().toString())) {
+					// java.awt.Dimension d = barraLateral.getSize();
+					// Point p = barraLateral.getLocation();
+					// sp.setSize(d.width+100, d.height);
+					// sp.setLocation(p.x+100,p.y);
+					// barraLateral.setLocation(p.x+100, p.y);
+					java.awt.Dimension d2 = barraLateral.getSize();
+					barraLateral.setSize(d2.width + WIDTH_TAMANHO, d2.height);
+					btAbrirMenuLateral.setLocation(btAbrirMenuLateral.getX()
+							+ WIDTH_TAMANHO, btAbrirMenuLateral.getY());
+
+//					painelEmail.removeAll();
+//					painelEmail.setLayout(new GridLayout(1, 1));
+
+					String[] itens = evt.getNewLeadSelectionPath().toString()
+							.split(",");
+					String nameFolder = itens[itens.length - 1];
+					nameFolder = nameFolder.replace(']', ' ');
+					nameFolder = nameFolder.replace(" ", "");
+					final String name = nameFolder;
+					System.out.println(nameFolder);
+					List<String> ls = new ArrayList<String>();
+					new Thread(() ->{
+						barraLateral.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+						jtreeAtalhos.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+						
+						List<String>temp = email.listarViewEmails(name);
+						jtreeAtalhos.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+						barraLateral.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+						jTableEmails.setModel(new ModelTableEmail(temp));
+					}).start();
 					
-				}
-			});
+					
+					
+					jTableEmails.setRowHeight(20);
+//					JScrollPane spe = new JScrollPane(jTableEmails);
 
-		
-		
+//					painelEmail.add(spe);
+					painelEmail.setSize(WIDTH_TAMANHO, barraLateral.getHeight());
+					painelEmail.setLocation(jtreeAtalhos.getWidth() + 10, 0);
+					painelEmail.setBackground(Color.white);
+					barraLateral.add(painelEmail);
+
+					minhaFrame.revalidate();
+					minhaFrame.repaint();
+
+				}
+
+			}
+		});
+
 		itSair.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -483,8 +523,8 @@ public class Principal extends JFrame {
 		itCadastroCarro.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!isFrameCarro){
-					isFrameCarro = true; 
+				if (!isFrameCarro) {
+					isFrameCarro = true;
 					getContentPane().add(new FormCadastroCarro());
 				}
 			}
@@ -503,14 +543,17 @@ public class Principal extends JFrame {
 			}
 		});
 
-		itCalendario.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("cliq");
-				//getContentPane().add(new View.PainelCalendarioAgendamento());
-			}
-		});
+	jTableEmails.getModel().addTableModelListener(new TableModelListener() {
+		
+		@Override
+		public void tableChanged(TableModelEvent arg0) {
+				int index = jTableEmails.getSelectedRow();
+				System.out.println(index);
+				index = ((ModelTableEmail)jTableEmails.getModel()).getIdEmail(index);
+				System.out.println(index);
+			
+		}
+	});
 
 		this.addWindowListener(new WindowListener() {
 
@@ -542,12 +585,9 @@ public class Principal extends JFrame {
 
 			@Override
 			public void windowDeactivated(WindowEvent e) {
-				
-				
+
 			}
 		});
-		
-		
 	}
 
 	class MeuModeloTree extends DefaultTreeCellRenderer {
@@ -560,15 +600,15 @@ public class Principal extends JFrame {
 					leaf, row, hasFocus); // To change body of generated
 											// methods, choose Tools |
 											// Templates.
-//			if(value != null){
+											// if(value != null){
 			DefaultMutableTreeNode no = (DefaultMutableTreeNode) value;
-//			if(no.toString() != null ){
-			String texto = no.getUserObjectPath().toString();
-			System.out.println(texto);
+			// if(no.toString() != null ){
+			String texto = no.getUserObject().toString();
+			System.out.println();
 			if (texto.equals("Inicio")) {
-				ImageIcon img = new ImageIcon(getClass().getResource(
+				ImageIcon img = new ImageIcon(Principal.class.getResource(
 						"/Resources/icons/").getPath()
-						+ "inicio.jpg");
+						+ "inicio.png");
 				setIcon(img);
 				setToolTipText(texto);
 
@@ -592,128 +632,66 @@ public class Principal extends JFrame {
 						+ texto + ".png");
 				setIcon(img);
 				setToolTipText(texto);
-			}else {}
-			
-		
-//			}
-//			}
+			} else {
+			}
+
+//			 }
+//			 }
 			return this;
 
 		}
 
 	}
-	
+
 	class CheckNewMessages implements Runnable {
-		private EmailController controllerEmail; 
+		private EmailController controllerEmail;
 		private JTable jtable;
 		private EmailController email;
 		private JTree jtree;
 		private JPanel painel;
-		
-		public CheckNewMessages(JTable Table, JTree jtreeAtalhos,JPanel painel){
+
+		public CheckNewMessages(JTable Table, JTree jtreeAtalhos, JPanel painel,EmailController e) {
 			this.painel = painel;
 			this.jtable = Table;
 			this.jtree = jtreeAtalhos;
-			
-			
-
-//			DefaultMutableTreeNode emailItens = new DefaultMutableTreeNode("E-mail");
-//			DefaultTreeCellRenderer imgEmail = new DefaultTreeCellRenderer();
-			
+			this.email = e;
 			
 
-			
-			/*Verificar se possui um arquivo 
-			*Criptografado e serializado com os Emails,
-			*se não carrega tudo
-			*/
-//			UsuarioEmail user = null;
-			
-			
-
-//			 
-//			 
-//			System.out.println("criou root");
-//			DefaultMutableTreeNode root = new DefaultMutableTreeNode();
-//			
-//			System.out.println("criou fac");
-//			DefaultMutableTreeNode favItens = new DefaultMutableTreeNode(
-//					"Favoritos");
-//			root.add(favItens);
-//
-//			System.out.println("criou tarefa");
-//			DefaultMutableTreeNode tarefaItens = new DefaultMutableTreeNode(
-//					"Tarefas");
-//			root.add(tarefaItens);
-//			
-//			System.out.println("criou email");
-//			DefaultMutableTreeNode emailItem = new DefaultMutableTreeNode("E-mail");
-//			
-//			
-//			
-//			Map<String, List<String>> map = email.getEmails();
-//			
-//			Iterator it =  map.entrySet().iterator();
-//			 while(it.hasNext()){
-//				 System.out.println("entrou loop");
-//				 
-//				 Map.Entry mapEntry = (Map.Entry) it.next();
-//				 DefaultMutableTreeNode itEmail = new DefaultMutableTreeNode(mapEntry.getKey());
-//				 List<String> ls = (List<String>) mapEntry.getValue();
-//				 for(String s : ls){
-//					 DefaultMutableTreeNode item = new DefaultMutableTreeNode(s);
-//					 System.out.println("entrou loop2    "+ s);
-//					 
-//					 itEmail.add(item);
-//				 }
-//			 }
-//			
-//			 System.out.println("add root");
-//			 root.add(emailItem);
-//			 
-//			 
-//			
-//				events();
-//
-//				painelEmail.revalidate();
-
-				painelEmail.repaint();
-			Principal.minhaFrame.revalidate();
-			Principal.minhaFrame.repaint();
 		}
-		
-		
-		private void events(){
 
-	
-			
-		}
-		
+
 		@Override
 		public void run() {
 			try {
-				int numeroDeMsgs;
-				numeroDeMsgs = 0; //inicializando
-				List<MensagemEmail>lsNovosEmails = new ArrayList<MensagemEmail>();
-				DefaultMutableTreeNode dm = (DefaultMutableTreeNode) jtree.getLastSelectedPathComponent();
-				int emailsNovos = 0;
-				while(true){
+				List<String>lsEmailsAtualizada = new ArrayList<String>();
+				int emailsNaCaixal = email.countUnredMessages("INBOX").size(); //Verifico a quantidade total de emails,
+				int cont = 0 ;
+				while (true) {
+					List<MensagemEmail>lsTemp = email.countUnredMessages("INBOX");
 					
-				lsNovosEmails = email.countUnredMessages("INBOX");
-				if(lsNovosEmails.size() > emailsNovos){
-						
+					
+					System.out.println(emailsNaCaixal+"/"+lsEmailsAtualizada.size());
+					if (lsTemp.size() > emailsNaCaixal) {	//Se houver um email novo
+						lsEmailsAtualizada = email.listarViewEmails("INBOX"); // e Carrego os e-mails na caixa principal
+						jtable.setModel(new ModelTableEmail(lsEmailsAtualizada)); // e atualizo a minha lista
+					}
+			
+					emailsNaCaixal  = lsTemp.size();
+					
+					Thread.sleep(1000 * 60); // Espera 1 minutos para atualizar de novo
+												// de novo
+					System.out.println(cont);
+//					Thread.sleep(1*1000);
+					System.out.println("2");
 				}
-						
-						emailsNovos = lsNovosEmails.size();
-						Principal.minhaFrame.repaint();
-						Thread.sleep(1000*60); //Espera 1 minutos para executar de novo
-					
-			}
+				
+				
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
 		}
-		
+
 	}
 }
