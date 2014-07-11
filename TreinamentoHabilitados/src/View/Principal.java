@@ -129,8 +129,10 @@ public class Principal extends JFrame {
 	private List<String> listaEmails;
 	private HashMap<String, List<String>> mapEmails;
 	protected Login loginUser;
+	private boolean isPainelEmailShow = false;
 	
 	private Thread gerenciaEmal;
+	private final int WIDTH_TAMANHO = 301;
 
 	protected static boolean isFrameInstrutorOpen, isFrameClienteOpen,
 			isFrameCadastroPacote, isFrameAgendamento, isFrameCarro;
@@ -267,8 +269,6 @@ public class Principal extends JFrame {
 
 		sp = new JScrollPane(jtreeAtalhos);
 		sp.setBounds(barraLateral.getX(), 0, 170, barraLateral.getHeight());
-//		sp.setBounds((barraLateral.getWidth()), 0,
-//				barraLateral.getWidth() - 5, barraLateral.getHeight());
 		barraLateral.add(sp);
 
 		add(barraLateral);
@@ -311,7 +311,7 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				if (!painelMostrando) { // ABRINDO O PAINEL
-					System.out.println(gerenciaEmal.isAlive());
+					
 					
 					painelMostrando = true;
 					Thread t = new Thread(new Runnable() {
@@ -328,13 +328,10 @@ public class Principal extends JFrame {
 								try {
 									System.out.println(posXButton+"\n"+XAtual + "\n ---");
 									XAtual++;
-//									XPainel++;
 									posXButton++;
 
 									sp.setLocation(XAtual, sp.getY());
 									barraLateral.setLocation(XAtual, barraLateral.getY());
-//									painelEmail.setLocation(XPainel,
-//											painelEmail.getY());
 									btAbrirMenuLateral.setLocation(posXButton,
 											btAbrirMenuLateral.getY());
 									Thread.sleep(2);
@@ -343,12 +340,24 @@ public class Principal extends JFrame {
 											.log(Level.SEVERE, null, ex);
 								}
 							}
+							if(isPainelEmailShow){
+								barraLateral.add(painelEmail);
+							}
 
 							btAbrirMenuLateral.setText("<<");
 						}
 					});
 					t.start();
+					
 				} else { // FECHANDO
+//					jtreeAtalhos.clearSelection();
+//					sp.removeAll();
+//					painelEmail.removeAll();
+//					barraLateral.remove(painelEmail);
+//					btAbrirMenuLateral.setLocation(btAbrirMenuLateral.getX() - WIDTH_TAMANHO, btAbrirMenuLateral.getY());
+//					barraLateral.setSize(barraLateral.getWidth() -WIDTH_TAMANHO, barraLateral.getHeight()); //Diminuo o mesmo tamanho
+					barraLateral.remove(painelEmail);
+					barraLateral.revalidate();
 					
 					painelMostrando = false;
 					Thread t = new Thread(new Runnable() {
@@ -369,10 +378,8 @@ public class Principal extends JFrame {
 //																		// para
 //																		// poder
 //																		// move-lo
-//							int XPainel = painelEmail.getX();
 							int XAtual = sp.getX(); // Local atual do view
 							int XFinal = -(barraLateral.getWidth()); // O Destino final que deve estar.
-//							int XPainel = painelEmail.getX();
 							int posXButton = barraLateral.getWidth();
 							
 
@@ -381,24 +388,13 @@ public class Principal extends JFrame {
 								try {
 									XAtual--;
 									posXButton--;
-//									XPainel--;
-									
 									
 									sp.setLocation(XAtual, sp.getY());
 									barraLateral.setLocation(XAtual, barraLateral.getY());
-//									painelEmail.setLocation(XPainel,
-//											painelEmail.getY());
 									btAbrirMenuLateral.setLocation(posXButton,
 											btAbrirMenuLateral.getY());
 									Thread.sleep(2);
 
-//									sp.setLocation(XAtual, sp.getY());
-//									painelEmail.setLocation(XPainel,
-//											painelEmail.getY());
-//									btAbrirMenuLateral.setLocation(
-//											posXButton + 20,
-//											btAbrirMenuLateral.getY());
-//									Thread.sleep(2);
 								} catch (InterruptedException ex) {
 									Logger.getLogger(Principal.class.getName())
 											.log(Level.SEVERE, null, ex);
@@ -420,7 +416,7 @@ public class Principal extends JFrame {
 			@Override
 			public void valueChanged(TreeSelectionEvent evt) {
 				System.out.println(evt.getNewLeadSelectionPath());
-				final int WIDTH_TAMANHO = 300;
+//				final int WIDTH_TAMANHO = 300;
 				if ("[Inicio, E-mail, INBOX]".equalsIgnoreCase(evt
 						.getNewLeadSelectionPath().toString())) {
 					// java.awt.Dimension d = barraLateral.getSize();
@@ -428,10 +424,11 @@ public class Principal extends JFrame {
 					// sp.setSize(d.width+100, d.height);
 					// sp.setLocation(p.x+100,p.y);
 					// barraLateral.setLocation(p.x+100, p.y);
-					java.awt.Dimension d2 = barraLateral.getSize();
-					barraLateral.setSize(d2.width + WIDTH_TAMANHO, d2.height);
-					btAbrirMenuLateral.setLocation(btAbrirMenuLateral.getX()
-							+ WIDTH_TAMANHO, btAbrirMenuLateral.getY());
+					
+					
+					
+					
+					
 
 //					painelEmail.removeAll();
 //					painelEmail.setLayout(new GridLayout(1, 1));
@@ -456,18 +453,29 @@ public class Principal extends JFrame {
 					
 					
 					
-					jTableEmails.setRowHeight(20);
+					
 //					JScrollPane spe = new JScrollPane(jTableEmails);
 
 //					painelEmail.add(spe);
+					if(!isPainelEmailShow){
+						
+						isPainelEmailShow = true;
+					java.awt.Dimension d2 = barraLateral.getSize();
+					barraLateral.setSize(d2.width + WIDTH_TAMANHO, d2.height);
+					jTableEmails.setRowHeight(20);
+					btAbrirMenuLateral.setLocation(btAbrirMenuLateral.getX()
+							+ WIDTH_TAMANHO, btAbrirMenuLateral.getY());
 					painelEmail.setSize(WIDTH_TAMANHO, barraLateral.getHeight());
 					painelEmail.setLocation(jtreeAtalhos.getWidth() + 10, 0);
 					painelEmail.setBackground(Color.white);
 					barraLateral.add(painelEmail);
-
 					minhaFrame.revalidate();
 					minhaFrame.repaint();
 
+					}
+					
+
+					
 				}
 
 			}
@@ -688,7 +696,7 @@ public class Principal extends JFrame {
 				
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+//				e.printStackTrace();
 			}
 			
 		}

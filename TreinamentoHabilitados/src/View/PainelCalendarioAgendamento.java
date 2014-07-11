@@ -8,6 +8,7 @@ package View;
 import Main.Start;
 import Model.Tarefa;
 import Model.Enums.Prioridade;
+import Model.Repository.ConnectionFactoryConfig;
 import Model.Repository.Repository;
 import Model.Repository.RepositoryTarefa;
 import Testes.painelTeste1;
@@ -65,6 +66,7 @@ import javax.swing.event.ListDataListener;
 import javax.transaction.Transactional.TxType;
 
 import org.hibernate.Hibernate;
+import org.hibernate.exception.GenericJDBCException;
 
 /**
  *
@@ -386,6 +388,7 @@ public class PainelCalendarioAgendamento extends JPanel {
 	 * Metodo responsavel pela criação das listas de tarefas do dia...
 	 */
 	private void createListTask() throws Throwable {
+		try{
 		painelListaTarefa = new JPanel();
 		isShowingList = true;
 		painelCalendario.remove(painelListaTarefa);
@@ -428,6 +431,10 @@ public class PainelCalendarioAgendamento extends JPanel {
 		painelListaTarefa.add(sp);
 
 		painelCalendario.add(painelListaTarefa);
+		}catch(GenericJDBCException e){
+			ConnectionFactoryConfig.generateSession();
+			createListTask();
+		}
 
 	}
 
@@ -441,7 +448,9 @@ public class PainelCalendarioAgendamento extends JPanel {
 			lbFecharCalendario.setVisible(true);
 			
 			redimensionaNewTask();
-			
+			if(painelListaTarefa == null){
+				painelListaTarefa = new JPanel();
+			}
 			painelListaTarefa.repaint();
 			painelListaTarefa.revalidate();
 

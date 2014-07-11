@@ -41,9 +41,9 @@ public class RepositoryTarefa extends Repository<Model.Tarefa> {
 		
 		Session session = Model.Repository.ConnectionFactoryConfig.getSession();
 				//.openSession(); //Pego a conexão Já existente
-//		if(!session.isConnected()){
-//			ConnectionFactoryConfig.generateSession();
-//		}
+		if(!session.isConnected()){
+			ConnectionFactoryConfig.generateSession();
+		}
 		
 	
 		
