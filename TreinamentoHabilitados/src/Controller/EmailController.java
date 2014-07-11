@@ -66,6 +66,8 @@ public class EmailController {
 	private Store store;
 	private Folder folderInbox;
 	private Session session;
+	
+	private Map<String,List<MensagemEmail>> map ;
 
 	public EmailController(UsuarioEmail e) {
 		this.host = e.getHost();
@@ -77,6 +79,7 @@ public class EmailController {
 	
 
 		authenticOnEmail();
+		getEmails();
 		// PEGAR DE UM ARQUIVO CRIPTOGRAFADO E SERIALIZADO.
 	}
 
@@ -84,14 +87,21 @@ public class EmailController {
 		return this.user;
 	}
 	
-	public Map<String,List<String>> getEmails(){
-		Map<String,List<String>> map = new HashMap<String, List<String>>();
+	public Map<String,List<MensagemEmail>> getEmails(){
+		map = new HashMap<String, List<MensagemEmail>>();
 		try{
 			Folder[] folders = store.getDefaultFolder().list();
 			
 			for(Folder f: folders){
 				System.out.println(f.getName());
-				List<String>lsEmails = listarViewEmails(f.getName());
+				
+				List<MensagemEmail>lsEmails = new ArrayList<MensagemEmail>();
+				f.open(Folder.READ_ONLY);
+				for(Message m : f.getMessages()){
+					MensagemEmail ms = readEmail(m);
+					lsEmails.add(ms);
+				}
+				
 				map.put(f.getName(),lsEmails);
 			}
 		}catch(MessagingException e){
@@ -190,6 +200,20 @@ public class EmailController {
 		return ls;
 	}
 
+	
+	public MensagemEmail getEmail(String folderName,int index){
+		MensagemEmail msg = new MensagemEmail();
+		//			if(!store.isConnected()){
+//				store.connect(hostRecieve, user, pass);
+//			}
+//			Folder folder = store.getFolder(folderName);
+//			folder.open(Folder.READ_ONLY);
+//			Message[] messages = folder.getMessages();
+//			msg = readEmail(messages[index]);
+		msg = (map.get(folderName)).get(index);
+		return msg;
+	}
+	
 	/**
 	 * 
 	 * @param msg

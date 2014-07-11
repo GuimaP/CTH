@@ -32,7 +32,7 @@ public ModelTableEmail(List<String>ls) {
 	}
 	
 	public int getIdEmail(int index){
-		index -= (lsEmails.size() - 1);
+		index -= (lsEmails.size());
 		return index;
 	}
 	

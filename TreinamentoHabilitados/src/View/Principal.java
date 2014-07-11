@@ -8,8 +8,12 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.event.WindowStateListener;
@@ -37,7 +41,20 @@ import java.util.logging.Logger;
 
 
 
+
+
+
+
+
+
 import javassist.expr.NewArray;
+
+
+
+
+
+
+
 
 
 
@@ -61,6 +78,8 @@ import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.event.TreeModelEvent;
@@ -81,7 +100,21 @@ import javax.swing.tree.TreeSelectionModel;
 
 
 
+
+
+
+
+
+
+
 import antlr.TreeParserSharedInputState;
+
+
+
+
+
+
+
 
 
 
@@ -91,6 +124,13 @@ import antlr.TreeParserSharedInputState;
 
 import com.itextpdf.text.log.SysoCounter;
 import com.sun.media.rtsp.protocol.PauseMessage;
+
+
+
+
+
+
+
 
 
 
@@ -130,6 +170,7 @@ public class Principal extends JFrame {
 	private HashMap<String, List<String>> mapEmails;
 	protected Login loginUser;
 	private boolean isPainelEmailShow = false;
+	private MensagemEmail mensagem;
 	
 	private Thread gerenciaEmal;
 	private final int WIDTH_TAMANHO = 301;
@@ -198,7 +239,10 @@ public class Principal extends JFrame {
 		JDesktopPane fundoDaPrincipal = new JDesktopPane();
 		setContentPane(fundoDaPrincipal);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(1024, 720);
+		Toolkit toolkit = Toolkit.getDefaultToolkit();  
+		Dimension scrnsize = toolkit.getScreenSize();  
+		setSize(scrnsize);
+		
 		setIconImage(ConfigController.defineIcon());
 
 		//
@@ -551,17 +595,32 @@ public class Principal extends JFrame {
 			}
 		});
 
-	jTableEmails.getModel().addTableModelListener(new TableModelListener() {
+	jTableEmails.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 		
 		@Override
-		public void tableChanged(TableModelEvent arg0) {
-				int index = jTableEmails.getSelectedRow();
-				System.out.println(index);
-				index = ((ModelTableEmail)jTableEmails.getModel()).getIdEmail(index);
-				System.out.println(index);
+		public void valueChanged(ListSelectionEvent arg0) {
+			
+			int index = jTableEmails.getSelectedRow();
+			System.out.println(index);
+			index = ((ModelTableEmail)jTableEmails.getModel()).getIdEmail(index);
+			System.out.println(index);
+			
+			//MensagemEmail e = email.getEmail("INBOX", (index*-1));
+			mensagem = email.getEmail("INBOX", (index*-1));
+			
 			
 		}
 	});
+		jTableEmails.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+				if(e.getClickCount() == 2){
+					getContentPane().add(new ViewEmail(mensagem));
+					System.out.println("cliq");
+				}
+			}
+		});
 
 		this.addWindowListener(new WindowListener() {
 

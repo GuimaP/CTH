@@ -1,5 +1,9 @@
 package View;
 
+import static javax.swing.JFrame.EXIT_ON_CLOSE;
+
+import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Panel;
 import java.awt.Point;
@@ -11,6 +15,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -31,7 +37,8 @@ import java.awt.Color;
 
 public class TelaLogin extends JFrame {
 
-    private JButton btOk, btSair;
+    protected static boolean isLoading;
+	private JButton btOk, btSair;
     private JLabel lbUsuario, lbSenha;
     private JTextField tfUsuario;
     private Font fonte;
@@ -139,7 +146,56 @@ public class TelaLogin extends JFrame {
                         LoginRepository loginRepository = new LoginRepository();
 
                         if (loginRepository.isAutentica(l)) {
-                            new Principal(l);
+                           isLoading = true;
+                           
+                            
+                            new  Thread(()->{
+                            	String[] mensagens = { ".              Carregando...",
+								". Mais Alguns Instantes..." };
+						JFrame janela = new JFrame("Carregando");
+						janela.setIconImage(ConfigController.defineIcon());
+						janela.setUndecorated(true);
+						janela.setSize(400, 400);
+						janela.setOpacity(0.4f);
+						janela.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+						janela.setLocationRelativeTo(null);
+
+						janela.setBackground(new Color(0,0,0,2)); //Fundo da Frame deixa transparente
+						janela.setContentPane(new MyPainelInvisible()); //Defino a imagem como opaque e visivel
+						janela.setLayout(new BorderLayout());
+						JLabel lb = new JLabel("Carregando");
+						
+						lb.setFont(ConfigController.definePrincipalFont(30f, Font.BOLD));
+						lb.setForeground(Color.black);
+						janela.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+						
+						
+						janela.getContentPane().add(lb);
+						janela.setAlwaysOnTop(true);
+
+						janela.setVisible(true);
+						
+
+						int cont = 0;
+						while (TelaLogin.isLoading) {
+							try {
+								lb.setText(mensagens[(cont % 2)]);
+								Thread.sleep(1 * 1000);
+								cont++;
+
+								Thread.sleep(1000);
+							} catch (InterruptedException ex) {
+								Logger.getLogger(Start.class.getName())
+										.log(Level.SEVERE, null, ex);
+							}
+
+						}
+						janela.dispose();
+                        });
+                        	new Principal(l);
+                        	isLoading = false;
+                        	
                             minhaFrame.dispose();
                         } else {
                             JOptionPane.showMessageDialog(null, "Usuario ou senhae incorretos");
