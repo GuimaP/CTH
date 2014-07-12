@@ -285,7 +285,7 @@ public class EmailController {
 				}
 				
 
-//				msgEmail.setTexto(abrirMensagem(msg));
+				msgEmail.setTexto(abrirMensagem(msg));
 			}
 			boolean unread = !isRecente;
 			msgEmail.setUnread(unread);

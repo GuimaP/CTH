@@ -144,58 +144,43 @@ public class TelaLogin extends JFrame {
                         l.setUsuario(tfUsuario.getText().trim());
                         l.setSenha(String.valueOf(jpSenha.getPassword()));
                         LoginRepository loginRepository = new LoginRepository();
-
+ 
+//                       minhaFrame.setGlassPane(new MyPainelInvisible());
                         if (loginRepository.isAutentica(l)) {
                            isLoading = true;
+                           minhaFrame.setVisible(false);
                            
-                            
-                            new  Thread(()->{
-                            	String[] mensagens = { ".              Carregando...",
-								". Mais Alguns Instantes..." };
-						JFrame janela = new JFrame("Carregando");
-						janela.setIconImage(ConfigController.defineIcon());
-						janela.setUndecorated(true);
-						janela.setSize(400, 400);
-						janela.setOpacity(0.4f);
-						janela.setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-						janela.setLocationRelativeTo(null);
-
-						janela.setBackground(new Color(0,0,0,2)); //Fundo da Frame deixa transparente
-						janela.setContentPane(new MyPainelInvisible()); //Defino a imagem como opaque e visivel
-						janela.setLayout(new BorderLayout());
-						JLabel lb = new JLabel("Carregando");
-						
-						lb.setFont(ConfigController.definePrincipalFont(30f, Font.BOLD));
-						lb.setForeground(Color.black);
-						janela.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-						
-						
-						janela.getContentPane().add(lb);
-						janela.setAlwaysOnTop(true);
-
-						janela.setVisible(true);
-						
-
-						int cont = 0;
-						while (TelaLogin.isLoading) {
-							try {
-								lb.setText(mensagens[(cont % 2)]);
-								Thread.sleep(1 * 1000);
-								cont++;
-
-								Thread.sleep(1000);
-							} catch (InterruptedException ex) {
-								Logger.getLogger(Start.class.getName())
-										.log(Level.SEVERE, null, ex);
-							}
-
-						}
-						janela.dispose();
-                        });
-                        	new Principal(l);
-                        	isLoading = false;
-                        	
+                           new Thread(()->{
+                        	   JFrame jan = new JFrame();
+                        	   jan.setContentPane(new MyPainelInvisible());
+                        	   jan.setSize(300,300);
+                        	   jan.setUndecorated(true);
+                        	   jan.setBackground(new Color(1,1,1,0));
+                        	   jan.setLocationRelativeTo(minhaFrame);
+                        	   jan.setVisible(true);
+                        	   JLabel lb = new JLabel("");
+                        	   lb.setFont(ConfigController.definePrincipalFont(30f,1));
+                        	   jan.getContentPane().add(lb);
+                        	   
+                        	   String[] mensagens = {".     Carregando", ".     Mais alguns momentos"};
+                        	   int cont = 0;
+                        	   while(isLoading){
+                        		   try{
+                        			 cont++;
+                        		   
+                        		   lb.setText(mensagens[cont%2]);
+                        		   jan.repaint();
+                        		   jan.revalidate();
+                        		   Thread.sleep(1*1000);
+                        		   
+                        		   }catch (InterruptedException er){
+                        			   System.out.println(er.getMessage());
+                        		   }
+                        	   }
+                           }).start();
+                           
+                           new Principal(l);
+                           isLoading= false;
                             minhaFrame.dispose();
                         } else {
                             JOptionPane.showMessageDialog(null, "Usuario ou senhae incorretos");

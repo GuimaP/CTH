@@ -1,5 +1,6 @@
 package View;
 
+import javax.mail.Address;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -22,6 +23,8 @@ public class ViewEmail extends JInternalFrame{
 		setMaximizable(false);
 		this.email = e;
 		initComponents();
+		
+		
 	}
 	
 	private void initComponents(){
@@ -34,6 +37,11 @@ public class ViewEmail extends JInternalFrame{
 		
 		tfRemetente = new JTextField();
 		tfRemetente.setBounds(lbRemetente.getWidth() + 5, lbRemetente.getY(), (this.getWidth()-lbRemetente.getWidth())-20, 25);
+		String from ="";
+		for(Address a : email.getFrom()){
+			from +=a.toString()+";";
+		}
+		tfRemetente.setText(from);
 		add(tfRemetente);
 		
 		lbAssunto = new JLabel("Assunto: ");
@@ -42,17 +50,20 @@ public class ViewEmail extends JInternalFrame{
 		
 		tfAssunto = new JTextField();
 		tfAssunto.setBounds(lbAssunto.getWidth()+5, lbAssunto.getY(), (this.getWidth() - lbAssunto.getWidth())-20, 25);
+		tfAssunto.setText(email.getSubject());
 		add(tfAssunto);
+		JFrame f =  new JFrame();
 		
 		txTexto = new JTextArea();
 		txTexto.setWrapStyleWord(true);
 		txTexto.setLineWrap(true);
-		txTexto.setBounds(5, (lbAssunto.getY() + lbAssunto.getHeight())+5, (this.getWidth() - 10)-20,  (this.getHeight() -  (lbAssunto.getY() - lbAssunto.getHeight() )) - 80);
+		txTexto.setBounds(5, (lbAssunto.getY() + lbAssunto.getHeight())+5, (this.getWidth() - 10)-10,  (this.getHeight() -  (lbAssunto.getY() - lbAssunto.getHeight() )) - 120);
+		txTexto.setText(email.getTexto());
 		add(txTexto);
 		
 		btReply = new JButton("Responder");
-		btReply.setSize(40,25);
-		btReply.setLocation(this.getWidth() - btReply.getWidth(), this.getHeight() - 25);
+		btReply.setSize(70,25);
+		btReply.setLocation(this.getWidth() - btReply.getWidth()-40, this.getHeight() - 70);
 		add(btReply);
 //		
 		

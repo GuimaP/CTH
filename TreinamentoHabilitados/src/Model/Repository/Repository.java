@@ -33,6 +33,9 @@ public class Repository<T>  {
     public List<T> pegarTodos() throws SQLException{
         List<T> lista = null;
         Session session = ConnectionFactoryConfig.getSession();//getCurrentSession();
+        if(!session.isConnected()){
+        	ConnectionFactoryConfig.generateSession();
+        }
         session.beginTransaction();
         session.createCriteria(this.getClass());
         Criteria c = session.createCriteria(this.getClass());

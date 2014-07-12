@@ -323,7 +323,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
                         String strPath;
                         
-                        strPath = FormCadastroInstrutor.class.getResource("/Resources/FotosInstrutor").getPath();
+                        strPath = getClass().getResource("/Resources/FotosInstrutor").getPath();
 //                        JOptionPane.showMessageDialog(rootPane, strPath);
 
                         String strNameFile = tfNome.getText(); //Pego o nome que será a imagem
@@ -459,6 +459,9 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
     private void populaObjInstrutor() {
         try {
+        	if(instrutor == null){
+        		instrutor = new Funcionario();
+        	}
             if (!tfNome.getText().isEmpty()) {
                 instrutor.setNome(tfNome.getText());
             }

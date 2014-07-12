@@ -38,6 +38,9 @@ public class ConnectionFactoryConfig {
 	
 		
 	public static Session getSession(){
+		if(!session.isConnected()){
+			generateSession();
+		}
 		return session;
 	}
 }
