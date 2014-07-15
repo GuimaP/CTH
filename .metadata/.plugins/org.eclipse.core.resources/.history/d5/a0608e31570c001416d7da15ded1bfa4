@@ -54,14 +54,11 @@ public class FormCadastroCliente extends JInternalFrame {
     private JLabel lbNome, lbEmail, lbEscolaridade, lbProfissao, lbNascimento,
             lbTelefone, lbPrimeiraHabilitacao, lbValidadeCnh, lbRegistroCnh,
             lbLogradouro, lbBairro, lbNumero, lbCep, lbRg, lbCpf, lbSexo,
-            lbObserva, lbQ1, lbQ2, lbQ3, lbQ4, lbData, lbCelular, lbAluno, lbPacote, lbTipoPagamento,
-            lbParcelas, lbPagamentoInicial;
+            lbObserva, lbQ1, lbQ2, lbQ3, lbQ4, lbData, lbCelular;
     private JTextField tfNome, tfEmail, tfProfissao, tfRegistroCnh,
-            tfLogradouro, tfBairro, tfRg, tfQuestao1, tfNumero, tfBuscaCliente,
-            tfParcelas;
+            tfLogradouro, tfBairro, tfRg, tfQuestao1, tfNumero, tfBuscaCliente;
     private JFormattedTextField tfData, tfNascimento, tfCep, tfCpf, tfCelular,
-            tfTelefone, tfValidadeCnh, tfPrimeiraHabilitacao, tfPagamentoInicial;
-    
+            tfTelefone, tfValidadeCnh, tfPrimeiraHabilitacao;
     private JButton btSalvar, btExcluir, btBuscar;
     
     
@@ -72,11 +69,8 @@ public class FormCadastroCliente extends JInternalFrame {
     private String[] sexo = {"M", "F"};
     private String[] escolaridade = {"Superior", "Tecnico", "MÃ©dio",
         "Fundamental"};
-    
-    private String[] pagamento = {"Dinheiro", "Débito", "Crédito", "Cheque"};
-    
     private String[] pesquisa = {"Internet", "Indicaï¿½ï¿½o", "Outros"};
-    private JComboBox<String> jcSexo, jcEscolaridade, jcPesquisa, jcPagamento;
+    private JComboBox<String> jcSexo, jcEscolaridade, jcPesquisa;
     private JTable table, tablePacote;
     private String data;
     private ArrayList<Cliente> listCliente = new ArrayList<Cliente>();
@@ -478,16 +472,6 @@ public class FormCadastroCliente extends JInternalFrame {
 		// Text
 
         // Table
-        lbAluno = new JLabel("Aluno");
-        lbAluno.setSize(100, 20);
-        lbAluno.setLocation(430, 30);
-        getContentPane().add(lbAluno);
-        
-        lbPacote = new JLabel("Pacote");
-        lbPacote.setSize(100, 20);
-        lbPacote.setLocation(430, 300);
-        getContentPane().add(lbPacote);
-        
         table = new JTable(new ModeloTableCliente(listCliente));
         scTable = new JScrollPane(table);
         scTable.setSize(350, 200);
@@ -497,44 +481,8 @@ public class FormCadastroCliente extends JInternalFrame {
         tablePacote = new JTable(new ModeloTablePacote(listPacote));
         scrollPacote = new JScrollPane(tablePacote);
         scrollPacote.setSize(350, 150);
-        scrollPacote.setLocation(430, 320);
+        scrollPacote.setLocation(430, 300);
         getContentPane().add(scrollPacote);
-        
-        //Dados do pagamento
-        lbTipoPagamento = new JLabel("Tipo de pagamento");
-        lbTipoPagamento.setSize(200, 20);
-        lbTipoPagamento.setLocation(430, 480);
-        getContentPane().add(lbTipoPagamento);
-        
-        jcPagamento = new JComboBox<String>(pagamento);
-        jcPagamento.setLocation(650, 480);
-        jcPagamento.setSize(120, 30);
-        jcPagamento.setSelectedIndex(-1);
-        getContentPane().add(jcPagamento);
-        
-        lbParcelas = new JLabel("Parcelas");
-        lbParcelas.setSize(100,20);
-        lbParcelas.setLocation(430, 510);
-        getContentPane().add(lbParcelas);
-        
-        tfParcelas = new JTextField();
-        tfParcelas.setSize(120, 30);
-        tfParcelas.setLocation(650, 510);
-        getContentPane().add(tfParcelas);
-        
-        lbPagamentoInicial = new JLabel("Valor Pago");
-        lbPagamentoInicial.setSize(200, 20);
-        lbPagamentoInicial.setLocation(430, 540);
-        getContentPane().add(lbPagamentoInicial);
-        
-        tfPagamentoInicial = new JFormattedTextField();
-        tfPagamentoInicial.setSize(120, 30);
-        tfPagamentoInicial.setLocation(650, 540);
-        getContentPane().add(tfPagamentoInicial);
-        
-        
-        
-        
 
         // PAINEL//
         getContentPane().setLayout(null);
