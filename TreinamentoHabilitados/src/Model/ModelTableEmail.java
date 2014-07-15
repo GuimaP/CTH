@@ -41,7 +41,16 @@ public ModelTableEmail(List<String>ls) {
 			return columns[column];
 		}
 	
-
+public void marcaComoLida(int index){
+	String string = lsEmails.get(index);
+	string = string.replaceAll("<html>","");
+	string = string.replaceAll("</html>","");
+	string = string.replaceAll("<b>","");
+	string = string.replaceAll("</b>","");
+	lsEmails.set(index, string);
+	
+	fireTableRowsUpdated(0, lsEmails.size()-1);
+}
 	
 	
 	public List<String> getList(){

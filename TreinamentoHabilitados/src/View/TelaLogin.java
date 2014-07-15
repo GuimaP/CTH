@@ -147,40 +147,10 @@ public class TelaLogin extends JFrame {
  
 //                       minhaFrame.setGlassPane(new MyPainelInvisible());
                         if (loginRepository.isAutentica(l)) {
-                           isLoading = true;
+                          
                            minhaFrame.setVisible(false);
-                           
-                           new Thread(()->{
-                        	   JFrame jan = new JFrame();
-                        	   jan.setContentPane(new MyPainelInvisible());
-                        	   jan.setSize(300,300);
-                        	   jan.setUndecorated(true);
-                        	   jan.setBackground(new Color(1,1,1,0));
-                        	   jan.setLocationRelativeTo(minhaFrame);
-                        	   jan.setVisible(true);
-                        	   JLabel lb = new JLabel("");
-                        	   lb.setFont(ConfigController.definePrincipalFont(30f,1));
-                        	   jan.getContentPane().add(lb);
-                        	   
-                        	   String[] mensagens = {".     Carregando", ".     Mais alguns momentos"};
-                        	   int cont = 0;
-                        	   while(isLoading){
-                        		   try{
-                        			 cont++;
-                        		   
-                        		   lb.setText(mensagens[cont%2]);
-                        		   jan.repaint();
-                        		   jan.revalidate();
-                        		   Thread.sleep(1*1000);
-                        		   
-                        		   }catch (InterruptedException er){
-                        			   System.out.println(er.getMessage());
-                        		   }
-                        	   }
-                           }).start();
-                           
                            new Principal(l);
-                           isLoading= false;
+                          
                             minhaFrame.dispose();
                         } else {
                             JOptionPane.showMessageDialog(null, "Usuario ou senhae incorretos");
