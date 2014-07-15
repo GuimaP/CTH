@@ -527,11 +527,6 @@ public class FormCadastroCliente extends JInternalFrame {
         lbPagamentoInicial.setLocation(430, 540);
         getContentPane().add(lbPagamentoInicial);
         
-        tfPagamentoInicial = new JFormattedTextField();
-        tfPagamentoInicial.setSize(120, 30);
-        tfPagamentoInicial.setLocation(650, 540);
-        getContentPane().add(tfPagamentoInicial);
-        
         
         
         

@@ -507,7 +507,7 @@ public class FormCadastroCliente extends JInternalFrame {
         getContentPane().add(lbTipoPagamento);
         
         jcPagamento = new JComboBox<String>(pagamento);
-        jcPagamento.setLocation(650, 480);
+        jcPagamento.setLocation(550, 480);
         jcPagamento.setSize(120, 30);
         jcPagamento.setSelectedIndex(-1);
         getContentPane().add(jcPagamento);
@@ -518,19 +518,9 @@ public class FormCadastroCliente extends JInternalFrame {
         getContentPane().add(lbParcelas);
         
         tfParcelas = new JTextField();
-        tfParcelas.setSize(120, 30);
-        tfParcelas.setLocation(650, 510);
+        tfParcelas.setSize(60, 20);
+        tfParcelas.setLocation(480, 510);
         getContentPane().add(tfParcelas);
-        
-        lbPagamentoInicial = new JLabel("Valor Pago");
-        lbPagamentoInicial.setSize(200, 20);
-        lbPagamentoInicial.setLocation(430, 540);
-        getContentPane().add(lbPagamentoInicial);
-        
-        tfPagamentoInicial = new JFormattedTextField();
-        tfPagamentoInicial.setSize(120, 30);
-        tfPagamentoInicial.setLocation(650, 540);
-        getContentPane().add(tfPagamentoInicial);
         
         
         
