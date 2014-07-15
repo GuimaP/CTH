@@ -10,6 +10,7 @@ import Model.Repository.Repository;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -55,7 +56,10 @@ public class FormCadastroCliente extends JInternalFrame {
             tfLogradouro, tfBairro, tfRg, tfQuestao1, tfNumero, tfBuscaCliente;
     private JFormattedTextField tfData, tfNascimento, tfCep, tfCpf, tfCelular,
             tfTelefone, tfValidadeCnh, tfPrimeiraHabilitacao;
-    private JButton btSalvar, btExcluir, btBuscar;
+    private JButton btSalvar, btExcluir, btBuscar, btPacote, btOk;
+    
+    private JPanel pnPacote;
+    
     private JTextArea observa;
     private JScrollPane scroll, scTable;
     private ButtonGroup gQ2, gQ3;
@@ -78,6 +82,8 @@ public class FormCadastroCliente extends JInternalFrame {
     CadastroCliente cadastro = new CadastroCliente();
 
     private JPanel panelCliente, painelGeral;
+    
+    private boolean aberto = false;
 
     public FormCadastroCliente() {
 
@@ -100,7 +106,6 @@ public class FormCadastroCliente extends JInternalFrame {
         }
 
     }
-
     public void limparCampos() {
         tfNome.setText("");
         tfData.setValue(dataMask);
@@ -460,6 +465,11 @@ public class FormCadastroCliente extends JInternalFrame {
         btBuscar.setLocation(690, 50);
         btBuscar.setSize(80, 25);
         getContentPane().add(btBuscar);
+        
+        btPacote = new JButton("Contratar Pacote");
+        btPacote.setSize(180, 35);
+        btPacote.setLocation(510, 570);
+        getContentPane().add(btPacote);
 		// Text
 
         // Table
@@ -759,5 +769,13 @@ public class FormCadastroCliente extends JInternalFrame {
                 Principal.isFrameInstrutorOpen = false;
             }
         });
+        
+        
+        btPacote.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
     }
 }

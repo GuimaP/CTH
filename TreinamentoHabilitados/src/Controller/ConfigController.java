@@ -23,7 +23,8 @@ public class ConfigController {
 	}
 	
 	public static Font definePrincipalFont(float size,int fontType){
-		java.io.File fontFile = new File(Start.class.getResource("/fonts").getPath()+"/BlissfulThinking.otf");
+		Start p = new Start();
+		java.io.File fontFile = new File(p.getClass().getResource("/fonts").getPath()+"/BlissfulThinking.otf");
 		Font fonte = null;
 		try {
 			fonte = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(fontType, size);
