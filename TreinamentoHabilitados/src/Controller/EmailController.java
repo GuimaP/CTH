@@ -132,7 +132,7 @@ public class EmailController {
 		try {
 			if (!store.isConnected()) {
 				store.connect(this.hostRecieve, this.user, this.pass);
-				getListagemFolders(); //e chamo o metodo de novo
+				return getListagemFolders(); //e chamo o metodo de novo
 			}else {
 			Store store = session.getStore("imaps");
 			store.connect(this.hostRecieve, this.user, this.pass);
@@ -165,7 +165,7 @@ public class EmailController {
 		try {
 			if (!store.isConnected()) { //Se estiver desconectador por conta de muitos request
 				store.connect(this.hostRecieve, this.user, this.pass); // eu conecto de novo 
-				listarViewEmails(name); // e chamo em recursividade o metodo
+				return listarViewEmails(name); // e chamo em recursividade o metodo
 			}else{
 
 			if (!"[Gmail]".equalsIgnoreCase(name)) {
