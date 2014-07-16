@@ -89,13 +89,15 @@ public class ViewEmail extends JInternalFrame{
 		JTextArea txt = new JTextArea();
 		txt.setSize(100,100);
 		menu.add(txt);
-		menu.setSize(100, 100);
+		
 		
 		setVisible(true);
 	}
 	
 	private void defineEvents(){
 		btReply.addActionListener(evt ->{
+			menu.setSize(100, 100);
+			menu.setPopupSize(100, 100);
 			menu.show(btReply, 0, 0);
 		});
 
