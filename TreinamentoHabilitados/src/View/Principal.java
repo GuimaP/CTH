@@ -671,7 +671,7 @@ public class Principal extends JFrame {
 					System.out.println(index);
 					index = ((ModelTableEmail)jTableEmails.getModel()).getIdEmail(index);
 					System.out.println(index);
-					
+					jTableEmails.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 					mensagem = email.getEmail("INBOX", (index*-1));
 					((ModelTableEmail)jTableEmails.getModel()).marcaComoLida(jTableEmails.getSelectedRow());
 					getContentPane().add(new ViewEmail(mensagem));

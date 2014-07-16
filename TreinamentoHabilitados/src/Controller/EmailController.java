@@ -69,6 +69,8 @@ public class EmailController {
 
 	private Map<String, List<MensagemEmail>> map;
 
+	int tentativas; //contador de tentativas 
+	
 	public EmailController(UsuarioEmail e) {
 		this.host = e.getHost();
 		this.port = e.getPort();
@@ -77,6 +79,8 @@ public class EmailController {
 		this.user = e.getUser();
 		this.pass = e.getPass();
 
+		this.tentativas = 0;
+		
 		authenticOnEmail();
 		getEmails();
 		// PEGAR DE UM ARQUIVO CRIPTOGRAFADO E SERIALIZADO.
@@ -132,8 +136,13 @@ public class EmailController {
 		try {
 			if (!store.isConnected()) {
 				store.connect(this.hostRecieve, this.user, this.pass);
+				if(tentativas > 10){ //se tentou 10 vezes, então eu paro de tentar conectar
+					return null;
+				}
+				tentativas++;
 				return getListagemFolders(); //e chamo o metodo de novo
 			}else {
+				tentativas = 0;
 			Store store = session.getStore("imaps");
 			store.connect(this.hostRecieve, this.user, this.pass);
 			Folder[] listagemFolders = store.getDefaultFolder().list();
@@ -165,9 +174,13 @@ public class EmailController {
 		try {
 			if (!store.isConnected()) { //Se estiver desconectador por conta de muitos request
 				store.connect(this.hostRecieve, this.user, this.pass); // eu conecto de novo 
+				if(tentativas > 10){ //se tentou 10 vezes, então eu paro de tentar conectar
+					return null;
+				}
+				tentativas++;
 				return listarViewEmails(name); // e chamo em recursividade o metodo
 			}else{
-
+				tentativas = 0;
 			if (!"[Gmail]".equalsIgnoreCase(name)) {
 				Folder folder = store.getFolder(name);
 
@@ -217,26 +230,31 @@ public class EmailController {
 		// store.connect(hostRecieve, user, pass);
 		// }
 
-		new Thread(() -> { // Inicio uma thread para mudar a status de nova msg
+		msg = (map.get(folderName)).get(index);
+		if(msg.isUnread()){
+			try {
 							// para msg lida, sem interromper o processo de
 							// email
 					Folder folder;
-					try {
+		
 						folder = store.getFolder(folderName);
 
 						folder.open(Folder.READ_WRITE);
 						Message[] messages = folder.getMessages();
 						messages[index].setFlag(Flags.Flag.SEEN, true);
-					} catch (Exception e) {
-						
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}).start();
+		
 
-		msg = (map.get(folderName)).get(index);
-
+//		try{
+//		Folder fold = store.getFolder(folderName);
+//		fold.open(Folder.READ_ONLY);
+//		Message[] message = fold.getMessages();
+		msg = readEmail(messages[index]);
+//		msg = (map.get(folderName)).get(index);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		// msg = (map.get(folderName)).get(index);
+		}
 		return msg;
 	}
 
@@ -531,9 +549,13 @@ public class EmailController {
 		try {
 			if (!store.isConnected()) {
 				store.connect(this.hostRecieve, this.user, this.pass);
+				if(tentativas > 10){ //se tentou 10 vezes, então eu paro de tentar conectar
+					return null;
+				}
+				tentativas++;
 				countUnredMessages(name);
 			}else{
-
+				tentativas = 0;
 			Folder folderEmail = store.getFolder(name); // Abro o diretorio de
 														// acordo com o nome da
 														// pasta

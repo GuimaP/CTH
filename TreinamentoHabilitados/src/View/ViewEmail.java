@@ -2,6 +2,7 @@ package View;
 
 import javax.mail.Address;
 import javax.swing.JButton;
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
@@ -14,7 +15,7 @@ import Model.MensagemEmail;
 public class ViewEmail extends JInternalFrame{
 	private JButton btReply;
 	private JTextField tfRemetente,tfAssunto;
-	private JTextArea txTexto;
+	private JEditorPane txTexto;
 	private JLabel lbAssunto,lbRemetente,lbTexto;
 	private MensagemEmail email;
 	public ViewEmail(MensagemEmail e) {
@@ -54,9 +55,11 @@ public class ViewEmail extends JInternalFrame{
 		add(tfAssunto);
 		JFrame f =  new JFrame();
 		
-		txTexto = new JTextArea();
-		txTexto.setWrapStyleWord(true);
-		txTexto.setLineWrap(true);
+		txTexto = new JEditorPane();
+		txTexto.setContentType("text/html");  
+//		txTexto.setWrapStyleWord(true);
+//		txTexto.setLineWrap(true);
+		
 		txTexto.setBounds(5, (lbAssunto.getY() + lbAssunto.getHeight())+5, (this.getWidth() - 10)-10,  (this.getHeight() -  (lbAssunto.getY() - lbAssunto.getHeight() )) - 120);
 		txTexto.setText(email.getTexto());
 		add(txTexto);
