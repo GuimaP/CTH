@@ -47,7 +47,13 @@ import java.util.logging.Logger;
 
 
 
+
+
+
 import javassist.expr.NewArray;
+
+
+
 
 
 
@@ -89,10 +95,14 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
+
+
+
 
 
 
@@ -122,8 +132,14 @@ import antlr.TreeParserSharedInputState;
 
 
 
+
+
+
 import com.itextpdf.text.log.SysoCounter;
 import com.sun.media.rtsp.protocol.PauseMessage;
+
+
+
 
 
 
@@ -174,6 +190,8 @@ public class Principal extends JFrame {
 	
 	private Thread gerenciaEmal;
 	private final int WIDTH_TAMANHO = 301;
+	
+	private boolean hasEmailReady = false;
 
 	protected static boolean isFrameInstrutorOpen, isFrameClienteOpen,
 			isFrameCadastroPacote, isFrameAgendamento, isFrameCarro;
@@ -206,11 +224,49 @@ public class Principal extends JFrame {
 				os.close(); // TODO APLICAR CRIPTOGRAFIA
 
 			}
+			
+			inicializaComponentes();
+			
+			new Thread(()->{
+				this.email = new EmailController(user);
+				
+				DefaultMutableTreeNode root = new DefaultMutableTreeNode("Inicio");
 
-			this.email = new EmailController(user);
+				DefaultMutableTreeNode favItens = new DefaultMutableTreeNode(
+						"Favoritos");
+				root.add(favItens);
+
+				DefaultMutableTreeNode tarefaItens = new DefaultMutableTreeNode(
+						"Tarefas");
+				root.add(tarefaItens);
+
+				DefaultMutableTreeNode dmEmail = new DefaultMutableTreeNode("E-mail");
+
+			
+				List<String> folders = email.getListagemFolders();
+				folders.forEach(fo -> {
+					DefaultMutableTreeNode dm = new DefaultMutableTreeNode(fo);
+					dmEmail.add(dm);
+				});
+				
+
+				root.add(dmEmail);
+				DefaultTreeModel model = new DefaultTreeModel(root);
+			
+				
+				jtreeAtalhos.setModel(model);
+				minhaFrame.revalidate();
+				minhaFrame.repaint();
+				System.out.println("repaint na tela");
+				gerenciaEmal = new Thread(new CheckNewMessages(jTableEmails,
+						jtreeAtalhos, painelEmail,email));
+				gerenciaEmal.setDaemon(true);
+				gerenciaEmal.start();
+			}).start();
+			
 
 			this.loginUser = usuario;
-			inicializaComponentes();
+			
 
 			definirEventos();
 
@@ -218,10 +274,8 @@ public class Principal extends JFrame {
 
 			
 			System.out.println("iniciando a thread");
-			gerenciaEmal = new Thread(new CheckNewMessages(jTableEmails,
-					jtreeAtalhos, painelEmail,email));
-			gerenciaEmal.setDaemon(true);
-			gerenciaEmal.start();
+			
+			sp.setViewportView(jtreeAtalhos);
 			
 			System.out.println("ao que parece iniciou a thread");
 			
@@ -249,6 +303,7 @@ public class Principal extends JFrame {
 		menuBarra = new JMenuBar();
 		//
 
+		
 		menuArquivo = new JMenu("Arquivo");
 		menuAgendamento = new JMenu("Agendamento");
 		menuRelatorio = new JMenu("Relatorio");
@@ -286,13 +341,16 @@ public class Principal extends JFrame {
 
 		DefaultMutableTreeNode dmEmail = new DefaultMutableTreeNode("E-mail");
 
+		if(hasEmailReady){
 		List<String> folders = email.getListagemFolders();
 		folders.forEach(fo -> {
 			DefaultMutableTreeNode dm = new DefaultMutableTreeNode(fo);
 			dmEmail.add(dm);
 		});
+		
 
 		root.add(dmEmail);
+		}
 
 		jtreeAtalhos = new JTree(root);
 		jtreeAtalhos.getSelectionModel().setSelectionMode(
@@ -300,7 +358,7 @@ public class Principal extends JFrame {
 		jtreeAtalhos.setCellRenderer(new MeuModeloTree());
 		jtreeAtalhos.expandRow(60);
 
-		//
+		
 		painelEmail = new JPanel(); // INICANDO O PAINEL
 		painelEmail.setLayout(new GridLayout(1, 1));
 
@@ -479,20 +537,29 @@ public class Principal extends JFrame {
 
 					String[] itens = evt.getNewLeadSelectionPath().toString()
 							.split(",");
-					String nameFolder = itens[itens.length - 1];
-					nameFolder = nameFolder.replace(']', ' ');
+					String nameFolder = itens[itens.length - 1]; //Pego o ultimo nome da arvore de arquivos
+					nameFolder = nameFolder.replace(']', ' '); //e retiro os caracteres
 					nameFolder = nameFolder.replace(" ", "");
 					final String name = nameFolder;
 					System.out.println(nameFolder);
 					List<String> ls = new ArrayList<String>();
 					new Thread(() ->{
+						boolean sucess = false;
+						List<String>temp = new ArrayList<String>();
+						while(!sucess){
+							try{
+							temp = email.listarViewEmails(name);
+							sucess = true;
+							}catch(Exception e){System.out.println("erro,trying again");}
+						}
 						barraLateral.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 						jtreeAtalhos.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 						
-						List<String>temp = email.listarViewEmails(name);
+						
 						jtreeAtalhos.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 						barraLateral.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 						jTableEmails.setModel(new ModelTableEmail(temp));
+						
 					}).start();
 					
 					
@@ -595,29 +662,21 @@ public class Principal extends JFrame {
 			}
 		});
 
-	jTableEmails.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-		
-		@Override
-		public void valueChanged(ListSelectionEvent arg0) {
-			
-			int index = jTableEmails.getSelectedRow();
-			System.out.println(index);
-			index = ((ModelTableEmail)jTableEmails.getModel()).getIdEmail(index);
-			System.out.println(index);
-			
-			//MensagemEmail e = email.getEmail("INBOX", (index*-1));
-			mensagem = email.getEmail("INBOX", (index*-1));
-			
-			
-		}
-	});
 		jTableEmails.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
 				if(e.getClickCount() == 2){
+					int index = jTableEmails.getSelectedRow();
+					System.out.println(index);
+					index = ((ModelTableEmail)jTableEmails.getModel()).getIdEmail(index);
+					System.out.println(index);
+					
+					mensagem = email.getEmail("INBOX", (index*-1));
+					((ModelTableEmail)jTableEmails.getModel()).marcaComoLida(jTableEmails.getSelectedRow());
 					getContentPane().add(new ViewEmail(mensagem));
 					System.out.println("cliq");
+				
 				}
 			}
 		});
@@ -734,6 +793,7 @@ public class Principal extends JFrame {
 				int emailsNaCaixal = email.countUnredMessages("INBOX").size(); //Verifico a quantidade total de emails,
 				int cont = 0 ;
 				while (true) {
+					
 					List<MensagemEmail>lsTemp = email.countUnredMessages("INBOX");
 					
 					

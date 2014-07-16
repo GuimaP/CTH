@@ -66,8 +66,8 @@ public class EmailController {
 	private Store store;
 	private Folder folderInbox;
 	private Session session;
-	
-	private Map<String,List<MensagemEmail>> map ;
+
+	private Map<String, List<MensagemEmail>> map;
 
 	public EmailController(UsuarioEmail e) {
 		this.host = e.getHost();
@@ -76,42 +76,40 @@ public class EmailController {
 		this.hostRecieve = e.getHostReceive();
 		this.user = e.getUser();
 		this.pass = e.getPass();
-	
 
 		authenticOnEmail();
 		getEmails();
 		// PEGAR DE UM ARQUIVO CRIPTOGRAFADO E SERIALIZADO.
 	}
 
-	public String getUser(){
+	public String getUser() {
 		return this.user;
 	}
-	
-	public Map<String,List<MensagemEmail>> getEmails(){
+
+	public Map<String, List<MensagemEmail>> getEmails() {
 		map = new HashMap<String, List<MensagemEmail>>();
-		try{
+		try {
 			Folder[] folders = store.getDefaultFolder().list();
-			
-			for(Folder f: folders){
+
+			for (Folder f : folders) {
 				System.out.println(f.getName());
-				
-				List<MensagemEmail>lsEmails = new ArrayList<MensagemEmail>();
+
+				List<MensagemEmail> lsEmails = new ArrayList<MensagemEmail>();
 				f.open(Folder.READ_ONLY);
-				for(Message m : f.getMessages()){
+				for (Message m : f.getMessages()) {
 					MensagemEmail ms = readEmail(m);
 					lsEmails.add(ms);
 				}
-				
-				map.put(f.getName(),lsEmails);
+
+				map.put(f.getName(), lsEmails);
 			}
-		}catch(MessagingException e){
-			
+		} catch (MessagingException e) {
+
 		}
 		return map;
-		
+
 	}
 
-	
 	public List<Folder> listarFolders() {
 		List<Folder> lsFolders = new ArrayList<Folder>();
 		try {
@@ -127,30 +125,36 @@ public class EmailController {
 
 		return lsFolders;
 	}
-	
-	public List<String> getListagemFolders(){
-		List<String>listFolders = new ArrayList<String>();
-		try{
-		Store store = session.getStore("imaps");
-		store.connect(this.hostRecieve,this.user,this.pass);
-		Folder[] listagemFolders = store.getDefaultFolder().list();
+
+	public List<String> getListagemFolders() {
 		
-		for(Folder f : listagemFolders ){
-			f.open(Folder.READ_ONLY);
-			String name = f.getName();
-			listFolders.add(name);
+		List<String> listFolders = new ArrayList<String>();
+		try {
+			if (!store.isConnected()) {
+				store.connect(this.hostRecieve, this.user, this.pass);
+				return getListagemFolders(); //e chamo o metodo de novo
+			}else {
+			Store store = session.getStore("imaps");
+			store.connect(this.hostRecieve, this.user, this.pass);
+			Folder[] listagemFolders = store.getDefaultFolder().list();
+
+			for (Folder f : listagemFolders) {
+				f.open(Folder.READ_ONLY);
+				String name = f.getName();
+				listFolders.add(name);
+			}
+			}
+
+		} catch (Exception e) {
+
 		}
-		
-		}catch (Exception e){
-			
-		}
-		
+
 		return listFolders;
 	}
-	
-	//TODO FAZER METODO QUE PASSA O NOME DO FOLDER, E DEVOLVE UM LIST DE EMAIL DAQUELE FOLDER
-	
-	
+
+	// TODO FAZER METODO QUE PASSA O NOME DO FOLDER, E DEVOLVE UM LIST DE EMAIL
+	// DAQUELE FOLDER
+
 	/**
 	 * 
 	 * @param Folder
@@ -159,40 +163,47 @@ public class EmailController {
 	public synchronized List<String> listarViewEmails(String name) {
 		List<String> ls = new ArrayList<String>();
 		try {
-			if(!store.isConnected()){
-				store.connect(this.hostRecieve,this.user, this.pass);
-			}	
-			
-			if(!"[Gmail]".equalsIgnoreCase(name)){
-			Folder folder = store.getFolder(name);
-			
-			FetchProfile fp = new FetchProfile();
-			fp.add(FetchProfileItem.ENVELOPE);
-			fp.add(FetchProfileItem.FLAGS);
-			fp.add(FetchProfileItem.SIZE);
-			folder.open(Folder.READ_ONLY);
-			Message[] msgs = folder.getMessages();
-			
-			int total = msgs.length - 1;
-			for (int i = total; i > 0; i--) {
-				boolean isRecent = msgs[i].getFlags().contains(Flags.Flag.SEEN);
-				String from = "";
-			
-				Address[] vtrAdres = msgs[i].getFrom();
-				for(Address a : vtrAdres){
-					from += a.toString();
-				}
-				
-				
-				String assunto = msgs[i].getSubject();
-				String dataRecebida = new SimpleDateFormat("dd/MM/yyyy -  hh:mm").format(msgs[i].getReceivedDate());
-				if(!isRecent){
-					ls.add("<html><b>De: " + from + "  - Assunto: " + assunto+" - "+ dataRecebida+"</b></html>");
-				}else {
-					ls.add("De: " + from + "  - Assunto: " + assunto + " - " + dataRecebida);
+			if (!store.isConnected()) { //Se estiver desconectador por conta de muitos request
+				store.connect(this.hostRecieve, this.user, this.pass); // eu conecto de novo 
+				return listarViewEmails(name); // e chamo em recursividade o metodo
+			}else{
+
+			if (!"[Gmail]".equalsIgnoreCase(name)) {
+				Folder folder = store.getFolder(name);
+
+				FetchProfile fp = new FetchProfile();
+				fp.add(FetchProfileItem.ENVELOPE);
+				fp.add(FetchProfileItem.FLAGS);
+				fp.add(FetchProfileItem.SIZE);
+				folder.open(Folder.READ_ONLY);
+				Message[] msgs = folder.getMessages();
+
+				int total = msgs.length - 1;
+				for (int i = total; i > 0; i--) {
+					boolean isRecent = msgs[i].getFlags().contains(
+							Flags.Flag.SEEN);
+					String from = "";
+
+					Address[] vtrAdres = msgs[i].getFrom();
+					for (Address a : vtrAdres) {
+						from += a.toString();
+					}
+
+					String assunto = msgs[i].getSubject();
+					String dataRecebida = new SimpleDateFormat(
+							"dd/MM/yyyy -  hh:mm").format(msgs[i]
+							.getReceivedDate());
+					if (!isRecent) {
+						ls.add("<html><b>De: " + from + "  - Assunto: "
+								+ assunto + " - " + dataRecebida
+								+ "</b></html>");
+					} else {
+						ls.add("De: " + from + "  - Assunto: " + assunto
+								+ " - " + dataRecebida);
+					}
 				}
 			}
-		}
+			}
 
 		} catch (MessagingException e) {
 			e.printStackTrace();
@@ -200,20 +211,35 @@ public class EmailController {
 		return ls;
 	}
 
-	
-	public MensagemEmail getEmail(String folderName,int index){
+	public MensagemEmail getEmail(String folderName, int index) {
 		MensagemEmail msg = new MensagemEmail();
-		//			if(!store.isConnected()){
-//				store.connect(hostRecieve, user, pass);
-//			}
-//			Folder folder = store.getFolder(folderName);
-//			folder.open(Folder.READ_ONLY);
-//			Message[] messages = folder.getMessages();
-//			msg = readEmail(messages[index]);
+		// if(!store.isConnected()){
+		// store.connect(hostRecieve, user, pass);
+		// }
+
+		new Thread(() -> { // Inicio uma thread para mudar a status de nova msg
+							// para msg lida, sem interromper o processo de
+							// email
+					Folder folder;
+					try {
+						folder = store.getFolder(folderName);
+
+						folder.open(Folder.READ_WRITE);
+						Message[] messages = folder.getMessages();
+						messages[index].setFlag(Flags.Flag.SEEN, true);
+					} catch (Exception e) {
+						
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}).start();
+
 		msg = (map.get(folderName)).get(index);
+
+		// msg = (map.get(folderName)).get(index);
 		return msg;
 	}
-	
+
 	/**
 	 * 
 	 * @param msg
@@ -222,16 +248,16 @@ public class EmailController {
 	public MensagemEmail readEmail(Message msg) {
 
 		MensagemEmail msgEmail = new MensagemEmail();
+
 		try {
 
-			
 			String recipients = "COM COPIA PARA: ";
 			String subject = "SUBJECT: ";
 			String body = "";
 
 			subject = msg.getSubject();
 			msgEmail.setSubject(subject);
-			boolean isRecente = msg.getFlags().contains(Flags.Flag.SEEN); 
+			boolean isRecente = msg.getFlags().contains(Flags.Flag.SEEN);
 
 			Address[] endr = null;
 
@@ -252,7 +278,6 @@ public class EmailController {
 				}
 				msgEmail.setTo(lsDestinatario);
 			}
-
 
 			Flags flags = msg.getFlags();
 			Flags.Flag[] sf = flags.getSystemFlags(); // get the system flags
@@ -283,7 +308,6 @@ public class EmailController {
 					s = "Nothing";
 					unread = true;
 				}
-				
 
 				msgEmail.setTexto(abrirMensagem(msg));
 			}
@@ -299,23 +323,22 @@ public class EmailController {
 
 	}
 
+	// public void abrirFolder(String name){
+	// try{
+	// System.out.println(name);
+	// Folder folder = (IMAPFolder) store.getFolder(name);
+	// folder.open(Folder.READ_ONLY);
+	// Message[] msg = folder.getMessages();
+	// int total = msg.length -1;
+	// for(int i = total; i > 0 ;i--){
+	// System.out.println(readEmail(msg[i]));
+	// }
+	// }catch(MessagingException e){
+	// e.printStackTrace();
+	// }
+	// }
+	//
 
-//	public void abrirFolder(String name){
-//		try{
-//		System.out.println(name);
-//		Folder folder = (IMAPFolder) store.getFolder(name);
-//		folder.open(Folder.READ_ONLY);
-//		Message[] msg = folder.getMessages();
-//		int total = msg.length -1;
-//		for(int i = total; i > 0 ;i--){
-//			System.out.println(readEmail(msg[i]));
-//		}
-//		}catch(MessagingException e){
-//			e.printStackTrace();
-//		}
-//	}
-//	
-	
 	/**
 	 * 
 	 * @param part
@@ -339,10 +362,10 @@ public class EmailController {
 				System.out.println("multipart");
 				for (int i = 0; i < count; i++)
 					body += parseStreamToString(mp.getBodyPart(i)); // Eh um
-																// documento do
-																// tipo html que
-																// precisa ser
-																// interpretado
+				// documento do
+				// tipo html que
+				// precisa ser
+				// interpretado
 
 			} else if (p.isMimeType("message/rfc822")) {
 				System.out.println("message/rfc");
@@ -392,7 +415,8 @@ public class EmailController {
 
 	/**
 	 * 
-	 * @param Tipo Part, que é um stream, e converte pra string
+	 * @param Tipo
+	 *            Part, que é um stream, e converte pra string
 	 * @return retorna uma string
 	 * @throws Exception
 	 */
@@ -414,8 +438,6 @@ public class EmailController {
 		return msg;
 	}
 
-	
-	
 	public void authenticOnEmail() {
 
 		try {
@@ -505,70 +527,77 @@ public class EmailController {
 	}
 
 	public synchronized List<MensagemEmail> countUnredMessages(String name) {
-		List<MensagemEmail>listEmail = new ArrayList<MensagemEmail>();
-		try{
-			if(!store.isConnected()){
-				store.connect(this.hostRecieve,this.user, this.pass);
-			}	
-		
-		Folder folderEmail = store.getFolder(name); //Abro o diretorio de acordo com o nome da pasta
-		 folderEmail.open(Folder.READ_ONLY ); //Abro para somente leitura
-		Message messages[] = folderEmail.search(new FlagTerm(new Flags( //Filtro apenas todas as mensagens que n foram vistas
-                Flags.Flag.SEEN), false));
-		
-		FetchProfile fp = new FetchProfile(); 
-        fp.add(FetchProfile.Item.ENVELOPE); 
-        fp.add(FetchProfile.Item.CONTENT_INFO);
-        
-        folderEmail.fetch(messages, fp); //Atualizo o folder
-        
-        
-        for(Message m : messages){ //e pego todas as mensagens e mostro 
-        	MensagemEmail msg = readEmail(m);
-//        	System.out.println(msg.getFrom().toString());
-        	listEmail.add(msg);
-        }
-        
-        System.out.println("No. of Unread Messages : " + messages.length + "\n "+ listEmail.size());
-        
-		}catch(MessagingException e){
+		List<MensagemEmail> listEmail = new ArrayList<MensagemEmail>();
+		try {
+			if (!store.isConnected()) {
+				store.connect(this.hostRecieve, this.user, this.pass);
+				countUnredMessages(name);
+			}else{
+
+			Folder folderEmail = store.getFolder(name); // Abro o diretorio de
+														// acordo com o nome da
+														// pasta
+			folderEmail.open(Folder.READ_ONLY); // Abro para somente leitura
+			Message messages[] = folderEmail.search(new FlagTerm(new Flags( // Filtro
+																			// apenas
+																			// todas
+																			// as
+																			// mensagens
+																			// que
+																			// n
+																			// foram
+																			// vistas
+					Flags.Flag.SEEN), false));
+
+			FetchProfile fp = new FetchProfile();
+			fp.add(FetchProfile.Item.ENVELOPE);
+			fp.add(FetchProfile.Item.CONTENT_INFO);
+
+			folderEmail.fetch(messages, fp); // Atualizo o folder
+
+			for (Message m : messages) { // e pego todas as mensagens e mostro
+				MensagemEmail msg = readEmail(m);
+				// System.out.println(msg.getFrom().toString());
+				listEmail.add(msg);
+			}
+
+			System.out.println("No. of Unread Messages : " + messages.length
+					+ "\n " + listEmail.size());
+			}
+		} catch (MessagingException e) {
 			e.printStackTrace();
-		}finally{
-			
-			
+		} finally {
+
 		}
-		
-        
-        
-        return listEmail;
+
+		return listEmail;
 	}
 
 	public static void main(String[] args) {
 		try {
-//			EmailController email = 
-//					new EmailController("smtp.gmail.com","imap.gmail.com",465,true);
-//		List<Folder> f = email.listarFolders();
-//		for(Folder fo : f){
-//			System.out.println(fo);
-//			for(Folder fold : fo.list()){
-//				if("Todos os e-mails".equals(fold.getName())){
-//					fold.open(Folder.READ_ONLY);
-//					for(String s : email.listarViewEmails(fold))
-//							System.out.println(s);
-//				}
-//				System.out.println(fold.getName());
-//			}
-//		}
-//		
-//		email.abrirFolder("[Gmail]");
-//		System.out.println( email.getListagemFolders());
-//		email.countUnredMessages("INBOX");
-//		
+			// EmailController email =
+			// new EmailController("smtp.gmail.com","imap.gmail.com",465,true);
+			// List<Folder> f = email.listarFolders();
+			// for(Folder fo : f){
+			// System.out.println(fo);
+			// for(Folder fold : fo.list()){
+			// if("Todos os e-mails".equals(fold.getName())){
+			// fold.open(Folder.READ_ONLY);
+			// for(String s : email.listarViewEmails(fold))
+			// System.out.println(s);
+			// }
+			// System.out.println(fold.getName());
+			// }
+			// }
+			//
+			// email.abrirFolder("[Gmail]");
+			// System.out.println( email.getListagemFolders());
+			// email.countUnredMessages("INBOX");
+			//
 
 		} catch (Exception er) {
 			er.printStackTrace();
 		}
-	
 
 	}
 
