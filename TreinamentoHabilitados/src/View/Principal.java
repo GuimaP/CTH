@@ -50,7 +50,9 @@ import java.util.logging.Logger;
 
 
 
+
 import javassist.expr.NewArray;
+
 
 
 
@@ -117,6 +119,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 
 
+
 import antlr.TreeParserSharedInputState;
 
 
@@ -135,8 +138,11 @@ import antlr.TreeParserSharedInputState;
 
 
 
+
+import com.itextpdf.text.Font;
 import com.itextpdf.text.log.SysoCounter;
 import com.sun.media.rtsp.protocol.PauseMessage;
+
 
 
 
@@ -294,7 +300,8 @@ public class Principal extends JFrame {
 		setContentPane(fundoDaPrincipal);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		Toolkit toolkit = Toolkit.getDefaultToolkit();  
-		Dimension scrnsize = toolkit.getScreenSize();  
+		Dimension scrnsize = toolkit.getScreenSize();
+		setFont(ConfigController.definePrincipalFont(12f, Font.NORMAL));
 		setSize(scrnsize);
 		
 		setIconImage(ConfigController.defineIcon());
@@ -668,12 +675,12 @@ public class Principal extends JFrame {
 				super.mouseClicked(e);
 				if(e.getClickCount() == 2){
 					int index = jTableEmails.getSelectedRow();
-					System.out.println(index);
+					System.out.println("INDEX PRINCIPAL - "+index);
 					index = ((ModelTableEmail)jTableEmails.getModel()).getIdEmail(index);
-					System.out.println(index);
+					System.out.println("INDEX PELA TABLE -" + index);
 					jTableEmails.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 					mensagem = email.getEmail("INBOX", (index*-1));
-					((ModelTableEmail)jTableEmails.getModel()).marcaComoLida(jTableEmails.getSelectedRow());
+					((ModelTableEmail)jTableEmails.getModel()).marcaComoLida(jTableEmails.getSelectedRow()); //Marco como lida visualmente, enquanto a thread faz isso lá no servidor
 					getContentPane().add(new ViewEmail(mensagem));
 					System.out.println("cliq");
 				

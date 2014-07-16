@@ -394,11 +394,12 @@ public class PainelCalendarioAgendamento extends JPanel {
 		painelCalendario.remove(painelListaTarefa);
 		painelListaTarefa.removeAll();
 		painelListaTarefa.setLayout(new GridLayout(1, 1));
+		
 
 		tbTarefas = new JTable();
 
 		JScrollPane sp = new JScrollPane(tbTarefas);
-		sp.setSize(300, 300);
+		sp.setSize(200, painelCalendario.getHeight());
 
 		List<Tarefa> lista = new ArrayList<Tarefa>();// Inicio a lista
 		lista = repoTarefa.getAllTarefasToday(dateSelcionada);
@@ -423,7 +424,7 @@ public class PainelCalendarioAgendamento extends JPanel {
 		int x = painelCalendario.getWidth() - calendario.getWidth() + 80;
 		int width = myPanel.getWidth() - calendario.getWidth();
 		painelListaTarefa.setBounds(x, 0, width,
-				painelCalendario.getHeight() + 300);
+				painelCalendario.getHeight() );
 
 		// tbTarefas.getColumnModel().getColumn(0).setPreferredWidth(10);
 		// tbTarefas.getColumnModel().getColumn(1).setPreferredWidth(10);

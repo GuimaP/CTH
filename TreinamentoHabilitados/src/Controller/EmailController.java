@@ -171,6 +171,7 @@ public class EmailController {
 	 */
 	public synchronized List<String> listarViewEmails(String name) {
 		List<String> ls = new ArrayList<String>();
+		
 		try {
 			if (!store.isConnected()) { //Se estiver desconectador por conta de muitos request
 				store.connect(this.hostRecieve, this.user, this.pass); // eu conecto de novo 
@@ -191,6 +192,10 @@ public class EmailController {
 				folder.open(Folder.READ_ONLY);
 				Message[] msgs = folder.getMessages();
 
+			
+
+				List<MensagemEmail>lsEmails = map.get(name);
+				
 				int total = msgs.length - 1;
 				for (int i = total; i > 0; i--) {
 					boolean isRecent = msgs[i].getFlags().contains(
@@ -214,7 +219,12 @@ public class EmailController {
 						ls.add("De: " + from + "  - Assunto: " + assunto
 								+ " - " + dataRecebida);
 					}
+					lsEmails.add(readEmail(msgs[i]));
 				}
+				
+//						(name, lsEmails);
+				map.put(name, lsEmails);
+				
 			}
 			}
 
@@ -229,8 +239,10 @@ public class EmailController {
 		// if(!store.isConnected()){
 		// store.connect(hostRecieve, user, pass);
 		// }
-
-		msg = (map.get(folderName)).get(index);
+		System.out.println("INDEX - " +index);
+		List<MensagemEmail>ls = map.get(folderName);
+		System.out.println("TAMANHO " + ls.size());
+		msg =ls.get(index);
 		if(msg.isUnread()){
 			try {
 							// para msg lida, sem interromper o processo de
@@ -244,12 +256,7 @@ public class EmailController {
 						messages[index].setFlag(Flags.Flag.SEEN, true);
 		
 
-//		try{
-//		Folder fold = store.getFolder(folderName);
-//		fold.open(Folder.READ_ONLY);
-//		Message[] message = fold.getMessages();
 		msg = readEmail(messages[index]);
-//		msg = (map.get(folderName)).get(index);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -593,34 +600,6 @@ public class EmailController {
 		}
 
 		return listEmail;
-	}
-
-	public static void main(String[] args) {
-		try {
-			// EmailController email =
-			// new EmailController("smtp.gmail.com","imap.gmail.com",465,true);
-			// List<Folder> f = email.listarFolders();
-			// for(Folder fo : f){
-			// System.out.println(fo);
-			// for(Folder fold : fo.list()){
-			// if("Todos os e-mails".equals(fold.getName())){
-			// fold.open(Folder.READ_ONLY);
-			// for(String s : email.listarViewEmails(fold))
-			// System.out.println(s);
-			// }
-			// System.out.println(fold.getName());
-			// }
-			// }
-			//
-			// email.abrirFolder("[Gmail]");
-			// System.out.println( email.getListagemFolders());
-			// email.countUnredMessages("INBOX");
-			//
-
-		} catch (Exception er) {
-			er.printStackTrace();
-		}
-
 	}
 
 }
