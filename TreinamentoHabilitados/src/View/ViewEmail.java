@@ -1,14 +1,26 @@
 package View;
 
+import java.awt.Point;
+
+
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import javax.mail.Address;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+
+
+
 
 import Model.MensagemEmail;
 
@@ -18,13 +30,16 @@ public class ViewEmail extends JInternalFrame{
 	private JEditorPane txTexto;
 	private JLabel lbAssunto,lbRemetente,lbTexto;
 	private MensagemEmail email;
+	
+	private JPopupMenu menu;
+	
 	public ViewEmail(MensagemEmail e) {
 		setClosable(true);
 		setIconifiable(true);
 		setMaximizable(false);
 		this.email = e;
 		initComponents();
-		
+		defineEvents();
 		
 	}
 	
@@ -70,6 +85,19 @@ public class ViewEmail extends JInternalFrame{
 		add(btReply);
 //		
 		
+		menu = new JPopupMenu();
+		JTextArea txt = new JTextArea();
+		txt.setSize(100,100);
+		menu.add(txt);
+		menu.setSize(100, 100);
+		
 		setVisible(true);
+	}
+	
+	private void defineEvents(){
+		btReply.addActionListener(evt ->{
+			menu.show(btReply, 0, 0);
+		});
+
 	}
 }
