@@ -5,11 +5,9 @@
 <fullyQualifiedTypeName name="javax.swing.table.AbstractTableModel"/>
 <fullyQualifiedTypeName name="Model.ModelTableCarro"/>
 <fullyQualifiedTypeName name="Model.Carro"/>
-<fullyQualifiedTypeName name="javax.swing.JTabbedPane"/>
 <fullyQualifiedTypeName name="Model.Funcionario"/>
 <fullyQualifiedTypeName name="Model.ModeloTableFuncionario"/>
 <fullyQualifiedTypeName name="java.awt.ScrollPane"/>
-<fullyQualifiedTypeName name="javax.swing.JPanel"/>
 <fullyQualifiedTypeName name="javax.swing.JButton"/>
 <fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
 <fullyQualifiedTypeName name="javax.swing.JTable"/>
@@ -22,4 +20,6 @@
 <fullyQualifiedTypeName name="javax.swing.JTextField"/>
 <fullyQualifiedTypeName name="javax.swing.JLabel"/>
 <fullyQualifiedTypeName name="javax.swing.JFormattedTextField"/>
+<fullyQualifiedTypeName name="javax.swing.JTabbedPane"/>
+<fullyQualifiedTypeName name="javax.swing.JPanel"/>
 </qualifiedTypeNameHistroy>
