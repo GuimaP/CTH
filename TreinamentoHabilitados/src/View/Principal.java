@@ -289,7 +289,7 @@ public class Principal extends JFrame {
 				root.add(dmEmail);
 				DefaultTreeModel model = new DefaultTreeModel(root);
 			
-				
+				this.arquivosEmail = email.getEmails();
 				jtreeAtalhos.setModel(model);
 				minhaFrame.revalidate();
 				minhaFrame.repaint();
@@ -733,10 +733,14 @@ public class Principal extends JFrame {
 					int index = jTableEmails.getSelectedRow();
 					System.out.println("INDEX PRINCIPAL - "+index);
 					index = ((ModelTableEmail)jTableEmails.getModel()).getIdEmail(index);
+					index *= -1;
 					System.out.println("INDEX PELA TABLE -" + index);
-					arquivosEmail = email.getEmails();
-					mensagem = (arquivosEmail.get("INBOX")).get(index);
+//					arquivosEmail = email.getEmails();
+					List<MensagemEmail>l = arquivosEmail.get("INBOX");
+					mensagem = l.get(index); //TODO
+
 //					mensagem = email.getEmail("INBOX", (index*-1));
+					
 					((ModelTableEmail)jTableEmails.getModel()).marcaComoLida(jTableEmails.getSelectedRow()); //Marco como lida visualmente, enquanto a thread faz isso lá no servidor
 					getContentPane().add(new ViewEmail(mensagem,email));
 					System.out.println("cliq");
@@ -867,8 +871,9 @@ public class Principal extends JFrame {
 					System.out.println(emailsNaCaixal+"/"+lsEmailsAtualizada.size());
 					if (lsTemp.size() > emailsNaCaixal) {	//Se houver um email novo
 						lsEmailsAtualizada = email.listarViewEmails("INBOX"); // e Carrego os e-mails na caixa principal
-						jtable.setModel(new ModelTableEmail(lsEmailsAtualizada)); // e atualizo a minha lista]
 						arquivosEmail = email.getEmails();
+						jtable.setModel(new ModelTableEmail(lsEmailsAtualizada)); // e atualizo a minha lista]
+						
 					}
 			
 					emailsNaCaixal  = lsTemp.size();
