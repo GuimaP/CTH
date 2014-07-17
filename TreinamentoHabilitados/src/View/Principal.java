@@ -185,7 +185,7 @@ public class Principal extends JFrame {
 	private int POSXButoon;
 	protected JTree jtreeAtalhos;
 
-	private EmailController email;
+	protected  EmailController email;
 	protected JPanel painelEmail;
 	private JTable jTableEmails;
 	private List<String> listaEmails;
@@ -681,7 +681,7 @@ public class Principal extends JFrame {
 					jTableEmails.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 					mensagem = email.getEmail("INBOX", (index*-1));
 					((ModelTableEmail)jTableEmails.getModel()).marcaComoLida(jTableEmails.getSelectedRow()); //Marco como lida visualmente, enquanto a thread faz isso lá no servidor
-					getContentPane().add(new ViewEmail(mensagem));
+					getContentPane().add(new ViewEmail(mensagem,email));
 					System.out.println("cliq");
 				
 				}

@@ -194,9 +194,10 @@ public class EmailController {
 
 			
 
-				List<MensagemEmail>lsEmails = map.get(name);
+				List<MensagemEmail>lsEmails = new ArrayList<MensagemEmail>();//map.get(name);
 				
 				int total = msgs.length - 1;
+				System.out.println("Total: "+ total);
 				for (int i = total; i > 0; i--) {
 					boolean isRecent = msgs[i].getFlags().contains(
 							Flags.Flag.SEEN);
@@ -223,6 +224,7 @@ public class EmailController {
 				}
 				
 //						(name, lsEmails);
+				System.out.println(lsEmails.size());
 				map.put(name, lsEmails);
 				
 			}
@@ -242,8 +244,9 @@ public class EmailController {
 		System.out.println("INDEX - " +index);
 		List<MensagemEmail>ls = map.get(folderName);
 		System.out.println("TAMANHO " + ls.size());
-		msg =ls.get(index);
-		if(msg.isUnread()){
+		if(index>= ls.size()){
+		
+		
 			try {
 							// para msg lida, sem interromper o processo de
 							// email
@@ -261,6 +264,8 @@ public class EmailController {
 			e.printStackTrace();
 		}
 		// msg = (map.get(folderName)).get(index);
+		}else {
+			msg =ls.get(index);
 		}
 		return msg;
 	}
@@ -483,7 +488,15 @@ public class EmailController {
 			}
 			prop.put("mail.smtp.auth", "true"); // e requer autenticação
 
-			session = Session.getDefaultInstance(prop);
+			session = Session.getDefaultInstance(prop,
+                    new javax.mail.Authenticator() {
+                         protected PasswordAuthentication getPasswordAuthentication() 
+                         {
+                               return new PasswordAuthentication(user, pass);
+                         }
+			});
+
+//			session = Session.getDefaultInstance(prop);
 
 			store = session.getStore("imaps");
 			store.connect("imap.gmail.com", this.user, this.pass);
@@ -531,13 +544,10 @@ public class EmailController {
 		}
 	}
 
-	public void sendEmail(String to, String body, String subject) {
+	public synchronized void sendEmail(Address to, String body, String subject) {
 		Message msg = new MimeMessage(session);
-
 		try {
-			// msg.setFrom(new InternetAddress());
-			msg.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse(to));
+			msg.setRecipient(javax.mail.internet.MimeMessage.RecipientType.TO, to);
 			msg.setSubject(subject);
 			msg.setText(body);
 

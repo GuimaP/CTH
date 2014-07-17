@@ -1,5 +1,8 @@
 package View;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Point;
 
 
@@ -8,12 +11,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.mail.Address;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -22,6 +27,12 @@ import javax.swing.JTextField;
 
 
 
+
+
+
+import javax.swing.LayoutStyle;
+
+import Controller.EmailController;
 import Model.MensagemEmail;
 
 public class ViewEmail extends JInternalFrame{
@@ -31,13 +42,16 @@ public class ViewEmail extends JInternalFrame{
 	private JLabel lbAssunto,lbRemetente,lbTexto;
 	private MensagemEmail email;
 	
+	private EmailController emailController;
+	
 	private JPopupMenu menu;
 	
-	public ViewEmail(MensagemEmail e) {
+	public ViewEmail(MensagemEmail e,EmailController emailC) {
 		setClosable(true);
 		setIconifiable(true);
 		setMaximizable(false);
 		this.email = e;
+		this.emailController = emailC;
 		initComponents();
 		defineEvents();
 		
@@ -86,9 +100,12 @@ public class ViewEmail extends JInternalFrame{
 //		
 		
 		menu = new JPopupMenu();
-		JTextArea txt = new JTextArea();
-		txt.setSize(100,100);
-		menu.add(txt);
+		menu.setPopupSize(200, 180);
+		menu.setBackground(new Color(10,10,10,10));
+		menu.setLayout(null);
+		
+		ViewReplyEmail replyPainel = new ViewReplyEmail(new Dimension(200, 180), email, emailController,menu,this);
+		menu.add(replyPainel);
 		
 		
 		setVisible(true);
@@ -96,8 +113,7 @@ public class ViewEmail extends JInternalFrame{
 	
 	private void defineEvents(){
 		btReply.addActionListener(evt ->{
-			menu.setSize(100, 100);
-			menu.setPopupSize(100, 100);
+			
 			menu.show(btReply, 0, 0);
 		});
 
