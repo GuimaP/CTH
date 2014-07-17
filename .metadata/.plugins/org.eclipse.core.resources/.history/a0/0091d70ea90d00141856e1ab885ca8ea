@@ -439,7 +439,7 @@ public class FormCadastroCliente extends JInternalFrame {
 
         painelGeral.add(painelQ3);
 
-        lbQ4 = new JLabel("Como você soube da Karol Treinamentos?");
+        lbQ4 = new JLabel("Como vocÃª soube da Karol Treinamentos?");
         lbQ4.setLocation(40, 370);
         lbQ4.setSize(250, 20);
         painelGeral.add(lbQ4);
