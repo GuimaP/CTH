@@ -89,7 +89,9 @@ public class EmailController {
 	public String getUser() {
 		return this.user;
 	}
-
+	
+	
+	
 	public Map<String, List<MensagemEmail>> getEmails() {
 		map = new HashMap<String, List<MensagemEmail>>();
 		try {
@@ -100,6 +102,7 @@ public class EmailController {
 
 				List<MensagemEmail> lsEmails = new ArrayList<MensagemEmail>();
 				f.open(Folder.READ_ONLY);
+				
 				for (Message m : f.getMessages()) {
 					MensagemEmail ms = readEmail(m);
 					lsEmails.add(ms);
@@ -339,6 +342,7 @@ public class EmailController {
 					unread = true;
 				}
 
+				msgEmail.setDataRecebida(msg.getReceivedDate());
 				msgEmail.setTexto(abrirMensagem(msg));
 			}
 			boolean unread = !isRecente;
@@ -544,7 +548,7 @@ public class EmailController {
 		}
 	}
 
-	public synchronized void sendEmail(Address to, String body, String subject) {
+	public synchronized void sendEmail (Address to, String body, String subject) {
 		Message msg = new MimeMessage(session);
 		try {
 			msg.setRecipient(javax.mail.internet.MimeMessage.RecipientType.TO, to);

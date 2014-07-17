@@ -153,7 +153,7 @@ public class TelaLogin extends JFrame {
                           
                             minhaFrame.dispose();
                         } else {
-                            JOptionPane.showMessageDialog(null, "Usuario ou senhae incorretos");
+                            JOptionPane.showMessageDialog(null, "Usuario ou senha incorretos");
                         }
 
                     } catch (Exception e1) {

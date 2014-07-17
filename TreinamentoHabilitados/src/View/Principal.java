@@ -22,6 +22,7 @@ import java.beans.PropertyChangeListener;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -51,7 +52,17 @@ import java.util.logging.Logger;
 
 
 
+
+
+
+
+
 import javassist.expr.NewArray;
+
+
+
+
+
 
 
 
@@ -120,7 +131,17 @@ import javax.swing.tree.TreeSelectionModel;
 
 
 
+
+
+
+
+
 import antlr.TreeParserSharedInputState;
+
+
+
+
+
 
 
 
@@ -142,6 +163,11 @@ import antlr.TreeParserSharedInputState;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.log.SysoCounter;
 import com.sun.media.rtsp.protocol.PauseMessage;
+
+
+
+
+
 
 
 
@@ -194,6 +220,8 @@ public class Principal extends JFrame {
 	private boolean isPainelEmailShow = false;
 	private MensagemEmail mensagem;
 	
+	private Map<String,List<MensagemEmail>> arquivosEmail;
+	
 	private Thread gerenciaEmal;
 	private final int WIDTH_TAMANHO = 301;
 	
@@ -206,11 +234,11 @@ public class Principal extends JFrame {
 		try {
 			minhaFrame = this;
 			UsuarioEmail user;
-			File fileEmailsEmails = new File(getClass().getResource(
+			File fileConfigEmail = new File(getClass().getResource(
 					"/Resources/FilesConfig")
 					+ "/email-" + usuario.getUsuario() + ".ser");
-			if (fileEmailsEmails.exists()) {
-				FileInputStream input = new FileInputStream(fileEmailsEmails);
+			if (fileConfigEmail.exists()) {
+				FileInputStream input = new FileInputStream(fileConfigEmail);
 				ObjectInputStream obj = new ObjectInputStream(input);
 				user = (UsuarioEmail) obj.readObject();
 				obj.close();
@@ -230,8 +258,10 @@ public class Principal extends JFrame {
 				os.close(); // TODO APLICAR CRIPTOGRAFIA
 
 			}
+			this.loginUser = usuario;
 			
 			inicializaComponentes();
+			
 			
 			new Thread(()->{
 				this.email = new EmailController(user);
@@ -271,7 +301,7 @@ public class Principal extends JFrame {
 			}).start();
 			
 
-			this.loginUser = usuario;
+			
 			
 
 			definirEventos();
@@ -435,7 +465,7 @@ public class Principal extends JFrame {
 							while (XAtual <= XFinal) { // Enquanto o atual n
 														// chegar no final
 								try {
-									System.out.println(posXButton+"\n"+XAtual + "\n ---");
+									
 									XAtual++;
 									posXButton++;
 
@@ -459,12 +489,7 @@ public class Principal extends JFrame {
 					t.start();
 					
 				} else { // FECHANDO
-//					jtreeAtalhos.clearSelection();
-//					sp.removeAll();
-//					painelEmail.removeAll();
-//					barraLateral.remove(painelEmail);
-//					btAbrirMenuLateral.setLocation(btAbrirMenuLateral.getX() - WIDTH_TAMANHO, btAbrirMenuLateral.getY());
-//					barraLateral.setSize(barraLateral.getWidth() -WIDTH_TAMANHO, barraLateral.getHeight()); //Diminuo o mesmo tamanho
+
 					barraLateral.remove(painelEmail);
 					barraLateral.revalidate();
 					
@@ -473,20 +498,7 @@ public class Principal extends JFrame {
 
 						@Override
 						public void run() {
-//							int XAtual = sp.getX(); // Local atual do view
-//							int XFinal = -(barraLateral.getWidth()); // Local
-//																		// atual
-//																		// do
-//																		// Container
-//																		// Barra
-//							int posXButton = btAbrirMenuLateral.getX(); // Pego
-//																		// a
-//																		// posição
-//																		// do
-//																		// button
-//																		// para
-//																		// poder
-//																		// move-lo
+
 							int XAtual = sp.getX(); // Local atual do view
 							int XFinal = -(barraLateral.getWidth()); // O Destino final que deve estar.
 							int posXButton = barraLateral.getWidth();
@@ -525,22 +537,9 @@ public class Principal extends JFrame {
 			@Override
 			public void valueChanged(TreeSelectionEvent evt) {
 				System.out.println(evt.getNewLeadSelectionPath());
-//				final int WIDTH_TAMANHO = 300;
-				if ("[Inicio, E-mail, INBOX]".equalsIgnoreCase(evt
+				if ("[Inicio, E-mail, INBOX]".equalsIgnoreCase(evt //Testa se é pasta INBOX 
 						.getNewLeadSelectionPath().toString())) {
-					// java.awt.Dimension d = barraLateral.getSize();
-					// Point p = barraLateral.getLocation();
-					// sp.setSize(d.width+100, d.height);
-					// sp.setLocation(p.x+100,p.y);
-					// barraLateral.setLocation(p.x+100, p.y);
-					
-					
-					
-					
-					
 
-//					painelEmail.removeAll();
-//					painelEmail.setLayout(new GridLayout(1, 1));
 
 					String[] itens = evt.getNewLeadSelectionPath().toString()
 							.split(",");
@@ -549,23 +548,79 @@ public class Principal extends JFrame {
 					nameFolder = nameFolder.replace(" ", "");
 					final String name = nameFolder;
 					System.out.println(nameFolder);
+					Map<String, List<MensagemEmail>>map;
 					List<String> ls = new ArrayList<String>();
+					System.out.println(getClass().getResource("/Resources/Config").getPath()+"/"+loginUser.getUsuario()+"-emails.ser");
+					
+					File arqEmail = new File(getClass().getResource("/Resources/Config").getPath()+"/"+loginUser.getUsuario()+"-emails.ser");
+					if(arqEmail.exists()){ //Verifica se ja existe um arquivo no diretorio com os itens do email
+						FileInputStream input;
+						
+						System.out.println("pegou o bang serializado");
+						
+						try {
+							input = new FileInputStream(arqEmail); 
+							ObjectInputStream obj = new ObjectInputStream(input);
+							map = (Map<String,List<MensagemEmail>>) obj.readObject(); //Se existir eu carrego para a memoria
+							arquivosEmail = map;
+							List<MensagemEmail>lsEmails = map.get(nameFolder);
+							for(int i = lsEmails.size()-1; i >= 0;i--){ //Montando a vizualização dos itens de Email
+								MensagemEmail e = lsEmails.get(i);
+								String from = "";
+								String assunto = e.getSubject();
+								String vizualizacao;
+								for(Address a : e.getFrom()){
+									from +=a.toString()+",";
+								}
+
+								
+								
+//								String dataRecebida = new SimpleDateFormat(
+//										"dd/MM/yyyy -  hh:mm").format(new java.util.Date(System.));
+								if (e.isUnread()) {
+									vizualizacao = "<html><b>De: " + from + "  - Assunto: "
+											+ assunto + " - "// + dataRecebida
+											+ "</b></html>";
+								} else {
+									vizualizacao = "De: " + from + "  - Assunto: " + assunto
+											+ " - ";// + dataRecebida;
+								}
+								ls.add(vizualizacao);
+							}
+						} catch (IOException | ClassNotFoundException e) {
+							
+							e.printStackTrace();
+						}
+						jTableEmails.setModel(new ModelTableEmail(ls));
+//						 
+					}
+					
 					new Thread(() ->{
 						boolean sucess = false;
 						List<String>temp = new ArrayList<String>();
-						while(!sucess){
+//						while(!sucess){
 							try{
 							temp = email.listarViewEmails(name);
+							
 							sucess = true;
 							}catch(Exception e){System.out.println("erro,trying again");}
-						}
-						barraLateral.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-						jtreeAtalhos.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-						
-						
-						jtreeAtalhos.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-						barraLateral.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+//						}
+							
 						jTableEmails.setModel(new ModelTableEmail(temp));
+						Map<String,List<MensagemEmail>> maps = email.getEmails();
+						arquivosEmail = maps;
+						FileOutputStream ou;
+						try {
+							ou = new FileOutputStream(arqEmail); //e então subistituo o arquivo com o atual
+					
+						ObjectOutputStream os = new ObjectOutputStream(ou);
+						os.writeObject(maps);
+						os.flush();
+						os.close(); // TODO APLICAR CRIPTOGRAFIA
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						
 					}).start();
 					
@@ -674,15 +729,20 @@ public class Principal extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
 				if(e.getClickCount() == 2){
+					try{
 					int index = jTableEmails.getSelectedRow();
 					System.out.println("INDEX PRINCIPAL - "+index);
 					index = ((ModelTableEmail)jTableEmails.getModel()).getIdEmail(index);
 					System.out.println("INDEX PELA TABLE -" + index);
-					jTableEmails.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-					mensagem = email.getEmail("INBOX", (index*-1));
+					arquivosEmail = email.getEmails();
+					mensagem = (arquivosEmail.get("INBOX")).get(index);
+//					mensagem = email.getEmail("INBOX", (index*-1));
 					((ModelTableEmail)jTableEmails.getModel()).marcaComoLida(jTableEmails.getSelectedRow()); //Marco como lida visualmente, enquanto a thread faz isso lá no servidor
 					getContentPane().add(new ViewEmail(mensagem,email));
 					System.out.println("cliq");
+					}catch(Exception exc){
+						
+					}
 				
 				}
 			}
@@ -807,7 +867,8 @@ public class Principal extends JFrame {
 					System.out.println(emailsNaCaixal+"/"+lsEmailsAtualizada.size());
 					if (lsTemp.size() > emailsNaCaixal) {	//Se houver um email novo
 						lsEmailsAtualizada = email.listarViewEmails("INBOX"); // e Carrego os e-mails na caixa principal
-						jtable.setModel(new ModelTableEmail(lsEmailsAtualizada)); // e atualizo a minha lista
+						jtable.setModel(new ModelTableEmail(lsEmailsAtualizada)); // e atualizo a minha lista]
+						arquivosEmail = email.getEmails();
 					}
 			
 					emailsNaCaixal  = lsTemp.size();

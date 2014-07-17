@@ -12,7 +12,7 @@ import javax.persistence.Table;
 public class Login implements Serializable{
 
 	@Id
-	private String usuario;
+	private String usuario= "";
 	
 	@Column(nullable=false)
 	private String senha;

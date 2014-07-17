@@ -27,7 +27,13 @@ public class ViewReplyEmail  extends JPanel{
 	private JPopupMenu menu;
 	private JInternalFrame jInternal;
 	
-	public ViewReplyEmail(Dimension dimension,MensagemEmail msg,EmailController emailC,JPopupMenu popMenu,JInternalFrame internal) {
+//	public ViewReplyEmail(Dimension dimension,MensagemEmail msg,EmailController emailC,JPopupMenu popMenu,JInternalFrame internal) {
+//	
+//	}
+	
+	public ViewReplyEmail(Dimension dimension, MensagemEmail msg,
+			EmailController emailC, JPopupMenu popMenu,
+			JInternalFrame internal) {
 		this.width = (int) dimension.getWidth();
 		this.heigth = (int) dimension.getHeight();
 		this.email =msg;
@@ -38,6 +44,7 @@ public class ViewReplyEmail  extends JPanel{
 		defineEvents();
 		setVisible(true);
 	}
+
 	private void initComponents() {
 		setSize(width,heigth);
 		setLayout(null);
@@ -64,8 +71,9 @@ public class ViewReplyEmail  extends JPanel{
 		btEnviar.addActionListener(e ->{
 			String texto = txtMsg.getText();
 			Address to = email.getFrom().get(0);
+			
 			String subject = "RE: "+email.getSubject();
-			this.emailController.sendEmail(to, texto, subject);
+			emailController.sendEmail(to, texto, subject);
 			jInternal.dispose();
 			menu.hide();
 			menu.setVisible(false);

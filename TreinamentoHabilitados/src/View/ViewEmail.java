@@ -43,13 +43,14 @@ public class ViewEmail extends JInternalFrame{
 	private MensagemEmail email;
 	
 	private EmailController emailController;
-	
+	private JInternalFrame myInternal;
 	private JPopupMenu menu;
 	
 	public ViewEmail(MensagemEmail e,EmailController emailC) {
 		setClosable(true);
 		setIconifiable(true);
 		setMaximizable(false);
+		this.myInternal = this;
 		this.email = e;
 		this.emailController = emailC;
 		initComponents();
@@ -100,11 +101,12 @@ public class ViewEmail extends JInternalFrame{
 //		
 		
 		menu = new JPopupMenu();
-		menu.setPopupSize(200, 180);
+		menu.setPopupSize(200, 200);
 		menu.setBackground(new Color(10,10,10,10));
 		menu.setLayout(null);
 		
-		ViewReplyEmail replyPainel = new ViewReplyEmail(new Dimension(200, 180), email, emailController,menu,this);
+		Dimension d = new Dimension(200, 200);
+		ViewReplyEmail replyPainel = new ViewReplyEmail(d, email, emailController, menu, myInternal);
 		menu.add(replyPainel);
 		
 		
