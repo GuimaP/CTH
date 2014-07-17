@@ -737,7 +737,7 @@ public class Principal extends JFrame {
 					System.out.println("INDEX PELA TABLE -" + index);
 //					arquivosEmail = email.getEmails();
 					List<MensagemEmail>l = arquivosEmail.get("INBOX");
-					mensagem = l.get(index); //TODO
+					mensagem = l.get(index-1); //TODO
 
 //					mensagem = email.getEmail("INBOX", (index*-1));
 					
@@ -745,7 +745,7 @@ public class Principal extends JFrame {
 					getContentPane().add(new ViewEmail(mensagem,email));
 					System.out.println("cliq");
 					}catch(Exception exc){
-						
+						exc.printStackTrace();
 					}
 				
 				}
