@@ -48,8 +48,9 @@ public class LoginRepository {
 			
 		} catch (Exception e) {
 
-			e.printStackTrace();}
+			throw new Exception(e);
+		}
 		
-		return ls != null;
+		
 	}
 }

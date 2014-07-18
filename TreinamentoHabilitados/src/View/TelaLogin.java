@@ -157,7 +157,9 @@ public class TelaLogin extends JFrame {
                         }
 
                     } catch (Exception e1) {
-                        e1.printStackTrace();
+                    	JOptionPane.showMessageDialog(null, "Houve um falha ao conectar com o banco! Descrição do erro "
+                    			+ "\n''"+e1.getMessage()+"''");
+                    	e1.printStackTrace();
 
                     }
                 }

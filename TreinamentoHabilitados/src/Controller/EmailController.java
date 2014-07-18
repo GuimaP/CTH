@@ -82,7 +82,7 @@ public class EmailController {
 		this.tentativas = 0;
 		
 		authenticOnEmail();
-		getEmails();
+//		getEmails();
 		// PEGAR DE UM ARQUIVO CRIPTOGRAFADO E SERIALIZADO.
 	}
 
@@ -101,6 +101,7 @@ public class EmailController {
 				System.out.println(f.getName());
 
 				List<MensagemEmail> lsEmails = new ArrayList<MensagemEmail>();
+				
 				f.open(Folder.READ_ONLY);
 				
 				for (Message m : f.getMessages()) {
@@ -111,7 +112,7 @@ public class EmailController {
 				map.put(f.getName(), lsEmails);
 			}
 		} catch (MessagingException e) {
-
+			System.out.println(e.getMessage());
 		}
 		return map;
 
