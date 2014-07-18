@@ -78,6 +78,7 @@ import com.itextpdf.text.log.SysoCounter;
 import com.sun.media.rtsp.protocol.PauseMessage;
 
 import Controller.ConfigController;
+import Controller.CriptografiaConfigEmail;
 import Controller.EmailController;
 import Model.Login;
 import Model.MensagemEmail;
@@ -120,97 +121,103 @@ public class Principal extends JFrame {
 	private JButton btRefreshItens;
 
 	protected static boolean isFrameInstrutorOpen, isFrameClienteOpen,
-			isFrameCadastroPacote, isFrameAgendamento, isFrameCarro;
+			isFrameCadastroPacote, isFrameAgendamento, isFrameCarro,isViewConfiguraEmail;
 
 	public Principal(Login usuario) {
 		try {
+		
 			minhaFrame = this;
-			UsuarioEmail user;
+			inicializaComponentes();
+			
+			
+			UsuarioEmail user = null;
+			
 			File fileConfigEmail = new File(getClass().getResource(
-					"/Resources/FilesConfig")
-					+ "/email-" + usuario.getUsuario() + ".ser");
-			if (fileConfigEmail.exists()) {
-				FileInputStream input = new FileInputStream(fileConfigEmail);
-				ObjectInputStream obj = new ObjectInputStream(input);
-				user = (UsuarioEmail) obj.readObject();
-				obj.close();
-			} else {
-				user = new UsuarioEmail();
-				user.setHost("smtp.gmail.com");
-				user.setHostReceive("imap.gmail.com");
-				user.setPort(465);
-				user.setSsl(true);
-				user.setUser("guima.teste.p@gmail.com");
-				user.setPass("guimateste");
+					"/Resources/FilesConfig").getPath());
+			String nameFolder = usuario.getUsuario()+"@emailConfig";
+			 user = new CriptografiaConfigEmail().unCrypt(fileConfigEmail, nameFolder);
+			if (user != null) {
+				
+				
+				JButton bt = btRefreshItens;/*
+				 * Crio um sombra da instancia para
+				 * manipular na tread
+				 */
+				UsuarioEmail u = user;
+				
+				new Thread( //Uma thread para ser feita a autentiicação do e-mail para n atrapalhar o processo central do app
+						() -> {
 
-				FileOutputStream ou = new FileOutputStream("te.ser");
-				ObjectOutputStream os = new ObjectOutputStream(ou);
-				os.writeObject(user);
-				os.flush();
-				os.close(); // TODO APLICAR CRIPTOGRAFIA
+							bt.setVisible(true);
 
+							this.email = new EmailController(u);
+
+							DefaultMutableTreeNode root = new DefaultMutableTreeNode(
+									"Inicio");
+
+							DefaultMutableTreeNode favItens = new DefaultMutableTreeNode(
+									"Favoritos");
+							root.add(favItens);
+
+							DefaultMutableTreeNode tarefaItens = new DefaultMutableTreeNode(
+									"Tarefas");
+							root.add(tarefaItens);
+
+							DefaultMutableTreeNode dmEmail = new DefaultMutableTreeNode(
+									"E-mail"); //Recrio todo a JTree com os itens
+
+							List<String> folders = email.getListagemFolders();
+							folders.forEach(fo -> {
+								DefaultMutableTreeNode dm = new DefaultMutableTreeNode(
+										fo);
+								dmEmail.add(dm);
+							});
+
+							root.add(dmEmail);
+							DefaultTreeModel model = new DefaultTreeModel(root);
+
+//							this.arquivosEmail = email.getEmails();
+							jtreeAtalhos.setModel(model);
+
+							bt.setVisible(false);
+							minhaFrame.revalidate(); //Atualizo a minha frame
+							minhaFrame.repaint();
+							System.out.println("repaint na tela");
+							gerenciaEmal = new Thread(new CheckNewMessages(
+									jTableEmails, jtreeAtalhos, painelEmail, email));
+							gerenciaEmal.setDaemon(true);
+							gerenciaEmal.start();
+						}).start();
+				
 			}
+//			} else {
+//				user = new UsuarioEmail();
+//				user.setHost("smtp.gmail.com");
+//				user.setHostReceive("imap.gmail.com");
+//				user.setPort(465);
+//				user.setSsl(true);
+//				user.setUser("guima.teste.p@gmail.com");
+//				user.setPass("guimateste");
+//
+//				FileOutputStream ou = new FileOutputStream("te.ser");
+//				ObjectOutputStream os = new ObjectOutputStream(ou);
+//				os.writeObject(user);
+//				os.flush();
+//				os.close(); // TODO APLICAR CRIPTOGRAFIA
+//
+//			}
 			this.loginUser = usuario;
 
-			inicializaComponentes();
+			
 
-			JButton bt = btRefreshItens;/*
-										 * Crio um sombra da instancia para
-										 * manipular na tread
-										 */
-			new Thread( //Uma thread para ser feita a autentiicação do e-mail para n atrapalhar o processo central do app
-					() -> {
-
-						bt.setVisible(true);
-
-						this.email = new EmailController(user);
-
-						DefaultMutableTreeNode root = new DefaultMutableTreeNode(
-								"Inicio");
-
-						DefaultMutableTreeNode favItens = new DefaultMutableTreeNode(
-								"Favoritos");
-						root.add(favItens);
-
-						DefaultMutableTreeNode tarefaItens = new DefaultMutableTreeNode(
-								"Tarefas");
-						root.add(tarefaItens);
-
-						DefaultMutableTreeNode dmEmail = new DefaultMutableTreeNode(
-								"E-mail"); //Recrio todo a JTree com os itens
-
-						List<String> folders = email.getListagemFolders();
-						folders.forEach(fo -> {
-							DefaultMutableTreeNode dm = new DefaultMutableTreeNode(
-									fo);
-							dmEmail.add(dm);
-						});
-
-						root.add(dmEmail);
-						DefaultTreeModel model = new DefaultTreeModel(root);
-
-//						this.arquivosEmail = email.getEmails();
-						jtreeAtalhos.setModel(model);
-
-						bt.setVisible(false);
-						minhaFrame.revalidate(); //Atualizo a minha frame
-						minhaFrame.repaint();
-						System.out.println("repaint na tela");
-						gerenciaEmal = new Thread(new CheckNewMessages(
-								jTableEmails, jtreeAtalhos, painelEmail, email));
-						gerenciaEmal.setDaemon(true);
-						gerenciaEmal.start();
-					}).start();
+		
 
 			definirEventos();
 
-			System.out.println("iniciando a thread");
-
 			sp.setViewportView(jtreeAtalhos);
 
-			System.out.println("ao que parece iniciou a thread");
 
-			isFrameClienteOpen = isFrameInstrutorOpen = isFrameCadastroPacote = isFrameAgendamento = isFrameCarro = false;
+			isFrameClienteOpen = isFrameInstrutorOpen = isFrameCadastroPacote = isFrameAgendamento = isFrameCarro = isViewConfiguraEmail = false;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -331,6 +338,7 @@ public class Principal extends JFrame {
 				(btAbrirMenuLateral.getX() + btAbrirMenuLateral.getWidth()),
 				btAbrirMenuLateral.getY());
 		btRefreshItens.setToolTipText("Atualizando");
+		btRefreshItens.setVisible(false);
 		add(btRefreshItens);
 
 		setJMenuBar(menuBarra);
@@ -707,6 +715,13 @@ public class Principal extends JFrame {
 													// janela aberta
 					getContentPane().add(new FormCadastroPacote());
 				}
+			}
+		});
+		
+		itConfiguraEmail.addActionListener(e ->{
+			if(!isViewConfiguraEmail){
+				isViewConfiguraEmail= true;
+				getContentPane().add(new ViewConfigEmail(loginUser));
 			}
 		});
 

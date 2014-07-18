@@ -42,6 +42,7 @@ import javax.mail.Message;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.omg.PortableInterceptor.SUCCESSFUL;
 import org.w3c.dom.ls.LSSerializer;
 
 import Model.GroupEmails;
@@ -85,6 +86,12 @@ public class EmailController {
 		// getEmails();
 		// PEGAR DE UM ARQUIVO CRIPTOGRAFADO E SERIALIZADO.
 	}
+	
+	public EmailController() {
+	
+	}
+		
+	
 
 	public String getUser() {
 		return this.user;
@@ -568,6 +575,57 @@ public class EmailController {
 		}
 	}
 
+	/**
+	 * Testa se conseguiui logar no email
+	 * @param Usuario
+	 * @return sucesso ou não
+	 */
+	public  boolean testaAuthenticOnEmail(UsuarioEmail u) {
+
+		boolean resultado = true;
+		try {
+			
+
+			Properties prop = new Properties();
+			prop.setProperty("mail.smtp.host", u.getHost());
+			prop.setProperty("mail.smtp.port", String.valueOf(u.getPort()));
+			prop.put("mail.smtp.port", String.valueOf(u.getPort()));
+			prop.setProperty("mail.smtp.user", u.getUser());
+			prop.setProperty("mail.smtp.password", u.getPass());
+			if (u.isSsl()) { // Se o usuario precisar de uma conexão ssl, entao eu
+							// seto
+				prop.put("mail.smtp.socketFactory.class",
+						"javax.net.ssl.SSLSocketFactory");
+			}
+			prop.put("mail.smtp.auth", "true"); // e requer autenticação
+
+			Session se;
+			
+			se = Session.getDefaultInstance(prop,
+					new javax.mail.Authenticator() {
+						protected PasswordAuthentication getPasswordAuthentication() {
+							return new PasswordAuthentication(u.getUser(), u.getPass());
+						}
+					});
+
+			// session = Session.getDefaultInstance(prop);
+
+			Store st;
+			
+			st = se.getStore("imaps");
+			st.connect(u.getHostReceive(), u.getUser(), u.getPass());
+			
+			
+
+			System.out.println("Autenticado");
+		} catch (MessagingException e) {
+			e.printStackTrace();
+			resultado=false;
+		}
+		
+		return resultado;
+	}
+	
 	public synchronized void sendEmail(Address to, String body, String subject) {
 		Message msg = new MimeMessage(session);
 		try {
