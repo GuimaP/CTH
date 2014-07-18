@@ -47,6 +47,7 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.text.MaskFormatter;
 import javax.swing.text.TabExpander;
 
+import jmapps.rtp.PanelParticipants;
 import principal.CadastroCliente;
 import principal.VerificadorDeCpf;
 
@@ -56,9 +57,9 @@ public class FormCadastroCliente extends JInternalFrame {
             lbTelefone, lbPrimeiraHabilitacao, lbValidadeCnh, lbRegistroCnh,
             lbLogradouro, lbBairro, lbNumero, lbCep, lbRg, lbCpf, lbSexo,
             lbObserva, lbQ1, lbQ2, lbQ3, lbQ4, lbData, lbCelular, lbAluno, lbPacote, lbTipoPagamento,
-            lbParcelas, lbPagamentoInicial;
+            lbParcelas, lbPagamentoInicial, lbPagPendente;
     private JTextField tfNome, tfEmail, tfProfissao, tfRegistroCnh,
-            tfLogradouro, tfBairro, tfRg, tfQuestao1, tfNumero, tfBuscaCliente,
+            tfLogradouro, tfBairro, tfRg, tfQuestao1, tfNumero, tfBuscaPacote,
             tfParcelas;
     private JFormattedTextField tfData, tfNascimento, tfCep, tfCpf, tfCelular,
             tfTelefone, tfValidadeCnh, tfPrimeiraHabilitacao, tfPagamentoInicial;
@@ -94,7 +95,7 @@ public class FormCadastroCliente extends JInternalFrame {
     Cnh cnh = new Cnh();
     CadastroCliente cadastro = new CadastroCliente();
 
-    private JPanel panelCliente, painelGeral, painelTodos, painelBusca;
+    private JPanel panelCliente, painelGeral, painelTodos, painelBusca, painelPagamento;
     
     private boolean aberto = false;
 
@@ -163,8 +164,6 @@ public class FormCadastroCliente extends JInternalFrame {
     	painelTodos.setLayout(null);
     	painelBusca = new JPanel();
     	painelBusca.setLayout(null);
-    	
-    	
 
         panelCliente = new JPanel();
         Border border = BorderFactory.createTitledBorder("Cliente");
@@ -476,9 +475,9 @@ public class FormCadastroCliente extends JInternalFrame {
         btExcluir.setSize(180, 35);
         painelTodos.add(btExcluir);
 
-        tfBuscaCliente = new JTextField();
-        tfBuscaCliente.setBounds(430, 50, 250, 25);
-        painelTodos.add(tfBuscaCliente);
+        tfBuscaPacote = new JTextField();
+        tfBuscaPacote.setBounds(430, 50, 250, 25);
+        painelTodos.add(tfBuscaPacote);
 
         btBuscar = new JButton("Buscar");
         btBuscar.setLocation(690, 50);
@@ -488,59 +487,59 @@ public class FormCadastroCliente extends JInternalFrame {
 		// Text
 
         // Table
-        lbAluno = new JLabel("Aluno");
-        lbAluno.setSize(100, 20);
-        lbAluno.setLocation(430, 30);
-        painelTodos.add(lbAluno);
-        
         lbPacote = new JLabel("Pacote");
         lbPacote.setSize(100, 20);
-        lbPacote.setLocation(430, 300);
+        lbPacote.setLocation(430, 30);
         painelTodos.add(lbPacote);
+       
         
-        table = new JTable(new ModeloTableCliente(listCliente));
-        scTable = new JScrollPane(table);
-        scTable.setSize(350, 200);
-        scTable.setLocation(430, 80);
-        painelTodos.add(scTable);
-        
-        tablePacote = new JTable(new ModeloTablePacote(listPacote));
-        scrollPacote = new JScrollPane(tablePacote);
-        scrollPacote.setSize(350, 150);
-        scrollPacote.setLocation(430, 320);
+        table = new JTable(new ModeloTablePacote(listPacote));
+        scrollPacote = new JScrollPane(table);
+        scrollPacote.setSize(340, 157);
+        scrollPacote.setLocation(430, 80);
         painelTodos.add(scrollPacote);
         
         //Dados do pagamento
+        
+        painelPagamento = new JPanel();
+        Border borderPag = BorderFactory.createTitledBorder("Dados do Pagamento");
+        painelPagamento.setBorder(borderPag);
+        painelPagamento.setLayout(new GridLayout(7, 2));
+        painelPagamento.setBounds(425, 250, 350, 220);
+        painelTodos.add(painelPagamento);
+        
+        
+        
         lbTipoPagamento = new JLabel("Tipo de pagamento");
         lbTipoPagamento.setSize(200, 20);
         lbTipoPagamento.setLocation(430, 480);
-        painelTodos.add(lbTipoPagamento);
+        painelPagamento.add(lbTipoPagamento);
         
         jcPagamento = new JComboBox<String>(pagamento);
         jcPagamento.setLocation(650, 480);
         jcPagamento.setSize(120, 30);
         jcPagamento.setSelectedIndex(-1);
-        painelTodos.add(jcPagamento);
+        painelPagamento.add(jcPagamento);
         
         lbParcelas = new JLabel("Parcelas");
         lbParcelas.setSize(100,20);
         lbParcelas.setLocation(430, 510);
-        painelTodos.add(lbParcelas);
+        painelPagamento.add(lbParcelas);
         
         tfParcelas = new JTextField();
         tfParcelas.setSize(120, 30);
         tfParcelas.setLocation(650, 510);
-        painelTodos.add(tfParcelas);
+        painelPagamento.add(tfParcelas);
         
         lbPagamentoInicial = new JLabel("Valor Pago");
         lbPagamentoInicial.setSize(200, 20);
         lbPagamentoInicial.setLocation(430, 540);
-        painelTodos.add(lbPagamentoInicial);
+        painelPagamento.add(lbPagamentoInicial);
         
         tfPagamentoInicial = new JFormattedTextField();
         tfPagamentoInicial.setSize(120, 30);
         tfPagamentoInicial.setLocation(650, 540);
-        painelTodos.add(tfPagamentoInicial);
+        painelPagamento.add(tfPagamentoInicial);
         
         
         abas = new JTabbedPane();

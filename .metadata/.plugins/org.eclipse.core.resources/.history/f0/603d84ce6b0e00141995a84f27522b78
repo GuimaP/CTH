@@ -5,11 +5,14 @@ import Model.Cliente;
 import Model.Cnh;
 import Model.Endereco;
 import Model.ModeloTableCliente;
+import Model.ModeloTablePacote;
+import Model.Pacote;
 import Model.Repository.ConnectionFactoryRepository;
 import Model.Repository.Repository;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -34,6 +37,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -41,6 +45,7 @@ import javax.swing.border.Border;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.text.MaskFormatter;
+import javax.swing.text.TabExpander;
 
 import principal.CadastroCliente;
 import principal.VerificadorDeCpf;
@@ -50,24 +55,36 @@ public class FormCadastroCliente extends JInternalFrame {
     private JLabel lbNome, lbEmail, lbEscolaridade, lbProfissao, lbNascimento,
             lbTelefone, lbPrimeiraHabilitacao, lbValidadeCnh, lbRegistroCnh,
             lbLogradouro, lbBairro, lbNumero, lbCep, lbRg, lbCpf, lbSexo,
-            lbObserva, lbQ1, lbQ2, lbQ3, lbQ4, lbData, lbCelular;
+            lbObserva, lbQ1, lbQ2, lbQ3, lbQ4, lbData, lbCelular, lbAluno, lbPacote, lbTipoPagamento,
+            lbParcelas, lbPagamentoInicial;
     private JTextField tfNome, tfEmail, tfProfissao, tfRegistroCnh,
-            tfLogradouro, tfBairro, tfRg, tfQuestao1, tfNumero, tfBuscaCliente;
+            tfLogradouro, tfBairro, tfRg, tfQuestao1, tfNumero, tfBuscaCliente,
+            tfParcelas;
     private JFormattedTextField tfData, tfNascimento, tfCep, tfCpf, tfCelular,
-            tfTelefone, tfValidadeCnh, tfPrimeiraHabilitacao;
+            tfTelefone, tfValidadeCnh, tfPrimeiraHabilitacao, tfPagamentoInicial;
+    
     private JButton btSalvar, btExcluir, btBuscar;
+    
+    private JTabbedPane abas;
+    
+    
+    
     private JTextArea observa;
-    private JScrollPane scroll, scTable;
+    private JScrollPane scroll, scTable, scrollPacote;
     private ButtonGroup gQ2, gQ3;
     private JRadioButton jrQ2Yes, jrQ2No, jrQ3Yes, jrQ3No;
     private String[] sexo = {"M", "F"};
     private String[] escolaridade = {"Superior", "Tecnico", "MÃ©dio",
         "Fundamental"};
+    
+    private String[] pagamento = {"Dinheiro", "Débito", "Crédito", "Cheque"};
+    
     private String[] pesquisa = {"Internet", "Indicaï¿½ï¿½o", "Outros"};
-    private JComboBox<String> jcSexo, jcEscolaridade, jcPesquisa;
-    private JTable table;
+    private JComboBox<String> jcSexo, jcEscolaridade, jcPesquisa, jcPagamento;
+    private JTable table, tablePacote;
     private String data;
     private ArrayList<Cliente> listCliente = new ArrayList<Cliente>();
+    private ArrayList<Pacote> listPacote = new ArrayList<Pacote>();
     private MaskFormatter dataMask, dataMaskNascimento, maskCep, maskNumero,
             maskCpf, maskTelefone, maskCelular, maskValidadeCnh,
             maskPrimeiraHabilitacao;
@@ -77,7 +94,9 @@ public class FormCadastroCliente extends JInternalFrame {
     Cnh cnh = new Cnh();
     CadastroCliente cadastro = new CadastroCliente();
 
-    private JPanel panelCliente, painelGeral;
+    private JPanel panelCliente, painelGeral, painelTodos, painelBusca;
+    
+    private boolean aberto = false;
 
     public FormCadastroCliente() {
 
@@ -100,7 +119,6 @@ public class FormCadastroCliente extends JInternalFrame {
         }
 
     }
-
     public void limparCampos() {
         tfNome.setText("");
         tfData.setValue(dataMask);
@@ -141,6 +159,12 @@ public class FormCadastroCliente extends JInternalFrame {
     }
 
     public void inicializaComponentes() throws ParseException {
+    	painelTodos = new JPanel();
+    	painelTodos.setLayout(null);
+    	painelBusca = new JPanel();
+    	painelBusca.setLayout(null);
+    	
+    	
 
         panelCliente = new JPanel();
         Border border = BorderFactory.createTitledBorder("Cliente");
@@ -305,7 +329,7 @@ public class FormCadastroCliente extends JInternalFrame {
         panelCliente.add(jcEscolaridade);
 
 		//-----
-        add(panelCliente);
+        painelTodos.add(panelCliente);
 
 		//y = 240 ~ 250
         painelGeral = new JPanel();
@@ -415,7 +439,7 @@ public class FormCadastroCliente extends JInternalFrame {
 
         painelGeral.add(painelQ3);
 
-        lbQ4 = new JLabel("Como vocÃª soube da Karol Treinamentos?");
+        lbQ4 = new JLabel("Como você soube da Karol Treinamentos?");
         lbQ4.setLocation(40, 370);
         lbQ4.setSize(250, 20);
         painelGeral.add(lbQ4);
@@ -439,39 +463,96 @@ public class FormCadastroCliente extends JInternalFrame {
         scroll.setSize(300, 80);
         painelGeral.add(scroll);
 
-        add(painelGeral);
+        painelTodos.add(painelGeral);
 
         // Botï¿½o
         btSalvar = new JButton("Salvar");
         btSalvar.setLocation(10, 570);
         btSalvar.setSize(180, 35);
-        getContentPane().add(btSalvar);
+        painelTodos.add(btSalvar);
 
         btExcluir = new JButton("Excluir");
         btExcluir.setLocation(215, 570);
         btExcluir.setSize(180, 35);
-        getContentPane().add(btExcluir);
+        painelTodos.add(btExcluir);
 
         tfBuscaCliente = new JTextField();
         tfBuscaCliente.setBounds(430, 50, 250, 25);
-        add(tfBuscaCliente);
+        painelTodos.add(tfBuscaCliente);
 
         btBuscar = new JButton("Buscar");
         btBuscar.setLocation(690, 50);
         btBuscar.setSize(80, 25);
-        getContentPane().add(btBuscar);
+        painelTodos.add(btBuscar);
+       
 		// Text
 
         // Table
+        lbAluno = new JLabel("Aluno");
+        lbAluno.setSize(100, 20);
+        lbAluno.setLocation(430, 30);
+        painelTodos.add(lbAluno);
+        
+        lbPacote = new JLabel("Pacote");
+        lbPacote.setSize(100, 20);
+        lbPacote.setLocation(430, 300);
+        painelTodos.add(lbPacote);
+        
         table = new JTable(new ModeloTableCliente(listCliente));
         scTable = new JScrollPane(table);
-        scTable.setSize(350, 480);
+        scTable.setSize(350, 200);
         scTable.setLocation(430, 80);
-        getContentPane().add(scTable);
+        painelTodos.add(scTable);
+        
+        tablePacote = new JTable(new ModeloTablePacote(listPacote));
+        scrollPacote = new JScrollPane(tablePacote);
+        scrollPacote.setSize(350, 150);
+        scrollPacote.setLocation(430, 320);
+        painelTodos.add(scrollPacote);
+        
+        //Dados do pagamento
+        lbTipoPagamento = new JLabel("Tipo de pagamento");
+        lbTipoPagamento.setSize(200, 20);
+        lbTipoPagamento.setLocation(430, 480);
+        painelTodos.add(lbTipoPagamento);
+        
+        jcPagamento = new JComboBox<String>(pagamento);
+        jcPagamento.setLocation(650, 480);
+        jcPagamento.setSize(120, 30);
+        jcPagamento.setSelectedIndex(-1);
+        painelTodos.add(jcPagamento);
+        
+        lbParcelas = new JLabel("Parcelas");
+        lbParcelas.setSize(100,20);
+        lbParcelas.setLocation(430, 510);
+        painelTodos.add(lbParcelas);
+        
+        tfParcelas = new JTextField();
+        tfParcelas.setSize(120, 30);
+        tfParcelas.setLocation(650, 510);
+        painelTodos.add(tfParcelas);
+        
+        lbPagamentoInicial = new JLabel("Valor Pago");
+        lbPagamentoInicial.setSize(200, 20);
+        lbPagamentoInicial.setLocation(430, 540);
+        painelTodos.add(lbPagamentoInicial);
+        
+        tfPagamentoInicial = new JFormattedTextField();
+        tfPagamentoInicial.setSize(120, 30);
+        tfPagamentoInicial.setLocation(650, 540);
+        painelTodos.add(tfPagamentoInicial);
+        
+        
+        abas = new JTabbedPane();
+		abas.setBounds(1, 1, 795, 635);
+		abas.addTab("Cadastro", painelTodos);
+		abas.addTab("Cliente/Pacote", painelBusca);
+		add(abas);
+        
 
         // PAINEL//
         getContentPane().setLayout(null);
-        setSize(800, 640);
+        setSize(800, 670);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);
         setClosable(true);
@@ -759,5 +840,7 @@ public class FormCadastroCliente extends JInternalFrame {
                 Principal.isFrameInstrutorOpen = false;
             }
         });
+        
+       
     }
 }
