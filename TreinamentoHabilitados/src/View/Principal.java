@@ -158,7 +158,7 @@ public class Principal extends JFrame {
 										 * Crio um sombra da instancia para
 										 * manipular na tread
 										 */
-			new Thread(
+			new Thread( //Uma thread para ser feita a autentiicação do e-mail para n atrapalhar o processo central do app
 					() -> {
 
 						bt.setVisible(true);
@@ -177,7 +177,7 @@ public class Principal extends JFrame {
 						root.add(tarefaItens);
 
 						DefaultMutableTreeNode dmEmail = new DefaultMutableTreeNode(
-								"E-mail");
+								"E-mail"); //Recrio todo a JTree com os itens
 
 						List<String> folders = email.getListagemFolders();
 						folders.forEach(fo -> {
@@ -193,7 +193,7 @@ public class Principal extends JFrame {
 						jtreeAtalhos.setModel(model);
 
 						bt.setVisible(false);
-						minhaFrame.revalidate();
+						minhaFrame.revalidate(); //Atualizo a minha frame
 						minhaFrame.repaint();
 						System.out.println("repaint na tela");
 						gerenciaEmal = new Thread(new CheckNewMessages(
@@ -226,7 +226,6 @@ public class Principal extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Dimension scrnsize = toolkit.getScreenSize();
-		setFont(ConfigController.definePrincipalFont(12f, Font.NORMAL));
 		setSize(scrnsize);
 
 		setIconImage(ConfigController.defineIcon());
@@ -247,7 +246,7 @@ public class Principal extends JFrame {
 		itAgendamento = new JMenuItem("Agendar Aula");
 		itCadastroPacote = new JMenuItem("Cadastro Pacote");
 		itCadastroCarro = new JMenuItem("Cadastro Carro");
-		itConfiguraEmail = nwe JMenuItem("Configurar E-mail");
+		itConfiguraEmail = new JMenuItem("Configurar E-mail");
 		//
 		menuArquivo.add(itCadastroCliente);
 		menuArquivo.add(itCadastroFuncionario);
@@ -275,15 +274,15 @@ public class Principal extends JFrame {
 
 		DefaultMutableTreeNode dmEmail = new DefaultMutableTreeNode("E-mail");
 
-		if (hasEmailReady) {
-			List<String> folders = email.getListagemFolders();
-			folders.forEach(fo -> {
-				DefaultMutableTreeNode dm = new DefaultMutableTreeNode(fo);
-				dmEmail.add(dm);
-			});
-
-			root.add(dmEmail);
-		}
+//		if (hasEmailReady) { 
+//			List<String> folders = email.getListagemFolders();
+//			folders.forEach(fo -> {
+//				DefaultMutableTreeNode dm = new DefaultMutableTreeNode(fo);
+//				dmEmail.add(dm);
+//			});
+//
+//			root.add(dmEmail);
+//		}
 
 		jtreeAtalhos = new JTree(root);
 		jtreeAtalhos.getSelectionModel().setSelectionMode(
@@ -345,7 +344,7 @@ public class Principal extends JFrame {
 
 		setJMenuBar(menuBarra);
 		setLocationRelativeTo(null);
-		setTitle("Karol Habilitados v 1.2.2");
+		setTitle("Karol Habilitados v 1.3.1");
 		// setResizable(false);
 		setVisible(true);
 
@@ -735,8 +734,9 @@ public class Principal extends JFrame {
 						// arquivosEmail = email.getEmails();
 						List<MensagemEmail> l = arquivosEmail.get("INBOX");
 						mensagem = l.get(index - 1); // TODO
+						
+//						 mensagem = email.getEmail("INBOX", (index*-1));
 
-						// mensagem = email.getEmail("INBOX", (index*-1));
 
 						((ModelTableEmail) jTableEmails.getModel())
 								.marcaComoLida(jTableEmails.getSelectedRow()); // Marco
@@ -752,6 +752,7 @@ public class Principal extends JFrame {
 																				// no
 																				// servidor
 						getContentPane().add(new ViewEmail(mensagem, email));
+						email.markAsSeen(index-1, "INBOX");
 						System.out.println("cliq");
 					} catch (Exception exc) {
 						exc.printStackTrace();
@@ -761,39 +762,6 @@ public class Principal extends JFrame {
 			}
 		});
 
-		this.addWindowListener(new WindowListener() {
-
-			@Override
-			public void windowOpened(WindowEvent e) {
-			}
-
-			@Override
-			public void windowClosing(WindowEvent e) {
-				System.exit(0);
-			}
-
-			@Override
-			public void windowClosed(WindowEvent e) {
-			}
-
-			@Override
-			public void windowIconified(WindowEvent e) {
-			}
-
-			@Override
-			public void windowDeiconified(WindowEvent e) {
-			}
-
-			@Override
-			public void windowActivated(WindowEvent e) {
-				painelCalendario.rederenzarTela();
-			}
-
-			@Override
-			public void windowDeactivated(WindowEvent e) {
-
-			}
-		});
 	}
 
 	class MeuModeloTree extends DefaultTreeCellRenderer {
@@ -808,8 +776,7 @@ public class Principal extends JFrame {
 											// Templates.
 											// if(value != null){
 			DefaultMutableTreeNode no = (DefaultMutableTreeNode) value;
-			// if(no.toString() != null ){
-			String texto = no.getUserObject().toString();
+			String texto = no.getUserObject().toString(); 
 			System.out.println();
 			if (texto.equals("Inicio")) {
 				ImageIcon img = new ImageIcon(Principal.class.getResource(
@@ -850,7 +817,7 @@ public class Principal extends JFrame {
 	}
 
 	class CheckNewMessages implements Runnable {
-		private EmailController controllerEmail;
+
 		private JTable jtable;
 		private EmailController email;
 		private JTree jtree;
@@ -916,8 +883,8 @@ public class Principal extends JFrame {
 							os.flush();
 							os.close(); // TODO APLICAR CRIPTOGRAFIA
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							
+							e.printStackTrace(); //TODO APLICAR LOG AQUI
 						}
 
 					}

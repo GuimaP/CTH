@@ -69,8 +69,8 @@ public class EmailController {
 
 	private Map<String, List<MensagemEmail>> map;
 
-	int tentativas; //contador de tentativas 
-	
+	int tentativas; // contador de tentativas
+
 	public EmailController(UsuarioEmail e) {
 		this.host = e.getHost();
 		this.port = e.getPort();
@@ -80,18 +80,16 @@ public class EmailController {
 		this.pass = e.getPass();
 
 		this.tentativas = 0;
-		
+
 		authenticOnEmail();
-//		getEmails();
+		// getEmails();
 		// PEGAR DE UM ARQUIVO CRIPTOGRAFADO E SERIALIZADO.
 	}
 
 	public String getUser() {
 		return this.user;
 	}
-	
-	
-	
+
 	public Map<String, List<MensagemEmail>> getEmails() {
 		map = new HashMap<String, List<MensagemEmail>>();
 		try {
@@ -101,9 +99,9 @@ public class EmailController {
 				System.out.println(f.getName());
 
 				List<MensagemEmail> lsEmails = new ArrayList<MensagemEmail>();
-				
+
 				f.open(Folder.READ_ONLY);
-				
+
 				for (Message m : f.getMessages()) {
 					MensagemEmail ms = readEmail(m);
 					lsEmails.add(ms);
@@ -135,27 +133,28 @@ public class EmailController {
 	}
 
 	public List<String> getListagemFolders() {
-		
+
 		List<String> listFolders = new ArrayList<String>();
 		try {
 			if (!store.isConnected()) {
 				store.connect(this.hostRecieve, this.user, this.pass);
-				if(tentativas > 10){ //se tentou 10 vezes, então eu paro de tentar conectar
+				if (tentativas > 10) { // se tentou 10 vezes, então eu paro de
+										// tentar conectar
 					return null;
 				}
 				tentativas++;
-				return getListagemFolders(); //e chamo o metodo de novo
-			}else {
+				return getListagemFolders(); // e chamo o metodo de novo
+			} else {
 				tentativas = 0;
-			Store store = session.getStore("imaps");
-			store.connect(this.hostRecieve, this.user, this.pass);
-			Folder[] listagemFolders = store.getDefaultFolder().list();
+				Store store = session.getStore("imaps");
+				store.connect(this.hostRecieve, this.user, this.pass);
+				Folder[] listagemFolders = store.getDefaultFolder().list();
 
-			for (Folder f : listagemFolders) {
-				f.open(Folder.READ_ONLY);
-				String name = f.getName();
-				listFolders.add(name);
-			}
+				for (Folder f : listagemFolders) {
+					f.open(Folder.READ_ONLY);
+					String name = f.getName();
+					listFolders.add(name);
+				}
 			}
 
 		} catch (Exception e) {
@@ -175,63 +174,67 @@ public class EmailController {
 	 */
 	public synchronized List<String> listarViewEmails(String name) {
 		List<String> ls = new ArrayList<String>();
-		
+
 		try {
-			if (!store.isConnected()) { //Se estiver desconectador por conta de muitos request
-				store.connect(this.hostRecieve, this.user, this.pass); // eu conecto de novo 
-				if(tentativas > 10){ //se tentou 10 vezes, então eu paro de tentar conectar
+			if (!store.isConnected()) { // Se estiver desconectador por conta de
+										// muitos request
+				store.connect(this.hostRecieve, this.user, this.pass); // eu
+																		// conecto
+																		// de
+																		// novo
+				if (tentativas > 10) { // se tentou 10 vezes, então eu paro de
+										// tentar conectar
 					return null;
 				}
 				tentativas++;
-				return listarViewEmails(name); // e chamo em recursividade o metodo
-			}else{
+				return listarViewEmails(name); // e chamo em recursividade o
+												// metodo
+			} else {
 				tentativas = 0;
-			if (!"[Gmail]".equalsIgnoreCase(name)) {
-				Folder folder = store.getFolder(name);
+				if (!"[Gmail]".equalsIgnoreCase(name)) {
+					Folder folder = store.getFolder(name);
 
-				FetchProfile fp = new FetchProfile();
-				fp.add(FetchProfileItem.ENVELOPE);
-				fp.add(FetchProfileItem.FLAGS);
-				fp.add(FetchProfileItem.SIZE);
-				folder.open(Folder.READ_ONLY);
-				Message[] msgs = folder.getMessages();
+					FetchProfile fp = new FetchProfile();
+					fp.add(FetchProfileItem.ENVELOPE);
+					fp.add(FetchProfileItem.FLAGS);
+					fp.add(FetchProfileItem.SIZE);
+					folder.open(Folder.READ_ONLY);
+					Message[] msgs = folder.getMessages();
 
-			
+					List<MensagemEmail> lsEmails = new ArrayList<MensagemEmail>();// map.get(name);
 
-				List<MensagemEmail>lsEmails = new ArrayList<MensagemEmail>();//map.get(name);
-				
-				int total = msgs.length - 1;
-				System.out.println("Total: "+ total);
-				for (int i = total; i > 0; i--) {
-					boolean isRecent = msgs[i].getFlags().contains(
-							Flags.Flag.SEEN);
-					String from = "";
+					int total = msgs.length - 1;
+					System.out.println("Total: " + total);
+					for (int i = total; i > 0; i--) {
+						boolean isRecent = msgs[i].getFlags().contains(
+								Flags.Flag.SEEN);
+						String from = "";
 
-					Address[] vtrAdres = msgs[i].getFrom();
-					for (Address a : vtrAdres) {
-						from += a.toString();
+						Address[] vtrAdres = msgs[i].getFrom();
+						for (Address a : vtrAdres) {
+							from += a.toString();
+						}
+
+						String assunto = msgs[i].getSubject();
+						String dataRecebida = new SimpleDateFormat(
+								"dd/MM/yyyy -  hh:mm").format(msgs[i]
+								.getReceivedDate());
+						if (!isRecent) {
+							ls.add("<html><b>De: " + from + "  - Assunto: "
+									+ assunto + " - " + dataRecebida
+									+ "</b></html>");
+						} else {
+							ls.add("De: " + from + "  - Assunto: " + assunto
+									+ " - " + dataRecebida);
+						}
+						lsEmails.add(readEmail(msgs[i]));
 					}
 
-					String assunto = msgs[i].getSubject();
-					String dataRecebida = new SimpleDateFormat(
-							"dd/MM/yyyy -  hh:mm").format(msgs[i]
-							.getReceivedDate());
-					if (!isRecent) {
-						ls.add("<html><b>De: " + from + "  - Assunto: "
-								+ assunto + " - " + dataRecebida
-								+ "</b></html>");
-					} else {
-						ls.add("De: " + from + "  - Assunto: " + assunto
-								+ " - " + dataRecebida);
-					}
-					lsEmails.add(readEmail(msgs[i]));
+					// (name, lsEmails);
+					System.out.println(lsEmails.size());
+					map.put(name, lsEmails);
+
 				}
-				
-//						(name, lsEmails);
-				System.out.println(lsEmails.size());
-				map.put(name, lsEmails);
-				
-			}
 			}
 
 		} catch (MessagingException e) {
@@ -245,31 +248,29 @@ public class EmailController {
 		// if(!store.isConnected()){
 		// store.connect(hostRecieve, user, pass);
 		// }
-		System.out.println("INDEX - " +index);
-		List<MensagemEmail>ls = map.get(folderName);
+		System.out.println("INDEX - " + index);
+		List<MensagemEmail> ls = map.get(folderName);
 		System.out.println("TAMANHO " + ls.size());
-		if(index>= ls.size()){
-		
-		
+		if (index >= ls.size()) {
+
 			try {
-							// para msg lida, sem interromper o processo de
-							// email
-					Folder folder;
-		
-						folder = store.getFolder(folderName);
+				// para msg lida, sem interromper o processo de
+				// email
+				Folder folder;
 
-						folder.open(Folder.READ_WRITE);
-						Message[] messages = folder.getMessages();
-						messages[index].setFlag(Flags.Flag.SEEN, true);
-		
+				folder = store.getFolder(folderName);
 
-		msg = readEmail(messages[index]);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		// msg = (map.get(folderName)).get(index);
-		}else {
-			msg =ls.get(index);
+				folder.open(Folder.READ_WRITE);
+				Message[] messages = folder.getMessages();
+				messages[index].setFlag(Flags.Flag.SEEN, true);
+
+				msg = readEmail(messages[index]);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			// msg = (map.get(folderName)).get(index);
+		} else {
+			msg = ls.get(index);
 		}
 		return msg;
 	}
@@ -379,6 +380,25 @@ public class EmailController {
 	 * @param part
 	 * @return Retorna o conteudo (Texto) do e-mail
 	 */
+
+	public void markAsSeen(int index, String folderName) {
+		try {
+			// para msg lida, sem interromper o processo de
+			// email
+			Folder folder;
+
+			folder = store.getFolder(folderName);
+
+			folder.open(Folder.READ_WRITE);
+			Message[] messages = folder.getMessages();
+			messages[index].setFlag(Flags.Flag.SEEN, true);
+
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	private String abrirMensagem(Part p) {
 		String body = "Message:    \n";
 		try {
@@ -494,14 +514,13 @@ public class EmailController {
 			prop.put("mail.smtp.auth", "true"); // e requer autenticação
 
 			session = Session.getDefaultInstance(prop,
-                    new javax.mail.Authenticator() {
-                         protected PasswordAuthentication getPasswordAuthentication() 
-                         {
-                               return new PasswordAuthentication(user, pass);
-                         }
-			});
+					new javax.mail.Authenticator() {
+						protected PasswordAuthentication getPasswordAuthentication() {
+							return new PasswordAuthentication(user, pass);
+						}
+					});
 
-//			session = Session.getDefaultInstance(prop);
+			// session = Session.getDefaultInstance(prop);
 
 			store = session.getStore("imaps");
 			store.connect("imap.gmail.com", this.user, this.pass);
@@ -549,10 +568,11 @@ public class EmailController {
 		}
 	}
 
-	public synchronized void sendEmail (Address to, String body, String subject) {
+	public synchronized void sendEmail(Address to, String body, String subject) {
 		Message msg = new MimeMessage(session);
 		try {
-			msg.setRecipient(javax.mail.internet.MimeMessage.RecipientType.TO, to);
+			msg.setRecipient(javax.mail.internet.MimeMessage.RecipientType.TO,
+					to);
 			msg.setSubject(subject);
 			msg.setText(body);
 
@@ -571,42 +591,46 @@ public class EmailController {
 		try {
 			if (!store.isConnected()) {
 				store.connect(this.hostRecieve, this.user, this.pass);
-				if(tentativas > 10){ //se tentou 10 vezes, então eu paro de tentar conectar
+				if (tentativas > 10) { // se tentou 10 vezes, então eu paro de
+										// tentar conectar
 					return null;
 				}
 				tentativas++;
 				countUnredMessages(name);
-			}else{
+			} else {
 				tentativas = 0;
-			Folder folderEmail = store.getFolder(name); // Abro o diretorio de
-														// acordo com o nome da
-														// pasta
-			folderEmail.open(Folder.READ_ONLY); // Abro para somente leitura
-			Message messages[] = folderEmail.search(new FlagTerm(new Flags( // Filtro
-																			// apenas
-																			// todas
-																			// as
-																			// mensagens
-																			// que
-																			// n
-																			// foram
-																			// vistas
-					Flags.Flag.SEEN), false));
+				Folder folderEmail = store.getFolder(name); // Abro o diretorio
+															// de
+															// acordo com o nome
+															// da
+															// pasta
+				folderEmail.open(Folder.READ_ONLY); // Abro para somente leitura
+				Message messages[] = folderEmail.search(new FlagTerm(new Flags( // Filtro
+																				// apenas
+																				// todas
+																				// as
+																				// mensagens
+																				// que
+																				// n
+																				// foram
+																				// vistas
+						Flags.Flag.SEEN), false));
 
-			FetchProfile fp = new FetchProfile();
-			fp.add(FetchProfile.Item.ENVELOPE);
-			fp.add(FetchProfile.Item.CONTENT_INFO);
+				FetchProfile fp = new FetchProfile();
+				fp.add(FetchProfile.Item.ENVELOPE);
+				fp.add(FetchProfile.Item.CONTENT_INFO);
 
-			folderEmail.fetch(messages, fp); // Atualizo o folder
+				folderEmail.fetch(messages, fp); // Atualizo o folder
 
-			for (Message m : messages) { // e pego todas as mensagens e mostro
-				MensagemEmail msg = readEmail(m);
-				// System.out.println(msg.getFrom().toString());
-				listEmail.add(msg);
-			}
+				for (Message m : messages) { // e pego todas as mensagens e
+												// mostro
+					MensagemEmail msg = readEmail(m);
+					// System.out.println(msg.getFrom().toString());
+					listEmail.add(msg);
+				}
 
-			System.out.println("No. of Unread Messages : " + messages.length
-					+ "\n " + listEmail.size());
+				System.out.println("No. of Unread Messages : "
+						+ messages.length + "\n " + listEmail.size());
 			}
 		} catch (MessagingException e) {
 			e.printStackTrace();
