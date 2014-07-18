@@ -62,7 +62,7 @@ public class FormCadastroCliente extends JInternalFrame {
             tfLogradouro, tfBairro, tfRg, tfQuestao1, tfNumero, tfBuscaPacote,
             tfParcelas;
     private JFormattedTextField tfData, tfNascimento, tfCep, tfCpf, tfCelular,
-            tfTelefone, tfValidadeCnh, tfPrimeiraHabilitacao, tfPagamentoInicial;
+            tfTelefone, tfValidadeCnh, tfPrimeiraHabilitacao, tfPagamentoInicial, tfPagamentoPendente;
     
     private JButton btSalvar, btExcluir, btBuscar;
     
@@ -466,14 +466,9 @@ public class FormCadastroCliente extends JInternalFrame {
 
         // Bot�o
         btSalvar = new JButton("Salvar");
-        btSalvar.setLocation(10, 570);
+        btSalvar.setLocation(510, 490);
         btSalvar.setSize(180, 35);
         painelTodos.add(btSalvar);
-
-        btExcluir = new JButton("Excluir");
-        btExcluir.setLocation(215, 570);
-        btExcluir.setSize(180, 35);
-        painelTodos.add(btExcluir);
 
         tfBuscaPacote = new JTextField();
         tfBuscaPacote.setBounds(430, 50, 250, 25);
@@ -504,8 +499,8 @@ public class FormCadastroCliente extends JInternalFrame {
         painelPagamento = new JPanel();
         Border borderPag = BorderFactory.createTitledBorder("Dados do Pagamento");
         painelPagamento.setBorder(borderPag);
-        painelPagamento.setLayout(new GridLayout(7, 2));
-        painelPagamento.setBounds(425, 250, 350, 220);
+        painelPagamento.setLayout(new GridLayout(4, 2));
+        painelPagamento.setBounds(425, 250, 350, 160);
         painelTodos.add(painelPagamento);
         
         
@@ -541,9 +536,29 @@ public class FormCadastroCliente extends JInternalFrame {
         tfPagamentoInicial.setLocation(650, 540);
         painelPagamento.add(tfPagamentoInicial);
         
+        lbPagPendente = new JLabel("Pendente");
+        lbPagPendente.setSize(120, 20);
+        lbPagPendente.setLocation(430, 570);
+        painelPagamento.add(lbPagPendente);
+        
+        tfPagamentoPendente = new JFormattedTextField();
+        tfPagamentoPendente.setSize(120, 30);
+        tfPagamentoPendente.setLocation(650, 570);
+        painelPagamento.add(tfPagamentoPendente);
+        
+       
+        // Componentes painel de busca
+        
+
+        btExcluir = new JButton("Excluir");
+        btExcluir.setLocation(215, 400);
+        btExcluir.setSize(180, 35);
+        painelBusca.add(btExcluir);
+        
+        
         
         abas = new JTabbedPane();
-		abas.setBounds(1, 1, 795, 635);
+		abas.setBounds(1, 1, 795, 620);
 		abas.addTab("Cadastro", painelTodos);
 		abas.addTab("Cliente/Pacote", painelBusca);
 		add(abas);
@@ -551,7 +566,7 @@ public class FormCadastroCliente extends JInternalFrame {
 
         // PAINEL//
         getContentPane().setLayout(null);
-        setSize(800, 670);
+        setSize(800, 625);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);
         setClosable(true);

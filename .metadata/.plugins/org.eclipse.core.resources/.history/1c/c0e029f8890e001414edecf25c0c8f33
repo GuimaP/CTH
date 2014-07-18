@@ -1,0 +1,23 @@
+package Controller;
+
+import Model.Cliente;
+import Model.Pacote;
+
+public class ClientePacotePagamento {
+	private Cliente c;
+	private Pacote p;
+	public Cliente getC() {
+		return c;
+	}
+	public void setC(Cliente c) {
+		this.c = c;
+	}
+	public Pacote getP() {
+		return p;
+	}
+	public void setP(Pacote p) {
+		this.p = p;
+	}
+	
+
+}

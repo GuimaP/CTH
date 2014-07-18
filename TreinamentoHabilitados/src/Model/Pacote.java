@@ -22,8 +22,12 @@ public class Pacote {
     private String precoAula;
 	@Column(nullable=false)
     private String precoPacote;
-
-    public String getPrecoAula() {
+	
+	
+	
+	
+	
+	public String getPrecoAula() {
         return precoAula;
     }
 

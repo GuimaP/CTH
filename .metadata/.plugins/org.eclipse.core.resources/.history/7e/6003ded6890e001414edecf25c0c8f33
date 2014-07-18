@@ -1,0 +1,45 @@
+package Model;
+
+import java.util.ArrayList;
+
+import javax.swing.table.AbstractTableModel;
+
+import Controller.ClientePacotePagamento;
+
+public class ModeloTableClientePacotePaga extends AbstractTableModel {
+
+	ArrayList<ClientePacotePagamento> clienteCadastroPag;
+
+	String[] colunas = { "Aluno", "Cpf", "Pacote", "Preço", "Parcelas", "Pago" };
+
+	public ModeloTableClientePacotePaga(ArrayList<ClientePacotePagamento> clienteCadastroPag) {
+		this.clienteCadastroPag = clienteCadastroPag;
+	}
+	
+	@Override
+	public int getColumnCount() {
+		
+		return colunas.length;
+	}
+
+	@Override
+	public int getRowCount() {
+		return clienteCadastroPag.size();
+	}
+
+	@Override
+	public Object getValueAt(int rowIndex, int columnIndex) {
+
+		switch (columnIndex) {
+		case 0:
+			return cliente.get(rowIndex).getNome();
+		case 1:
+			return cliente.get(rowIndex).getCpf();
+		default:
+			break;
+		}
+
+		return null;
+	}
+
+}
