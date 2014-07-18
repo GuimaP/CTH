@@ -40,7 +40,7 @@ public ModelTableEmail(List<String>ls) {
 		public String getColumnName(int column) {
 			return columns[column];
 		}
-	
+	//
 public void marcaComoLida(int index){
 	String string = lsEmails.get(index);
 	string = string.replaceAll("<html>","");

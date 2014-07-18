@@ -68,7 +68,7 @@ public class ViewReplyEmail  extends JPanel{
 		
 		
 	}
-	
+	//
 	private void defineEvents(){
 		btEnviar.addActionListener(e ->{
 			String texto = txtMsg.getText();

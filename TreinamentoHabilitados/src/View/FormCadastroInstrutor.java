@@ -295,7 +295,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
         pack();
         setSize(500, 340);
         setLocation(60, 10);
-
+//
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setClosable(true);
         setIconifiable(true);

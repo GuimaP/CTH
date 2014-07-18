@@ -89,7 +89,7 @@ public class CriptografiaConfigEmail implements ICrypt<UsuarioEmail> {
 		}
 
 	}
-
+//
 	private String geraNomeCriptografado(String v)
 			throws NoSuchAlgorithmException {
 		algorithm = MessageDigest.getInstance("MD5");

@@ -348,7 +348,7 @@ public class Principal extends JFrame {
 		setVisible(true);
 
 	}
-
+//
 	public void definirEventos() {
 
 		btAbrirMenuLateral.addActionListener(new ActionListener() {

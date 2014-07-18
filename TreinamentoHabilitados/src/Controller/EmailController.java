@@ -598,7 +598,7 @@ public class EmailController {
 						"javax.net.ssl.SSLSocketFactory");
 			}
 			prop.put("mail.smtp.auth", "true"); // e requer autenticação
-
+//
 			Session se;
 			
 			se = Session.getDefaultInstance(prop,

@@ -100,7 +100,7 @@ public class FormCadastroCliente extends JInternalFrame {
     private boolean aberto = false;
 
     public FormCadastroCliente() {
-
+//
         try {
             Cliente c = new Cliente();
 //            try {
