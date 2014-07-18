@@ -45,6 +45,8 @@ public class ViewReplyEmail  extends JPanel{
 		setVisible(true);
 	}
 
+	
+
 	private void initComponents() {
 		setSize(width,heigth);
 		setLayout(null);

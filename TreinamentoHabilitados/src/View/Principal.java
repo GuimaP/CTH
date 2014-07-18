@@ -274,16 +274,7 @@ public class Principal extends JFrame {
 
 		DefaultMutableTreeNode dmEmail = new DefaultMutableTreeNode("E-mail");
 
-//		if (hasEmailReady) { 
-//			List<String> folders = email.getListagemFolders();
-//			folders.forEach(fo -> {
-//				DefaultMutableTreeNode dm = new DefaultMutableTreeNode(fo);
-//				dmEmail.add(dm);
-//			});
-//
-//			root.add(dmEmail);
-//		}
-
+		
 		jtreeAtalhos = new JTree(root);
 		jtreeAtalhos.getSelectionModel().setSelectionMode(
 				TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -734,9 +725,8 @@ public class Principal extends JFrame {
 						// arquivosEmail = email.getEmails();
 						List<MensagemEmail> l = arquivosEmail.get("INBOX");
 						mensagem = l.get(index - 1); // TODO
-						
-//						 mensagem = email.getEmail("INBOX", (index*-1));
 
+						// mensagem = email.getEmail("INBOX", (index*-1));
 
 						((ModelTableEmail) jTableEmails.getModel())
 								.marcaComoLida(jTableEmails.getSelectedRow()); // Marco

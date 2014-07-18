@@ -10,7 +10,7 @@ public class MensagemEmail implements Serializable{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	private List<Address> from;
 	private List<Address> to;
 	private String subject;

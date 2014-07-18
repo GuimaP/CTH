@@ -60,6 +60,10 @@ public class ViewEmail extends JInternalFrame{
 	
 	
 
+	
+
+
+
 	private void initComponents(){
 		setSize(600,400);
 		setLayout(null);
