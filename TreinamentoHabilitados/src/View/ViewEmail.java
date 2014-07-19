@@ -32,7 +32,7 @@ import javax.swing.JTextField;
 
 import javax.swing.LayoutStyle;
 
-import Controller.EmailController;
+import Controller.EmailControllerV2;
 import Model.MensagemEmail;
 
 public class ViewEmail extends JInternalFrame{
@@ -42,11 +42,11 @@ public class ViewEmail extends JInternalFrame{
 	private JLabel lbAssunto,lbRemetente,lbTexto;
 	private MensagemEmail email;
 	
-	private EmailController emailController;
+	private EmailControllerV2 emailController;
 	private JInternalFrame myInternal;
 	private JPopupMenu menu;
 	
-	public ViewEmail(MensagemEmail e,EmailController emailC) {
+	public ViewEmail(MensagemEmail e,EmailControllerV2 emailC) {
 		setClosable(true);
 		setIconifiable(true);
 		setMaximizable(false);
@@ -74,10 +74,8 @@ public class ViewEmail extends JInternalFrame{
 		
 		tfRemetente = new JTextField();
 		tfRemetente.setBounds(lbRemetente.getWidth() + 5, lbRemetente.getY(), (this.getWidth()-lbRemetente.getWidth())-20, 25);
-		String from ="";
-		for(Address a : email.getFrom()){
-			from +=a.toString()+";";
-		}
+		String from = email.getFrom();
+		
 		tfRemetente.setText(from);
 		add(tfRemetente);
 		

@@ -11,7 +11,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import Controller.CriptografiaConfigEmail;
-import Controller.EmailController;
+import Controller.EmailControllerV2;
 import Model.Login;
 import Model.UsuarioEmail;
 
@@ -134,7 +134,7 @@ public class ViewConfigEmail extends JInternalFrame {
 				us.setUser(tfEmail.getText());
 				us.setPass(pass);
 				us.setSsl(chSsl.isSelected());
-				 boolean autenticado =new  EmailController().testaAuthenticOnEmail(us);
+				 boolean autenticado =new  EmailControllerV2().autentica(us);
 				 
 				 if(autenticado){
 					 

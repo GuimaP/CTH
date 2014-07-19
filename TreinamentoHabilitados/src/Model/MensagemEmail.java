@@ -12,10 +12,17 @@ public class MensagemEmail implements Serializable{
 	 */
 	//
 	private static final long serialVersionUID = 2L;
-	private List<Address> from;
-	private List<Address> to;
+	private String from;
+	private String to;
 	private String subject;
 	private String texto;
+	private String replyTo;
+	public String getReplyTo() {
+		return replyTo;
+	}
+	public void setReplyTo(String replyTo) {
+		this.replyTo = replyTo;
+	}
 	private boolean isUnread;
 	private Date dataRecebida;
 	
@@ -39,16 +46,16 @@ public class MensagemEmail implements Serializable{
 	}
 	
 	
-	public List<Address> getFrom() {
+	public String getFrom() {
 		return from;
 	}
-	public void setFrom(List<Address> from) {
+	public void setFrom(String from) {
 		this.from = from;
 	}
-	public List<Address> getTo() {
+	public String getTo() {
 		return to;
 	}
-	public void setTo(List<Address> to) {
+	public void setTo(String to) {
 		this.to = to;
 	}
 	public String getTexto() {
