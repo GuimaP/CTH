@@ -15,7 +15,7 @@ public class MensagemEmail implements Serializable{
 	private String from;
 	private String to;
 	private String subject;
-	private String texto;
+	private String texto="";
 	private String replyTo;
 	public String getReplyTo() {
 		return replyTo;

@@ -36,7 +36,11 @@ import javax.mail.search.FlagTerm;
 import javax.mail.search.SearchTerm;
 import javax.swing.ListModel;
 
+import org.hibernate.context.TenantIdentifierMismatchException;
+import org.w3c.dom.ls.LSSerializer;
+
 import com.itextpdf.awt.geom.misc.Messages;
+import com.mysql.jdbc.jdbc2.optional.SuspendableXAConnection;
 
 import Model.MensagemEmail;
 import Model.UsuarioEmail;
@@ -74,6 +78,17 @@ public class EmailControllerV2 {
 
 	public void loadEmails() {
 		try {
+			
+			if(!store.isConnected()){
+				if(nTentativas >10){
+					return;
+				}
+				store.connect(configEmail.getHost(), configEmail.getUser(), configEmail.getPass());
+				nTentativas++;
+				loadEmails();
+			}else {
+			nTentativas = 0;
+			
 			List<String> ls = getFolders();
 			List<MensagemEmail> lsEmails = new ArrayList<MensagemEmail>(); /*
 																			 * list
@@ -88,35 +103,159 @@ public class EmailControllerV2 {
 																			 * -
 																			 * mail
 																			 */
+			File arq;
 			int cont = 0;
 			for (String fn : ls) {
-
+				arq = new File(getClass().getResource("/Resources/FilesConfig").getPath()+"/"
+								+configEmail.getUser()+"@"+fn+".temp");
+				System.out.println(arq);
+				
 				Folder f = store.getFolder(fn);
 				f.open(Folder.READ_ONLY);
 				System.out.println("PASTA>" + fn);
-
 				Message[] msgs = f.getMessages();
+				
+				int index = msgs.length	;
 				int c =0;
-				for (Message m : msgs) {
+				if(arq.exists()){
+					System.out.println("o arquivo existe");
+					FileInputStream in = new FileInputStream(arq);
+					ObjectInputStream os = new ObjectInputStream(in);
+					List<MensagemEmail>lsEm = (List<MensagemEmail>)os.readObject();
+					index = lsEm.size();
+					index -= lsEm.size();
+					c = index;
+					lsEmails = lsEm;
+				}
+				
+//				for(int i = index; i < msgs.length; i ++){
+				for(int i = msgs.length-1; i >= 0; i--){
+					Message m = msgs[i];
 					System.out.println((++c)+" > Load");
-					lsEmails.add(lerEmails(m));
+					lsEmails.add(lerEmails(msgs[i]));
 					saveListTemp(fn, lsEmails);
 				}
 				mapArquivosEmail.put(fn, lsEmails);
 				atualizaArquivoEmail();
 
 			}
+		}
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
+		
+	}
+
+	public void loadEmails(int index,String folderName,List<MensagemEmail> em){
+		try {
+			
+			if(!store.isConnected()){
+				if(nTentativas >10){
+					return;
+				}
+				store.connect(configEmail.getHost(), configEmail.getUser(), configEmail.getPass());
+				nTentativas++;
+				loadEmails();
+			}else {
+			nTentativas = 0;
+			
+			
+			List<MensagemEmail> lsEmails = new ArrayList<MensagemEmail>(); /*
+																			 * list
+																			 * que
+																			 * vai
+																			 * conter
+																			 * todos
+																			 * os
+																			 * objetos
+																			 * de
+																			 * e
+																			 * -
+																			 * mail
+																			 */
+			int cont = em.size();
+			index -= lsEmails.size();
+				lsEmails = em;
+				Folder f = store.getFolder(folderName);
+				f.open(Folder.READ_ONLY);
+				System.out.println("PASTA>" + folderName);
+
+				Message[] msgs = f.getMessages();
+				int c =0;
+				for(int i = index; i >= 0; i--){
+					System.out.println((++c)+" > Load");
+					lsEmails.add(lerEmails(msgs[i]));
+					saveListTemp(folderName, lsEmails);
+				}
+				mapArquivosEmail.put(folderName, lsEmails);
+				atualizaArquivoEmail();
+
+			}
+		
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}
 	}
-
-	public void loadEmails(int index,String folderName){
-		
-	}
 	
+	public List<MensagemEmail> loadEmails(String folderName){
+		List<MensagemEmail> lsEmails = new ArrayList<MensagemEmail>(); /*
+		 * list
+		 * que
+		 * vai
+		 * conter
+		 * todos
+		 * os
+		 * objetos
+		 * de
+		 * e
+		 * -
+		 * mail
+		 */
+		try {
+			
+			if(!store.isConnected()){
+				if(nTentativas >10){
+					return new ArrayList<>();
+				}
+				store.connect(configEmail.getHost(), configEmail.getUser(), configEmail.getPass());
+				nTentativas++;
+				loadEmails();
+			}else {
+			nTentativas = 0;
+			
+			
+			
+			int cont = 0;
+		
+				Folder f = store.getFolder(folderName);
+				f.open(Folder.READ_ONLY);
+				System.out.println("PASTA>" + folderName);
+
+				Message[] msgs = f.getMessages();
+				int c =0;
+//				for (Message m : msgs) {
+				for(int i = msgs.length; i >= 0; i--){
+					Message m = msgs[i];
+					System.out.println((++c)+" > Load");
+					lsEmails.add(lerEmails(m));
+					saveListTemp(folderName, lsEmails);
+				}
+				mapArquivosEmail.put(folderName, lsEmails);
+				atualizaArquivoEmail();
+
+			}
+		
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
+		return lsEmails;
+	}
 	
 	
 	public Map<String, List<MensagemEmail>> getMapArquivosEmail() {
@@ -208,9 +347,15 @@ public class EmailControllerV2 {
 		if(!mapArquivosEmail.containsKey(folder)){
 			Folder fold = store.getFolder(folder);
 			fold.open(Folder.READ_ONLY);
+			Message[] msgs = fold.getMessages();
 			List<MensagemEmail> lsIt = new ArrayList<MensagemEmail>();
-			for(Message m : fold.getMessages()){
+			int cont = msgs.length;
+//			for(Message m : fold.getMessages()){
+			for(int i = msgs.length-1; i >= 0; i--){
+				Message m = msgs[i];
+				System.out.println((--cont)+"/"+fold.getMessageCount());
 				lsIt.add(lerEmails(m));
+				saveListTemp(folder, lsIt);
 			}
 			mapArquivosEmail.put(folder, lsIt);
 			atualizaArquivoEmail();
@@ -221,7 +366,37 @@ public class EmailControllerV2 {
 		lsEm.forEach(em ->{
 			
 
+			System.out.println(em.getSubject());
+			String from = em.getFrom();
+			String assunto = em.getSubject();
+			String dataRecebida = new SimpleDateFormat(
+					"dd/MM/yyyy -  hh:mm").format(em.getDataRecebida());
+			if (!em.isUnread()) {
+				lsItens.add("<html><b>De: " + from + "  - Assunto: "
+						+ assunto + " - " + dataRecebida
+						+ "</b></html>");
+			} else {
+				lsItens.add("De: " + from + "  - Assunto: " + assunto
+						+ " - " + dataRecebida);
+			}
 			
+		});
+			
+		return lsItens;
+		
+	}
+	
+	public synchronized List<String> getListViewItensEmail(List<MensagemEmail> ls) throws Exception{
+		List<String> lsItens = new ArrayList<String>();
+		
+			
+		
+		
+		List<MensagemEmail>lsEm = ls;
+		lsEm.forEach(em ->{
+			
+
+			System.out.println(em.getSubject());
 			String from = em.getFrom();
 			String assunto = em.getSubject();
 			String dataRecebida = new SimpleDateFormat(
@@ -257,10 +432,11 @@ public class EmailControllerV2 {
 	}
 	
 	public synchronized MensagemEmail lerEmails(Message msg) throws Exception {
-		if (store.isConnected()) {
-			if(nTentativas > 4){ //Numero de tentativas se esgotou
+		if (!store.isConnected()) {
+			if(nTentativas > 10){ //Numero de tentativas se esgotou
 				return null; //Então eu retorno null
 			}
+			store.connect(configEmail.getHost(), configEmail.getUser(), configEmail.getPass());
 			nTentativas++;
 			return lerEmails(msg); //SE NÃO, EU USO A RECURSIVIDADE
 			
@@ -269,6 +445,7 @@ public class EmailControllerV2 {
 			MensagemEmail msEmail = new MensagemEmail();
 			
 			boolean isUnread = msg.getFlags().contains(Flags.Flag.SEEN);
+	
 			
 			String from = InternetAddress.toString(msg.getFrom());
 			if (from != null) {
@@ -296,35 +473,44 @@ public class EmailControllerV2 {
 			if (sent != null) {
 				msEmail.setDataRecebida(sent);
 			}
-			Part p = msg;
-
-			if (p.isMimeType("text/plain") || p.getContent() instanceof String) {
-				String m = (String) p.getContent();
-				// msEmail.setTexto(m);
-			} else if (p.isMimeType("multipart/*")) {
-				msEmail.setTexto(renderMultiPart(msg));
-			} else if (p.isMimeType("message/rfc822")) {
-				msEmail.setTexto(renderMultiPart(msg));
-			} else {
-				Object o = p.getContent();
-
-				if (o instanceof InputStream) {
-					InputStream is = (InputStream) o;
-					int c;
-					String m = "";
-					while ((c = is.read()) != -1) {
-						m += (char) c;
-					}
-					msEmail.setTexto(m);
-				} else {
-					msEmail.setTexto("Não foi possivel identificar o tipo de formato!");
-				}
-			}
+			
+//			lerBodyEmail(msg);
 			
 
 			return msEmail;
 		}
 
+	}
+
+	private String lerBodyEmail(Part p){
+		String msg="";
+		try{
+		if (p.isMimeType("text/plain") || p.getContent() instanceof String) {
+			String m = (String) p.getContent();
+			// msEmail.setTexto(m);
+		} else if (p.isMimeType("multipart/*")) {
+			msg = renderMultiPart((Message)p);
+		} else if (p.isMimeType("message/rfc822")) {
+			msg = renderMultiPart((Message)p);
+		} else {
+			Object o = p.getContent();
+
+			if (o instanceof InputStream) {
+				InputStream is = (InputStream) o;
+				int c;
+				String m = "";
+				while ((c = is.read()) != -1) {
+					m += (char) c;
+				}
+				msg = m;
+			} else {
+				msg = "Não foi possivel identificar o tipo de formato!";
+			}
+		}
+}catch(Exception e){
+	e.printStackTrace();
+}
+			return msg;
 	}
 
 	private String renderMultiPart(Message msg) throws Exception {
@@ -416,6 +602,32 @@ public class EmailControllerV2 {
 			er.printStackTrace();
 			throw new Exception(er);
 		}
+	}
+	
+	public synchronized int getCountNovosEmails(){
+		
+		int cont = 0;
+		try{
+			if(!store.isConnected()){
+				if(nTentativas > 10){
+					return 0;
+				}
+				store.connect(configEmail.getHost(), configEmail.getUser(), configEmail.getPass());
+				nTentativas++;
+				return getCountNovosEmails();
+			}
+			nTentativas = 0;
+			Folder fold = store.getFolder("INBOX");
+			System.out.println(fold.getName());
+			
+			fold.open(Folder.READ_ONLY);
+			
+			cont = fold.getMessageCount();
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		
+		return cont;
 	}
 	
 	public boolean autentica(UsuarioEmail e)  {

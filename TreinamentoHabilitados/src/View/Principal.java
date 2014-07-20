@@ -108,7 +108,7 @@ public class Principal extends JFrame {
 
 	protected EmailControllerV2 email;
 	protected JPanel painelEmail;
-	private JTable jTableEmails;
+	private static JTable jTableEmails;
 	private List<String> listaEmails;
 	private HashMap<String, List<String>> mapEmails;
 	protected Login loginUser;
@@ -124,6 +124,7 @@ public class Principal extends JFrame {
 	private JButton btRefreshItens;
 
 	public static boolean finished = false;
+	public static boolean carregado;
 	protected static boolean isFrameInstrutorOpen, isFrameClienteOpen,
 			isFrameCadastroPacote, isFrameAgendamento, isFrameCarro,
 			isViewConfiguraEmail;
@@ -480,9 +481,11 @@ public class Principal extends JFrame {
 							+ loginUser.getUsuario()
 							+ "@itensEmail.ser");
 					
+					System.out.println("procurando o bang serializado");
 					if (arqEmail.exists()) { // Verifica se ja existe um arquivo
 												// no diretorio com os itens do
 												// email
+						System.out.println("Acho o bang serializado");
 						FileInputStream input;
 						
 						try {
@@ -535,6 +538,7 @@ public class Principal extends JFrame {
 							() -> { // THREAD PARA BAIXAR OS E-MAILS DO SERVIDOR
 
 								bt.setVisible(true);
+								System.out.println("go thread");
 								try {
 
 									List<String> temp = new ArrayList<String>();
@@ -546,105 +550,162 @@ public class Principal extends JFrame {
 									int index = 0;
 									
 									File arqTem = new File(getClass().getResource("/Resources/FilesConfig")
-											.getPath()+"/"+email.getUser()+"@itensTemp.temp");
+											.getPath()+"/"+email.getUser()+"@INBOX.temp");
 									
 									File arqMap = new File(getClass().getResource("/Resources/FilesConfig")
 											.getPath()+"/"+email.getUser()+"@itensMap.temp");
 									 
 									System.out.println(arqTem+"");
 									List<MensagemEmail>lst = new ArrayList<MensagemEmail>();
+									carregado = false;
+									new Thread(()->{
+										try{
+											while(!carregado){
+											File arqList = new File(getClass().getResource("/Resources/FilesConfig")
+													.getPath()+"/"+email.getUser()+"@"+name+".temp");
+											if(arqList.exists()){
+												FileInputStream in = new FileInputStream(arqList);
+												ObjectInputStream os = new ObjectInputStream(in);
+												List<MensagemEmail>l = (List<MensagemEmail>)os.readObject();
+												List<String> lsItens = new ArrayList<String>();
+												l.forEach(em ->{
+													
+
+													System.out.println(em.getSubject());
+													String from = em.getFrom();
+													String assunto = em.getSubject();
+													String dataRecebida = new SimpleDateFormat(
+															"dd/MM/yyyy -  hh:mm").format(em.getDataRecebida());
+													if (!em.isUnread()) {
+														lsItens.add("<html><b>De: " + from + "  - Assunto: "
+																+ assunto + " - " + dataRecebida
+																+ "</b></html>");
+													} else {
+														lsItens.add("De: " + from + "  - Assunto: " + assunto
+																+ " - " + dataRecebida);
+													}
+													
+												});
+												Principal.jTableEmails.setModel(new ModelTableEmail(lsItens));	
+											}
+											
+											Thread.sleep(1000*1);
+											}
+										}catch(Exception e){
+											e.printStackTrace();
+										}
+									}).start();
+									
 									if(arqTem.exists()){
 										System.out.println("list existe");
 										FileInputStream in = new FileInputStream(arqTem);
 										ObjectInputStream os = new ObjectInputStream(in);
 										lst = (List<MensagemEmail>) os.readObject();
+										jTableEmails.setModel(new ModelTableEmail(email.getListViewItensEmail(lst)));
 										System.out.println(lst.size());
 										index = lst.size();
+										email.loadEmails(index,name,lst);
+									}else {
+										System.out.println("carregando tudo");
+										
+										jTableEmails.setModel(new ModelTableEmail(email.getListViewItensEmail("INBOX")));
+										email.loadEmails();
 									}
 									
 									if(arqMap.exists()){
 										FileInputStream in = new FileInputStream(arqTem);
 										ObjectInputStream os = new ObjectInputStream(in);
 										tempMap = (Map<String,List<MensagemEmail>>) os.readObject();
+
 									}
 									
+									System.out.println("vai tentar");
 									Map<String, List<MensagemEmail>> maps = email.getMapArquivosEmail();
 									
+									System.out.println("volto");
+									
 									arquivosEmail = maps;
-
+									List<String>t = email.getListViewItensEmail(maps.get("INBOX"));
+									jTableEmails.setModel(new ModelTableEmail(t));
+									carregado = true;
+									
+									
 									List<MensagemEmail> listEmails = maps
 											.get("INBOX");
-									if (listEmails != null) {
-										for (int i = listEmails.size() - 1; i >= 0; i--) {
-											MensagemEmail m = listEmails.get(i);
-											String from;
-											String subject;
-											String body;
-											String dateReceived;
-
-											from = subject = body = dateReceived = "";// iniciando
-																						// as
-																						// variaveis
-
-											from = m.getFrom();
-
-											subject = m.getSubject();
-											// dateReceived = new
-											// SimpleDateFormat(
-											// "dd/MM/yyyy - hh:mm").format(m
-											// .getDataRecebida());
-
-											body = m.getTexto();
-
-											String viewItensEmail; // String que
-																	// de como
-																	// vai ficar
-																	// o item
-																	// do e-mail
-
-											if (m.isUnread()) { // Se n estiver
-																// lida, eu
-																// deixo o item
-																// em
-																// destaque
-												viewItensEmail = "<html><b>De: "
-														+ from
-														+ "  - Assunto: "
-														+ subject + " - " // +
-																			// dateReceived
-														+ "</b></html>";
-											} else {
-												viewItensEmail = "De: " + from
-														+ "  - Assunto: "
-														+ subject + " - "; // +
-																			// dateReceived;
-											}
-											temp.add(viewItensEmail);
-										}
-										
-
-										jTableEmails
-												.setModel(new ModelTableEmail(
-														temp));
-
-										FileOutputStream ou;
-
-										ou = new FileOutputStream(arqEmail); /* e
-																			 / então
-																			   subistituo
-																			   o
-																			   arquivo
-																			   com
-																			   o
-																			   atual
-																			 */
-
-										ObjectOutputStream os = new ObjectOutputStream(
-												ou);
-										os.writeObject(maps);
-										os.flush();
-										os.close(); // TODO APLICAR CRIPTOGRAFIA
-									}
+									System.out.println("é nulo  a list?");
+//									if (listEmails != null) {
+//										System.out.println("Não é :)");
+//										for (int i = listEmails.size() - 1; i >= 0; i--) {
+//											System.out.println(i+"/" + listEmails.size());
+//											MensagemEmail m = listEmails.get(i);
+//											String from;
+//											String subject;
+//											String body;
+//											String dateReceived;
+//
+//											from = subject = body = dateReceived = "";// iniciando
+//																						// as
+//																						// variaveis
+//
+//											from = m.getFrom();
+//
+//											subject = m.getSubject();
+//											// dateReceived = new
+//											// SimpleDateFormat(
+//											// "dd/MM/yyyy - hh:mm").format(m
+//											// .getDataRecebida());
+//
+//											body = m.getTexto();
+//
+//											String viewItensEmail; // String que
+//																	// de como
+//																	// vai ficar
+//																	// o item
+//																	// do e-mail
+//
+//											if (m.isUnread()) { // Se n estiver
+//																// lida, eu
+//																// deixo o item
+//																// em
+//																// destaque
+//												viewItensEmail = "<html><b>De: "
+//														+ from
+//														+ "  - Assunto: "
+//														+ subject + " - " // +
+//																			// dateReceived
+//														+ "</b></html>";
+//											} else {
+//												viewItensEmail = "De: " + from
+//														+ "  - Assunto: "
+//														+ subject + " - "; // +
+//																			// dateReceived;
+//											}
+//											temp.add(viewItensEmail);
+//										}
+//										
+//
+//										jTableEmails
+//												.setModel(new ModelTableEmail(
+//														temp));
+//
+//										FileOutputStream ou;
+//
+//										ou = new FileOutputStream(arqEmail); /* e
+//																			 / então
+//																			   subistituo
+//																			   o
+//																			   arquivo
+//																			   com
+//																			   o
+//																			   atual
+//																			 */
+//
+//										ObjectOutputStream os = new ObjectOutputStream(
+//												ou);
+//										os.writeObject(maps);
+//										os.flush();
+//										os.close(); // TODO APLICAR CRIPTOGRAFIA
+//									}
 								} catch (Exception e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
@@ -885,7 +946,7 @@ public class Principal extends JFrame {
 		public void run() {
 			try {
 				List<String> lsEmailsAtualizada = new ArrayList<String>();
-				int emailsNaCaixal = email.getNovosEmails().size(); // Verifico
+				int emailsNaCaixal = email.getCountNovosEmails(); // Verifico
 																				// a
 																				// quantidade
 																				// total
@@ -894,12 +955,13 @@ public class Principal extends JFrame {
 				int cont = 0;
 				while (true) {
 
-					List<MensagemEmail> lsTemp = email.getItensEmail("INBOX");
+//					List<MensagemEmail> lsTemp = email.getItensEmail("INBOX");
 
 					
+					int temp = email.getCountNovosEmails();
 					// System.out.println(emailsNaCaixal + "/"
 					// + lsEmailsAtualizada.size());
-					if (lsTemp.size() > emailsNaCaixal && lsTemp != null) { // Se
+					if (temp > emailsNaCaixal) { // Se
 																			// houver
 																			// um
 																			// email
@@ -937,7 +999,7 @@ public class Principal extends JFrame {
 
 					}
 
-					emailsNaCaixal = lsTemp.size();
+					emailsNaCaixal = temp;
 
 					Thread.sleep(1000 * 60); // Espera 1 minutos para atualizar
 												// de novo
