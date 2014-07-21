@@ -53,6 +53,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -334,6 +335,7 @@ public class Principal extends JFrame {
 		btRefreshItens.setVisible(false);
 		add(btRefreshItens);
 
+		getGlassPane().setVisible(true);
 		setJMenuBar(menuBarra);
 		setLocationRelativeTo(null);
 		setTitle("Karol Habilitados v 1.3.1");
@@ -345,6 +347,31 @@ public class Principal extends JFrame {
 	//
 	public void definirEventos() {
 
+		
+		
+		jtreeAtalhos.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent e) {
+				if(painelMostrando){
+					getGlassPane().setVisible(true);
+					System.out.println("dentro");
+				}else {
+					getGlassPane().setVisible(false);
+				}
+			}
+			
+			public void mouseExited(MouseEvent e) {
+				getGlassPane().setVisible(false);
+				System.out.println("fora");
+			};
+			;
+		});
+		
+		getGlassPane().addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("dentro do glass");
+			};
+		});
+		
 		btAbrirMenuLateral.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
