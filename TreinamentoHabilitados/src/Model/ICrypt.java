@@ -1,7 +1,10 @@
 package Model;
 
-public interface ICrypt <T>{
-	String encrypt(T value);
+import java.io.File;
+
+public interface ICrypt<T> {
+	//
+	void encrypt(T value,File dir,String nameFolder);
 	
-	String unCrypt(T value);
+	T unCrypt(File dir,String nameFolder);
 }

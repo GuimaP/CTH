@@ -9,7 +9,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import Controller.EmailController;
+import Controller.EmailControllerV2;
 import Model.MensagemEmail;
 
 import java.awt.Color;
@@ -23,7 +23,7 @@ public class ViewReplyEmail  extends JPanel{
 	private JTextArea txtMsg;
 	private JButton btEnviar;
 	private MensagemEmail email;
-	private EmailController emailController;
+	private EmailControllerV2 emailController;
 	private JPopupMenu menu;
 	private JInternalFrame jInternal;
 	
@@ -32,7 +32,7 @@ public class ViewReplyEmail  extends JPanel{
 //	}
 	
 	public ViewReplyEmail(Dimension dimension, MensagemEmail msg,
-			EmailController emailC, JPopupMenu popMenu,
+			EmailControllerV2 emailC, JPopupMenu popMenu,
 			JInternalFrame internal) {
 		this.width = (int) dimension.getWidth();
 		this.heigth = (int) dimension.getHeight();
@@ -68,14 +68,14 @@ public class ViewReplyEmail  extends JPanel{
 		
 		
 	}
-	
+	//
 	private void defineEvents(){
 		btEnviar.addActionListener(e ->{
 			String texto = txtMsg.getText();
-			Address to = email.getFrom().get(0);
-			
-			String subject = "RE: "+email.getSubject();
-			emailController.sendEmail(to, texto, subject);
+//			Address to = email.getFrom().get(0);
+//			
+//			String subject = "RE: "+email.getSubject();
+//			emailController.sendEmail(to, texto, subject);
 			jInternal.dispose();
 			menu.hide();
 			menu.setVisible(false);

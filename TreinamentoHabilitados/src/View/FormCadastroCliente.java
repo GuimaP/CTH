@@ -100,16 +100,16 @@ public class FormCadastroCliente extends JInternalFrame {
     private boolean aberto = false;
 
     public FormCadastroCliente() {
-
+//
         try {
             Cliente c = new Cliente();
-            try {
-                daoCliente = new DAOcliente();
-                listCliente = daoCliente.buscarTodos();
-            } catch (SQLException e) {
-
-                JOptionPane.showMessageDialog(null, e.getMessage());
-            }
+//            try {
+//                daoCliente = new DAOcliente();
+//                listCliente = daoCliente.buscarTodos();
+//            } catch (SQLException e) {
+//
+//                JOptionPane.showMessageDialog(null, e.getMessage());
+//            }
 
             inicializaComponentes();
 
@@ -575,7 +575,9 @@ public class FormCadastroCliente extends JInternalFrame {
         setIconifiable(true);
         //getContentPane().setBackground(Color.lightGray);
 
+
     }
+
 
     public void definirEventos() {
 
@@ -698,8 +700,12 @@ public class FormCadastroCliente extends JInternalFrame {
                             .toString());
                     cadastro.setObservacao(observa.getText());
 
+                   try{
                     Repository<Cliente> repo = new Repository<Cliente>();
                     repo.adicionar(cliente);
+                   }catch(Exception erro){
+                	   JOptionPane.showMessageDialog(null, erro.getMessage());
+                   }
 
                     //populaList();
                     limparCampos();
