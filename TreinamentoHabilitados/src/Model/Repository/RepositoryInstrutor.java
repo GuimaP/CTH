@@ -1,8 +1,7 @@
 package Model.Repository;
 
-import java.sql.SQLException;
-
-import javax.persistence.EntityManager;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -32,6 +31,22 @@ public class RepositoryInstrutor extends Repository<Model.Funcionario> {
         
         return f;
     }
+    
+    public List<Funcionario> getAllInstrutor() throws Exception{
+    	Session session = ConnectionFactoryConfig.getSession();
+    	List<Funcionario> ls = new ArrayList<Funcionario>();
+    	if(session != null || !session.isConnected()){
+    		session.beginTransaction();
+    		Criteria c = session.createCriteria(Funcionario.class);
+    		ls = c.list();
+    	}
+    	
+    	return ls;
+    }
+    
+    
+    
+    
     /**
      *@author Guilherme
      * @throws java.sql.SQLException
