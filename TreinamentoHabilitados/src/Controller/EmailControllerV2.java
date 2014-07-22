@@ -51,16 +51,32 @@ public class EmailControllerV2 {
 
 	private UsuarioEmail configEmail;
 	private int nTentativas;
+	
+	private int countEmailAtual,countEmailTotal;
+	private String nameFolderAtual;
+	public boolean isLoadingEmail;
 
 	private Map<String, List<MensagemEmail>> mapArquivosEmail;
 
+	private synchronized String getStatusLoadEmail(){
+		String status;
+		if(isLoadingEmail){
+			status = "Carregando "+ countEmailAtual+ " de " + countEmailTotal + " da pasta "+ nameFolderAtual;
+		}else {
+			status = "Email Carregado";
+		}
+		return status;
+	}
+	
 	public EmailControllerV2(UsuarioEmail em) {
 		try {
 			this.configEmail = em;
 			mapArquivosEmail = new HashMap<String,List<MensagemEmail>>();
 			autentica();
-			if (!importaArquivoEmail()) {
-				loadEmails();
+			if (!importaArquivoEmail()) { //Se não houve um aqruivo no diretorio
+				loadEmails(); // Eu começo tudo do zero
+				atualizaArquivoEmail(); // e salvo o arquivo
+				
 			}
 		} catch (MessagingException | ClassNotFoundException | IOException e) {
 			e.printStackTrace();
@@ -87,174 +103,183 @@ public class EmailControllerV2 {
 				nTentativas++;
 				loadEmails();
 			}else {
+				isLoadingEmail = true; //Informe que os itens estão sendo carregado
+				
 			nTentativas = 0;
 			
-			List<String> ls = getFolders();
-			List<MensagemEmail> lsEmails = new ArrayList<MensagemEmail>(); /*
-																			 * list
-																			 * que
-																			 * vai
-																			 * conter
-																			 * todos
-																			 * os
-																			 * objetos
-																			 * de
-																			 * e
-																			 * -
-																			 * mail
-																			 */
+			List<String> ls = getFolders(); //Pego todas as folder que existirem
+			
+																			 
 			File arq;
 			int cont = 0;
 			for (String fn : ls) {
+				List<MensagemEmail> lsEmails = new ArrayList<MensagemEmail>(); //list de Email referente a uma Folder
+				try{
+				int index = 0;
+				int c =0;
+				nameFolderAtual = fn; //Indico o nome da pasta atual
+				
 				arq = new File(getClass().getResource("/Resources/FilesConfig").getPath()+"/"
-								+configEmail.getUser()+"@"+fn+".temp");
+								+configEmail.getUser()+"@"+fn+".temp"); //Verifico se possui ja um arquivo de list no diretorio para continuar de onde parei...
+				
 				System.out.println(arq);
 				
-				Folder f = store.getFolder(fn);
+				Folder f = store.getFolder(fn); 
 				f.open(Folder.READ_ONLY);
+				
 				System.out.println("PASTA>" + fn);
+				
 				Message[] msgs = f.getMessages();
 				
-				int index = msgs.length	;
-				int c =0;
+				countEmailTotal = msgs.length; //Email total que tem na caixa;
+				
+				
 				if(arq.exists()){
-					System.out.println("o arquivo existe");
+					System.out.println("o arquivo existe"); 
+					
 					FileInputStream in = new FileInputStream(arq);
-					ObjectInputStream os = new ObjectInputStream(in);
-					List<MensagemEmail>lsEm = (List<MensagemEmail>)os.readObject();
-					index = lsEm.size();
-					index -= lsEm.size();
-					c = index;
-					lsEmails = lsEm;
+					ObjectInputStream os = new ObjectInputStream(in);  
+					List<MensagemEmail>lsEm = (List<MensagemEmail>)os.readObject(); //Leio o objeto serializado
+					index = lsEm.size() - 1 ; // e continuo da onde parou 
+					
+					c = index; 
+					
+					lsEmails = lsEm; // e uso no meu arquivo
 				}
 				
-//				for(int i = index; i < msgs.length; i ++){
-				for(int i = msgs.length-1; i >= 0; i--){
-					Message m = msgs[i];
+				System.out.println("Index: -  "+index +  " || Tamanho : "+msgs.length);
+				
+				for(int i = index; i <msgs.length; i++){
+//				for(Message m : msgs){
+				Message m = msgs[i];
 					System.out.println((++c)+" > Load");
-					lsEmails.add(lerEmails(msgs[i]));
-					saveListTemp(fn, lsEmails);
+					countEmailAtual = c;	
+					lsEmails.add(lerEmails(m)); //Leio o Email
+					saveListTemp(fn, lsEmails); // E Então ja atualizo o meu arquivo
 				}
-				mapArquivosEmail.put(fn, lsEmails);
-				atualizaArquivoEmail();
+				mapArquivosEmail.put(fn, lsEmails); //E assim que acaba eu insiro no meu Map de Emails
+				atualizaArquivoTempEmail(); // E Atualizo também o meu Map de Email
 
+			}catch (MessagingException e) {
+				System.out.println(e.getMessage());
+				continue;
 			}
-		}
-		} catch (MessagingException e) {
-			e.printStackTrace();
+			}
+			}
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}
 		
 	}
 
-	public void loadEmails(int index,String folderName,List<MensagemEmail> em){
-		try {
-			
-			if(!store.isConnected()){
-				if(nTentativas >10){
-					return;
-				}
-				store.connect(configEmail.getHost(), configEmail.getUser(), configEmail.getPass());
-				nTentativas++;
-				loadEmails();
-			}else {
-			nTentativas = 0;
-			
-			
-			List<MensagemEmail> lsEmails = new ArrayList<MensagemEmail>(); /*
-																			 * list
-																			 * que
-																			 * vai
-																			 * conter
-																			 * todos
-																			 * os
-																			 * objetos
-																			 * de
-																			 * e
-																			 * -
-																			 * mail
-																			 */
-			int cont = em.size();
-			index -= lsEmails.size();
-				lsEmails = em;
-				Folder f = store.getFolder(folderName);
-				f.open(Folder.READ_ONLY);
-				System.out.println("PASTA>" + folderName);
-
-				Message[] msgs = f.getMessages();
-				int c =0;
-				for(int i = index; i >= 0; i--){
-					System.out.println((++c)+" > Load");
-					lsEmails.add(lerEmails(msgs[i]));
-					saveListTemp(folderName, lsEmails);
-				}
-				mapArquivosEmail.put(folderName, lsEmails);
-				atualizaArquivoEmail();
-
-			}
-		
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		} catch (Exception e2) {
-			e2.printStackTrace();
-		}
+	public void loadEmailss(int index,String folderName,List<MensagemEmail> em){
+//		try {
+//			
+//			if(!store.isConnected()){
+//				if(nTentativas >10){
+//					return;
+//				}
+//				store.connect(configEmail.getHost(), configEmail.getUser(), configEmail.getPass());
+//				nTentativas++;
+//				loadEmails();
+//			}else {
+//			nTentativas = 0;
+//			
+//			
+//			List<MensagemEmail> lsEmails = new ArrayList<MensagemEmail>(); /*
+//																			 * list
+//																			 * que
+//																			 * vai
+//																			 * conter
+//																			 * todos
+//																			 * os
+//																			 * objetos
+//																			 * de
+//																			 * e
+//																			 * -
+//																			 * mail
+//																			 */
+//			int cont = em.size();
+//			index -= lsEmails.size();
+//				lsEmails = em;
+//				Folder f = store.getFolder(folderName);
+//				f.open(Folder.READ_ONLY);
+//				System.out.println("PASTA>" + folderName);
+//
+//				Message[] msgs = f.getMessages();
+//				int c =0;
+//				for(int i = index; i >= 0; i--){
+//					System.out.println((++c)+" > Load");
+//					lsEmails.add(lerEmails(msgs[i]));
+//					saveListTemp(folderName, lsEmails);
+//				}
+//				mapArquivosEmail.put(folderName, lsEmails);
+//				atualizaArquivoEmail();
+//
+//			}
+//		
+//		} catch (MessagingException e) {
+//			e.printStackTrace();
+//		} catch (Exception e2) {
+//			e2.printStackTrace();
+//		}
 	}
 	
-	public List<MensagemEmail> loadEmails(String folderName){
-		List<MensagemEmail> lsEmails = new ArrayList<MensagemEmail>(); /*
-		 * list
-		 * que
-		 * vai
-		 * conter
-		 * todos
-		 * os
-		 * objetos
-		 * de
-		 * e
-		 * -
-		 * mail
-		 */
-		try {
-			
-			if(!store.isConnected()){
-				if(nTentativas >10){
-					return new ArrayList<>();
-				}
-				store.connect(configEmail.getHost(), configEmail.getUser(), configEmail.getPass());
-				nTentativas++;
-				loadEmails();
-			}else {
-			nTentativas = 0;
-			
-			
-			
-			int cont = 0;
-		
-				Folder f = store.getFolder(folderName);
-				f.open(Folder.READ_ONLY);
-				System.out.println("PASTA>" + folderName);
-
-				Message[] msgs = f.getMessages();
-				int c =0;
-//				for (Message m : msgs) {
-				for(int i = msgs.length; i >= 0; i--){
-					Message m = msgs[i];
-					System.out.println((++c)+" > Load");
-					lsEmails.add(lerEmails(m));
-					saveListTemp(folderName, lsEmails);
-				}
-				mapArquivosEmail.put(folderName, lsEmails);
-				atualizaArquivoEmail();
-
-			}
-		
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		} catch (Exception e2) {
-			e2.printStackTrace();
-		}
-		return lsEmails;
+	public List<MensagemEmail> loadEmailss(String folderName){
+		return null;
+//		List<MensagemEmail> lsEmails = new ArrayList<MensagemEmail>(); /*
+//		 * list
+//		 * que
+//		 * vai
+//		 * conter
+//		 * todos
+//		 * os
+//		 * objetos
+//		 * de
+//		 * e
+//		 * -
+//		 * mail
+//		 */
+//		try {
+//			
+//			if(!store.isConnected()){
+//				if(nTentativas >10){
+//					return new ArrayList<>();
+//				}
+//				store.connect(configEmail.getHost(), configEmail.getUser(), configEmail.getPass());
+//				nTentativas++;
+//				loadEmails();
+//			}else {
+//			nTentativas = 0;
+//			
+//			
+//			
+//			int cont = 0;
+//		
+//				Folder f = store.getFolder(folderName);
+//				f.open(Folder.READ_ONLY);
+//				System.out.println("PASTA>" + folderName);
+//
+//				Message[] msgs = f.getMessages();
+//				int c =0;
+////				for (Message m : msgs) {
+//				for(int i = msgs.length; i >= 0; i--){
+//					Message m = msgs[i];
+//					System.out.println((++c)+" > Load");
+//					lsEmails.add(lerEmails(m));
+//					saveListTemp(folderName, lsEmails);
+//				}
+//				mapArquivosEmail.put(folderName, lsEmails);
+//				atualizaArquivoEmail();
+//
+//			}
+//		
+//		} catch (MessagingException e) {
+//			e.printStackTrace();
+//		} catch (Exception e2) {
+//			e2.printStackTrace();
+//		}
+//		return lsEmails;
 	}
 	
 	
@@ -265,7 +290,7 @@ public class EmailControllerV2 {
 	private boolean importaArquivoEmail() throws IOException,
 			ClassNotFoundException {
 		File arqMap = new File(getClass().getResource("/Resources/FilesConfig")
-				.getPath() + "/" + configEmail.getUser() + "@itensEmail.ser");
+				.getPath() + "/" + configEmail.getUser() + "@itensEmail.cr");
 		if (arqMap.exists()) {
 			FileInputStream in = new FileInputStream(arqMap);
 			ObjectInputStream os = new ObjectInputStream(in);
@@ -273,7 +298,7 @@ public class EmailControllerV2 {
 
 		}
 
-		return mapArquivosEmail != null;
+		return mapArquivosEmail.size() > 0;
 	}
 
 	public List<MensagemEmail> getItensEmail(String folder){
@@ -358,7 +383,7 @@ public class EmailControllerV2 {
 				saveListTemp(folder, lsIt);
 			}
 			mapArquivosEmail.put(folder, lsIt);
-			atualizaArquivoEmail();
+			atualizaArquivoTempEmail();
 			importaArquivoEmail();
 		}
 		
@@ -417,10 +442,22 @@ public class EmailControllerV2 {
 	}
 	
 	
+	private void atualizaArquivoTempEmail() throws IOException{
+		File arqMap = new File(getClass().getResource("/Resources/FilesConfig")
+				.getPath() + "/" + configEmail.getUser() + "@itensEmail.temp");
+		
+			FileOutputStream ou = new FileOutputStream(arqMap);
+			ObjectOutputStream os = new ObjectOutputStream(ou);
+			os.writeObject(mapArquivosEmail);
+			os.flush();
+			os.close();
+			
+	}
+	
 	private void atualizaArquivoEmail() throws IOException{
 		File arqMap = new File(getClass().getResource("/Resources/FilesConfig")
 				.getPath() + "/" + configEmail.getUser() + "@itensEmail.cr");
-		if (arqMap.exists()) {
+//		if (arqMap.exists()) {
 			FileOutputStream ou = new FileOutputStream(arqMap);
 			ObjectOutputStream os = new ObjectOutputStream(ou);
 			os.writeObject(mapArquivosEmail);
@@ -428,8 +465,11 @@ public class EmailControllerV2 {
 			os.close();
 			
 
-		}
+//		}else {
+//			
+//		}
 	}
+	
 	
 	public synchronized MensagemEmail lerEmails(Message msg) throws Exception {
 		if (!store.isConnected()) {
@@ -474,7 +514,8 @@ public class EmailControllerV2 {
 				msEmail.setDataRecebida(sent);
 			}
 			
-//			lerBodyEmail(msg);
+			msEmail.setTexto(msg.getContent().toString());
+//			lerBodyEmail(msg); //Leio o corpo de e-mail
 			
 
 			return msEmail;
@@ -593,7 +634,7 @@ public class EmailControllerV2 {
 			
 					
 			mapArquivosEmail.put(fold.getName(), lsEm); //Subistituo ou insirom novo
-			atualizaArquivoEmail(); //Atualizo o meu arquivo de itens de email...
+			atualizaArquivoTempEmail(); //Atualizo o meu arquivo de itens de email...
 			
 			return getListViewItensEmail(fold.getName());
 			
