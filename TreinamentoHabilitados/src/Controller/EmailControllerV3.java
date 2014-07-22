@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -21,7 +22,9 @@ import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage.RecipientType;
 
+import Model.MessageSerial;
 import Model.UsuarioEmail;
 
 public class EmailControllerV3 {
@@ -30,7 +33,7 @@ public class EmailControllerV3 {
 	private UsuarioEmail configEmail;
 
 	private Map<String, List<String>> mapItensViews;
-	private Map<String, Message[]> mapArquivoEmail;
+	private Map<String, MessageSerial[]> mapArquivoEmail;
 
 	private String nameItensViews;
 	private String nameArquivosMail;
@@ -66,7 +69,7 @@ public class EmailControllerV3 {
 			if (arqFilesMail.exists()) { //Ve se o arquivo existe
 				FileInputStream in = new FileInputStream(arqFilesMail); // se sim
 				ObjectInputStream os = new ObjectInputStream(in);
-				mapArquivoEmail = (Map<String,Message[]>)os.readObject();//Passo para a minha variavel local 
+				mapArquivoEmail = (Map<String,MessageSerial[]>)os.readObject();//Passo para a minha variavel local 
 				os.close();
 			}else {//Se não
 				
@@ -77,9 +80,11 @@ public class EmailControllerV3 {
 							fd.open(Folder.READ_ONLY);
 							Message[] vtrMsg = fd.getMessages();
 							if(this.mapArquivoEmail== null){ //Se n existir, crie um novo
-								this.mapArquivoEmail = new HashMap<String,Message[]>();
+								this.mapArquivoEmail = new HashMap<String,MessageSerial[]>();
 							}
-							this.mapArquivoEmail.put(name, vtrMsg); 
+							MessageSerial[] vtr = tranformaToSerial(vtrMsg);
+							this.mapArquivoEmail.put(name, vtr);
+							
 						}
 				}
 				
@@ -99,9 +104,9 @@ public class EmailControllerV3 {
 						mapItensViews = new HashMap<String,List<String>>();
 					}
 					
-					Message[] msgs = this.mapArquivoEmail.get(name);
+					MessageSerial[] msgs = this.mapArquivoEmail.get(name);
 					List<String>lsItens = new ArrayList<String>();
-					for(Message m : msgs ){
+					for(MessageSerial m : msgs ){
 					try {
 						lsItens.add(this.transformaForViewItem(m));
 					} catch (Exception e) {
@@ -123,6 +128,42 @@ public class EmailControllerV3 {
 		}
 	}
 	
+	private MessageSerial[] tranformaToSerial(Message[] vtrMsg) {
+		MessageSerial [] vtr = new MessageSerial[vtrMsg.length];
+		long in,f,res;
+		
+		System.out.println(vtr);
+		System.out.println(vtrMsg);
+		System.out.println(vtrMsg.length);
+		
+		for(int i = 0; i < vtr.length; i ++){
+			
+			in = System.currentTimeMillis();
+			
+			Message m = vtrMsg[i];
+			try {
+				vtr[i].setContent(m.getContent());
+				vtr[i].setFrom(m.getFrom().toString());
+				vtr[i].setGetDateReceive(m.getReceivedDate());
+				vtr[i].setTo(m.getRecipients(RecipientType.TO).toString());
+//				vtr[i].setReplyTo(m.getReplyTo().toString());
+				vtr[i].setSubject(m.getSubject());
+				boolean isUn = m.getFlags().contains(Flags.Flag.SEEN);
+				vtr[i].setIsUnread(!isUn);
+				
+			} catch (IOException | MessagingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			f = System.currentTimeMillis();
+			
+			res = f - in;
+			System.out.println(new SimpleDateFormat("dd/MM/yyyy - hh:mm").format(new Date(res)));
+			
+		}
+		return vtr;
+	}
+
 	private void saveArquivo(File arg,Object obj){
 		try{
 			 FileOutputStream ou = new FileOutputStream(arg);
@@ -156,25 +197,24 @@ public class EmailControllerV3 {
 		}
 	}
 	
-	private String transformaForViewItem(Message m) throws MessagingException, IOException{
+	private String transformaForViewItem(MessageSerial m) throws MessagingException, IOException{
 		
-		boolean isUnread = m.getFlags().contains(Flags.Flag.SEEN);
+		boolean isUnread = m.getIsUnread();
 		
-		String from = InternetAddress.toString(m.getFrom());
-		
-
-		String replyTo = InternetAddress.toString(m.getReplyTo());
-		
-		
+		String from = m.getFrom();
 		
 
-		String to = InternetAddress.toString(m
-				.getRecipients(Message.RecipientType.TO));
+		String replyTo = m.getReplyTo();
+		
+		
+		
+
+		String to = m.getTo();
 	
 
 		String assunto = m.getSubject();
 	
-		Date dataRecebida = m.getSentDate();
+		Date dataRecebida = m.getGetDateReceive();
 		
 		System.out.println(m.getContent().toString()	);
 		
