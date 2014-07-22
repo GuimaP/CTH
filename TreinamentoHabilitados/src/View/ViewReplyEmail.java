@@ -10,6 +10,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import Controller.EmailControllerV2;
+import Controller.EmailControllerV3;
 import Model.MensagemEmail;
 
 import java.awt.Color;
@@ -23,7 +24,7 @@ public class ViewReplyEmail  extends JPanel{
 	private JTextArea txtMsg;
 	private JButton btEnviar;
 	private MensagemEmail email;
-	private EmailControllerV2 emailController;
+	private EmailControllerV3 emailController;
 	private JPopupMenu menu;
 	private JInternalFrame jInternal;
 	
@@ -32,12 +33,12 @@ public class ViewReplyEmail  extends JPanel{
 //	}
 	
 	public ViewReplyEmail(Dimension dimension, MensagemEmail msg,
-			EmailControllerV2 emailC, JPopupMenu popMenu,
+			EmailControllerV3 emailController2, JPopupMenu popMenu,
 			JInternalFrame internal) {
 		this.width = (int) dimension.getWidth();
 		this.heigth = (int) dimension.getHeight();
 		this.email =msg;
-		this.emailController = emailC;
+		this.emailController = emailController2;
 		this.menu = popMenu;
 		this.jInternal = internal;
 		initComponents();

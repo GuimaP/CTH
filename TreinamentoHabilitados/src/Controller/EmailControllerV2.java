@@ -36,6 +36,7 @@ import javax.mail.search.FlagTerm;
 import javax.mail.search.SearchTerm;
 import javax.swing.ListModel;
 
+import org.eclipse.swt.internal.win32.MSG;
 import org.hibernate.context.TenantIdentifierMismatchException;
 import org.w3c.dom.ls.LSSerializer;
 
@@ -56,6 +57,8 @@ public class EmailControllerV2 {
 	private String nameFolderAtual;
 	public boolean isLoadingEmail;
 
+	private Map<String,Message[]>map;
+	
 	private Map<String, List<MensagemEmail>> mapArquivosEmail;
 
 	private synchronized String getStatusLoadEmail(){
@@ -73,17 +76,35 @@ public class EmailControllerV2 {
 			this.configEmail = em;
 			mapArquivosEmail = new HashMap<String,List<MensagemEmail>>();
 			autentica();
-			if (!importaArquivoEmail()) { //Se não houve um aqruivo no diretorio
-				loadEmails(); // Eu começo tudo do zero
-				atualizaArquivoEmail(); // e salvo o arquivo
+			map = new HashMap<String,Message[]>();
+			for (String name : getFolders()){
+				System.out.println(name);
+				Folder f = store.getFolder(name);
+				if(f.list().length == 0){
+					System.out.println(f.isSubscribed());
+					f.open(Folder.READ_ONLY);
+					map.put(name, f.getMessages());
+				}
 				
 			}
-		} catch (MessagingException | ClassNotFoundException | IOException e) {
+			
+//			if (!importaArquivoEmail()) { //Se não houve um aqruivo no diretorio
+//				loadEmails(); // Eu começo tudo do zero
+//				atualizaArquivoEmail(); // e salvo o arquivo
+//				
+//			}
+		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
 
 	}
 	
+	
+	
+	public Map<String, Message[]> getMap() {
+		return map;
+	}
+
 	public EmailControllerV2() {
 		
 	}
@@ -172,7 +193,42 @@ public class EmailControllerV2 {
 		
 	}
 
-	public void loadEmailss(int index,String folderName,List<MensagemEmail> em){
+	private void gerenciaEmails(){
+		try{
+			List<String>lsFolders = getFolders();
+			lsFolders.forEach(folders ->{
+				try {
+					Folder f = this.store.getFolder(folders);
+					f.open(Folder.READ_ONLY);
+					double total = f.getMessageCount();
+					
+					int nThreads =(int)  Math.ceil(total / 10);
+					System.out.println(nThreads);
+					
+					for(int i = 0 ; i <= nThreads; ++i){
+						new Thread(()->{
+							try{
+							
+							
+							}catch(Exception e){
+								e.printStackTrace();
+							}
+						});
+					}
+					
+
+				} catch (Exception e) {
+					
+					e.printStackTrace();
+				}
+				
+			});
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public synchronized  void loadEmails(String folderName,int part,int indexInicial,int indexFinal){
 //		try {
 //			
 //			if(!store.isConnected()){
@@ -181,7 +237,7 @@ public class EmailControllerV2 {
 //				}
 //				store.connect(configEmail.getHost(), configEmail.getUser(), configEmail.getPass());
 //				nTentativas++;
-//				loadEmails();
+//				loadEmails(folderName,part,indexInicial,indexFinal);
 //			}else {
 //			nTentativas = 0;
 //			
@@ -199,19 +255,28 @@ public class EmailControllerV2 {
 //																			 * -
 //																			 * mail
 //																			 */
-//			int cont = em.size();
-//			index -= lsEmails.size();
-//				lsEmails = em;
-//				Folder f = store.getFolder(folderName);
-//				f.open(Folder.READ_ONLY);
-//				System.out.println("PASTA>" + folderName);
+//			
+//			File arqEmail = new File(getClass().getResource("/Resources/FilesConfig").getPath()+"/"+this.getUser()+"@"+folderName+"-part"+part+".temp");
+//			int index = indexInicial;
+//			if(arqEmail.exists()){
+//				FileInputStream in = new FileInputStream(arqEmail);
+//				ObjectInputStream os = new ObjectInputStream(in);
+//				lsEmails = (List<MensagemEmail>)os.readObject();
+//				index = lsEmails.size() - 1;
+//			}
+//			
+////				
+////				Folder f = store.getFolder(folderName);
+////				f.open(Folder.READ_ONLY);
+////				System.out.println("PASTA>" + folderName + "part " + part);
 //
-//				Message[] msgs = f.getMessages();
+//				
 //				int c =0;
-//				for(int i = index; i >= 0; i--){
+//				for(int i = index; i<= indexFinal; i++){
 //					System.out.println((++c)+" > Load");
 //					lsEmails.add(lerEmails(msgs[i]));
-//					saveListTemp(folderName, lsEmails);
+//					String nameFile = this.getUser()+"@"+folderName+"-part"+part+".temp";
+//					saveListTemp(nameFile, lsEmails);
 //				}
 //				mapArquivosEmail.put(folderName, lsEmails);
 //				atualizaArquivoEmail();
@@ -225,62 +290,7 @@ public class EmailControllerV2 {
 //		}
 	}
 	
-	public List<MensagemEmail> loadEmailss(String folderName){
-		return null;
-//		List<MensagemEmail> lsEmails = new ArrayList<MensagemEmail>(); /*
-//		 * list
-//		 * que
-//		 * vai
-//		 * conter
-//		 * todos
-//		 * os
-//		 * objetos
-//		 * de
-//		 * e
-//		 * -
-//		 * mail
-//		 */
-//		try {
-//			
-//			if(!store.isConnected()){
-//				if(nTentativas >10){
-//					return new ArrayList<>();
-//				}
-//				store.connect(configEmail.getHost(), configEmail.getUser(), configEmail.getPass());
-//				nTentativas++;
-//				loadEmails();
-//			}else {
-//			nTentativas = 0;
-//			
-//			
-//			
-//			int cont = 0;
-//		
-//				Folder f = store.getFolder(folderName);
-//				f.open(Folder.READ_ONLY);
-//				System.out.println("PASTA>" + folderName);
-//
-//				Message[] msgs = f.getMessages();
-//				int c =0;
-////				for (Message m : msgs) {
-//				for(int i = msgs.length; i >= 0; i--){
-//					Message m = msgs[i];
-//					System.out.println((++c)+" > Load");
-//					lsEmails.add(lerEmails(m));
-//					saveListTemp(folderName, lsEmails);
-//				}
-//				mapArquivosEmail.put(folderName, lsEmails);
-//				atualizaArquivoEmail();
-//
-//			}
-//		
-//		} catch (MessagingException e) {
-//			e.printStackTrace();
-//		} catch (Exception e2) {
-//			e2.printStackTrace();
-//		}
-//		return lsEmails;
-	}
+	
 	
 	
 	public Map<String, List<MensagemEmail>> getMapArquivosEmail() {
@@ -341,7 +351,7 @@ public class EmailControllerV2 {
 		return lsEm;
 	}
 	
-	public synchronized List<String> getFolders() throws MessagingException {
+public synchronized List<String> getFolders() throws MessagingException {
 
 		List<String> lsFolders = new ArrayList<String>();
 		Folder[] folders = store.getDefaultFolder().list();
@@ -350,7 +360,7 @@ public class EmailControllerV2 {
 		}
 
 		return lsFolders;
-
+	
 	}
 	
 	public synchronized void marcaComoLida(int index,String folderName){
@@ -708,6 +718,65 @@ public class EmailControllerV2 {
 		}
 	}
 
+	public List<String> getTest(String nameFolder) {
+
+		List<String>lsItens = new ArrayList<String>();
+		try{
+			Map<String,Message[]> ma = new HashMap<String, Message[]>();
+		
+		
+		Message[] vtr = map.get(nameFolder);
+		for(int i = 0; i < vtr.length; i++){
+		
+	
+		Message m = vtr[i];
+		boolean isUnread = true;
+		
+		
+//		System.out.println(em.getSubject());
+//		String from = em.getFrom().toString();
+//		String assunto = em.getSubject();
+//		String dataRecebida = new SimpleDateFormat(
+//				"dd/MM/yyyy -  hh:mm").format(em.getDateReceive());
+		
+		String from = InternetAddress.toString(m.getFrom());
+		
+
+		String replyTo = InternetAddress.toString(m.getReplyTo());
+		
+		
+		
+
+		String to = InternetAddress.toString(m
+				.getRecipients(Message.RecipientType.TO));
+	
+
+		String assunto = m.getSubject();
+	
+		Date dataRecebida = m.getSentDate();
+		
+		System.out.println(m.getContent().toString()	);
+		
+		if (!isUnread) {
+			lsItens.add("<html><b>De: " + from + "  - Assunto: "
+					+ assunto + " - " + dataRecebida
+					+ "</b></html>");
+		} else {
+			lsItens.add("De: " + from + "  - Assunto: " + assunto
+					+ " - " + dataRecebida);
+		}
+		}
+//	});
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return lsItens;
+	}
+	
+
+
+	
 	
 }
 

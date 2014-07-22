@@ -65,4 +65,23 @@ public class MensagemEmail implements Serializable{
 		this.texto = texto;
 	}
 	
+//	@Override
+//	public boolean equals(Object obj) {
+//		
+//		if(obj== null){
+//			return false;
+//		}else if(obj.getClass() !=this.getClass()){
+//			return false;
+//		}
+//		
+//		MensagemEmail e = (MensagemEmail) obj;
+//		
+//		if(e.dataRecebida == dataRecebida && e.getSubject().equals(subject)){
+//			return true;
+//		}else {
+//			return false;
+//		}
+//		
+//	}
+	
 }

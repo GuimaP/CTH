@@ -33,6 +33,7 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 
 import Controller.EmailControllerV2;
+import Controller.EmailControllerV3;
 import Model.MensagemEmail;
 
 public class ViewEmail extends JInternalFrame{
@@ -42,17 +43,17 @@ public class ViewEmail extends JInternalFrame{
 	private JLabel lbAssunto,lbRemetente,lbTexto;
 	private MensagemEmail email;
 	
-	private EmailControllerV2 emailController;
+	private EmailControllerV3 emailController;
 	private JInternalFrame myInternal;
 	private JPopupMenu menu;
 	
-	public ViewEmail(MensagemEmail e,EmailControllerV2 emailC) {
+	public ViewEmail(MensagemEmail e,EmailControllerV3 email2) {
 		setClosable(true);
 		setIconifiable(true);
 		setMaximizable(false);
 		this.myInternal = this;
 		this.email = e;
-		this.emailController = emailC;
+		this.emailController = email2;
 		initComponents();
 		defineEvents();
 		
