@@ -6,7 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -19,11 +20,10 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SealedObject;
 import javax.crypto.SecretKey;
 
-import com.itextpdf.text.pdf.codec.Base64;
-import com.mysql.jdbc.Util;
-
 import Model.ICrypt;
 import Model.UsuarioEmail;
+
+import com.itextpdf.text.pdf.codec.Base64;
 
 public class CriptografiaConfigEmail implements ICrypt<UsuarioEmail> {
 
@@ -67,29 +67,28 @@ public class CriptografiaConfigEmail implements ICrypt<UsuarioEmail> {
 	}
 
 	@Override
-	public void encrypt(UsuarioEmail value, File dir, String nameFolder) {
+	public void encrypt(UsuarioEmail value, String nameFolder) throws Exception {
 
-		try {
-			nameFolder = geraNomeCriptografado(nameFolder);
-			dir = new File(dir.getAbsolutePath() + "/" + nameFolder + ".cr");
-			if(!dir.exists()){
+		nameFolder = geraNomeCriptografado(nameFolder);
+		System.out.println(nameFolder);
+		
+		File dir = new File(getClass().getClassLoader()
+				.getResource("/Resources/FilesConfig/"+nameFolder + ".cr").toURI());
+//		if (!dir.exists()) {
 			Cipher ci = Cipher.getInstance("DES");
 			ci.init(Cipher.ENCRYPT_MODE, key);
 			SealedObject usuarioConfig = new SealedObject(value, ci);
-			FileOutputStream ou = new FileOutputStream(dir);
+			FileOutputStream ou = new FileOutputStream((dir));
 			ObjectOutputStream os = new ObjectOutputStream(ou);
 			os.writeObject(usuarioConfig);
 			os.flush();
 			os.close();
-			}
-		} catch (InvalidKeyException | NoSuchAlgorithmException
-				| NoSuchPaddingException | IllegalBlockSizeException
-				| IOException e) {
-			e.printStackTrace();
-		}
+//		}
+	
 
 	}
-//
+
+	//
 	private String geraNomeCriptografado(String v)
 			throws NoSuchAlgorithmException {
 		algorithm = MessageDigest.getInstance("MD5");
@@ -104,28 +103,41 @@ public class CriptografiaConfigEmail implements ICrypt<UsuarioEmail> {
 	}
 
 	@Override
-	public UsuarioEmail unCrypt(File dir, String nameFolder) {
+	public UsuarioEmail unCrypt(String nameFolder) {
 		UsuarioEmail user = null;
 
 		try {
 			nameFolder = geraNomeCriptografado(nameFolder);
 
-			dir = new File(dir.getAbsolutePath() + "/" + nameFolder + ".cr");
+			// dir = new File(dir.getAbsolutePath() + "/" + nameFolder + ".cr");
+			System.out.println(nameFolder);
+			URL urlDir = getClass().getClassLoader().getResource(
+					"/Resources/FilesConfig/" + nameFolder + ".cr");
+			if (urlDir != null) {
+				System.out.println(urlDir);
+				File dir = new File(urlDir.toURI());
+				System.out.println(dir);
+				// File dir = new
+				// File(getClass().getClassLoader().getResourceAsStream("Resources/FilesConfig/"+nameFolder+".cr").toString());
 
-			Cipher dCi = Cipher.getInstance("DES");
-			dCi.init(Cipher.DECRYPT_MODE, key);
-			if (dir.exists()) {
-				FileInputStream in = new FileInputStream(dir);
-				ObjectInputStream os = new ObjectInputStream(in);
-				SealedObject sealed = (SealedObject) os.readObject();
-				user = (UsuarioEmail) sealed.getObject(dCi);
+				Cipher dCi = Cipher.getInstance("DES");
+				dCi.init(Cipher.DECRYPT_MODE, key);
+				if (dir.exists()) {
 
-				os.close();
+					FileInputStream in = new FileInputStream(dir);
+
+					ObjectInputStream os = new ObjectInputStream(in);
+					SealedObject sealed = (SealedObject) os.readObject();
+					user = (UsuarioEmail) sealed.getObject(dCi);
+
+					os.close();
+				}
 			}
 
 		} catch (InvalidKeyException | NoSuchAlgorithmException
 				| NoSuchPaddingException | IllegalBlockSizeException
-				| IOException | ClassNotFoundException | BadPaddingException e) {
+				| IOException | ClassNotFoundException | BadPaddingException
+				| URISyntaxException e) {
 			e.printStackTrace();
 		}
 		return user;

@@ -3,8 +3,13 @@ package View;
 import java.awt.AlphaComposite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+
+import Controller.ConfigController;
 
 
 	public class MyPainelInvisible extends JPanel {
@@ -17,12 +22,20 @@ import javax.swing.JPanel;
 		@Override
 		public void paint(Graphics g) {
 			super.paintComponents(g);
-			java.awt.Image img = new javax.swing.ImageIcon(
-					getClass().getResource(
-							"/Resources/icons").getPath()
-							+ "/loading.gif").getImage();
-			g.drawImage(img, 0, 0, this.getWidth(),
-					this.getHeight(), this);
+			java.awt.Image img;
+			try {
+//				img = ImageIO.read(getClass().getClassLoader().getResourceAsStream(
+//								"/Resources/icons/loading.gif"));
+				
+				img = new ImageIcon(getClass().getClassLoader().getResource("Resources/icons/loading.gif")).getImage();
+				g.drawImage(img, 0, 0, this.getWidth(),
+						this.getHeight(), this);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+//			java.awt.Image img = ConfigController.defineIcon();
+		
 		}
 		
 		@Override

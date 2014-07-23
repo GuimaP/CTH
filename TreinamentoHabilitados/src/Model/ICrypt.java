@@ -4,7 +4,7 @@ import java.io.File;
 
 public interface ICrypt<T> {
 	//
-	void encrypt(T value,File dir,String nameFolder);
+	void encrypt(T value,String nameFolder) throws Exception;
 	
-	T unCrypt(File dir,String nameFolder);
+	T unCrypt(String nameFolder);
 }

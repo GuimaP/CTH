@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -46,6 +47,8 @@ public class ViewEmail extends JInternalFrame{
 	private EmailControllerV3 emailController;
 	private JInternalFrame myInternal;
 	private JPopupMenu menu;
+	
+	private JScrollPane sp;
 	
 	public ViewEmail(MensagemEmail e,EmailControllerV3 email2) {
 		setClosable(true);
@@ -84,6 +87,7 @@ public class ViewEmail extends JInternalFrame{
 		lbAssunto.setBounds(5, lbRemetente.getHeight()+5, 80, 25);
 		add(lbAssunto);
 		
+		
 		tfAssunto = new JTextField();
 		tfAssunto.setBounds(lbAssunto.getWidth()+5, lbAssunto.getY(), (this.getWidth() - lbAssunto.getWidth())-20, 25);
 		tfAssunto.setText(email.getSubject());
@@ -91,13 +95,13 @@ public class ViewEmail extends JInternalFrame{
 		JFrame f =  new JFrame();
 		
 		txTexto = new JEditorPane();
-		txTexto.setContentType("text/html");  
+		txTexto.setContentType("text/html");
+		txTexto.setText(email.getTexto());
 //		txTexto.setWrapStyleWord(true);
 //		txTexto.setLineWrap(true);
-		
-		txTexto.setBounds(5, (lbAssunto.getY() + lbAssunto.getHeight())+5, (this.getWidth() - 10)-10,  (this.getHeight() -  (lbAssunto.getY() - lbAssunto.getHeight() )) - 120);
-		txTexto.setText(email.getTexto());
-		add(txTexto);
+		sp = new JScrollPane(txTexto);
+		sp.setBounds(5, (lbAssunto.getY() + lbAssunto.getHeight())+5, (this.getWidth() - 10)-10,  (this.getHeight() -  (lbAssunto.getY() - lbAssunto.getHeight() )) - 120);
+		add(sp);
 		
 		btReply = new JButton("Responder");
 		btReply.setSize(70,25);

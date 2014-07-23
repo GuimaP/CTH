@@ -1,4 +1,4 @@
-//package Controller;
+package Controller;
 //
 //import java.io.BufferedInputStream;
 //import java.io.File;
@@ -61,7 +61,7 @@
 //import com.sun.mail.imap.IMAPFolder.FetchProfileItem;
 //import com.sun.mail.pop3.POP3SSLStore;
 //
-//public class EmailController {
+public class EmailController {
 //	private String host;
 //	private String hostRecieve;
 //	private String user;
@@ -807,4 +807,4 @@
 //		return map;
 //	}
 //
-//}
+}

@@ -2,6 +2,8 @@ package View;
 
 import java.io.File;
 
+
+
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JInternalFrame;
@@ -10,8 +12,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+
+
 import Controller.CriptografiaConfigEmail;
 import Controller.EmailControllerV2;
+import Controller.EmailControllerV3;
 import Model.Login;
 import Model.UsuarioEmail;
 
@@ -105,6 +110,7 @@ public class ViewConfigEmail extends JInternalFrame {
 		btTestar.addActionListener(evt ->{
 			String msg ="";
 			String pass = String.valueOf(tfSenha.getPassword());
+			try{	 
 			boolean sucess = true;
 			if(this.tfEmail.getText().isEmpty()){
 				msg = "É necessario colocar um e-mail";
@@ -126,7 +132,9 @@ public class ViewConfigEmail extends JInternalFrame {
 				sucess = false;
 			}
 			//
+			
 			if(sucess){
+				
 				UsuarioEmail us = new UsuarioEmail();
 				
 				us.setHost(tfHostEntrada.getText());
@@ -134,23 +142,33 @@ public class ViewConfigEmail extends JInternalFrame {
 				us.setUser(tfEmail.getText());
 				us.setPass(pass);
 				us.setSsl(chSsl.isSelected());
-				 boolean autenticado =new  EmailControllerV2().autentica(us);
-				 
+				 boolean autenticado;
+				
+					autenticado = new EmailControllerV3().autentica(us);
+				
+					System.out.println(autenticado);
 				 if(autenticado){
-					 
-					 File dirArquivo = new File(getClass().getResource("/Resources/FilesConfig").getPath());
+				
 					 String nameFolder = loginUser.getUsuario()+"@emailConfig";
-					 new CriptografiaConfigEmail().encrypt(us, dirArquivo, nameFolder);
-					 JOptionPane.showMessageDialog(null, "Faça Log off para que as alterações sejam aplicadas!");
+					 new CriptografiaConfigEmail().encrypt(us, nameFolder);
+				
+			
 					 this.dispose();
 				 }else {
 					 JOptionPane.showMessageDialog(null, "Não Autenticado ");
 				 }
-				
+			
+				 
 			}else {
 				JOptionPane.showMessageDialog(null, msg);
 			}
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(this, "erro \n " + e1.getMessage());
+				e1.printStackTrace();
+			}
 		
+			
 	});
-	}
+		}
 }

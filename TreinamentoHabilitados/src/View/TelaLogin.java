@@ -61,7 +61,7 @@ public class TelaLogin extends JFrame {
 
     }
 
-    public void inicializaComponentes() throws IOException {
+    public void inicializaComponentes 	() throws IOException {
 		// Font
         // depois
 
@@ -94,7 +94,7 @@ public class TelaLogin extends JFrame {
         add(btSair);
 
         // Label
-        lbUsuario = new JLabel("Usuário");
+        lbUsuario = new JLabel("Usuario");
         lbUsuario.setSize(55, 10);
         lbUsuario.setLocation(20, 25);
         lbUsuario.setFont(ConfigController.definePrincipalFont(14f, Font.PLAIN));
