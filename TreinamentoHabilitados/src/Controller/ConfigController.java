@@ -3,10 +3,14 @@ package Controller;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 import Main.Start;
 /**
@@ -18,16 +22,26 @@ import Main.Start;
 
 public class ConfigController {
 	public static java.awt.Image defineIcon(){
-		java.awt.Image img =new ImageIcon(ConfigController.class.getResource("/Resources/icons").getPath()+"/logo.png").getImage();
-		return img;
+		BufferedImage bf = null;
+		try {
+			bf = ImageIO.read(ConfigController.class.getResourceAsStream("/Resources/icons/logo.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		java.awt.Image i = bf;
+//		java.awt.Image img =new ImageIcon(new ConfigController().getClass().getResource("/Resources/icons").getPath()+"/logo.png").getImage();
+		
+		return bf;
 	}
-	
+
 	public static Font definePrincipalFont(float size,int fontType){
 		Start p = new Start();
-		java.io.File fontFile = new File(p.getClass().getResource("/fonts").getPath()+"/BlissfulThinking.otf");
+		InputStream in = ConfigController.class.getResourceAsStream("/fonts/BlissfulThinking.otf");
+//		java.io.File fontFile = new File(new ConfigController().getClass().getResource("/fonts").getPath()+"/BlissfulThinking.otf");
 		Font fonte = null;
 		try {
-			fonte = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(fontType, size);
+			fonte = Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(fontType, size);
 		} catch (FontFormatException | IOException e) {
 			e.printStackTrace();
 		}
@@ -35,5 +49,5 @@ public class ConfigController {
 		return fonte;
 	}
 
-	 
+
 }
