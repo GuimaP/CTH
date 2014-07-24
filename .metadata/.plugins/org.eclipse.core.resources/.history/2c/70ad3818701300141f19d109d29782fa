@@ -11,7 +11,6 @@ import Model.Repository.ConnectionFactoryRepository;
 import Model.Repository.Repository;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -63,13 +62,13 @@ public class FormCadastroCliente extends JInternalFrame {
 			lbLogradouro, lbBairro, lbNumero, lbCep, lbRg, lbCpf, lbSexo,
 			lbObserva, lbQ1, lbQ2, lbQ3, lbQ4, lbData, lbCelular, lbPacote,
 			lbTipoPagamento, lbParcelas, lbPagamentoInicial, lbPagPendente,
-			lbDtPagamento, lbDtProximoPagamento, lbBuscaAluno, lbAgendamento, lbNomeAluno, lbCpfAluno;
+			lbDtPagamento, lbDtProximoPagamento, lbBuscaAluno, lbAgendamento, lbNomeAluno;
 	private JTextField tfNome, tfEmail, tfProfissao, tfRegistroCnh,
 			tfLogradouro, tfBairro, tfRg, tfQuestao1, tfNumero, tfBuscaPacote,
 			tfParcelas;
 	private JFormattedTextField tfData, tfNascimento, tfCep, tfCpf, tfCelular,
 			tfTelefone, tfValidadeCnh, tfPrimeiraHabilitacao,
-			tfPagamentoInicial, tfPagamentoPendente, tfBuscaAluno;
+			tfPagamentoInicial, tfPagamentoPendente, tfBuscaAluno, tfCpfAluno;
 
 	private JButton btSalvar, btExcluir, btBuscar;
 
@@ -101,9 +100,6 @@ public class FormCadastroCliente extends JInternalFrame {
 	Endereco endereco = new Endereco();
 	Cnh cnh = new Cnh();
 	CadastroCliente cadastro = new CadastroCliente();
-	
-	
-	private Font font;
 
 	private JPanel panelCliente, painelGeral, painelTodos, painelBusca,
 			painelPagamento, painelAgendamento;
@@ -172,14 +168,10 @@ public class FormCadastroCliente extends JInternalFrame {
 	}
 
 	public void inicializaComponentes() throws ParseException {
-		//Font que será usada para o nome do aluno e cpf
-		
-		
-		
-		
 		painelTodos = new JPanel();
 		painelTodos.setLayout(null);
-		
+		painelBusca = new JPanel();
+		painelBusca.setLayout(null);
 
 		panelCliente = new JPanel();
 		Border border = BorderFactory.createTitledBorder("Cliente");
@@ -596,9 +588,6 @@ public class FormCadastroCliente extends JInternalFrame {
 		painelPagamento.add(tfPagamentoPendente);
 
 		// Componentes painel de busca
-		
-		painelBusca = new JPanel();
-		painelBusca.setLayout(null);
 
 		lbBuscaAluno = new JLabel("Buscar Aluno");
 		lbBuscaAluno.setSize(200, 20);
@@ -609,12 +598,6 @@ public class FormCadastroCliente extends JInternalFrame {
 		tfBuscaAluno.setSize(200, 30);
 		tfBuscaAluno.setLocation(10, 40);
 		painelBusca.add(tfBuscaAluno);
-		
-		lbNomeAluno = new JLabel("'Vitor Barros'");
-		lbNomeAluno.setSize(100, 50);
-		lbNomeAluno.setLocation(10, 60);
-		painelBusca.add(lbNomeAluno);
-		
 
 		btExcluir = new JButton("Excluir");
 		btExcluir.setLocation(215, 400);

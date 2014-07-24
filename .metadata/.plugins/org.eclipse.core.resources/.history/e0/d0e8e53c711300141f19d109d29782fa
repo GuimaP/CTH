@@ -11,7 +11,6 @@ import Model.Repository.ConnectionFactoryRepository;
 import Model.Repository.Repository;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -101,9 +100,6 @@ public class FormCadastroCliente extends JInternalFrame {
 	Endereco endereco = new Endereco();
 	Cnh cnh = new Cnh();
 	CadastroCliente cadastro = new CadastroCliente();
-	
-	
-	private Font font;
 
 	private JPanel panelCliente, painelGeral, painelTodos, painelBusca,
 			painelPagamento, painelAgendamento;
@@ -172,14 +168,10 @@ public class FormCadastroCliente extends JInternalFrame {
 	}
 
 	public void inicializaComponentes() throws ParseException {
-		//Font que será usada para o nome do aluno e cpf
-		
-		
-		
-		
 		painelTodos = new JPanel();
 		painelTodos.setLayout(null);
-		
+		painelBusca = new JPanel();
+		painelBusca.setLayout(null);
 
 		panelCliente = new JPanel();
 		Border border = BorderFactory.createTitledBorder("Cliente");
@@ -596,9 +588,6 @@ public class FormCadastroCliente extends JInternalFrame {
 		painelPagamento.add(tfPagamentoPendente);
 
 		// Componentes painel de busca
-		
-		painelBusca = new JPanel();
-		painelBusca.setLayout(null);
 
 		lbBuscaAluno = new JLabel("Buscar Aluno");
 		lbBuscaAluno.setSize(200, 20);
@@ -611,8 +600,8 @@ public class FormCadastroCliente extends JInternalFrame {
 		painelBusca.add(tfBuscaAluno);
 		
 		lbNomeAluno = new JLabel("'Vitor Barros'");
-		lbNomeAluno.setSize(100, 50);
-		lbNomeAluno.setLocation(10, 60);
+		lbNomeAluno.setSize(200, 50);
+		lbNomeAluno.setLocation(10, 100);
 		painelBusca.add(lbNomeAluno);
 		
 

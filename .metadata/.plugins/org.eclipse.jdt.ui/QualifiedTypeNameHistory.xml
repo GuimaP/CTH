@@ -15,10 +15,8 @@
 <fullyQualifiedTypeName name="javax.swing.text.TabExpander"/>
 <fullyQualifiedTypeName name="javax.swing.JTextField"/>
 <fullyQualifiedTypeName name="javax.swing.JTabbedPane"/>
-<fullyQualifiedTypeName name="javax.swing.JPanel"/>
 <fullyQualifiedTypeName name="Model.ModeloTablePacote"/>
 <fullyQualifiedTypeName name="jmapps.rtp.PanelParticipants"/>
-<fullyQualifiedTypeName name="javax.swing.JFormattedTextField"/>
 <fullyQualifiedTypeName name="javax.swing.table.AbstractTableModel"/>
 <fullyQualifiedTypeName name="java.lang.Object"/>
 <fullyQualifiedTypeName name="Model.Cliente"/>
@@ -29,6 +27,9 @@
 <fullyQualifiedTypeName name="Model.Pagamento"/>
 <fullyQualifiedTypeName name="javax.xml.crypto.Data"/>
 <fullyQualifiedTypeName name="com.toedter.calendar.demo.DateChooserPanel"/>
-<fullyQualifiedTypeName name="javax.swing.JLabel"/>
 <fullyQualifiedTypeName name="com.toedter.calendar.JDateChooser"/>
+<fullyQualifiedTypeName name="javax.swing.JPanel"/>
+<fullyQualifiedTypeName name="javax.swing.JFormattedTextField"/>
+<fullyQualifiedTypeName name="javax.swing.JLabel"/>
+<fullyQualifiedTypeName name="java.awt.Font"/>
 </qualifiedTypeNameHistroy>

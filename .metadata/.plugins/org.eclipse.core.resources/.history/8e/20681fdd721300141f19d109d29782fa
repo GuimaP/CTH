@@ -622,6 +622,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		painelBusca.add(btExcluir);
 
 		abas = new JTabbedPane();
+		abas.setLayout(null);
 		abas.setBounds(1, 1, 895, 620);
 		abas.addTab("Cadastro", painelTodos);
 		abas.addTab("Agendamento", painelBusca);
