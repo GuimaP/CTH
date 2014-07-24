@@ -78,6 +78,8 @@ public class ViewEmail extends JInternalFrame{
 		
 		tfRemetente = new JTextField();
 		tfRemetente.setBounds(lbRemetente.getWidth() + 5, lbRemetente.getY(), (this.getWidth()-lbRemetente.getWidth())-20, 25);
+		
+		
 		String from = email.getFrom();
 		
 		tfRemetente.setText(from);

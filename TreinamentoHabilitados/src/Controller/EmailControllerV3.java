@@ -91,7 +91,7 @@ public class EmailControllerV3 {
 		try {
 			msg.setRecipients(RecipientType.TO,to);
 			msg.setSubject(subject);
-			msg.setText(body);
+			msg.setText(body);	
 
 			Transport.send(msg);
 			System.out.println("enviado");

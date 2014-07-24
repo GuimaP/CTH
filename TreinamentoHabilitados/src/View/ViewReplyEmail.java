@@ -1,6 +1,9 @@
 package View;
 
 import javax.mail.Address;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage.RecipientType;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
@@ -9,9 +12,15 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+
+
+
 import Controller.EmailControllerV2;
 import Controller.EmailControllerV3;
 import Model.MensagemEmail;
+
+
+
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -73,10 +82,18 @@ public class ViewReplyEmail  extends JPanel{
 	private void defineEvents(){
 		btEnviar.addActionListener(e ->{
 			String texto = txtMsg.getText();
-			JOptionPane.showMessageDialog(null, this.email.getFrom());
+			java.util.List<String>ls = email.getFromList();
+			Address[] v = new Address[ls.size()];
+			for(int i = 0 ; i <ls.size();i++){
+				System.out.println(ls.get(i));
+//				v[i] =new Address
+			}
+			
+			 
+			
 //			
 //			String subject = "RE: "+email.getSubject();
-//			emailController.sendEmail(to, texto, subject);
+//			emailController.
 			jInternal.dispose();
 			menu.hide();
 			menu.setVisible(false);

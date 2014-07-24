@@ -47,7 +47,7 @@ public class MensagemEmail implements Serializable{
 	}
 	
 	
-	public List<String> getFrom() {
+	public List<String> getFromList() {
 		List<String>lsFrom = new ArrayList<String>();
 		String[] vtr = from.split("<");
 		for(String s: vtr){
@@ -56,6 +56,10 @@ public class MensagemEmail implements Serializable{
 			System.out.println(s);;
 		}
 		return lsFrom;
+	}
+	
+	public String getFrom(){
+		return from;
 	}
 	public void setFrom(String from) {
 		this.from = from;
