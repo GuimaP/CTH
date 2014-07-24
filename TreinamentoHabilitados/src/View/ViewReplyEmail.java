@@ -73,7 +73,7 @@ public class ViewReplyEmail  extends JPanel{
 	private void defineEvents(){
 		btEnviar.addActionListener(e ->{
 			String texto = txtMsg.getText();
-//			Address to = email.getFrom().get(0);
+			JOptionPane.showMessageDialog(null, this.email.getFrom());
 //			
 //			String subject = "RE: "+email.getSubject();
 //			emailController.sendEmail(to, texto, subject);

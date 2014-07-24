@@ -1,6 +1,7 @@
 package Model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -46,8 +47,15 @@ public class MensagemEmail implements Serializable{
 	}
 	
 	
-	public String getFrom() {
-		return from;
+	public List<String> getFrom() {
+		List<String>lsFrom = new ArrayList<String>();
+		String[] vtr = from.split("<");
+		for(String s: vtr){
+			s = s.replace('>', ' ');
+			lsFrom.add(s);
+			System.out.println(s);;
+		}
+		return lsFrom;
 	}
 	public void setFrom(String from) {
 		this.from = from;

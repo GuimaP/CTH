@@ -725,15 +725,16 @@ class MeuModeloTree extends DefaultTreeCellRenderer {
 				emailC = new EmailControllerV3(confEmail);
 				defineJtreeView();
 				defineEventsItensEmail();
-				
 				LocalDate fim = LocalDate.now();				
 				Thread threadUpdateEmail = new Thread(new CheckNewMessages(table,tree,pnEmail,emailC));
 				threadUpdateEmail.start();
+				Principal.minhaFrame.revalidate();
 			}else {
 				System.out.println("N Tem config  - PARTIU");
 			}
 		} catch (MessagingException e) {
 			e.printStackTrace();
+			
 		}finally{
 			btRefresh.setVisible(false);
 		}

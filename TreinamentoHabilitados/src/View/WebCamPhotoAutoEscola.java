@@ -116,7 +116,7 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable,
 				public void actionPerformed(ActionEvent e) {
 					try {
 						java.io.File f = new java.io.File(diretorioParaSalvar
-								+ "/" + nomeArquivo + ".jpg");
+								+ nomeArquivo + ".jpg");
 						if (f.exists()) {
 							f.delete();
 						}

@@ -38,7 +38,6 @@ public class ConfigController {
 	public static Font definePrincipalFont(float size,int fontType){
 		Start p = new Start();
 		InputStream in = ConfigController.class.getResourceAsStream("/fonts/BlissfulThinking.otf");
-//		java.io.File fontFile = new File(new ConfigController().getClass().getResource("/fonts").getPath()+"/BlissfulThinking.otf");
 		Font fonte = null;
 		try {
 			fonte = Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(fontType, size);

@@ -67,13 +67,16 @@ public class Start {
 	public static void main(String[] args) throws ClassNotFoundException,
 			InstantiationException {
 		try {
-
+			
+			setPrimeiraConfig();
+			
+			
 			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 				System.out.println(info.getName());
 				if ("Nimbus".equals(info.getName())) {
 					System.out.println("is nimbus");
 					UIManager.setLookAndFeel(info.getClassName());
-
+					
 					
 					Thread t = new Thread(new Runnable() {
 
@@ -85,7 +88,7 @@ public class Start {
 							janela.setIconImage(ConfigController.defineIcon());
 							janela.setUndecorated(true);
 							janela.setSize(400, 400);
-							janela.setOpacity(0.4f);
+						//	janela.setOpacity(0.4f);
 							janela.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 							janela.setLocationRelativeTo(null);
@@ -156,6 +159,15 @@ public class Start {
 			throw new ExceptionInInitializerError(e);
 		}
 
+	}
+
+	private static void setPrimeiraConfig() {
+		String local = System.getProperty("user.home"); //Pego o diretorio do usuario
+		String nameFile = System.getProperty("file.separator") + "Treinamento";//e o nome da pasta 
+		File diretorioProgram = new File(local+nameFile); 
+		if(!diretorioProgram.exists()){ //Verifico se existe a pasta
+			diretorioProgram.mkdir(); //Se não houve, eu crio uma
+		}		
 	}
 
 }

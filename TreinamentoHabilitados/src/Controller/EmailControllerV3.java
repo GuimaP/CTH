@@ -14,11 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.ExecutionException;
-
-import javassist.bytecode.stackmap.BasicBlock.Catch;
 
 import javax.activation.DataHandler;
+import javax.mail.Address;
 import javax.mail.BodyPart;
 import javax.mail.Flags;
 import javax.mail.Folder;
@@ -29,10 +27,10 @@ import javax.mail.Part;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Store;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
-
-import org.w3c.dom.ls.LSInput;
 
 import Model.MensagemEmail;
 import Model.MessageSerial;
@@ -87,6 +85,24 @@ public class EmailControllerV3 {
 	public EmailControllerV3() {
 			
 	}
+	
+	public synchronized void sendEmail(Address[] to, String body, String subject) {
+		Message msg = new MimeMessage(session);
+		try {
+			msg.setRecipients(RecipientType.TO,to);
+			msg.setSubject(subject);
+			msg.setText(body);
+
+			Transport.send(msg);
+			System.out.println("enviado");
+
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
 	
 	private void preparaArquivos() throws MessagingException {
 		try {

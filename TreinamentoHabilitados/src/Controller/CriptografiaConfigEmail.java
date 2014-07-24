@@ -72,9 +72,13 @@ public class CriptografiaConfigEmail implements ICrypt<UsuarioEmail> {
 		nameFolder = geraNomeCriptografado(nameFolder);
 		System.out.println(nameFolder);
 		
-		File dir = new File(getClass().getClassLoader()
-				.getResource("/Resources/FilesConfig/"+nameFolder + ".cr").toURI());
-//		if (!dir.exists()) {
+		String pasta = System.getProperty("user.home");
+		String nameFile = System.getProperty("file.separator") + "Treinamento"+System.getProperty("file.separator");
+		
+		
+		
+		File dir = new File(pasta+nameFile+nameFolder + ".cr");
+		if (!dir.exists()) {
 			Cipher ci = Cipher.getInstance("DES");
 			ci.init(Cipher.ENCRYPT_MODE, key);
 			SealedObject usuarioConfig = new SealedObject(value, ci);
@@ -83,7 +87,7 @@ public class CriptografiaConfigEmail implements ICrypt<UsuarioEmail> {
 			os.writeObject(usuarioConfig);
 			os.flush();
 			os.close();
-//		}
+		}
 	
 
 	}
@@ -108,22 +112,17 @@ public class CriptografiaConfigEmail implements ICrypt<UsuarioEmail> {
 
 		try {
 			nameFolder = geraNomeCriptografado(nameFolder);
-
+			String pasta = System.getProperty("user.home");
+			String nameFile = System.getProperty("file.separator") + "Treinamento"+System.getProperty("file.separator");
+			
+			
+			
+			File dir = new File(pasta+nameFile+nameFolder + ".cr");
 			// dir = new File(dir.getAbsolutePath() + "/" + nameFolder + ".cr");
-			System.out.println(nameFolder);
-			URL urlDir = getClass().getClassLoader().getResource(
-					"/Resources/FilesConfig/" + nameFolder + ".cr");
-			if (urlDir != null) {
-				System.out.println(urlDir);
-				File dir = new File(urlDir.toURI());
-				System.out.println(dir);
-				// File dir = new
-				// File(getClass().getClassLoader().getResourceAsStream("Resources/FilesConfig/"+nameFolder+".cr").toString());
-
+			
+			if (dir.exists()) {
 				Cipher dCi = Cipher.getInstance("DES");
 				dCi.init(Cipher.DECRYPT_MODE, key);
-				if (dir.exists()) {
-
 					FileInputStream in = new FileInputStream(dir);
 
 					ObjectInputStream os = new ObjectInputStream(in);
@@ -131,13 +130,11 @@ public class CriptografiaConfigEmail implements ICrypt<UsuarioEmail> {
 					user = (UsuarioEmail) sealed.getObject(dCi);
 
 					os.close();
-				}
 			}
 
 		} catch (InvalidKeyException | NoSuchAlgorithmException
 				| NoSuchPaddingException | IllegalBlockSizeException
-				| IOException | ClassNotFoundException | BadPaddingException
-				| URISyntaxException e) {
+				| IOException | ClassNotFoundException | BadPaddingException e) {
 			e.printStackTrace();
 		}
 		return user;

@@ -320,11 +320,9 @@ public class FormCadastroInstrutor extends JInternalFrame {
                         //Antes de abrir a camera, eu salvo todas as informações para restaura depois
                         populaObjInstrutor();
                         FuncionarioController.saveInformacao(instrutor);
+                        String separador = System.getProperty("file.separator");
+                        String strPath =  System.getProperty("user.home")+separador+"Treinamento"+separador+"Fotos-Consumidor"+separador;
 
-                        String strPath;
-                        
-                        strPath = getClass().getResource("/Resources/FotosInstrutor").getPath();
-//                        JOptionPane.showMessageDialog(rootPane, strPath);
 
                         String strNameFile = tfNome.getText(); //Pego o nome que será a imagem
                         
