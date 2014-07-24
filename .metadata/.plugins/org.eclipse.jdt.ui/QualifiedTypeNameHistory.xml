@@ -18,7 +18,6 @@
 <fullyQualifiedTypeName name="javax.swing.JPanel"/>
 <fullyQualifiedTypeName name="Model.ModeloTablePacote"/>
 <fullyQualifiedTypeName name="jmapps.rtp.PanelParticipants"/>
-<fullyQualifiedTypeName name="javax.swing.JLabel"/>
 <fullyQualifiedTypeName name="javax.swing.JFormattedTextField"/>
 <fullyQualifiedTypeName name="javax.swing.table.AbstractTableModel"/>
 <fullyQualifiedTypeName name="java.lang.Object"/>
@@ -28,4 +27,8 @@
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="Controller.ClientePacotePagamento"/>
 <fullyQualifiedTypeName name="Model.Pagamento"/>
+<fullyQualifiedTypeName name="javax.xml.crypto.Data"/>
+<fullyQualifiedTypeName name="com.toedter.calendar.demo.DateChooserPanel"/>
+<fullyQualifiedTypeName name="javax.swing.JLabel"/>
+<fullyQualifiedTypeName name="com.toedter.calendar.JDateChooser"/>
 </qualifiedTypeNameHistroy>

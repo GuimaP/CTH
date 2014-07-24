@@ -20,6 +20,7 @@ import java.awt.event.KeyListener;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,6 +48,9 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.text.MaskFormatter;
 import javax.swing.text.TabExpander;
 
+import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.demo.DateChooserPanel;
+
 import jmapps.rtp.PanelParticipants;
 import principal.CadastroCliente;
 import principal.VerificadorDeCpf;
@@ -57,7 +61,7 @@ public class FormCadastroCliente extends JInternalFrame {
             lbTelefone, lbPrimeiraHabilitacao, lbValidadeCnh, lbRegistroCnh,
             lbLogradouro, lbBairro, lbNumero, lbCep, lbRg, lbCpf, lbSexo,
             lbObserva, lbQ1, lbQ2, lbQ3, lbQ4, lbData, lbCelular, lbAluno, lbPacote, lbTipoPagamento,
-            lbParcelas, lbPagamentoInicial, lbPagPendente;
+            lbParcelas, lbPagamentoInicial, lbPagPendente, lbDtPagamento, lbDtProximoPagamento;
     private JTextField tfNome, tfEmail, tfProfissao, tfRegistroCnh,
             tfLogradouro, tfBairro, tfRg, tfQuestao1, tfNumero, tfBuscaPacote,
             tfParcelas;
@@ -67,6 +71,8 @@ public class FormCadastroCliente extends JInternalFrame {
     private JButton btSalvar, btExcluir, btBuscar;
     
     private JTabbedPane abas;
+    
+    private JDateChooser dtPagamento, dtProximoPagamento;
     
     
     
@@ -466,16 +472,16 @@ public class FormCadastroCliente extends JInternalFrame {
 
         // Botï¿½o
         btSalvar = new JButton("Salvar");
-        btSalvar.setLocation(510, 490);
+        btSalvar.setLocation(610, 490);
         btSalvar.setSize(180, 35);
         painelTodos.add(btSalvar);
 
         tfBuscaPacote = new JTextField();
-        tfBuscaPacote.setBounds(430, 50, 250, 25);
+        tfBuscaPacote.setBounds(530, 50, 250, 25);
         painelTodos.add(tfBuscaPacote);
 
         btBuscar = new JButton("Buscar");
-        btBuscar.setLocation(690, 50);
+        btBuscar.setLocation(785, 50);
         btBuscar.setSize(80, 25);
         painelTodos.add(btBuscar);
        
@@ -484,14 +490,14 @@ public class FormCadastroCliente extends JInternalFrame {
         // Table
         lbPacote = new JLabel("Pacote");
         lbPacote.setSize(100, 20);
-        lbPacote.setLocation(430, 30);
+        lbPacote.setLocation(530, 30);
         painelTodos.add(lbPacote);
        
         
         table = new JTable(new ModeloTablePacote(listPacote));
         scrollPacote = new JScrollPane(table);
         scrollPacote.setSize(340, 157);
-        scrollPacote.setLocation(430, 80);
+        scrollPacote.setLocation(530, 80);
         painelTodos.add(scrollPacote);
         
         //Dados do pagamento
@@ -499,51 +505,86 @@ public class FormCadastroCliente extends JInternalFrame {
         painelPagamento = new JPanel();
         Border borderPag = BorderFactory.createTitledBorder("Dados do Pagamento");
         painelPagamento.setBorder(borderPag);
-        painelPagamento.setLayout(new GridLayout(4, 2));
-        painelPagamento.setBounds(425, 250, 350, 160);
+        painelPagamento.setLayout(new GridLayout(6, 2));
+        painelPagamento.setBounds(525, 250, 350, 220);
         painelTodos.add(painelPagamento);
         
+        lbDtPagamento = new JLabel("Data");
+        lbDtPagamento.setSize(200, 20);
+        lbDtPagamento.setLocation(430, 480);
+        painelPagamento.add(lbDtPagamento);
+        
+        dtPagamento = new JDateChooser();
+        dtPagamento.setBounds(120, 30, 650, 480);
+        
+        Calendar minimo = Calendar.getInstance();
+        minimo.set(Calendar.YEAR,1900);
+        minimo.set(Calendar.MONTH,1);
+        minimo.set(Calendar.DATE, 1);
+        dtPagamento.setMinSelectableDate(minimo.getTime());
+        Date dataAtual = new Date(System.currentTimeMillis());
+        dtPagamento.setMaxSelectableDate(dataAtual);
+       painelPagamento.add(dtPagamento);
         
         
         lbTipoPagamento = new JLabel("Tipo de pagamento");
         lbTipoPagamento.setSize(200, 20);
-        lbTipoPagamento.setLocation(430, 480);
+        lbTipoPagamento.setLocation(430, 510);
         painelPagamento.add(lbTipoPagamento);
         
         jcPagamento = new JComboBox<String>(pagamento);
-        jcPagamento.setLocation(650, 480);
+        jcPagamento.setLocation(650, 510);
         jcPagamento.setSize(120, 30);
         jcPagamento.setSelectedIndex(-1);
         painelPagamento.add(jcPagamento);
         
         lbParcelas = new JLabel("Parcelas");
         lbParcelas.setSize(100,20);
-        lbParcelas.setLocation(430, 510);
+        lbParcelas.setLocation(430, 540);
         painelPagamento.add(lbParcelas);
         
         tfParcelas = new JTextField();
         tfParcelas.setSize(120, 30);
-        tfParcelas.setLocation(650, 510);
+        tfParcelas.setLocation(650, 540);
         painelPagamento.add(tfParcelas);
         
+       
+
         lbPagamentoInicial = new JLabel("Valor Pago");
         lbPagamentoInicial.setSize(200, 20);
-        lbPagamentoInicial.setLocation(430, 540);
+        lbPagamentoInicial.setLocation(430, 570);
         painelPagamento.add(lbPagamentoInicial);
         
         tfPagamentoInicial = new JFormattedTextField();
         tfPagamentoInicial.setSize(120, 30);
-        tfPagamentoInicial.setLocation(650, 540);
+        tfPagamentoInicial.setLocation(650, 570);
         painelPagamento.add(tfPagamentoInicial);
+        
+        lbDtProximoPagamento = new JLabel("Próxima Parcela");
+        lbDtProximoPagamento.setSize(100, 20);
+        lbDtProximoPagamento.setLocation(430, 600);
+        painelPagamento.add(lbDtProximoPagamento);
+        
+        dtProximoPagamento = new JDateChooser();
+        dtPagamento.setBounds(120, 30, 650, 600);
+        
+        Calendar minimo1 = Calendar.getInstance();
+        minimo1.set(Calendar.YEAR,1900);
+        minimo1.set(Calendar.MONTH,1);
+        minimo1.set(Calendar.DATE, 1);
+        dtProximoPagamento.setMinSelectableDate(minimo.getTime());
+        Date dataAtual1 = new Date(System.currentTimeMillis());
+        dtProximoPagamento.setMaxSelectableDate(dataAtual1);
+        painelPagamento.add(dtProximoPagamento);
         
         lbPagPendente = new JLabel("Pendente");
         lbPagPendente.setSize(120, 20);
-        lbPagPendente.setLocation(430, 570);
+        lbPagPendente.setLocation(430, 630);
         painelPagamento.add(lbPagPendente);
         
         tfPagamentoPendente = new JFormattedTextField();
         tfPagamentoPendente.setSize(120, 30);
-        tfPagamentoPendente.setLocation(650, 570);
+        tfPagamentoPendente.setLocation(650, 630);
         painelPagamento.add(tfPagamentoPendente);
         
        
@@ -558,15 +599,15 @@ public class FormCadastroCliente extends JInternalFrame {
         
         
         abas = new JTabbedPane();
-		abas.setBounds(1, 1, 795, 620);
+		abas.setBounds(1, 1, 895, 620);
 		abas.addTab("Cadastro", painelTodos);
-		abas.addTab("Cliente/Pacote", painelBusca);
+		abas.addTab("Agendamento", painelBusca);
 		add(abas);
         
 
         // PAINEL//
         getContentPane().setLayout(null);
-        setSize(800, 625);
+        setSize(900, 625);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);
         setClosable(true);
