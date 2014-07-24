@@ -61,12 +61,16 @@ public class EmailControllerV3 {
 			nTentativas = 0;
 			nameArquivosMail = em.getUser()+"@mapMail";
 			nameItensViews = em.getUser()+"@itemMail";
-			arqItensViews = new File(getClass().getResource(
-					"/Resources/FilesConfig").getPath()
-					+ "/" + nameItensViews + ".cr");
-			arqFilesMail = new File(getClass().getResource(
-					"/Resources/FilesConfig").getPath()
-					+ "/" + nameArquivosMail + ".cr");
+			String dir = System.getProperty("user.dir");
+			String sep = System.getProperty("file.separator");
+			
+			
+			arqItensViews = new File(dir+sep+
+					"Resources"+sep+"FilesConfig"
+					+sep + nameItensViews + ".cr");
+			arqFilesMail = new File(dir+sep+
+					"Resources"+sep+"FilesConfig"
+					+sep + nameArquivosMail + ".cr");
 			
 			this.configEmail = em;
 			System.out.println(arqFilesMail);
@@ -268,6 +272,7 @@ public class EmailControllerV3 {
 			if(!store.isConnected()){
 				store.connect(configEmail.getHostReceive(), configEmail.getUser(),configEmail.getPass());
 			}
+			System.out.println("has Email??");
 			Folder f = store.getFolder("INBOX");
 			System.out.println(f.getName());
 			f.open(Folder.READ_ONLY);
@@ -290,6 +295,7 @@ public class EmailControllerV3 {
 			Message[] vtrMsg = folder.getMessages();
 			System.out.println(vtrMsg.length +"  <MSg TOTAL");
 			for(int i = lstFolder.size()-1; i < vtrMsg.length; i++){
+				if(!folder.isOpen()){folder.open(Folder.READ_ONLY);}
 				Message em = vtrMsg[i];
 				
 				boolean isUnread = em.getFlags().contains(Flags.Flag.SEEN);
@@ -317,7 +323,7 @@ public class EmailControllerV3 {
 
 				String body = "";
 				Multipart multipart = (Multipart) msg.getContent();
-
+				
 				int inicio = 1;
 				if(multipart.getCount()<=1){
 					inicio = 0;
@@ -325,7 +331,7 @@ public class EmailControllerV3 {
 				
 				for (int x = 1; x < multipart.getCount(); x++) {
 					BodyPart bodyPart = multipart.getBodyPart(x);
-
+					
 					String disposition = bodyPart.getDisposition();
 
 					if (disposition != null

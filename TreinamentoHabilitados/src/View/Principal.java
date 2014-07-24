@@ -8,6 +8,8 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -36,6 +38,7 @@ import java.util.logging.Logger;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.swing.BoundedRangeModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
@@ -46,10 +49,15 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -457,6 +465,113 @@ public class Principal extends JFrame {
 		});
 
 		
+	
+		
+	sp.getVerticalScrollBar().addPropertyChangeListener(new PropertyChangeListener() {
+		
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			System.out.println("hahaha");
+			
+		}
+	});
+	
+	sp.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+		
+		@Override
+		public void adjustmentValueChanged(AdjustmentEvent e) {
+			System.out.println("lol");
+			
+		}
+	});
+	
+	sp.getViewport().addChangeListener(new ChangeListener() {
+		
+		@Override
+		public void stateChanged(ChangeEvent arg0) {
+			System.out.println("hehehe");
+			
+		}
+	});
+	
+sp.getHorizontalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+		
+		@Override
+		public void adjustmentValueChanged(AdjustmentEvent e) {
+			System.out.println("laaaaaa");
+			
+			
+		}
+	});
+
+jTableEmails.addAncestorListener(new AncestorListener() {
+	
+	@Override
+	public void ancestorRemoved(AncestorEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void ancestorMoved(AncestorEvent event) {
+//		System.out.println(sp.getHorizontalScrollBar().getValue());
+//		System.out.println(sp.getHorizontalScrollBar().getBlockIncrement());
+//		System.out.println(sp.getHorizontalScrollBar().getVisibleAmount());
+//		System.out.println(sp.getVerticalScrollBar().getUnitIncrement());
+//		System.out.println(sp.getVerticalScrollBar().getBlockIncrement());
+//		System.out.println(sp.getHorizontalScrollBar().isMaximumSizeSet());
+//		System.out.println(sp.getHorizontalScrollBarPolicy());
+//		
+//		System.out.println("---");
+//		int extent = sp.getVerticalScrollBar().getModel().getExtent();
+//        System.out.println("1. Value: " + (sp.getVerticalScrollBar().getValue() + extent) + " Max: " + sp.getVerticalScrollBar().getMaximum());
+//        System.out.println("---");
+//        BoundedRangeModel model = (BoundedRangeModel) sp.getVerticalScrollBar().getModel();
+//        int extent2 = model.getExtent();
+//        int maximum = model.getMaximum();
+//        int value = model.getValue();
+//
+//        System.out.println("2. Value: " + (value + extent2) + " Max: " + maximum);
+		JScrollBar bar = sp.getVerticalScrollBar();
+		bar.setValueIsAdjusting(true);
+		System.out.println(bar.getX());
+		System.out.println(bar.getY());
+		System.out.println(bar.getInsets().right);
+		System.out.println(bar.getInsets().left);
+		System.out.println(bar.getAlignmentY());
+		System.out.println(bar.getAlignmentX());
+		System.out.println(bar.getValue());
+		System.out.println(bar.getBounds().x);
+		System.out.println(bar.HORIZONTAL);
+		System.out.println(sp.getAlignmentX());
+		System.out.println(sp.getAlignmentY());
+		
+		
+		
+		System.out.println("=---=");
+		
+	}
+	
+	 
+	
+	@Override
+	public void ancestorAdded(AncestorEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+});
+
+
+sp.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+
+    @Override
+    public void adjustmentValueChanged(AdjustmentEvent event) {
+        JScrollBar scrollBar = (JScrollBar) event.getAdjustable();
+        int extent = scrollBar.getModel().getExtent();
+        System.out.println("1. Value: " + (scrollBar.getValue() + extent) + " Max: " + scrollBar.getMaximum());
+
+    }
+});
 
 	}
 	
@@ -694,18 +809,22 @@ class MeuModeloTree extends DefaultTreeCellRenderer {
 			}
 		});
 		
-		sp.addMouseWheelListener(new MouseWheelListener() {
-			
-			@Override
-			public void mouseWheelMoved(MouseWheelEvent arg0) {
-				System.out.println("moveu Wheeel");
-				System.out.println(sp.getAlignmentY());
-				System.out.println("Local do Scroll "+ sp.getVerticalScrollBar().getValue());
-				System.out.println(sp.getVerticalScrollBar().getAlignmentY());
-				System.out.println(sp.getVerticalScrollBar().getMaximum());
-				System.out.println("------");
-			}
-		});
+//		sp.addMouseWheelListener(new MouseWheelListener() {
+//			
+//			@Override
+//			public void mouseWheelMoved(MouseWheelEvent arg0) {
+//				System.out.println("Table moveu Wheeel");
+//				System.out.println(sp.getAlignmentY());
+//				System.out.println("Local do Scroll "+ sp.getVerticalScrollBar().getValue());
+//				System.out.println(sp.getVerticalScrollBar().getAlignmentY());
+//				System.out.println(sp.getVerticalScrollBar().getMaximum());
+//				System.out.println("------");
+//			}
+//		});
+		
+	
+		
+	
 		
 		
 	}
