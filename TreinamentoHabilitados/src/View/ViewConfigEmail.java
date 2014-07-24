@@ -4,6 +4,9 @@ import java.io.File;
 
 
 
+
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JInternalFrame;
@@ -14,8 +17,9 @@ import javax.swing.JTextField;
 
 
 
+
+
 import Controller.CriptografiaConfigEmail;
-import Controller.EmailControllerV2;
 import Controller.EmailControllerV3;
 import Model.Login;
 import Model.UsuarioEmail;
@@ -23,13 +27,13 @@ import Model.UsuarioEmail;
 
 public class ViewConfigEmail extends JInternalFrame {
 
-	private JTextField tfEmail,tfPort,tfHostSaida,tfHostEntrada;
-	private JLabel lbEmail,lbPort,lbHostEntrada,lbHostSaida,lbSenha,lbSsl;
+	private JTextField tfEmail,tfPort,tfHostSaida,tfHostEntrada,tfPortSaida;
+	private JLabel lbEmail,lbPort,lbHostEntrada,lbHostSaida,lbSenha,lbSsl,lbPortSaida;
 	private JPasswordField tfSenha;
 	private JCheckBox chSsl;
 	private JButton btTestar;
 	private Login loginUser; 
-	
+	public  static JButton btRefreshItens;
 	private UsuarioEmail user;
 	
 	public ViewConfigEmail(Login u){
@@ -40,7 +44,7 @@ public class ViewConfigEmail extends JInternalFrame {
 	}
 	
 	private void initComponents(){
-		setSize(350,380);
+		setSize(390,380);
 		setLayout(null);
 		setClosable(true);
         setIconifiable(true);
@@ -63,40 +67,57 @@ public class ViewConfigEmail extends JInternalFrame {
         add(tfSenha);
         
         lbHostEntrada = new JLabel("Host de Entrada:  ");
-        lbHostEntrada.setBounds(5, tfSenha.getY()+tfSenha.getHeight(), 100, 40);
+        lbHostEntrada.setBounds(5, tfSenha.getY()+tfSenha.getHeight(), 100, 50);
         add(lbHostEntrada);
         
         tfHostEntrada = new JTextField();
-        tfHostEntrada.setBounds(lbHostEntrada.getWidth(), lbHostEntrada.getY()+5, 230, 30);
+        tfHostEntrada.setBounds(lbHostEntrada.getX() +lbHostEntrada.getWidth(), lbHostEntrada.getY()+5, 180, 30);
         add(tfHostEntrada);
         
-        lbHostSaida = new JLabel("Host de Saída");
-        lbHostSaida.setBounds(5, lbHostEntrada.getY()+lbHostEntrada.getHeight()+5, 80, 20);
-        add(lbHostSaida);
-        
-        tfHostSaida = new JTextField();
-        tfHostSaida.setBounds(tfHostEntrada.getX(), lbHostSaida.getY(), 230, 30);
-        add(tfHostSaida);
-        
         lbPort = new JLabel("Porta: ");
-        lbPort.setBounds(60, lbHostSaida.getHeight()+lbHostSaida.getY()+35, 50, 20);
+        lbPort.setBounds(tfHostEntrada.getX()+tfHostEntrada.getWidth(), tfHostEntrada.getY(), 50, 20);
         add(lbPort);
         
         tfPort = new JTextField();
-        tfPort.setBounds(tfHostSaida.getX(), lbPort.getY(), 100, 30);
+        tfPort.setBounds(lbPort.getX() +40, lbPort.getY(), 50, 30);
         add(tfPort);
-        
+        //--
+        lbHostSaida = new JLabel("Host de Saída");
+        lbHostSaida.setBounds(5, lbHostEntrada.getY()+lbHostEntrada.getHeight()+5, 80, 20);
+        add(lbHostSaida);
+       
+        tfHostSaida = new JTextField();
+        tfHostSaida.setBounds(tfHostEntrada.getX(), lbHostSaida.getY(), 180, 30);
+        add(tfHostSaida);
+       //--- 
+        lbPortSaida = new JLabel("Porta: ");
+        lbPortSaida.setBounds(tfHostSaida.getX()+tfHostSaida.getWidth(),tfHostSaida.getY(), 50, 20);
+        add(lbPortSaida);
+
+        tfPortSaida = new JTextField();
+        tfPortSaida.setBounds(lbPortSaida.getX() +40, lbPortSaida.getY(), 50, 30);
+        add(tfPortSaida);
+        //--
         chSsl = new JCheckBox();
-        chSsl.setBounds(lbPort.getX()+lbPort.getWidth(), lbPort.getHeight()+lbPort.getY()+10, 30, 20);
+        chSsl.setBounds(tfPortSaida.getX(), lbHostSaida.getHeight()+lbHostSaida.getY()+10, 30, 20);
         add(chSsl);
         
         lbSsl = new JLabel("SSL");
-        lbSsl.setBounds(chSsl.getWidth(), chSsl.getY(), 50, 20);
+        lbSsl.setBounds(chSsl.getWidth()+chSsl.getX() , chSsl.getY(), 50, 20);
         add(lbSsl);
 //        
         btTestar = new JButton("Testar");
         btTestar.setBounds(5, chSsl.getY()+chSsl.getHeight(),80, 30);
         add(btTestar);
+        String separador = System.getProperty("file.separator");
+        btRefreshItens = new JButton(new ImageIcon(getClass().getClassLoader().getResource(
+				"Resources"+separador+"icons"+separador+"load.gif")));
+		btRefreshItens.setContentAreaFilled(false);
+		btRefreshItens.setLocation(this.getWidth()- 60,this.getHeight()-60 );
+		btRefreshItens.setSize(40, 40);
+		btRefreshItens.setToolTipText("Atualizando");
+		btRefreshItens.setVisible(false);
+		add(btRefreshItens);
         
         setVisible(true);
 //        tfHostEntrada = new 
@@ -130,10 +151,13 @@ public class ViewConfigEmail extends JInternalFrame {
 			}else if(this.tfPort.getText().isEmpty()){
 				msg = "Coloque uma porta";
 				sucess = false;
-			}
+			}else if(this.tfPortSaida.getText().isEmpty()){
 			//
+				msg = "Coloque uma porta de saida";
+				sucess = false;
 			
-			if(sucess){
+			}
+				if(sucess){
 				
 				UsuarioEmail us = new UsuarioEmail();
 				
@@ -142,21 +166,37 @@ public class ViewConfigEmail extends JInternalFrame {
 				us.setUser(tfEmail.getText());
 				us.setPass(pass);
 				us.setSsl(chSsl.isSelected());
-				 boolean autenticado;
+				us.setPortReceive(Integer.parseInt(tfPortSaida.getText()));
+				us.setPort(Integer.parseInt(tfPort.getText()));
 				
-					autenticado = new EmailControllerV3().autentica(us);
 				
-					System.out.println(autenticado);
-				 if(autenticado){
 				
-					 String nameFolder = loginUser.getUsuario()+"@emailConfig";
-					 new CriptografiaConfigEmail().encrypt(us, nameFolder);
 				
-			
-					 this.dispose();
-				 }else {
-					 JOptionPane.showMessageDialog(null, "Não Autenticado ");
-				 }
+				btRefreshItens.setVisible(true);	
+				new Thread(()->{
+					 boolean autenticado; 
+					try {
+						autenticado = new EmailControllerV3().autentica(us);
+						 if(autenticado){
+								
+							 String nameFolder = loginUser.getUsuario()+"@emailConfig";
+							 new CriptografiaConfigEmail().encrypt(us, nameFolder);
+							 JOptionPane.showMessageDialog(null, "Faça log-off para que as alterções sejam feitas");
+					
+							 this.dispose();
+						 }else {
+							 JOptionPane.showMessageDialog(null, "Não Autenticado ");
+						 }
+					} catch (Exception e) {
+						e.printStackTrace();
+					}finally{
+						ViewConfigEmail.btRefreshItens.setVisible(false);
+					}
+					
+					
+			}).start();;
+				
+				
 			
 				 
 			}else {

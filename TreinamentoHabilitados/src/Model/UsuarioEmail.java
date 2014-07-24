@@ -8,7 +8,16 @@ public class UsuarioEmail implements Serializable {
 	private int port;
 	private String host;
 	private String hostReceive;
+	private int portReceive;
 	private boolean isSsl;
+	
+	public int getPortReceive() {
+		return portReceive;
+	}
+	public void setPortReceive(int portReceive) {
+		this.portReceive = portReceive;
+	}
+	
 	public String getUser() {
 		return user;
 	}

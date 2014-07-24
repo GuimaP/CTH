@@ -32,8 +32,6 @@ import javax.swing.JTextField;
 
 
 import javax.swing.LayoutStyle;
-
-import Controller.EmailControllerV2;
 import Controller.EmailControllerV3;
 import Model.MensagemEmail;
 

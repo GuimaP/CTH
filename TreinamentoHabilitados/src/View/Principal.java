@@ -61,7 +61,6 @@ import org.eclipse.swt.internal.ole.win32.ISpecifyPropertyPages;
 
 import Controller.ConfigController;
 import Controller.CriptografiaConfigEmail;
-import Controller.EmailControllerV2;
 import Controller.EmailControllerV3;
 import Model.Login;
 import Model.MensagemEmail;
@@ -260,6 +259,8 @@ public class Principal extends JFrame {
 
 	}
 
+
+	
 	//
 	public void definirEventos() {
 

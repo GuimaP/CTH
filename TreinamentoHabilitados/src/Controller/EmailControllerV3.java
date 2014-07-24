@@ -265,6 +265,9 @@ public class EmailControllerV3 {
 	public synchronized boolean hasNewEmail(){
 		try{
 //			Folder f = store.getFolder("INBOX");
+			if(!store.isConnected()){
+				store.connect(configEmail.getHostReceive(), configEmail.getUser(),configEmail.getPass());
+			}
 			Folder f = store.getFolder("INBOX");
 			System.out.println(f.getName());
 			f.open(Folder.READ_ONLY);
@@ -285,7 +288,7 @@ public class EmailControllerV3 {
 			Folder folder = store.getFolder("INBOX");
 			folder.open(Folder.READ_ONLY);
 			Message[] vtrMsg = folder.getMessages();
-			
+			System.out.println(vtrMsg.length +"  <MSg TOTAL");
 			for(int i = lstFolder.size()-1; i < vtrMsg.length; i++){
 				Message em = vtrMsg[i];
 				
@@ -315,6 +318,11 @@ public class EmailControllerV3 {
 				String body = "";
 				Multipart multipart = (Multipart) msg.getContent();
 
+				int inicio = 1;
+				if(multipart.getCount()<=1){
+					inicio = 0;
+				}
+				
 				for (int x = 1; x < multipart.getCount(); x++) {
 					BodyPart bodyPart = multipart.getBodyPart(x);
 
@@ -472,6 +480,7 @@ public class EmailControllerV3 {
 		String host = e.getHost();
 		String hostRecieve = e.getHostReceive();
 		String port = String.valueOf(e.getPort());
+		String portSaida = String.valueOf(e.getPortReceive());
 		boolean ssl = e.isSsl();
 
 		Properties prop = new Properties();
