@@ -80,18 +80,10 @@ public class ViewReplyEmail  extends JPanel{
 	private void defineEvents(){
 		btEnviar.addActionListener(e ->{
 			String texto = txtMsg.getText();
-			java.util.List<String>ls = email.getFromList();
-			Address[] v = new Address[ls.size()];
-			for(int i = 0 ; i <ls.size();i++){
-				System.out.println(ls.get(i));
-//				v[i] =new Address
-			}
+			String to[] = {email.getReplyTo()};
+			String subject = "RE: "+email.getSubject();
 			
-			 
-			
-//			
-//			String subject = "RE: "+email.getSubject();
-//			emailController.
+			emailController.sendEmail(to, texto, subject);
 			jInternal.dispose();
 			menu.hide();
 			menu.setVisible(false);
