@@ -74,7 +74,7 @@ public class FormCadastroCliente extends JInternalFrame {
 			tfTelefone, tfValidadeCnh, tfPrimeiraHabilitacao,
 			tfPagamentoInicial, tfPagamentoPendente, tfBuscaAluno;
 
-	private JButton btSalvar, btBuscarPacote, btBuscarAluno;
+	private JButton btSalvar, btExcluir, btBuscarPacote, btBuscarAluno;
 
 	private JTabbedPane abas;
 
@@ -645,11 +645,14 @@ public class FormCadastroCliente extends JInternalFrame {
 		
 		//-------------------------------------------------------------------
 		
-
-		//Calendario
+		btExcluir = new JButton("Excluir");
+		btExcluir.setLocation(215, 400);
+		btExcluir.setSize(180, 35);
+		abaAgendamento.add(btExcluir);
+		
 		new PainelCalendarioAulas(abaAgendamento);
 		
-		//--------------------------------------------
+		
 
 		abas = new JTabbedPane();
 		abas.setBounds(1, 1, 895, 620);

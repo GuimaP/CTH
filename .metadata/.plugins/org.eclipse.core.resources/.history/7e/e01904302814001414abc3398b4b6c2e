@@ -74,7 +74,7 @@ public class FormCadastroCliente extends JInternalFrame {
 			tfTelefone, tfValidadeCnh, tfPrimeiraHabilitacao,
 			tfPagamentoInicial, tfPagamentoPendente, tfBuscaAluno;
 
-	private JButton btSalvar, btBuscarPacote, btBuscarAluno;
+	private JButton btSalvar, btExcluir, btBuscarPacote, btBuscarAluno;
 
 	private JTabbedPane abas;
 
@@ -610,7 +610,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		tfPagamentoPendente.setLocation(650, 630);
 		painelPagamento.add(tfPagamentoPendente);
 
-		// Componentes painel de agendamento
+		// Componentes painel de busca
 		
 		abaAgendamento = new JPanel();
 		abaAgendamento.setLayout(null);
@@ -645,11 +645,15 @@ public class FormCadastroCliente extends JInternalFrame {
 		
 		//-------------------------------------------------------------------
 		
-
-		//Calendario
-		new PainelCalendarioAulas(abaAgendamento);
+		btExcluir = new JButton("Excluir");
+		btExcluir.setLocation(215, 400);
+		btExcluir.setSize(180, 35);
+		abaAgendamento.add(btExcluir);
 		
-		//--------------------------------------------
+		minhaFrame = new JFrame();
+		java.awt.Point p = new Point(minhaFrame.getWidth() +10, 130);
+		painelCalendario = new PainelCalendarioAgendamento(p);
+		abaAgendamento.add(painelCalendario);
 
 		abas = new JTabbedPane();
 		abas.setBounds(1, 1, 895, 620);
