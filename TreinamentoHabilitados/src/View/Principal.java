@@ -214,11 +214,6 @@ public class Principal extends JFrame {
 		jtreeAtalhos.expandRow(60);
 		jtreeAtalhos.setFont(fonteP);
 
-		painelEmail = new JPanel(); // INICANDO O PAINEL
-		painelEmail.setLayout(new GridLayout(2, 1));
-		
-		
-		
 
 		barraLateral = new JToolBar();
 		barraLateral.setEnabled(false);
@@ -233,6 +228,8 @@ public class Principal extends JFrame {
 
 		add(barraLateral);
 
+		
+		
 		btAbrirMenuLateral = new JButton(">>");
 		btAbrirMenuLateral.setFocusCycleRoot(true);
 		btAbrirMenuLateral.setBounds(5, 10, 45, 30);
@@ -248,12 +245,18 @@ public class Principal extends JFrame {
 															 */
 		painelCalendario.setFont(fonteP);
 
+		
+
+		painelEmail = new JPanel(); // INICANDO O PAINEL
+		painelEmail.setLayout(new GridLayout(1, 1));
+		
 		jTableEmails = new JTable(new ModelTableEmail(new ArrayList<String>()));
 		jTableEmails.setFont(fonteP);
 		jTableEmails.setRowHeight(20);
 		spTbEmail = new JScrollPane(jTableEmails);
-
-		painelEmail.add(spTbEmail);
+//		spTbEmail.setBounds(5,txtBuscaEmail.getHeight()+txtBuscaEmail.getY(),painelEmail.getWidth()-5,25);
+		painelEmail.add(new PainelItensEmail(new ArrayList<String>(), spTbEmail, jTableEmails,painelEmail.getSize()));
+		
 
 		add(painelCalendario);
 
@@ -673,8 +676,7 @@ class ConfiguraEmail implements Runnable {
 							isJtreeAumentou = true;
 						pnEmail.setSize(WIDTH_TAMANHO,
 								barrNav.getHeight() - 80);
-						pnEmail.add(Principal.txtBuscaEmail = new JTextField());
-						
+						pnEmail.add(new PainelItensEmail(new ArrayList<String>(), spTbEmail, table,pnEmail.getSize()));
 						pnEmail.setLocation(tree.getWidth() + 10, 0);
 						pnEmail.setBackground(Color.white);
 						barrNav.add(pnEmail);
@@ -700,7 +702,7 @@ class ConfiguraEmail implements Runnable {
 						totalEmails = lstItens.size();
 						table.setModel(new ModelTableEmail(lstItens));
 						pnEmail.removeAll();
-						pnEmail.add(spTbEmail);
+						pnEmail.add(new PainelItensEmail(lstItens, spTbEmail, table,pnEmail.getSize()));
 						pnEmail.revalidate();
 						barrNav.revalidate();
 						barrNav.repaint();
@@ -880,4 +882,32 @@ class CheckNewMessages implements Runnable {
 		//
 	}
 	//
+	
+	
+}
+
+class PainelItensEmail extends JPanel{
+	private JScrollPane sp;
+	private JTable tb;
+	private JTextField txtBusca;
+	public PainelItensEmail(List<String>ls,JScrollPane sp,JTable tb,Dimension s){
+		this.tb = tb;
+		this.sp = sp;
+		setSize(s);
+		initComponents();
+		
+	}
+
+	private void initComponents() {
+		setLayout(null);
+		txtBusca = new JTextField();
+		txtBusca.setBounds(5, 5, this.getWidth()-5, 25);
+		add(txtBusca);
+		System.out.println(sp);
+		System.out.println(txtBusca);
+		sp.setBounds(5, txtBusca.getY()+txtBusca.hashCode(), getWidth()-5, getHeight()-txtBusca.getHeight()-txtBusca.getY());
+		add(sp);
+		
+		setVisible(true);
+	}
 }
