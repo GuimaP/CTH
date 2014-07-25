@@ -507,6 +507,8 @@ public class FormCadastroCliente extends JInternalFrame {
 		btBuscarAluno = new JButton(">>");
 		btBuscarAluno.setSize(50, 35);
 		btBuscarAluno.setLocation(400, 35);
+		btBuscarAluno.setToolTipText("Botão de busca. Para efetuar a busca"
+				+ " informar o NOME e o CPF do aluno desejado");
 		abaTodos.add(btBuscarAluno);
 
 		// Text

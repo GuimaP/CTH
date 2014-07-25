@@ -94,6 +94,7 @@
               <children xsi:type="basic:PartStack" xmi:id="_EaY1cgH4EeSN2MU1LXPwIA" elementId="bottom" containerData="2500" selectedElement="_EaY1dwH4EeSN2MU1LXPwIA">
                 <tags>newtablook</tags>
                 <tags>org.eclipse.e4.secondaryDataStack</tags>
+                <tags>active</tags>
                 <children xsi:type="advanced:Placeholder" xmi:id="_EaY1cwH4EeSN2MU1LXPwIA" elementId="org.eclipse.ui.views.ProblemView" ref="_EZuHAwH4EeSN2MU1LXPwIA"/>
                 <children xsi:type="advanced:Placeholder" xmi:id="_EaY1dAH4EeSN2MU1LXPwIA" elementId="org.eclipse.jdt.ui.JavadocView" ref="_EZuHBAH4EeSN2MU1LXPwIA"/>
                 <children xsi:type="advanced:Placeholder" xmi:id="_EaY1dQH4EeSN2MU1LXPwIA" elementId="org.eclipse.jdt.ui.SourceView" ref="_EZuHBQH4EeSN2MU1LXPwIA"/>
@@ -134,14 +135,11 @@
         <tags>newtablook</tags>
         <tags>org.eclipse.e4.primaryDataStack</tags>
         <tags>EditorStack</tags>
-        <tags>active</tags>
         <children xsi:type="basic:Part" xmi:id="_uAOugAxVEeSrzazEsfBUow" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="FormCadastroCliente.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.gif" closeable="true">
-          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;FormCadastroCliente.java&quot; partName=&quot;FormCadastroCliente.java&quot; title=&quot;FormCadastroCliente.java&quot; tooltip=&quot;TreinamentoHabilitados/src/View/FormCadastroCliente.java&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/TreinamentoHabilitados/src/View/FormCadastroCliente.java&quot;/>&#xD;&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;21145&quot; selectionTopPixel=&quot;10050&quot;/>&#xD;&#xA;&lt;/editor>"/>
+          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;FormCadastroCliente.java&quot; partName=&quot;FormCadastroCliente.java&quot; title=&quot;FormCadastroCliente.java&quot; tooltip=&quot;TreinamentoHabilitados/src/View/FormCadastroCliente.java&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/TreinamentoHabilitados/src/View/FormCadastroCliente.java&quot;/>&#xD;&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;15214&quot; selectionTopPixel=&quot;6615&quot;/>&#xD;&#xA;&lt;/editor>"/>
           <tags>Editor</tags>
           <tags>org.eclipse.jdt.ui.CompilationUnitEditor</tags>
           <tags>removeOnHide</tags>
-          <tags>active</tags>
-          <tags>activeOnClose</tags>
         </children>
         <children xsi:type="basic:Part" xmi:id="_ZmcMoAzeEeSpY4H-lxNoZw" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="FormCadastroCarro.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.gif" closeable="true">
           <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;FormCadastroCarro.java&quot; partName=&quot;FormCadastroCarro.java&quot; title=&quot;FormCadastroCarro.java&quot; tooltip=&quot;TreinamentoHabilitados/src/View/FormCadastroCarro.java&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/TreinamentoHabilitados/src/View/FormCadastroCarro.java&quot;/>&#xD;&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;145&quot; selectionOffset=&quot;3312&quot; selectionTopPixel=&quot;1380&quot;/>&#xD;&#xA;&lt;/editor>"/>
@@ -271,6 +269,8 @@
       <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;view/>"/>
       <tags>View</tags>
       <tags>categoryTag:General</tags>
+      <tags>active</tags>
+      <tags>activeOnClose</tags>
       <menus xmi:id="_7BDckAH5EeSN2MU1LXPwIA" elementId="org.eclipse.ui.console.ConsoleView">
         <tags>ViewMenu</tags>
         <tags>menuContribution:menu</tags>
@@ -318,7 +318,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_EMT9IgH4EeSN2MU1LXPwIA" elementId="org.eclipse.ui.workbench.file">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_jHoxhxPuEeSwhu3R0S8mvA" elementId="print" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" enabled="false" command="_DW_e3gH4EeSN2MU1LXPwIA"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_VnoRsBQFEeSMK7mHxPWB5Q" elementId="print" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" enabled="false" command="_DW_e3gH4EeSN2MU1LXPwIA"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_EMT9IwH4EeSN2MU1LXPwIA" elementId="additions" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -342,7 +342,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_EMXAcAH4EeSN2MU1LXPwIA" elementId="org.eclipse.ui.workbench.navigate">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_jHx7eRPuEeSwhu3R0S8mvA" elementId="org.eclipse.ui.window.pinEditor" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_DW8biQH4EeSN2MU1LXPwIA"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_Vn6lkRQFEeSMK7mHxPWB5Q" elementId="org.eclipse.ui.window.pinEditor" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_DW8biQH4EeSN2MU1LXPwIA"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_EMXAcQH4EeSN2MU1LXPwIA" elementId="group.editor" toBeRendered="false">
         <tags>toolbarSeparator</tags>
