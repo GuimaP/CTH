@@ -1,8 +1,0 @@
-package Model;
-
-public class Pagamento {
-	private String tipoPagamento;
-	private int parcelas;
-	
-
-}
