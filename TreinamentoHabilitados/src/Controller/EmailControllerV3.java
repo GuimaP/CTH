@@ -94,14 +94,18 @@ public class EmailControllerV3 {
 	 * Construtor para usar o metodo autentica
 	 * @throws MessagingException
 	 */
-	public EmailControllerV3() {
-			
+	public EmailControllerV3() {}
+	
+	public String getUser(){
+		return configEmail.getUser();
 	}
 	
-	public synchronized void sendEmail(Address[] to, String body, String subject) {
+	public synchronized void sendEmail(String[] to, String body, String subject) {
 		Message msg = new MimeMessage(session);
 		try {
-			msg.setRecipients(RecipientType.TO,to);
+			for(String adre : to ){
+				msg.addRecipient(RecipientType.TO,new InternetAddress(adre));
+			}
 			msg.setSubject(subject);
 			msg.setText(body);	
 
@@ -223,13 +227,9 @@ public class EmailControllerV3 {
 			
 			String ms = "";
 			Part p = (Part)msg;
-			if(p.isMimeType("text/html") ){
-				System.out.println("com text");
-				ms = msg.getContentType();
-			}else if (p.isMimeType("text/plain")) {
+			if(p.isMimeType("text/plain")) {
 				System.out.println("Texto");
 				ms =  p.getContent().toString();
-				// msEmail.setTexto(m);
 			}else if(p.getContent() instanceof String){
 				ms = renderMultiPart(msg);
 			}else if (p.isMimeType("multipart/*")) {
@@ -274,7 +274,7 @@ public class EmailControllerV3 {
 		
 	}
 
-	public synchronized boolean hasNewEmail(){
+	public synchronized boolean hasNewEmail(int contAtual){
 		try{
 //			Folder f = store.getFolder("INBOX");
 			if(!store.isConnected()){
@@ -284,7 +284,7 @@ public class EmailControllerV3 {
 			Folder f = store.getFolder("INBOX");
 			System.out.println(f.getName());
 			f.open(Folder.READ_ONLY);
-			int contAtual = lstItensEmails.size();
+			
 			int contCaixa = f.getMessageCount();
 			
 			return contAtual < contCaixa;
@@ -331,7 +331,7 @@ public class EmailControllerV3 {
 
 				String body = "";
 				Multipart multipart = (Multipart) msg.getContent();
-				
+				System.out.println("is BodyPart >" + msg.getSubject());
 				int inicio = 1;
 				if(multipart.getCount()<=1){
 					inicio = 0;
@@ -356,43 +356,21 @@ public class EmailControllerV3 {
 
 	}
 	
-	private List<MessageSerial> tranformaToSerial(Message[] vtrMsg) {
-		List<MessageSerial> ls = new ArrayList<MessageSerial>();
-//		MessageSerial [] vtr = new MessageSerial[vtrMsg.length];
-		long in,f,res;
-		
-		System.out.println(ls.size());
-		System.out.println(vtrMsg);
-		System.out.println(vtrMsg.length);
-		
-		for(int i = 0; i < vtrMsg.length; i ++){
-			
-			in = System.currentTimeMillis();
-			
-			Message m = vtrMsg[i];
-			try {
-				MessageSerial vtr= new MessageSerial();
-				vtr.setContent(vtrMsg[i].getContent());
-				vtr.setFrom(vtrMsg[i].getFrom().toString());
-				vtr.setGetDateReceive(vtrMsg[i].getReceivedDate());
-				vtr.setTo(vtrMsg[i].getRecipients(RecipientType.TO).toString());
-//				vtr.setReplyTo(m.getReplyTo().toString());
-				vtr.setSubject(vtrMsg[i].getSubject());
-				boolean isUn = vtrMsg[i].getFlags().contains(Flags.Flag.SEEN);
-				vtr.setIsUnread(!isUn);
-				
-			} catch (IOException | MessagingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			f = System.currentTimeMillis();
-			
-			res = f - in;
-			System.out.println(new SimpleDateFormat("dd/MM/yyyy - hh:mm").format(new Date(res)));
-			
+public int countMessage() throws MessagingException{
+	
+//		Folder f = store.getFolder("INBOX");
+		if(!store.isConnected()){
+			store.connect(configEmail.getHostReceive(), configEmail.getUser(),configEmail.getPass());
 		}
-		return ls;
-	}
+		
+		Folder f = store.getFolder("INBOX");
+		
+		f.open(Folder.READ_ONLY);
+		
+	return f.getMessageCount();
+		
+	
+}
 
 	private void saveArquivo(File arg,Object obj){
 		try{
@@ -429,7 +407,10 @@ public class EmailControllerV3 {
 	
 	private List<String> transformaForViewItem(Message[] vtrM, int inicio,int limite) throws MessagingException, IOException{
 		List<String>lsItens = new ArrayList<String>();
-		for(int i = inicio; i>= limite; i--){
+		if(inicio> vtrM.length){
+			inicio = vtrM.length;
+		}
+		for(int i = inicio; i > limite; i--){
 			
 		Message em = vtrM[i];
 		
@@ -463,6 +444,43 @@ public class EmailControllerV3 {
 			
 		}
 		return itens;
+	}
+	
+	public List<String> pegaItens(String folder,int inicio,int fim,List<String> ls) throws Exception{
+		List<String> itens = new ArrayList<String>();
+			if(mapItensViews.containsKey(folder)){
+				itens = mapItensViews.get(folder);
+			
+				if(inicio < itens.size()){ //O Limite tem que ser menor do que a lista
+					if(fim < itens.size()){ //Ver se o limite que estou pedindo é menor que o fim
+						for(int i = inicio; i < fim;i++){
+							ls.add( itens.get(i));
+						}
+					}else { // Se o fim exceder o tamanho da lista
+						Folder fol = store.getFolder(folder); //Eu Pego do servidor
+						fol.open(Folder.READ_ONLY);
+						Message[] vtrM = fol.getMessages();
+						List<String>temp = transformaForViewItem(vtrM, fim, inicio);
+						temp.forEach(s ->{
+							ls.add(s);
+						});
+					}
+				}else { //Agora, se o inicio exceder o limite
+					
+					Folder fol = store.getFolder(folder); //Completo do Servidor
+					fol.open(Folder.READ_ONLY);
+					Message[] vtrM = fol.getMessages();
+					List<String>temp = transformaForViewItem(vtrM, fim, inicio);
+					temp.forEach(s ->{
+						ls.add(s);
+					});
+					
+				}
+				mapItensViews.put(folder, ls);
+				saveArquivo(arqItensViews, mapItensViews);
+			}
+		
+		return ls;
 	}
 
 

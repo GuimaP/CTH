@@ -6,6 +6,10 @@ import java.util.Date;
 import java.util.List;
 
 import javax.mail.Address;
+import javax.mail.Message;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage.RecipientType;
+import javax.swing.JOptionPane;
 
 public class MensagemEmail implements Serializable{
 	/**
@@ -19,7 +23,12 @@ public class MensagemEmail implements Serializable{
 	private String texto="";
 	private String replyTo;
 	public String getReplyTo() {
-		return replyTo;
+		int indexInicial = replyTo.indexOf("<");
+		int indexFinal = replyTo.indexOf(">");
+		String reply = replyTo.substring(indexInicial, indexFinal);
+		reply = reply.replaceAll("<", "");
+		System.out.println( reply);
+		return reply;
 	}
 	public void setReplyTo(String replyTo) {
 		this.replyTo = replyTo;
@@ -64,8 +73,12 @@ public class MensagemEmail implements Serializable{
 	public void setFrom(String from) {
 		this.from = from;
 	}
-	public String getTo() {
-		return to;
+	public String[] getTo() {
+		to.replaceAll(";", "|");
+		String[] vtrS = to.split("|");
+		
+		
+		return vtrS;
 	}
 	public void setTo(String to) {
 		this.to = to;

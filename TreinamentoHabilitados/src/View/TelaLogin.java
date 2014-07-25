@@ -50,7 +50,7 @@ public class TelaLogin extends JFrame {
     private JPasswordField jpSenha;
     private Point point;
     private JFrame minhaFrame; //Variavel da minha frame, necessaria para o efeito de arrastar a tela
-    //private FazendoLogin fazendoLogin = new FazendoLogin();
+    
     
     
 

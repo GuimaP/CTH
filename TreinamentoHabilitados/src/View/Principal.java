@@ -52,6 +52,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.event.AncestorEvent;
@@ -77,7 +79,6 @@ import Model.UsuarioEmail;
 
 import com.itextpdf.text.Font;
 
-
 public class Principal extends JFrame {
 
 	private JMenuBar menuBarra;
@@ -88,8 +89,7 @@ public class Principal extends JFrame {
 	private JLabel redefinirSenha;
 	private boolean painelMostrando = false;
 	private JPanel painelInformativo, painelLateralGuia;
-	private JButton btAbrirInformativo, btAbrirMenuLateral;
-	protected static JFrame minhaFrame; // Frame para setar a dialogs
+	private JButton btAbrirInformativo;
 	private JToolBar barraLateral;
 	private JScrollPane sp;
 	private PainelCalendarioAgendamento painelCalendario;
@@ -104,21 +104,28 @@ public class Principal extends JFrame {
 	private HashMap<String, List<String>> mapEmails;
 	protected static Login loginUser;
 	
+	protected static JTextField txtBuscaEmail;
 	private MensagemEmail mensagem;
 
 	private Map<String, List<MensagemEmail>> arquivosEmail;
 
+	protected static JButton btRefreshItens;
+	protected static JButton btAbrirMenuLateral;
+	protected static JFrame minhaFrame; // Frame para setar a dialogs
+	
+	
+	private JScrollPane spTbEmail;
 	private Thread gerenciaEmal;
 	private final int WIDTH_TAMANHO = 301;
 
 	private boolean hasEmailReady = false;
-	private JButton btRefreshItens;
+	
 
 	public static boolean finished = false;
 	public static boolean carregado;
 	protected static boolean isFrameInstrutorOpen, isFrameClienteOpen,
 			isFrameCadastroPacote, isFrameAgendamento, isFrameCarro,
-			isViewConfiguraEmail,isPainelEmailShow;
+			isViewConfiguraEmail, isPainelEmailShow;
 
 	public Principal(Login usuario) {
 
@@ -127,11 +134,13 @@ public class Principal extends JFrame {
 			minhaFrame = this;
 			this.loginUser = usuario;
 			this.painelEmail = null;
-			
+
 			inicializaComponentes();
 			definirEventos();
-			new Thread(new ConfiguraEmail(btRefreshItens, usuario, jtreeAtalhos, btAbrirMenuLateral, barraLateral, WIDTH_TAMANHO,jTableEmails,painelEmail,this,sp)).start();
-			
+			new Thread(new ConfiguraEmail(btRefreshItens, usuario,
+					jtreeAtalhos, btAbrirMenuLateral, barraLateral,
+					WIDTH_TAMANHO, jTableEmails, painelEmail, this, spTbEmail))
+					.start();
 
 			isFrameClienteOpen = isFrameInstrutorOpen = isFrameCadastroPacote = isFrameAgendamento = isFrameCarro = isViewConfiguraEmail = false;
 		} catch (Exception e) {
@@ -204,10 +213,12 @@ public class Principal extends JFrame {
 		jtreeAtalhos.setCellRenderer(new MeuModeloTree());
 		jtreeAtalhos.expandRow(60);
 		jtreeAtalhos.setFont(fonteP);
-		
 
 		painelEmail = new JPanel(); // INICANDO O PAINEL
-		painelEmail.setLayout(new GridLayout(1, 1));
+		painelEmail.setLayout(new GridLayout(2, 1));
+		
+		
+		
 
 		barraLateral = new JToolBar();
 		barraLateral.setEnabled(false);
@@ -240,9 +251,9 @@ public class Principal extends JFrame {
 		jTableEmails = new JTable(new ModelTableEmail(new ArrayList<String>()));
 		jTableEmails.setFont(fonteP);
 		jTableEmails.setRowHeight(20);
-		sp = new JScrollPane(jTableEmails);
+		spTbEmail = new JScrollPane(jTableEmails);
 
-		painelEmail.add(sp);
+		painelEmail.add(spTbEmail);
 
 		add(painelCalendario);
 
@@ -267,18 +278,14 @@ public class Principal extends JFrame {
 
 	}
 
-
-	
 	//
 	public void definirEventos() {
 
-		
 		btAbrirMenuLateral.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				long time = (1/2)+ (1/3);
-						
-				
+				long time = (1 / 2) + (1 / 3);
+
 				if (!painelMostrando) { // ABRINDO O PAINEL
 
 					painelMostrando = true;
@@ -375,8 +382,6 @@ public class Principal extends JFrame {
 			}
 		});
 
-	
-
 		itSair.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -456,182 +461,60 @@ public class Principal extends JFrame {
 
 		itFazerLogoff.addActionListener(e -> {
 			this.dispose();
-//			Thread.currentThread().stop();
-			
-			new TelaLogin();
-			minhaFrame = null;
-			
+			// Thread.currentThread().stop();
 
-		});
+				new TelaLogin();
+				minhaFrame = null;
 
-		
-	
-		
-	sp.getVerticalScrollBar().addPropertyChangeListener(new PropertyChangeListener() {
-		
-		@Override
-		public void propertyChange(PropertyChangeEvent evt) {
-			System.out.println("hahaha");
-			
-		}
-	});
-	
-//	sp.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
-//		
-//		@Override
-//		public void adjustmentValueChanged(AdjustmentEvent e) {
-//			System.out.println("lol");
-//			
-//		}
-//	});
-//	
-//	sp.getViewport().addChangeListener(new ChangeListener() {
-//		
-//		@Override
-//		public void stateChanged(ChangeEvent arg0) {
-//			System.out.println("hehehe");
-//			
-//		}
-//	});
-//	
-//sp.getHorizontalScrollBar().addAdjustmentListener(new AdjustmentListener() {
-//		
-//		@Override
-//		public void adjustmentValueChanged(AdjustmentEvent e) {
-//			System.out.println("laaaaaa");
-//			
-//			
-//		}
-//	});
-//
-//jTableEmails.addAncestorListener(new AncestorListener() {
-//	
-//	@Override
-//	public void ancestorRemoved(AncestorEvent event) {
-//		// TODO Auto-generated method stub
-//		
-//	}
-//	
-//	@Override
-//	public void ancestorMoved(AncestorEvent event) {
-//		System.out.println(sp.getHorizontalScrollBar().getValue());
-//		System.out.println(sp.getHorizontalScrollBar().getBlockIncrement());
-//		System.out.println(sp.getHorizontalScrollBar().getVisibleAmount());
-//		System.out.println(sp.getVerticalScrollBar().getUnitIncrement());
-//		System.out.println(sp.getVerticalScrollBar().getBlockIncrement());
-//		System.out.println(sp.getHorizontalScrollBar().isMaximumSizeSet());
-//		System.out.println(sp.getHorizontalScrollBarPolicy());
-//		
-//		System.out.println("---");
-//		int extent = sp.getVerticalScrollBar().getModel().getExtent();
-//        System.out.println("1. Value: " + (sp.getVerticalScrollBar().getValue() + extent) + " Max: " + sp.getVerticalScrollBar().getMaximum());
-//        System.out.println("---");
-//        BoundedRangeModel model = (BoundedRangeModel) sp.getVerticalScrollBar().getModel();
-//        int extent2 = model.getExtent();
-//        int maximum = model.getMaximum();
-//        int value = model.getValue();
-//
-//        System.out.println("2. Value: " + (value + extent2) + " Max: " + maximum);
-//		JScrollBar bar = sp.getVerticalScrollBar();
-//		bar.setValueIsAdjusting(true);
-//		System.out.println(bar.getX());
-//		System.out.println(bar.getY());
-//		System.out.println(bar.getInsets().right);
-//		System.out.println(bar.getInsets().left);
-//		System.out.println(bar.getAlignmentY());
-//		System.out.println(bar.getAlignmentX());
-//		System.out.println(bar.getValue());
-//		System.out.println(bar.getBounds().x);
-//		System.out.println(bar.HORIZONTAL);
-//		System.out.println(sp.getAlignmentX());
-//		System.out.println(sp.getAlignmentY());
-//		
-//		
-//		System.out.println(sp.getHorizontalScrollBar().getValue());
-//		System.out.println(sp.getVerticalScrollBar().getValue());
-//		System.out.println(sp.getHorizontalScrollBar().getModel().getExtent());
-//		System.out.println(sp.getVerticalScrollBar().getModel().getExtent());
-//		System.out.println("--");
-//		
-//		
-//		
-//		System.out.println("=---=");
-//		
-//	}
-//	
-//	 
-//	
-//	@Override
-//	public void ancestorAdded(AncestorEvent event) {
-//		// TODO Auto-generated method stub
-//		
-//	}
-//});
-
-
-sp.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
-
-    @Override
-    public void adjustmentValueChanged(AdjustmentEvent event) {
-        JScrollBar scrollBar = (JScrollBar) event.getAdjustable();
-        int extent = scrollBar.getModel().getExtent();
-        System.out.println("1. Value: " + (scrollBar.getValue() + extent) + " Max: " + scrollBar.getMaximum());
-
-    }
-});
+			});
 
 	}
-	
-	
-	
-	
-	
-	
-
 
 }
 
 /**
  * 
  * INNERS CLASS
+ * 
  * @author gprodrigues
  *
  */
 
 class MeuModeloTree extends DefaultTreeCellRenderer {
 
-	@Override public Component getTreeCellRendererComponent(JTree tree, Object value,
+	@Override
+	public Component getTreeCellRendererComponent(JTree tree, Object value,
 			boolean sel, boolean expanded, boolean leaf, int row,
 			boolean hasFocus) {
-			super.getTreeCellRendererComponent(tree, value, sel, expanded,
-				leaf, row, hasFocus); // To change body of generated
-										// methods, choose Tools |
-										// Templates.
-										// if(value != null){
+		super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf,
+				row, hasFocus); // To change body of generated
+								// methods, choose Tools |
+								// Templates.
+								// if(value != null){
 		DefaultMutableTreeNode no = (DefaultMutableTreeNode) value;
 		String texto = no.getUserObject().toString();
 		System.out.println();
 		if (texto.equals("Inicio")) {
-			ImageIcon img = new ImageIcon(getClass().getClassLoader().getResource(
-					"Resources/icons/inicio.png"));
+			ImageIcon img = new ImageIcon(getClass().getClassLoader()
+					.getResource("Resources/icons/inicio.png"));
 			setIcon(img);
 			setToolTipText(texto);
 
 		} else if (texto.contains("E-mail")) {
-			ImageIcon img = new ImageIcon(getClass().getClassLoader().getResource(
-					"Resources/icons/email.png"));
+			ImageIcon img = new ImageIcon(getClass().getClassLoader()
+					.getResource("Resources/icons/email.png"));
 			setIcon(img);
 			setToolTipText(texto);
 		}
 		if (texto.contains("Favoritos")) {
-			ImageIcon img = new ImageIcon(getClass().getClassLoader().getResource(
-					"Resources/icons/"+ texto + ".png"));
+			ImageIcon img = new ImageIcon(getClass().getClassLoader()
+					.getResource("Resources/icons/" + texto + ".png"));
 			setIcon(img);
 			setToolTipText(texto);
 		}
 		if (texto.contains("Tarefas")) {
-			ImageIcon img = new ImageIcon(getClass().getClassLoader().getResource(
-					"Resources/icons/"+ texto + ".png"));
+			ImageIcon img = new ImageIcon(getClass().getClassLoader()
+					.getResource("Resources/icons/" + texto + ".png"));
 			setIcon(img);
 			setToolTipText(texto);
 		} else {
@@ -645,33 +528,41 @@ class MeuModeloTree extends DefaultTreeCellRenderer {
 
 }
 
-
 // Thread Para Configurar e baixar os E-mails
- class ConfiguraEmail implements  Runnable {
-	private JButton btRefresh,btAbrirNav;
+class ConfiguraEmail implements Runnable {
+	private JButton btAbrirNav;
+	private static JButton btRefresh;
 	private File arquivoEmailMap;
-	private List<File>lsArquivoTemp;
+	private List<File> lsArquivoTemp;
 	private EmailControllerV3 emailC;
 	private Login user;
 	private JTree tree;
 	private JToolBar barrNav;
-	
+
 	private int WIDTH_TAMANHO;
-	
+
 	private JTable table;
 	private JPanel pnEmail;
-	
+
 	private JFrame frame;
-	
-	private boolean isShowing;
-	
+
+	protected static boolean isShowing;
+	private int totalEmails;
 	private UsuarioEmail confEmail;
-	private JScrollPane sp;
-	public ConfiguraEmail(JButton bt,Login u,JTree j,JButton btAbrirNav,JToolBar barrNav, int WIDTH_TAMANHO,JTable tb,JPanel pn, Principal principal,JScrollPane sp){
+	private JScrollPane spTbEmail;
+	protected static boolean isLodingEmail,isJtreeAumentou;
+	private List<String> lstItens;
+	protected String nameFolder;
+
+	public ConfiguraEmail(JButton bt, Login u, JTree j, JButton btAbrirNav,
+			JToolBar barrNav, int WIDTH_TAMANHO, JTable tb, JPanel pn,
+			Principal principal, JScrollPane sp) {
 
 		isShowing = false;
+		isJtreeAumentou = false;
+		this.lstItens = new ArrayList<String>();
 		this.btRefresh = bt;
-		this.sp = sp;
+		this.spTbEmail = sp;
 		this.user = u;
 		this.tree = j;
 		this.table = tb;
@@ -680,19 +571,27 @@ class MeuModeloTree extends DefaultTreeCellRenderer {
 		this.barrNav = barrNav;
 		this.frame = principal;
 		this.WIDTH_TAMANHO = WIDTH_TAMANHO;
-		
-		File fileConfigEmail = new File(getClass().getClassLoader().getResource(
-				"Resources/FilesConfig").getPath()); //Pego o diretorio que se encontra o arquivo
-		
-		String nameFolder = user.getUsuario() + "@emailConfig"; //e digo o nome padrão dos arquivos de e-mail's
-		confEmail = new CriptografiaConfigEmail().unCrypt(//e tento localizo-lo e descriptografa-lo
+
+		File fileConfigEmail = new File(getClass().getClassLoader()
+				.getResource("Resources/FilesConfig").getPath()); // Pego o
+																	// diretorio
+																	// que se
+																	// encontra
+																	// o arquivo
+
+		String nameFolder = user.getUsuario() + "@emailConfig"; // e digo o nome
+																// padrão dos
+																// arquivos de
+																// e-mail's
+		confEmail = new CriptografiaConfigEmail().unCrypt(// e tento localizo-lo
+															// e
+															// descriptografa-lo
 				nameFolder);
-		
+
 	}
-	
-	private void defineJtreeView() throws MessagingException{
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode(
-				"Inicio");
+
+	private void defineJtreeView() throws MessagingException {
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Inicio");
 
 		DefaultMutableTreeNode favItens = new DefaultMutableTreeNode(
 				"Favoritos");
@@ -702,14 +601,21 @@ class MeuModeloTree extends DefaultTreeCellRenderer {
 				"Tarefas");
 		root.add(tarefaItens);
 
-		DefaultMutableTreeNode dmEmail = new DefaultMutableTreeNode(
-				"E-mail"); // Recrio todo a JTree com os
-							// itens
+		DefaultMutableTreeNode dmEmail = new DefaultMutableTreeNode("E-mail"); // Recrio
+																				// todo
+																				// a
+																				// JTree
+																				// com
+																				// os
+																				// itens
 
+		DefaultMutableTreeNode dmEnviarEmail = new DefaultMutableTreeNode(
+				"Enviar E-mail");
+		
+		dmEmail.add(dmEnviarEmail);
 		List<String> folders = emailC.getFolders();
 		folders.forEach(fo -> {
-			DefaultMutableTreeNode dm = new DefaultMutableTreeNode(
-					fo);
+			DefaultMutableTreeNode dm = new DefaultMutableTreeNode(fo);
 			dmEmail.add(dm);
 		});
 
@@ -717,75 +623,102 @@ class MeuModeloTree extends DefaultTreeCellRenderer {
 		DefaultTreeModel model = new DefaultTreeModel(root);
 
 		tree.setModel(model);
-		
-		
+
 	}
-	
-	private void defineEventsItensEmail(){
+
+	private void defineEventsItensEmail() {
 		tree.addTreeSelectionListener(new TreeSelectionListener() {
 
 			@Override
 			public void valueChanged(TreeSelectionEvent evt) {
 				System.out.println(evt.getNewLeadSelectionPath());
 				System.out.println("eh nois carai");
-
-					String[] itens = evt.getNewLeadSelectionPath().toString()
-							.split(",");
-					String nameFolder = itens[itens.length - 1]; /*
-																 * Pego o ultimo
-																 * nome da
-																 * arvore de
-																 * arquivos
-																 */
-
-					nameFolder = nameFolder.replace(']', ' '); /*
-																 * e retiro os
-																 * caracteres
-																 */
-					nameFolder = nameFolder.replace(" ", "");
 				
-																	 // Testa se é
-																	// pasta
-																	// INBOX
-						
-					System.out.println(nameFolder);
-					
-						try{	
-							
-						table.setModel(new ModelTableEmail(emailC.pegaItens(nameFolder)));
-						if(!isShowing){
+				String[] itens = evt.getNewLeadSelectionPath().toString()
+						.split(",");
+
+				nameFolder = itens[itens.length - 1]; /*
+													 * Pego o ultimo nome da
+													 * arvore de arquivos
+													 */
+
+				nameFolder = nameFolder.replace(']', ' '); /*
+															 * e retiro os
+															 * caracteres
+															 */
+				nameFolder = nameFolder.replace(" ", "");
+
+				// Testa se é
+				// pasta
+				// INBOX
+
+				System.out.println(nameFolder);
+
+				try {
+					System.out.println(isShowing);
+					System.out.println(isJtreeAumentou);
+					if (!isShowing) {
 						Principal.isPainelEmailShow = true;
 						isShowing = true;
 						java.awt.Dimension d2 = barrNav.getSize();
-						barrNav.setSize(d2.width + WIDTH_TAMANHO,
-								d2.height);
+						barrNav.setSize(d2.width + WIDTH_TAMANHO, d2.height);
 						table.setRowHeight(20);
-						btAbrirNav.setLocation(
-								btAbrirNav.getX() + WIDTH_TAMANHO,
-								btAbrirNav.getY());
+						btAbrirNav.setLocation(btAbrirNav.getX()
+								+ WIDTH_TAMANHO, btAbrirNav.getY());
 						btRefresh.setLocation(btAbrirNav.getX()
-								+ btAbrirNav.getWidth(),
-								btAbrirNav.getY());
+								+ btAbrirNav.getWidth(), btAbrirNav.getY());
+						
+						
+						if(!isJtreeAumentou){
+							isJtreeAumentou = true;
 						pnEmail.setSize(WIDTH_TAMANHO,
-								barrNav.getHeight()- 80);
+								barrNav.getHeight() - 80);
+						pnEmail.add(Principal.txtBuscaEmail = new JTextField());
+						
 						pnEmail.setLocation(tree.getWidth() + 10, 0);
 						pnEmail.setBackground(Color.white);
 						barrNav.add(pnEmail);
-						Principal.minhaFrame.revalidate();
-						Principal.minhaFrame.repaint();
 						}
 						
-
-						}catch(Exception er){
-							er.printStackTrace();
-						}
 					}
-			//	}
+					
+					
+					if ("EnviarE-mail".equalsIgnoreCase(nameFolder)) { //Tem que ser junto, pois existe a validação de retirar todos os Espaços
+						
+						
+						
+						pnEmail.removeAll();
+						pnEmail.add(new PainelSendNewEmail(pnEmail.getSize(), emailC, pnEmail, barrNav,new  Dimension(barrNav.getSize().width - WIDTH_TAMANHO, barrNav.getSize().height)));
+						barrNav.revalidate();
+						barrNav.repaint();
+						pnEmail.revalidate();
+						pnEmail.repaint();
+						System.out.println("Enviar E-mail@@");
+						
+					} else {
+						lstItens = emailC.pegaItens(nameFolder);
+						totalEmails = lstItens.size();
+						table.setModel(new ModelTableEmail(lstItens));
+						pnEmail.removeAll();
+						pnEmail.add(spTbEmail);
+						pnEmail.revalidate();
+						barrNav.revalidate();
+						barrNav.repaint();
+						pnEmail.repaint();
+						Principal.minhaFrame.revalidate();
+						Principal.minhaFrame.repaint();
+					}
+					
+					
 
-			
+				} catch (Exception er) {
+					er.printStackTrace();
+				}
+			}
+			// }
+
 		});
 
-		
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -794,19 +727,21 @@ class MeuModeloTree extends DefaultTreeCellRenderer {
 					try {
 						int index = table.getSelectedRow();
 						System.out.println("INDEX PRINCIPAL - " + index);
-//						index = ((ModelTableEmail) table.getModel())
-//								.getIdEmail(index);
+						// index = ((ModelTableEmail) table.getModel())
+						// .getIdEmail(index);
 						System.out.println("INDEX PELA TABLE -" + index);
-						String selectedFolder = tree.getSelectionPath().toString();
+						String selectedFolder = tree.getSelectionPath()
+								.toString();
 						System.out.println(selectedFolder);
 						String[] vt = selectedFolder.split(",");
-						selectedFolder = vt[vt.length-1];
-						selectedFolder = selectedFolder.replaceAll("]","");
+						selectedFolder = vt[vt.length - 1];
+						selectedFolder = selectedFolder.replaceAll("]", "");
 						selectedFolder = selectedFolder.trim();
-						MensagemEmail em = emailC.pegaEmail(selectedFolder, index);
+						MensagemEmail em = emailC.pegaEmail(selectedFolder,
+								index);
 						frame.getContentPane().add(new ViewEmail(em, emailC));
 						// arquivosEmail = email.getEmails();
-						
+
 						System.out.println("cliq");
 					} catch (Exception exc) {
 						exc.printStackTrace();
@@ -815,58 +750,92 @@ class MeuModeloTree extends DefaultTreeCellRenderer {
 				}
 			}
 		});
-		
-//		sp.addMouseWheelListener(new MouseWheelListener() {
-//			
-//			@Override
-//			public void mouseWheelMoved(MouseWheelEvent arg0) {
-//				System.out.println("Table moveu Wheeel");
-//				System.out.println(sp.getAlignmentY());
-//				System.out.println("Local do Scroll "+ sp.getVerticalScrollBar().getValue());
-//				System.out.println(sp.getVerticalScrollBar().getAlignmentY());
-//				System.out.println(sp.getVerticalScrollBar().getMaximum());
-//				System.out.println("------");
-//			}
-//		});
-		
-	
-		
-	
-		
-		
+
+		spTbEmail.getVerticalScrollBar().addAdjustmentListener(
+				new AdjustmentListener() {
+
+					@Override
+					public void adjustmentValueChanged(AdjustmentEvent e) {
+						JScrollBar bar = spTbEmail.getVerticalScrollBar();
+						int total = bar.getValue() + bar.getHeight();
+
+						if (total == bar.getMaximum()) {
+							if (!isLodingEmail) {
+								btRefresh.setVisible(true);
+								JButton b = btRefresh;
+								new Thread(
+										() -> {
+											try {
+												ConfiguraEmail.isLodingEmail = true;
+												List<String> ls = emailC
+														.pegaItens(
+																nameFolder,
+																lstItens.size(),
+																lstItens.size() + 30,
+																lstItens);
+
+												table.setModel(new ModelTableEmail(
+														ls));
+												ConfiguraEmail.btRefresh
+														.setVisible(false);
+												ConfiguraEmail.isLodingEmail = false;
+												// Principal.minhaFrame.revalidate();
+												// Principal.minhaFrame.repaint();
+											} catch (Exception e1) {
+												// TODO Auto-generated catch
+												// block
+												e1.printStackTrace();
+											}
+										}).start();
+							}
+						} else {
+							System.out.println(total + " / " + bar.getMaximum());
+						}
+
+					}
+				});
+
 	}
-	
+
 	public void run() {
 		try {
-			
-			if(confEmail != null){ //Se no construtor conseguiu localizar o arquivo então eu tento autentica-lo
+
+			if (confEmail != null) { // Se no construtor conseguiu localizar o
+										// arquivo então eu tento autentica-lo
 				System.out.println("Tem config");
-//				File log = new File(getClass().getClassLoader().getResource(
-//						"Resources/FilesConfig/log.txt").toURI()); //Pego o diretorio que se encontra o arquivo
-//				InputStream in = getClass().getResourceAsStream("/Resources/FilesConfig/log.txt");
-				
+				// File log = new File(getClass().getClassLoader().getResource(
+				// "Resources/FilesConfig/log.txt").toURI()); //Pego o diretorio
+				// que se encontra o arquivo
+				// InputStream in =
+				// getClass().getResourceAsStream("/Resources/FilesConfig/log.txt");
+
 				LocalDate inicio = LocalDate.now();
-				
-				
+
 				btRefresh.setVisible(true);
 				emailC = new EmailControllerV3(confEmail);
 				defineJtreeView();
 				defineEventsItensEmail();
-				LocalDate fim = LocalDate.now();				
-				Thread threadUpdateEmail = new Thread(new CheckNewMessages(table,tree,pnEmail,emailC));
+				LocalDate fim = LocalDate.now();
+				Thread threadUpdateEmail = new Thread(new CheckNewMessages(
+						table, tree, pnEmail, emailC));
 				threadUpdateEmail.start();
 				Principal.minhaFrame.revalidate();
-			}else {
+			} else {
 				System.out.println("N Tem config  - PARTIU");
 			}
 		} catch (MessagingException e) {
 			e.printStackTrace();
-			
-		}finally{
+
+		} finally {
 			btRefresh.setVisible(false);
 		}
 	}
 }
+
+
+
+
+
 
 
 class CheckNewMessages implements Runnable {
@@ -875,40 +844,40 @@ class CheckNewMessages implements Runnable {
 	private EmailControllerV3 email;
 	private JTree jtree;
 	private JPanel painel;
-	private Map<String,List<MensagemEmail>> arquivosEmail;
+	private Map<String, List<MensagemEmail>> arquivosEmail;
 
-	public CheckNewMessages(JTable Table, JTree jtreeAtalhos,
-			JPanel painel, EmailControllerV3 emailC) {
+	public CheckNewMessages(JTable Table, JTree jtreeAtalhos, JPanel painel,
+			EmailControllerV3 emailC) {
 		this.painel = painel;
 		this.jtable = Table;
 		this.jtree = jtreeAtalhos;
 		this.email = emailC;
-	
+
 	}
-//
+
+	//
 	@Override
 	public void run() {
 		try {
-			while(true){
-				int atual = email.pegaItens("INBOX").size();
-				if(email.hasNewEmail()){
-					List<String>ls = email.getNewEmails();
+			while (true) {
+				int atual = email.countMessage();
+				if (email.hasNewEmail(atual)) {
+					List<String> ls = email.getNewEmails();
 					int indiceSelected = jtable.getSelectedRow();
 					jtable.setModel(new ModelTableEmail(ls));
 					indiceSelected = ls.size() - atual;
-					jtable.setRowSelectionInterval(indiceSelected, indiceSelected);
+					jtable.setRowSelectionInterval(indiceSelected,
+							indiceSelected);
 				}
-				
-				Thread.sleep(60*1000);
+
+				Thread.sleep(60 * 1000);
 			}
-			
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			 e.printStackTrace();
+			e.printStackTrace();
 		}
-//
+		//
 	}
-//
+	//
 }
-
-

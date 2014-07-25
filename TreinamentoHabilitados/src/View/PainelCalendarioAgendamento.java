@@ -144,6 +144,7 @@ public class PainelCalendarioAgendamento extends JPanel {
 													// JCalendar
 			calendario.setTodayButtonText("Hoje");
 			calendario.getDayChooser().setAlwaysFireDayProperty(true);
+			
 			painelCalendario.add(calendario); // Adicionando o objeto
 
 			add(painelCalendario);
