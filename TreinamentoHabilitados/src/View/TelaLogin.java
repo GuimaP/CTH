@@ -35,6 +35,11 @@ import Model.Repository.LoginRepository;
 
 import java.awt.Color;
 
+
+/**
+ * Minha Classe...
+ *
+ */
 public class TelaLogin extends JFrame {
 
     protected static boolean isLoading;
@@ -46,6 +51,8 @@ public class TelaLogin extends JFrame {
     private Point point;
     private JFrame minhaFrame; //Variavel da minha frame, necessaria para o efeito de arrastar a tela
     //private FazendoLogin fazendoLogin = new FazendoLogin();
+    
+    
 
     public TelaLogin() {
         try {

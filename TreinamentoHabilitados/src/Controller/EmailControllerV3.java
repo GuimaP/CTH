@@ -61,16 +61,24 @@ public class EmailControllerV3 {
 			nTentativas = 0;
 			nameArquivosMail = em.getUser()+"@mapMail";
 			nameItensViews = em.getUser()+"@itemMail";
-			String dir = System.getProperty("user.dir");
+			String dir = System.getProperty("user.home");
 			String sep = System.getProperty("file.separator");
 			
-			
+			File filDir = new File(dir+sep+"Treinamento"+sep+"res");
+			System.out.println(filDir);
+			if(!filDir.exists()){
+				filDir.mkdir();
+			}
+			dir += sep+"Treinamento";
+			System.out.println(dir);
 			arqItensViews = new File(dir+sep+
-					"Resources"+sep+"FilesConfig"
+					"res"+sep
 					+sep + nameItensViews + ".cr");
 			arqFilesMail = new File(dir+sep+
-					"Resources"+sep+"FilesConfig"
+					"res"+sep
 					+sep + nameArquivosMail + ".cr");
+			
+			
 			
 			this.configEmail = em;
 			System.out.println(arqFilesMail);

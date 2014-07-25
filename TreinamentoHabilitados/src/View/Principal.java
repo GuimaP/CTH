@@ -240,9 +240,9 @@ public class Principal extends JFrame {
 		jTableEmails = new JTable(new ModelTableEmail(new ArrayList<String>()));
 		jTableEmails.setFont(fonteP);
 		jTableEmails.setRowHeight(20);
-		JScrollPane spe = new JScrollPane(jTableEmails);
+		sp = new JScrollPane(jTableEmails);
 
-		painelEmail.add(spe);
+		painelEmail.add(sp);
 
 		add(painelCalendario);
 
@@ -476,44 +476,44 @@ public class Principal extends JFrame {
 		}
 	});
 	
-	sp.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
-		
-		@Override
-		public void adjustmentValueChanged(AdjustmentEvent e) {
-			System.out.println("lol");
-			
-		}
-	});
-	
-	sp.getViewport().addChangeListener(new ChangeListener() {
-		
-		@Override
-		public void stateChanged(ChangeEvent arg0) {
-			System.out.println("hehehe");
-			
-		}
-	});
-	
-sp.getHorizontalScrollBar().addAdjustmentListener(new AdjustmentListener() {
-		
-		@Override
-		public void adjustmentValueChanged(AdjustmentEvent e) {
-			System.out.println("laaaaaa");
-			
-			
-		}
-	});
-
-jTableEmails.addAncestorListener(new AncestorListener() {
-	
-	@Override
-	public void ancestorRemoved(AncestorEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public void ancestorMoved(AncestorEvent event) {
+//	sp.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+//		
+//		@Override
+//		public void adjustmentValueChanged(AdjustmentEvent e) {
+//			System.out.println("lol");
+//			
+//		}
+//	});
+//	
+//	sp.getViewport().addChangeListener(new ChangeListener() {
+//		
+//		@Override
+//		public void stateChanged(ChangeEvent arg0) {
+//			System.out.println("hehehe");
+//			
+//		}
+//	});
+//	
+//sp.getHorizontalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+//		
+//		@Override
+//		public void adjustmentValueChanged(AdjustmentEvent e) {
+//			System.out.println("laaaaaa");
+//			
+//			
+//		}
+//	});
+//
+//jTableEmails.addAncestorListener(new AncestorListener() {
+//	
+//	@Override
+//	public void ancestorRemoved(AncestorEvent event) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//	
+//	@Override
+//	public void ancestorMoved(AncestorEvent event) {
 //		System.out.println(sp.getHorizontalScrollBar().getValue());
 //		System.out.println(sp.getHorizontalScrollBar().getBlockIncrement());
 //		System.out.println(sp.getHorizontalScrollBar().getVisibleAmount());
@@ -532,34 +532,41 @@ jTableEmails.addAncestorListener(new AncestorListener() {
 //        int value = model.getValue();
 //
 //        System.out.println("2. Value: " + (value + extent2) + " Max: " + maximum);
-		JScrollBar bar = sp.getVerticalScrollBar();
-		bar.setValueIsAdjusting(true);
-		System.out.println(bar.getX());
-		System.out.println(bar.getY());
-		System.out.println(bar.getInsets().right);
-		System.out.println(bar.getInsets().left);
-		System.out.println(bar.getAlignmentY());
-		System.out.println(bar.getAlignmentX());
-		System.out.println(bar.getValue());
-		System.out.println(bar.getBounds().x);
-		System.out.println(bar.HORIZONTAL);
-		System.out.println(sp.getAlignmentX());
-		System.out.println(sp.getAlignmentY());
-		
-		
-		
-		System.out.println("=---=");
-		
-	}
-	
-	 
-	
-	@Override
-	public void ancestorAdded(AncestorEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
-});
+//		JScrollBar bar = sp.getVerticalScrollBar();
+//		bar.setValueIsAdjusting(true);
+//		System.out.println(bar.getX());
+//		System.out.println(bar.getY());
+//		System.out.println(bar.getInsets().right);
+//		System.out.println(bar.getInsets().left);
+//		System.out.println(bar.getAlignmentY());
+//		System.out.println(bar.getAlignmentX());
+//		System.out.println(bar.getValue());
+//		System.out.println(bar.getBounds().x);
+//		System.out.println(bar.HORIZONTAL);
+//		System.out.println(sp.getAlignmentX());
+//		System.out.println(sp.getAlignmentY());
+//		
+//		
+//		System.out.println(sp.getHorizontalScrollBar().getValue());
+//		System.out.println(sp.getVerticalScrollBar().getValue());
+//		System.out.println(sp.getHorizontalScrollBar().getModel().getExtent());
+//		System.out.println(sp.getVerticalScrollBar().getModel().getExtent());
+//		System.out.println("--");
+//		
+//		
+//		
+//		System.out.println("=---=");
+//		
+//	}
+//	
+//	 
+//	
+//	@Override
+//	public void ancestorAdded(AncestorEvent event) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//});
 
 
 sp.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
