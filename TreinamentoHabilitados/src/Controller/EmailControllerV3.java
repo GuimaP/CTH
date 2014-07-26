@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
-import javax.mail.Address;
 import javax.mail.BodyPart;
 import javax.mail.Flags;
 import javax.mail.Folder;
@@ -31,9 +30,10 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
+import javax.mail.search.SearchTerm;
 
 import Model.MensagemEmail;
-import Model.MessageSerial;
+import Model.MenssagemResultQuery;
 import Model.UsuarioEmail;
 
 public class EmailControllerV3 {
@@ -181,8 +181,10 @@ public class EmailControllerV3 {
 				System.out.println("INDEX> " + index + " / "+ folder.getMessageCount());
 				Message msg = folder.getMessages()[index];
 				em = lerEmails(msg);
-		
-			
+				int i = index; //Copia o valor pra ser usado em thread...
+				new Thread(()->{ //Crio uma thread para marcar o e-mail como lido...
+					marcaComoLida(i, folderName);
+				}).start();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -371,7 +373,52 @@ public int countMessage() throws MessagingException{
 		
 	
 }
-
+/**
+ * 
+ * @param pesquisa
+ * @param folderName
+ * @return Retorna uma lista de View de itens do e-mail procurado
+ * @throws Exception
+ */
+	public synchronized MenssagemResultQuery findEmail(String pesquisa,String folderName) throws Exception{
+		try{
+			MenssagemResultQuery query = new MenssagemResultQuery(); //Classe para guardar na consulta o item do e-mail e o objeto do mesmo
+			Folder folder = store.getFolder(folderName);
+			folder.open(Folder.READ_ONLY);
+			SearchTerm term = new SearchTerm() {
+				
+				@Override
+				public boolean match(Message mess) {
+				
+						try {
+							if(mess.getSubject() != null){
+								System.out.println(mess.getSubject());
+								boolean b = mess.getSubject().toString().contains(pesquisa);
+								System.out.println(b);
+								return b;
+							}
+						    } catch (MessagingException ex) {
+						    	ex.printStackTrace();
+						    	return false;
+						    }
+						return false;
+						    
+				}};
+				
+			Message[] msg = folder.search(term);
+			List<String>list = transformaForViewItem(msg, msg.length-1,0);
+			List<MensagemEmail>lstEm = new ArrayList<MensagemEmail>();
+			for(int i = msg.length -1;i >= 0; i--){
+				lstEm.add(lerEmails(msg[i]));
+			}
+			query.setViewItens(list);
+			query.setLsEmails(lstEm);
+			return query;
+		}catch(MessagingException | IOException e){
+			throw new Exception(e);
+		}
+	}
+	
 	private void saveArquivo(File arg,Object obj){
 		try{
 			 FileOutputStream ou = new FileOutputStream(arg);
