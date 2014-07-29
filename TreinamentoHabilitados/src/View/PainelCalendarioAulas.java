@@ -3,7 +3,10 @@ package View;
 import java.awt.Color;
 import java.util.Calendar;
 
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 import com.toedter.calendar.JCalendar;
 
@@ -12,6 +15,14 @@ public class PainelCalendarioAulas extends JPanel{
 	private JPanel painelCalendario;
 	
 	private JCalendar calendario;
+	
+	private JButton btTarefa;
+	
+	private JTextArea jtDescAula;
+	
+	private JLabel lbDescricao;
+	
+	
 	
 	
 	public PainelCalendarioAulas(JPanel painel){
@@ -23,7 +34,7 @@ public class PainelCalendarioAulas extends JPanel{
 		
 		
 		painelCalendario = new JPanel();
-		painelCalendario.setBounds(10, 150,400, 210);
+		painelCalendario.setBounds(10, 150,400, 180);
 		painelCalendario.setLayout(null);
 
 		calendario = new JCalendar();
@@ -31,14 +42,31 @@ public class PainelCalendarioAulas extends JPanel{
 		calendario.setCalendar(Calendar.getInstance());
 		calendario.setSize(painelCalendario.getWidth(),
 				painelCalendario.getHeight());
-		calendario.setTodayButtonVisible(true); // Mostrando o botão HOJE do
-												// JCalendar
-		calendario.setTodayButtonText("Hoje");
 		calendario.getDayChooser().setAlwaysFireDayProperty(true);
 		painelCalendario.add(calendario); // Adicionando o objeto
 
 		painel.add(painelCalendario);
-
+		
+		jtDescAula = new JTextArea();
+		jtDescAula.setBounds(10, 360, 280, 100);
+		painel.add(jtDescAula);
+	
+		lbDescricao = new JLabel("Observação");
+		lbDescricao.setBounds(10, 340, 100, 20);
+		painel.add(lbDescricao);
+		
+		
+		
+		javax.swing.ImageIcon img = new javax.swing.ImageIcon(getClass()
+				.getResource("/Resources/icons").getPath() + "/Tarefas.png");
+		
+		btTarefa = new JButton(img);
+		btTarefa.setContentAreaFilled(false);
+		btTarefa.setSize(160, 110);
+		btTarefa.setLocation(320, 70);
+		painel.add(btTarefa);
+		
+		
 	}
 	
 	

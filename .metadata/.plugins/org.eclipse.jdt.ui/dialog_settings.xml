@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
+	<item value="false" key="TypeHierarchyViewPart.qualifiednames"/>
+	<item value="3" key="TypeHierarchyViewPart.orientation"/>
 	<item value="false" key="ProjectSelectionDialog.show_all"/>
+	<item value="false" key="TypeHierarchyViewPart.linkeditors"/>
 	<item value="F:\vitor.senai\4º Semestre\TCC\TreinamentoHabilitados\Jars" key="org.eclipse.jdt.ui.lastextjar"/>
+	<item value="2" key="TypeHierarchyViewPart.hierarchyview"/>
 	<section name="org.eclipse.ltk.ui.refactoring.settings">
 		<item value="true" key="updateQualifiedNames"/>
 		<item value="*" key="patterns"/>

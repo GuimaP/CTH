@@ -507,8 +507,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		btBuscarAluno = new JButton(">>");
 		btBuscarAluno.setSize(50, 35);
 		btBuscarAluno.setLocation(400, 35);
-		btBuscarAluno.setToolTipText("Botão de busca. Para efetuar a busca"
-				+ " informar o NOME e o CPF do aluno desejado");
+		btBuscarAluno.setToolTipText("Botão de busca. Informa o CPF do aluno desejado");
 		abaTodos.add(btBuscarAluno);
 
 		// Text
@@ -676,13 +675,7 @@ public class FormCadastroCliente extends JInternalFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				VerificadorDeCpf verificador = new VerificadorDeCpf();
-				tfNome.setText(tfNome.getText().trim());
-				
-				if (tfNome.getText().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "Informar o nome do aluno para a busca");
-					lbNome.setForeground(Color.red);
-					tfNome.requestFocus(true);
-					}else if (tfCpf.getValue() == null
+				if (tfCpf.getValue() == null
 						|| !verificador.verificarCpf(tfCpf.getValue()
 								.toString()))  {
 					JOptionPane.showMessageDialog(null, "Informar um CPF valido para a busca");

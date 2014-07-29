@@ -10,23 +10,35 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.swing.BoundedRangeModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
@@ -40,9 +52,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -50,12 +67,13 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
+import org.eclipse.swt.internal.ole.win32.ISpecifyPropertyPages;
+
 import Controller.ConfigController;
 import Controller.CriptografiaConfigEmail;
 import Controller.EmailControllerV3;
 import Model.Login;
 import Model.MensagemEmail;
-import Model.MenssagemResultQuery;
 import Model.ModelTableEmail;
 import Model.UsuarioEmail;
 
@@ -72,12 +90,12 @@ public class Principal extends JFrame {
 	private boolean painelMostrando = false;
 	private JPanel painelInformativo, painelLateralGuia;
 	private JButton btAbrirInformativo;
-	protected static JToolBar barraLateral;
+	private JToolBar barraLateral;
 	private JScrollPane sp;
 	private PainelCalendarioAgendamento painelCalendario;
 
 	private int POSXButoon;
-	protected static JTree jtreeAtalhos;
+	protected JTree jtreeAtalhos;
 
 	protected EmailControllerV3 email;
 	protected JPanel painelEmail;
@@ -98,7 +116,7 @@ public class Principal extends JFrame {
 	
 	private JScrollPane spTbEmail;
 	private Thread gerenciaEmal;
-	protected static final int WIDTH_TAMANHO = 301;
+	private final int WIDTH_TAMANHO = 301;
 
 	private boolean hasEmailReady = false;
 	
@@ -237,7 +255,7 @@ public class Principal extends JFrame {
 		jTableEmails.setRowHeight(20);
 		spTbEmail = new JScrollPane(jTableEmails);
 //		spTbEmail.setBounds(5,txtBuscaEmail.getHeight()+txtBuscaEmail.getY(),painelEmail.getWidth()-5,25);
-		painelEmail.add(new PainelItensEmail(spTbEmail, jTableEmails,painelEmail.getSize()));
+		painelEmail.add(new PainelItensEmail(new ArrayList<String>(), spTbEmail, jTableEmails,painelEmail.getSize()));
 		
 
 		add(painelCalendario);
@@ -538,7 +556,6 @@ class ConfiguraEmail implements Runnable {
 	protected static boolean isLodingEmail,isJtreeAumentou;
 	private List<String> lstItens;
 	protected String nameFolder;
-	protected static boolean isSearch; //Verifica se eh e-mail de pesquisa 
 
 	public ConfiguraEmail(JButton bt, Login u, JTree j, JButton btAbrirNav,
 			JToolBar barrNav, int WIDTH_TAMANHO, JTable tb, JPanel pn,
@@ -613,11 +630,10 @@ class ConfiguraEmail implements Runnable {
 	}
 
 	private void defineEventsItensEmail() {
-Principal.jtreeAtalhos.addTreeSelectionListener(new TreeSelectionListener() {
-			
+		tree.addTreeSelectionListener(new TreeSelectionListener() {
+
 			@Override
 			public void valueChanged(TreeSelectionEvent evt) {
-				isSearch = false;
 				System.out.println(evt.getNewLeadSelectionPath());
 				System.out.println("eh nois carai");
 				
@@ -634,59 +650,153 @@ Principal.jtreeAtalhos.addTreeSelectionListener(new TreeSelectionListener() {
 															 * caracteres
 															 */
 				nameFolder = nameFolder.replace(" ", "");
-				
-				if (!ConfiguraEmail.isShowing) {
-					Principal.isPainelEmailShow = true;
-					ConfiguraEmail.isShowing = true;
-					java.awt.Dimension d2 = Principal.barraLateral.getSize();
-					Principal.barraLateral.setSize(d2.width + Principal.WIDTH_TAMANHO, d2.height);
-					table.setRowHeight(20);
-//					btAbrirNav.setLocation(Principal.btAbrirMenuLateral.getX()
-//							+ WIDTH_TAMANHO, btAbrirNav.getY());
-					Principal.btRefreshItens.setLocation(Principal.btAbrirMenuLateral.getX()
-							+ Principal.btAbrirMenuLateral.getWidth(), Principal.btAbrirMenuLateral.getY());
-					
-				
-					if(!ConfiguraEmail.isJtreeAumentou){
-						ConfiguraEmail.isJtreeAumentou = true;
-					pnEmail.setSize(Principal.WIDTH_TAMANHO,
-							Principal.barraLateral.getHeight() - 80);
-					pnEmail.add(new PainelItensEmail(spTbEmail, table,pnEmail.getSize()));
-					pnEmail.setLocation(Principal.jtreeAtalhos.getWidth() + 10, 0);
-					pnEmail.setBackground(Color.white);
-					Principal.barraLateral.add(pnEmail);
+
+				// Testa se é
+				// pasta
+				// INBOX
+
+				System.out.println(nameFolder);
+
+				try {
+					System.out.println(isShowing);
+					System.out.println(isJtreeAumentou);
+					if (!isShowing) {
+						Principal.isPainelEmailShow = true;
+						isShowing = true;
+						java.awt.Dimension d2 = barrNav.getSize();
+						barrNav.setSize(d2.width + WIDTH_TAMANHO, d2.height);
+						table.setRowHeight(20);
+						btAbrirNav.setLocation(btAbrirNav.getX()
+								+ WIDTH_TAMANHO, btAbrirNav.getY());
+						btRefresh.setLocation(btAbrirNav.getX()
+								+ btAbrirNav.getWidth(), btAbrirNav.getY());
+						
+						
+						if(!isJtreeAumentou){
+							isJtreeAumentou = true;
+						pnEmail.setSize(WIDTH_TAMANHO,
+								barrNav.getHeight() - 80);
+						pnEmail.add(new PainelItensEmail(new ArrayList<String>(), spTbEmail, table,pnEmail.getSize()));
+						pnEmail.setLocation(tree.getWidth() + 10, 0);
+						pnEmail.setBackground(Color.white);
+						barrNav.add(pnEmail);
+						}
+						
 					}
-				}	
-				
-				if ("EnviarE-mail".equalsIgnoreCase(nameFolder)) { //Tem que ser junto, pois existe a validação de retirar todos os Espaços
 					
 					
+					if ("EnviarE-mail".equalsIgnoreCase(nameFolder)) { //Tem que ser junto, pois existe a validação de retirar todos os Espaços
+						
+						
+						
+						pnEmail.removeAll();
+						pnEmail.add(new PainelSendNewEmail(pnEmail.getSize(), emailC, pnEmail, barrNav,new  Dimension(barrNav.getSize().width - WIDTH_TAMANHO, barrNav.getSize().height)));
+						barrNav.revalidate();
+						barrNav.repaint();
+						pnEmail.revalidate();
+						pnEmail.repaint();
+						System.out.println("Enviar E-mail@@");
+						
+					} else {
+						lstItens = emailC.pegaItens(nameFolder);
+						totalEmails = lstItens.size();
+						table.setModel(new ModelTableEmail(lstItens));
+						pnEmail.removeAll();
+						pnEmail.add(new PainelItensEmail(lstItens, spTbEmail, table,pnEmail.getSize()));
+						pnEmail.revalidate();
+						barrNav.revalidate();
+						barrNav.repaint();
+						pnEmail.repaint();
+						Principal.minhaFrame.revalidate();
+						Principal.minhaFrame.repaint();
+					}
 					
-					pnEmail.removeAll();
-					pnEmail.add(new PainelSendNewEmail(pnEmail.getSize(), emailC, pnEmail, Principal.barraLateral,new  Dimension(Principal.barraLateral.getSize().width - Principal.WIDTH_TAMANHO, barrNav.getSize().height)));
-					Principal.barraLateral.revalidate();
-					Principal.barraLateral.repaint();
-					pnEmail.revalidate();
-					pnEmail.repaint();
-					System.out.println("Enviar E-mail@@");
 					
-				} else {
-					
-					lstItens = emailC.pegaItens(nameFolder);
-					int totalEmails = lstItens.size();
-					table.setModel(new ModelTableEmail(lstItens));
-					pnEmail.removeAll();
-					pnEmail.add(new PainelItensEmail(lstItens, spTbEmail, table,pnEmail.getSize(),nameFolder,emailC));
-					pnEmail.revalidate();
-					Principal.barraLateral.revalidate();
-					Principal.barraLateral.repaint();
-					pnEmail.repaint();
-					Principal.minhaFrame.revalidate();
-					Principal.minhaFrame.repaint();
+
+				} catch (Exception er) {
+					er.printStackTrace();
 				}
-				
+			}
+			// }
+
+		});
+
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+				if (e.getClickCount() == 2) {
+					try {
+						int index = table.getSelectedRow();
+						System.out.println("INDEX PRINCIPAL - " + index);
+						// index = ((ModelTableEmail) table.getModel())
+						// .getIdEmail(index);
+						System.out.println("INDEX PELA TABLE -" + index);
+						String selectedFolder = tree.getSelectionPath()
+								.toString();
+						System.out.println(selectedFolder);
+						String[] vt = selectedFolder.split(",");
+						selectedFolder = vt[vt.length - 1];
+						selectedFolder = selectedFolder.replaceAll("]", "");
+						selectedFolder = selectedFolder.trim();
+						MensagemEmail em = emailC.pegaEmail(selectedFolder,
+								index);
+						frame.getContentPane().add(new ViewEmail(em, emailC));
+						// arquivosEmail = email.getEmails();
+
+						System.out.println("cliq");
+					} catch (Exception exc) {
+						exc.printStackTrace();
+					}
+
+				}
 			}
 		});
+
+		spTbEmail.getVerticalScrollBar().addAdjustmentListener(
+				new AdjustmentListener() {
+
+					@Override
+					public void adjustmentValueChanged(AdjustmentEvent e) {
+						JScrollBar bar = spTbEmail.getVerticalScrollBar();
+						int total = bar.getValue() + bar.getHeight();
+
+						if (total == bar.getMaximum()) {
+							if (!isLodingEmail) {
+								btRefresh.setVisible(true);
+								JButton b = btRefresh;
+								new Thread(
+										() -> {
+											try {
+												ConfiguraEmail.isLodingEmail = true;
+												List<String> ls = emailC
+														.pegaItens(
+																nameFolder,
+																lstItens.size(),
+																lstItens.size() + 30,
+																lstItens);
+
+												table.setModel(new ModelTableEmail(
+														ls));
+												ConfiguraEmail.btRefresh
+														.setVisible(false);
+												ConfiguraEmail.isLodingEmail = false;
+												// Principal.minhaFrame.revalidate();
+												// Principal.minhaFrame.repaint();
+											} catch (Exception e1) {
+												// TODO Auto-generated catch
+												// block
+												e1.printStackTrace();
+											}
+										}).start();
+							}
+						} else {
+							System.out.println(total + " / " + bar.getMaximum());
+						}
+
+					}
+				});
+
 	}
 
 	public void run() {
@@ -780,161 +890,22 @@ class PainelItensEmail extends JPanel{
 	private JScrollPane sp;
 	private JTable tb;
 	private JTextField txtBusca;
-	private List<String>ls;
-	private String nameFolder;
-	private EmailControllerV3 emailC;
-	private boolean isSearch;
-	private MenssagemResultQuery query;
-	private List<String>lstItens;
-
-	
-	public PainelItensEmail(List<String>ls,JScrollPane sp,JTable tb,Dimension s,String nameFolder,EmailControllerV3 emailC){
-		this.tb = tb;
-		this.emailC = emailC;
-		this.sp = sp;
-		this.ls = ls;
-		this.nameFolder = nameFolder;
-		tb.setModel(new ModelTableEmail(ls));
-		setSize(s);
-		initComponents();
-		events();
-	}
-	
-	public PainelItensEmail(JScrollPane sp,JTable tb,Dimension s){
+	public PainelItensEmail(List<String>ls,JScrollPane sp,JTable tb,Dimension s){
 		this.tb = tb;
 		this.sp = sp;
-
 		setSize(s);
 		initComponents();
-		events();
-	}
-
-	private void events() {
-		txtBusca.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				super.keyPressed(e);
-				if(e.getKeyCode() == KeyEvent.VK_ENTER){
-					try{
-						ConfiguraEmail.isSearch = true;
-						query = emailC.findEmail(txtBusca.getText(), nameFolder);
-						isSearch = true;
-						tb.setModel(new ModelTableEmail(ls));
-						
-					}catch(Exception e1){
-						e1.printStackTrace();
-						JOptionPane.showMessageDialog(null, e1.getMessage());
-					}
-				}
-			}
-		});
-		
-		
-		//---
-		
-		
-		
-		//--
-		
-		tb.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				super.mouseClicked(e);
-				if (e.getClickCount() == 2) {
-					try {
-						int index = tb.getSelectedRow();
-						System.out.println("INDEX PRINCIPAL - " + index);
-						// index = ((ModelTableEmail) table.getModel())
-						// .getIdEmail(index);
-						System.out.println("INDEX PELA TABLE -" + index);
-						String selectedFolder = Principal.jtreeAtalhos.getSelectionPath()
-								.toString();
-						System.out.println(selectedFolder);
-						String[] vt = selectedFolder.split(",");
-						selectedFolder = vt[vt.length - 1];
-						selectedFolder = selectedFolder.replaceAll("]", "");
-						selectedFolder = selectedFolder.trim();
-						MensagemEmail em;
-						if(ConfiguraEmail.isSearch){
-							int indice = tb.getSelectedRow();
-						em = query.getLsEmails().get(index);
-							
-						}else {
-							em = emailC.pegaEmail(selectedFolder,
-								index);
-						}
-						Principal.minhaFrame.getContentPane().add(new ViewEmail(em, emailC));
-						// arquivosEmail = email.getEmails();
-
-						System.out.println("cliq");
-					} catch (Exception exc) {
-						exc.printStackTrace();
-					}
-
-				}
-			}
-		});
-		
-		
-
-		
-		sp.getVerticalScrollBar().addAdjustmentListener(
-				new AdjustmentListener() {
-
-					@Override
-					public void adjustmentValueChanged(AdjustmentEvent e) {
-						JScrollBar bar = sp.getVerticalScrollBar();
-						int total = bar.getValue() + bar.getHeight();
-
-						if (total == bar.getMaximum()) {
-							if (!ConfiguraEmail.isLodingEmail) {
-								Principal.btRefreshItens.setVisible(true);
-								JButton b = Principal.btRefreshItens;
-								new Thread(
-										() -> {
-											try {
-												ConfiguraEmail.isLodingEmail = true;
-												List<String> ls = emailC
-														.pegaItens(
-																nameFolder,
-																lstItens.size(),
-																lstItens.size() + 30,
-																lstItens);
-
-												tb.setModel(new ModelTableEmail(
-														ls));
-												Principal.btRefreshItens
-														.setVisible(false);
-												ConfiguraEmail.isLodingEmail = false;
-												// Principal.minhaFrame.revalidate();
-												// Principal.minhaFrame.repaint();
-											} catch (Exception e1) {
-												// TODO Auto-generated catch
-												// block
-												e1.printStackTrace();
-											}
-										}).start();
-							}
-						} else {
-							System.out.println(total + " / " + bar.getMaximum());
-						}
-
-					}
-				});
-
-
 		
 	}
 
 	private void initComponents() {
 		setLayout(null);
-		query = new MenssagemResultQuery();
 		txtBusca = new JTextField();
-		txtBusca.setBounds(5, 5, this.getWidth()-20, 25);
+		txtBusca.setBounds(5, 5, this.getWidth()-5, 25);
 		add(txtBusca);
 		System.out.println(sp);
 		System.out.println(txtBusca);
-		sp.setBounds(5, txtBusca.getY()+txtBusca.getHeight(), getWidth()-20, getHeight()-txtBusca.getHeight()-txtBusca.getY());
+		sp.setBounds(5, txtBusca.getY()+txtBusca.hashCode(), getWidth()-5, getHeight()-txtBusca.getHeight()-txtBusca.getY());
 		add(sp);
 		
 		setVisible(true);
