@@ -1,0 +1,102 @@
+package View;
+
+import java.awt.Color;
+import java.text.ParseException;
+import java.util.Calendar;
+
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.text.MaskFormatter;
+
+import com.toedter.calendar.JCalendar;
+
+public class PainelCalendarioAulas extends JPanel{
+	
+	private JPanel painelCalendario;
+	
+	private JCalendar calendario;
+	
+	private JButton btTarefa;
+	
+	private JTextArea jtDescAula;
+	
+	private JLabel lbDescricao;
+	
+	private JCheckBox checkCpf, checkObs;
+	
+	private MaskFormatter maskCpf;
+	
+	
+	
+	
+	
+	public PainelCalendarioAulas(JPanel painel){
+		try {
+			inicializaComponentes(painel);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void inicializaComponentes(JPanel painel) throws ParseException{
+		
+		
+		painelCalendario = new JPanel();
+		painelCalendario.setBounds(10, 150,400, 180);
+		painelCalendario.setLayout(null);
+
+		calendario = new JCalendar();
+		calendario.setWeekdayForeground(Color.GRAY);
+		calendario.setCalendar(Calendar.getInstance());
+		calendario.setSize(painelCalendario.getWidth(),
+				painelCalendario.getHeight());
+		calendario.getDayChooser().setAlwaysFireDayProperty(true);
+		painelCalendario.add(calendario); // Adicionando o objeto
+
+		painel.add(painelCalendario);
+		
+		jtDescAula = new JTextArea();
+		jtDescAula.setBounds(10, 360, 280, 100);
+		painel.add(jtDescAula);
+	
+		lbDescricao = new JLabel("Observação");
+		lbDescricao.setBounds(10, 340, 100, 20);
+		painel.add(lbDescricao);
+		
+		checkCpf = new JCheckBox();
+		checkCpf.setText("CPF");
+		checkCpf.setBounds(220, 40, 100, 20);
+		painel.add(checkCpf);
+		
+		maskCpf = new MaskFormatter("###.###.###-##");
+		maskCpf.setPlaceholderCharacter('_');
+		
+		
+		
+		
+		javax.swing.ImageIcon img = new javax.swing.ImageIcon(getClass()
+				.getResource("/Resources/icons").getPath() + "/Tarefas.png");
+		
+		btTarefa = new JButton(img);
+		btTarefa.setContentAreaFilled(false);
+		btTarefa.setSize(160, 110);
+		btTarefa.setLocation(320, 70);
+		btTarefa.setToolTipText("Agendar aula");
+		painel.add(btTarefa);
+		
+		
+	}
+	public void eventoCheckCpf(JFormattedTextField textField){
+		if(checkCpf.isSelected()){
+			textField.add(maskCpf);
+		}
+	}
+	
+
+}

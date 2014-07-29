@@ -26,7 +26,6 @@
 <fullyQualifiedTypeName name="javax.xml.crypto.Data"/>
 <fullyQualifiedTypeName name="com.toedter.calendar.demo.DateChooserPanel"/>
 <fullyQualifiedTypeName name="com.toedter.calendar.JDateChooser"/>
-<fullyQualifiedTypeName name="javax.swing.JFormattedTextField"/>
 <fullyQualifiedTypeName name="javax.swing.border.LineBorder"/>
 <fullyQualifiedTypeName name="java.awt.Font"/>
 <fullyQualifiedTypeName name="Controller.ConfigController"/>
@@ -36,8 +35,11 @@
 <fullyQualifiedTypeName name="java.awt.Color"/>
 <fullyQualifiedTypeName name="com.toedter.calendar.JCalendar"/>
 <fullyQualifiedTypeName name="javax.swing.JPanel"/>
-<fullyQualifiedTypeName name="View.PainelCalendarioAulas"/>
 <fullyQualifiedTypeName name="javax.swing.JButton"/>
 <fullyQualifiedTypeName name="javax.swing.JTextArea"/>
 <fullyQualifiedTypeName name="javax.swing.JLabel"/>
+<fullyQualifiedTypeName name="javax.swing.JCheckBox"/>
+<fullyQualifiedTypeName name="javax.swing.text.MaskFormatter"/>
+<fullyQualifiedTypeName name="javax.swing.JFormattedTextField"/>
+<fullyQualifiedTypeName name="View.PainelCalendarioAulas"/>
 </qualifiedTypeNameHistroy>

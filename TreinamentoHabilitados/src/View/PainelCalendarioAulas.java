@@ -1,12 +1,16 @@
 package View;
 
 import java.awt.Color;
+import java.text.ParseException;
 import java.util.Calendar;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.text.MaskFormatter;
 
 import com.toedter.calendar.JCalendar;
 
@@ -22,15 +26,26 @@ public class PainelCalendarioAulas extends JPanel{
 	
 	private JLabel lbDescricao;
 	
+	private JCheckBox checkCpf, checkObs;
+	
+	
+	
+	
 	
 	
 	
 	public PainelCalendarioAulas(JPanel painel){
-		inicializaComponentes(painel);
+		try {
+			inicializaComponentes(painel);
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	
-	public void inicializaComponentes(JPanel painel){
+	public void inicializaComponentes(JPanel painel) throws ParseException{
 		
 		
 		painelCalendario = new JPanel();
@@ -55,6 +70,13 @@ public class PainelCalendarioAulas extends JPanel{
 		lbDescricao.setBounds(10, 340, 100, 20);
 		painel.add(lbDescricao);
 		
+		checkCpf = new JCheckBox();
+		checkCpf.setText("CPF");
+		checkCpf.setBounds(220, 40, 100, 20);
+		painel.add(checkCpf);
+		
+		
+		
 		
 		
 		javax.swing.ImageIcon img = new javax.swing.ImageIcon(getClass()
@@ -64,11 +86,14 @@ public class PainelCalendarioAulas extends JPanel{
 		btTarefa.setContentAreaFilled(false);
 		btTarefa.setSize(160, 110);
 		btTarefa.setLocation(320, 70);
+		btTarefa.setToolTipText("Agendar aula");
 		painel.add(btTarefa);
 		
 		
 	}
-	
+	public void eventoCheckCpf(){
+		
+	}
 	
 
 }
