@@ -36,6 +36,9 @@ import Model.MensagemEmail;
 import Model.MenssagemResultQuery;
 import Model.UsuarioEmail;
 
+import com.sun.mail.imap.IMAPFolder;
+import com.sun.mail.imap.SortTerm;
+
 public class EmailControllerV3 {
 	private Session session;
 	private Store store;
@@ -384,7 +387,9 @@ public int countMessage() throws MessagingException{
 		try{
 			MenssagemResultQuery query = new MenssagemResultQuery(); //Classe para guardar na consulta o item do e-mail e o objeto do mesmo
 			Folder folder = store.getFolder(folderName);
-			folder.open(Folder.READ_ONLY);
+			
+			SortTerm sortterm[] = {SortTerm.SUBJECT};
+
 			SearchTerm term = new SearchTerm() {
 				
 				@Override
@@ -394,7 +399,7 @@ public int countMessage() throws MessagingException{
 							if(mess.getSubject() != null){
 								System.out.println(mess.getSubject());
 								boolean b = mess.getSubject().toString().contains(pesquisa);
-								System.out.println(b);
+								System.out.println();
 								return b;
 							}
 						    } catch (MessagingException ex) {
@@ -405,8 +410,22 @@ public int countMessage() throws MessagingException{
 						    
 				}};
 				
-			Message[] msg = folder.search(term);
-			List<String>list = transformaForViewItem(msg, msg.length-1,0);
+			IMAPFolder imap = (IMAPFolder) folder;
+			imap.open(Folder.READ_ONLY);
+			
+			Message[] msg = imap.getSortedMessages(sortterm);
+			List<Message>m = new ArrayList<Message>();
+			for(int i = 0; i < msg.length; i++){
+				
+				if(msg[i].getSubject().contains(pesquisa)){
+					m.add(msg[i]);
+				}
+			}
+			
+			Message[] vtr = (Message[]) m.toArray();
+			
+			
+			List<String>list = transformaForViewItem(vtr, vtr.length-1,0);
 			List<MensagemEmail>lstEm = new ArrayList<MensagemEmail>();
 			for(int i = msg.length -1;i >= 0; i--){
 				lstEm.add(lerEmails(msg[i]));
