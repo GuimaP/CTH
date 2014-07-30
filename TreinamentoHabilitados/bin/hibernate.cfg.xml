@@ -18,15 +18,20 @@
         <property name="hibernate.connection.username">xjnrxpchqjdwip</property>
         <property name="hibernate.connection.password">fba7MMmO8xDSZNxyDLGWLr899w</property>
         <property name="hibernate.connection.url">jdbc:postgresql://ec2-54-243-50-213.compute-1.amazonaws.com:5432/d2tsrm3gj27pvi</property>
-        <property name="hibernate.connection.requireSSL">true</property>-->
+        <property name="hibernate.connection.requireSSL">true</property>
     	
        <property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="connection.url">jdbc:mysql://185.27.134.191:3306/guimahos_autoescola</property>
 		<property name="connection.username">guimahos_guima</property>
+		<property name="connection.password">1q2w3e</property>-->
+		
+		   <property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/db</property>
+		<property name="connection.username">root</property>
 		<property name="connection.password">1q2w3e</property>
-		
-		
+		<property name="hibernate.hbm2ddl.auto" >update </property>	
 		
         <property name="current_session_context_class">thread</property>
         <property name="hibernate.max_fetch_depth" >3</property>
