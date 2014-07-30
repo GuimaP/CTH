@@ -48,8 +48,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.text.MaskFormatter;
@@ -69,8 +67,7 @@ public class FormCadastroCliente extends JInternalFrame {
 			lbLogradouro, lbBairro, lbNumero, lbCep, lbRg, lbCpf, lbSexo,
 			lbObserva, lbQ1, lbQ2, lbQ3, lbQ4, lbData, lbCelular, lbPacote,
 			lbTipoPagamento, lbParcelas, lbPagamentoInicial, lbPagPendente,
-			lbDtPagamento, lbDtProximoPagamento, lbBuscaAluno, lbAgendamento,
-			lbNomeAluno, lbCpfAluno;
+			lbDtPagamento, lbDtProximoPagamento, lbBuscaAluno, lbAgendamento, lbNomeAluno, lbCpfAluno;
 	private JTextField tfNome, tfEmail, tfProfissao, tfRegistroCnh,
 			tfLogradouro, tfBairro, tfRg, tfQuestao1, tfNumero, tfBuscaPacote,
 			tfParcelas;
@@ -103,31 +100,35 @@ public class FormCadastroCliente extends JInternalFrame {
 	private MaskFormatter dataMask, dataMaskNascimento, maskCep, maskNumero,
 			maskCpf, maskTelefone, maskCelular, maskValidadeCnh,
 			maskPrimeiraHabilitacao;
-
+	
 	private PainelCalendarioAgendamento painelCalendario;
 
 	protected static JFrame minhaFrame;
-
+	
 	private DAOcliente daoCliente;
 	Cliente cliente = new Cliente();
 	Endereco endereco = new Endereco();
 	Cnh cnh = new Cnh();
 	CadastroCliente cadastro = new CadastroCliente();
-
+	
+	
 	private Font font;
 
 	private JPanel panelCliente, painelGeral, abaTodos, abaAgendamento,
 			painelPagamento, painelAgendamento;
-
+	
 	// componentes usados para o calendario de agendamento de aulas.
-
+	
 	private JButton btTarefa;
-
+	
 	private JTextArea jtDescAula;
-
+	
 	private JLabel lbDescricao;
-
+	
 	private JCheckBox checkCpf, checkObs;
+	
+	
+	
 
 	private boolean aberto = false;
 
@@ -193,10 +194,14 @@ public class FormCadastroCliente extends JInternalFrame {
 	}
 
 	public void inicializaComponentes() throws ParseException {
-		// Font que será usada para o nome do aluno e cpf
-
+		//Font que será usada para o nome do aluno e cpf
+		
+		
+		
+		
 		abaTodos = new JPanel();
 		abaTodos.setLayout(null);
+		
 
 		panelCliente = new JPanel();
 		Border border = BorderFactory.createTitledBorder("Cliente");
@@ -512,12 +517,11 @@ public class FormCadastroCliente extends JInternalFrame {
 		btBuscarPacote.setLocation(785, 50);
 		btBuscarPacote.setSize(80, 25);
 		abaTodos.add(btBuscarPacote);
-
+		
 		btBuscarAluno = new JButton(">>");
 		btBuscarAluno.setSize(50, 35);
 		btBuscarAluno.setLocation(400, 35);
-		btBuscarAluno
-				.setToolTipText("Botão de busca. Informa o CPF do aluno desejado");
+		btBuscarAluno.setToolTipText("Botão de busca. Informa o CPF do aluno desejado");
 		abaTodos.add(btBuscarAluno);
 
 		// Text
@@ -620,7 +624,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		painelPagamento.add(tfPagamentoPendente);
 
 		// Componentes painel de agendamento
-
+		
 		abaAgendamento = new JPanel();
 		abaAgendamento.setLayout(null);
 
@@ -633,60 +637,72 @@ public class FormCadastroCliente extends JInternalFrame {
 		checkCpf.setText("CPF");
 		checkCpf.setBounds(220, 40, 100, 20);
 		abaAgendamento.add(checkCpf);
-
-		tfBuscaAluno = new JFormattedTextField();
+		
+		
+			
+			tfBuscaAluno = new JFormattedTextField();
+		
+		
+		
 		tfBuscaAluno.setSize(200, 30);
 		tfBuscaAluno.setLocation(10, 40);
 		abaAgendamento.add(tfBuscaAluno);
-
+		
 		// String que vai aparecer com o nome do aluno que foi feito a busca.
-
+		
 		lbNomeAluno = new JLabel("'Vitor Barros'"); // Teste
 		lbNomeAluno.setSize(1000, 50);
 		lbNomeAluno.setLocation(10, 60);
-		lbNomeAluno.setFont(ConfigController.definePrincipalFont(22f,
-				Font.PLAIN));
+		lbNomeAluno.setFont(ConfigController.definePrincipalFont(22f, Font.PLAIN));
 		lbNomeAluno.setForeground(Color.red);
 		abaAgendamento.add(lbNomeAluno);
-
+		
 		lbCpfAluno = new JLabel("322.999.999-99");
-		lbCpfAluno.setSize(1000, 50);
+		lbCpfAluno.setSize(1000,50);
 		lbCpfAluno.setLocation(10, 90);
-		lbCpfAluno
-				.setFont(ConfigController.definePrincipalFont(22, Font.PLAIN));
+		lbCpfAluno.setFont(ConfigController.definePrincipalFont(22, Font.PLAIN));
 		lbCpfAluno.setForeground(Color.red);
 		abaAgendamento.add(lbCpfAluno);
+		
+		
+		
+		//-------------------------------------------------------------------
+		
 
-		// -------------------------------------------------------------------
-
-		// Calendario
+		//Calendario
 		new PainelCalendarioAulas(abaAgendamento);
-
-		// --------------------------------------------
-
+		
+		//--------------------------------------------
+		
+		
 		jtDescAula = new JTextArea();
 		jtDescAula.setBounds(10, 360, 280, 100);
 		abaAgendamento.add(jtDescAula);
-
+	
 		lbDescricao = new JLabel("Observação");
 		lbDescricao.setBounds(10, 340, 100, 20);
 		abaAgendamento.add(lbDescricao);
+		
+		
 
 		javax.swing.ImageIcon img = new javax.swing.ImageIcon(getClass()
 				.getResource("/Resources/icons").getPath() + "/Tarefas.png");
-
+		
 		btTarefa = new JButton(img);
 		btTarefa.setContentAreaFilled(false);
 		btTarefa.setSize(160, 110);
 		btTarefa.setLocation(320, 70);
 		btTarefa.setToolTipText("Agendar aula");
 		abaAgendamento.add(btTarefa);
-
+		
+		
 		abas = new JTabbedPane();
 		abas.setBounds(1, 1, 895, 620);
 		abas.addTab("Cadastro", abaTodos);
 		abas.addTab("Agendamento", abaAgendamento);
 		add(abas);
+		
+		
 
 		// PAINEL//
 		getContentPane().setLayout(null);
@@ -702,27 +718,45 @@ public class FormCadastroCliente extends JInternalFrame {
 	}
 
 	public void definirEventos() {
-
+		
+		checkCpf.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(checkCpf.isSelected()){
+					tfBuscaAluno = new JFormattedTextField(maskCpf);
+					
+					
+					
+					tfBuscaAluno.setSize(200, 30);
+					tfBuscaAluno.setLocation(10, 40);
+					abaAgendamento.add(tfBuscaAluno);
+				}
+				
+			}
+		});
+		
 		btBuscarAluno.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				VerificadorDeCpf verificador = new VerificadorDeCpf();
 				if (tfCpf.getValue() == null
 						|| !verificador.verificarCpf(tfCpf.getValue()
-								.toString())) {
-					JOptionPane.showMessageDialog(null,
-							"Informar um CPF valido para a busca");
+								.toString()))  {
+					JOptionPane.showMessageDialog(null, "Informar um CPF valido para a busca");
 					lbCpf.setForeground(Color.red);
 					tfCpf.requestFocus(true);
-
-				} else {
-					// implementar a busca
-				}
-
+					
+					}else{
+						//implementar a busca
+					}
+				
 			}
 		});
-
+		
+		
+		
 		btSalvar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

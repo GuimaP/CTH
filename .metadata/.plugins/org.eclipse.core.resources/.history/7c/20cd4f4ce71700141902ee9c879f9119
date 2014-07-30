@@ -634,7 +634,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		checkCpf.setBounds(220, 40, 100, 20);
 		abaAgendamento.add(checkCpf);
 
-		tfBuscaAluno = new JFormattedTextField();
+		tfBuscaAluno = new JFormattedTextField(maskCpf);
 		tfBuscaAluno.setSize(200, 30);
 		tfBuscaAluno.setLocation(10, 40);
 		abaAgendamento.add(tfBuscaAluno);

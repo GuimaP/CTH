@@ -31,7 +31,6 @@
 <fullyQualifiedTypeName name="Controller.ConfigController"/>
 <fullyQualifiedTypeName name="View.PainelCalendarioAgendamento"/>
 <fullyQualifiedTypeName name="javax.swing.JFrame"/>
-<fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
 <fullyQualifiedTypeName name="java.awt.Color"/>
 <fullyQualifiedTypeName name="com.toedter.calendar.JCalendar"/>
 <fullyQualifiedTypeName name="javax.swing.JPanel"/>
@@ -40,6 +39,9 @@
 <fullyQualifiedTypeName name="javax.swing.JLabel"/>
 <fullyQualifiedTypeName name="javax.swing.JCheckBox"/>
 <fullyQualifiedTypeName name="javax.swing.text.MaskFormatter"/>
-<fullyQualifiedTypeName name="javax.swing.JFormattedTextField"/>
 <fullyQualifiedTypeName name="View.PainelCalendarioAulas"/>
+<fullyQualifiedTypeName name="View.FormAgendamento"/>
+<fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
+<fullyQualifiedTypeName name="javax.swing.event.ChangeListener"/>
+<fullyQualifiedTypeName name="javax.swing.JFormattedTextField"/>
 </qualifiedTypeNameHistroy>
