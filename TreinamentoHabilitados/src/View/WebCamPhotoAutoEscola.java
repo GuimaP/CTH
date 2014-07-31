@@ -7,10 +7,12 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
 import java.io.Serializable;
 import java.lang.Thread.UncaughtExceptionHandler;
 
 import javax.swing.JFrame;
+
 
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamEvent;
@@ -53,8 +55,6 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable,
 	private Point point;
 	private boolean sucess = true;
 
-	
-	
 	private String diretorioParaSalvar, nomeArquivo;
 
 	public String caminhoDaImagem;
@@ -89,7 +89,7 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable,
 		setTitle("Auto Escola");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLayout(new BorderLayout());
-
+		
 		addWindowListener(this);
 
 		picker = new WebcamPicker();
@@ -97,26 +97,31 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable,
 
 		webcam = picker.getSelectedWebcam();
 
-		if (webcam == null) {
-			JOptionPane.showMessageDialog(this,
-					"N„o foi encontrado uma Web cam conectada");
-			sucess = false;
-			return;
+		 		if (webcam == null) {
+		 			JOptionPane.showMessageDialog(this,"Nao foi encontrado uma Web cam conectada");
+		 			webcam.close();
+		 			return;
+		 		} else {
 
-		} else {
+		 			webcam.setViewSize(WebcamResolution.VGA.getSize());
+		 			webcam.addWebcamListener(WebCamPhotoAutoEscola.this);
 
-			webcam.setViewSize(WebcamResolution.VGA.getSize());
-			webcam.addWebcamListener(WebCamPhotoAutoEscola.this);
+		 			panel = new WebcamPanel(webcam, false);
+		 			panel.setFPSDisplayed(true);
 
-			panel = new WebcamPanel(webcam, false);
-			panel.setFPSDisplayed(false);
-
+			
 			btTakePicture = new JButton("Tirar Foto");
 			btTakePicture.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
 						java.io.File f = new java.io.File(diretorioParaSalvar
 								+ nomeArquivo + ".jpg");
+						java.io.File dirSave = new File(diretorioParaSalvar);
+						
+						if(!dirSave.exists()){
+							dirSave.mkdir();
+						}
+						
 						if (f.exists()) {
 							f.delete();
 						}
@@ -156,7 +161,7 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable,
 
 			this.addMouseListener(new MouseAdapter() {
 				public void mousePressed(MouseEvent e) {
-					point.x = e.getX();// Pego a posiÁ„o a localizaÁ„o da frame
+					point.x = e.getX();// Pego a posi√ß√£o a localiza√ß√£o da frame
 										// quando clicado
 					point.y = e.getY();
 				}
@@ -164,12 +169,12 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable,
 
 			this.addMouseMotionListener(new MouseMotionAdapter() {
 				public void mouseDragged(MouseEvent e) {
-					Point p = minhaDialog.getLocation();// pego a localizaÁ„o da
+					Point p = minhaDialog.getLocation();// pego a localiza√ß√£o da
 														// frame no ato de
 														// arrastar
 					minhaDialog.setLocation(p.x + e.getX() - point.x,
-							p.y + e.getY() - point.y); // e ent„o eu subtraio a
-														// localizaÁ„o dela,
+							p.y + e.getY() - point.y); // e ent√£o eu subtraio a
+														// localiza√ß√£o dela,
 														// mais a onde eu
 														// cliquei
 				}
@@ -204,9 +209,7 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable,
 
 	@Override
 	public void windowClosed(WindowEvent e) {
-		if (webcam != null) {
-			webcam.close();
-		}
+		webcam.close();
 	}
 
 	@Override
@@ -259,6 +262,7 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable,
 				System.out.println("selected " + webcam.getName());
 
 				panel = new WebcamPanel(webcam, false);
+				panel.setFPSDisplayed(true);
 
 				add(panel, BorderLayout.CENTER);
 				pack();

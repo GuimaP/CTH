@@ -1,5 +1,6 @@
     package Model;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -14,6 +15,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
+import java.awt.Image;
 
 
 @Entity
@@ -43,22 +48,54 @@ public class Funcionario implements Serializable{
             this.image = image;
         }
         
-        public void getImage(){
-            try {
-                // Image img = Image.getInstance(image);
+        public Image getImage(){
+        	String sep = System.getProperty("file.separator");
+            String dir = System.getProperty("user.home");
+        	try {
                 
+        		//Verifico se o diretorio de Resources existe...
+        		File diretorioRes = new File(dir+"res");
+        		if(!diretorioRes.exists()){
+        			diretorioRes.mkdir();
+        		}
+        		//Verifico se o diretorio de imagem existe...
+            	File diretorioImagens = new File(dir+"Treinamento"+sep+"Fotos-Consumidor");
+            	if(!diretorioImagens.exists()){
+            		diretorioImagens.mkdir();
+            	}
+            	
                 //Especifico o diretorio que vai salvar a imagem
-                FileOutputStream out = new FileOutputStream("C:\\Users\\Guima\\git\\tccsenai\\TreinamentoHabilitados\\tccsenai\\TreinamentoHabilitados\\src\\Resources\\FotosInstrutor\\test.jpg");
+                File dirPhoto = new File(dir+sep+"Treinamento"+sep+"Fotos-Consumidor"+sep+nome+".jpg");
+
+                Image imgFoto;
+                
+                if(dirPhoto.exists()){
+                
+                FileOutputStream ou = new FileOutputStream(dirPhoto);
+                                
                 //Apontos o vetor de bytes da imagem
-                out.write(image);
+                ou.write(image);
                 //Fecho o meninão aqui
-                out.close();
+                ou.close();
+                
+                
+                //Se encontrar o arquivo eu devolvo a imagem
+                imgFoto = new ImageIcon(dirPhoto.getPath()).getImage();
+                }else {
+                	imgFoto = new ImageIcon(getClass().getClassLoader().getResource("Resources/imgs/noImage.png")).getImage();
+                }
+
+                return imgFoto;
+               
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Funcionario.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
                 Logger.getLogger(Funcionario.class.getName()).log(Level.SEVERE, null, ex);
             }
             
+            String dirImgPadrao = getClass().getClassLoader().getResource("Resources"+sep+"imgs"+sep+"noImage.jpg").getPath();
+            JOptionPane.showMessageDialog(null, dirImgPadrao);
+            return new ImageIcon(dirImgPadrao).getImage();
         }
         
         

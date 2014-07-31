@@ -8,11 +8,13 @@ import Model.Funcionario;
 import Model.ModeloTableFuncionario;
 import Model.Repository.ConnectionFactoryRepository;
 import Model.Repository.Repository;
+import Model.Repository.RepositoryCarro;
 import Model.Repository.RepositoryInstrutor;
 
 import com.toedter.calendar.JDateChooser;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -33,7 +35,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
+import javax.media.rtp.event.NewReceiveStreamEvent;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -49,6 +53,8 @@ import javax.swing.border.Border;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.text.MaskFormatter;
+
+import org.hibernate.internal.util.BytesHelper;
 
 import principal.VerificadorDeCpf;
 
@@ -82,7 +88,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
     private JTabbedPane aba;
     private JPanel pnGeral, pnBusca;
 
-    private ArrayList<Funcionario> listFunc = new ArrayList<Funcionario>();
+    private List<Funcionario> listFunc;
     private JTable tabela;
 
     private JScrollPane scroll;
@@ -93,9 +99,11 @@ public class FormCadastroInstrutor extends JInternalFrame {
         try {
             dirMyPicture = "";
             instrutor = new Funcionario();
+            listFunc = new RepositoryInstrutor().getAllInstrutor();
             inicializaComponentes();
+            definirEventos();
 
-        } catch (ParseException | SQLException e) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }
@@ -236,7 +244,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
         jcCarro = new JComboBox<Carro>();
         //carroList 
-        List<Carro> lista = (List<Carro>) new Repository<Carro>().pegarTodos();
+        List<Carro> lista = (List<Carro>) new RepositoryCarro().pegarTodos();
         for (Carro c : lista) {
             jcCarro.addItem(c);
         }
@@ -303,8 +311,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
         setVisible(true);
         requestFocusInWindow();
 
-        definirEventos();
-
+       
     }
 
     public void definirEventos() {
@@ -335,6 +342,10 @@ public class FormCadastroInstrutor extends JInternalFrame {
                         
                         //Crio um File a partir da foto
                         File fotoTirada = new File(path);
+                        
+                        //Seto a imagem pra variavel do Instrutor
+                        Image imgFoto = new ImageIcon(path).getImage();
+                        instrutor.setImage(new byte[(int)fotoTirada.length()]);
                         
                         //Verifica se existe uma foto, pois pode muito bem o fulano não ter tirado uma foto.
                         if (!path.isEmpty() & fotoTirada.exists()) {
@@ -386,7 +397,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
                             "Informar o registro da CNH");
                     lbRegistroCnh.setForeground(Color.RED);
                     tfRegistroCnh.requestFocus(true);
-                } else if (tfValidadeCnh.getValue() == null) {
+                } else if (dcDataValidadeCnh.getDate() == null) {
                     JOptionPane.showMessageDialog(null,
                             "Informar a data de validade");
                     lbValidadeCnh.setForeground(Color.RED);
@@ -473,7 +484,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
             }
 
             if (dcDataValidadeCnh.getDate() != null) {
-                instrutor.setValidadeCnh(tfValidadeCnh.getText().toString());
+                instrutor.setValidadeCnh(dcDataValidadeCnh.getDateFormatString());
             }
 
             if (tfPrimeiraCnh.getValue() != null) {
@@ -505,6 +516,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
             //Pegando os bytes para salvar a imagem
             java.io.File f = new java.io.File(dirMyPicture);
             //Verifica se existe uma foto ja tirada
+            
             if (f.exists()) {
                 byte[] bImg = new byte[(int) f.length()]; //Pegando o tamanho de bytes da imagem;
                 FileInputStream imgStream = new FileInputStream(f);

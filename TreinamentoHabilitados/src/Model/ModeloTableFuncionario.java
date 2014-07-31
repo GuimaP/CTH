@@ -2,14 +2,15 @@ package Model;
 
 import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 public class ModeloTableFuncionario extends AbstractTableModel{
 	
-	ArrayList<Funcionario> func;
+	List<Funcionario> func;
 	String [] colunas = {"Nome", "Cpf","Telefone","Celular"};
 	
-	public ModeloTableFuncionario(ArrayList<Funcionario> func){
+	public ModeloTableFuncionario(List<Funcionario> func){
 		this.func = func;
 		
 	}
