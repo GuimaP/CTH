@@ -4,6 +4,7 @@ import Controller.FuncionarioController;
 import Controller.LogController;
 import DAO.DAOcarro;
 import Model.Carro;
+import Model.EnumStatus;
 import Model.Funcionario;
 import Model.ModeloTableFuncionario;
 import Model.Repository.ConnectionFactoryRepository;
@@ -66,6 +67,7 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.text.MaskFormatter;
 
+import org.eclipse.swt.custom.CBanner;
 import org.hibernate.internal.util.BytesHelper;
 
 import principal.VerificadorDeCpf;
@@ -80,8 +82,8 @@ public class FormCadastroInstrutor extends JInternalFrame {
     private MaskFormatter maskData, maskValidadeCnh, maskPrimeiraCnh,
             maskTelefone, maskCelular, maskCpf, maskRg;
     private JComboBox<Carro> jcCarro;
-    private JComboBox<String> jcStatus;
-    private JButton btSalvar, btExcluir, btShowCalendar;
+    private JComboBox<EnumStatus> jcStatus;
+    private JButton btSalvar, btExcluir, btShowCalendar,btAlterar;
     private String[] status = {"Ativo", "Inativo"}; //Substituir por enums
     List<Carro> carroList;
 //    Carro[] carroVetor; //Ver pra que serve. spaoksaposa
@@ -116,6 +118,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
             definirEventos();
 
         } catch (Exception e) {
+        	e.printStackTrace();
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }
@@ -177,11 +180,6 @@ public class FormCadastroInstrutor extends JInternalFrame {
         lbValidadeCnh.setBounds(5, 70, 60, 20);
         pnGeral.add(lbValidadeCnh);
 
-//        maskValidadeCnh = new MaskFormatter("##/##/####");
-//        maskValidadeCnh.setPlaceholderCharacter('_');
-//        tfValidadeCnh = new JFormattedTextField(maskValidadeCnh);
-//        tfValidadeCnh.setBounds(60, 75, 100, 25);
-//        pnGeral.add(tfValidadeCnh);
         dcDataValidadeCnh = new JDateChooser();
 
         dcDataValidadeCnh.setBounds(60, 75, 120, 25);
@@ -194,7 +192,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
         dcDataValidadeCnh.setBounds(60, 70, 120, 25);
         pnGeral.add(dcDataValidadeCnh);
 
-        lbPrimeiraCnh = new JLabel("Permissção");
+        lbPrimeiraCnh = new JLabel("Permissão");
         lbPrimeiraCnh.setBounds(185, 70, 90, 20);
 
         
@@ -202,6 +200,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
         maskPrimeiraCnh = new MaskFormatter("##/##/####");
         maskPrimeiraCnh.setPlaceholderCharacter('_');
+        maskPrimeiraCnh.setValueContainsLiteralCharacters(false);
         tfPrimeiraCnh = new JFormattedTextField(maskPrimeiraCnh);
         tfPrimeiraCnh.setBounds(255, 70, 100, 25);
         pnGeral.add(tfPrimeiraCnh);
@@ -214,6 +213,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
         maskRg = new MaskFormatter("##.###.###.-A");
         maskRg.setPlaceholder("_");
         maskRg.setValidCharacters("0123456789Xx");
+        maskRg.setValueContainsLiteralCharacters(false);
         tfRg = new JFormattedTextField(maskRg);
         tfRg.setBounds(60, 100, 100, 25);
         pnGeral.add(tfRg);
@@ -235,6 +235,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
         maskTelefone = new MaskFormatter("(##)####-####");
         maskTelefone.setPlaceholderCharacter('_');
+        maskTelefone.setValueContainsLiteralCharacters(false);
         tfTelefone = new JFormattedTextField(maskTelefone);
         tfTelefone.setBounds(60, 125, 100, 25);
         pnGeral.add(tfTelefone);
@@ -245,6 +246,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
         maskCelular = new MaskFormatter("(##)#-####-####");
         maskCelular.setPlaceholderCharacter('_');
+        maskCelular.setValueContainsLiteralCharacters(false);
         tfCelular = new JFormattedTextField(maskCelular);
         tfCelular.setBounds(255, 125, 100, 25);
         pnGeral.add(tfCelular);
@@ -269,7 +271,8 @@ public class FormCadastroInstrutor extends JInternalFrame {
         lbStatus.setBounds(5, 180, 40, 20);
         pnGeral.add(lbStatus);
 
-        jcStatus = new JComboBox<String>(status);
+        jcStatus = new JComboBox<EnumStatus>(EnumStatus.values());
+        
         jcStatus.setBounds(60, 180, 230, 25);
         jcStatus.setSelectedIndex(-1);
         pnGeral.add(jcStatus);
@@ -277,6 +280,11 @@ public class FormCadastroInstrutor extends JInternalFrame {
         btSalvar = new JButton("Salvar");
         btSalvar.setBounds(180, 220, 100, 30);
         pnGeral.add(btSalvar);
+        
+        btAlterar = new JButton("Alterar");
+        btAlterar.setBounds(btSalvar.getBounds());
+        btAlterar.setVisible(false);
+        pnGeral.add(btAlterar);
 
         java.io.File f = new java.io.File(dirMyPicture);//Verifico se existe alguma diretorio
         if (f.exists()) { //Verifica se tem alguma foto existente para carregar
@@ -382,7 +390,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 				        FuncionarioController.loadInformacao(); //Recupero os dados do meu arquivo temporario
 //				        populaCampos(); //E populo os campos 
 				        } catch (IOException e1) {
-							// TODO Auto-generated catch block
+							// 	
 							e1.printStackTrace();
 						}
 				    }
@@ -442,8 +450,9 @@ public class FormCadastroInstrutor extends JInternalFrame {
 					RepositoryInstrutor persistencia = new RepositoryInstrutor();
 
 					persistencia.adicionar(instrutor);
-
+					Principal.isFrameClienteOpen = false;
 					minhaInternal.dispose();
+					
 
                 }
 
@@ -475,8 +484,9 @@ public class FormCadastroInstrutor extends JInternalFrame {
             public void internalFrameClosing(InternalFrameEvent arg0) {
                 System.out.println("passo aqui");
                 Principal.isFrameInstrutorOpen = false;
-
+                System.out.println(Principal.isFrameInstrutorOpen);
             }
+            
         });
 
         painelFotoInstrutor.addMouseListener(cliqueEmFoto);
@@ -492,37 +502,41 @@ public class FormCadastroInstrutor extends JInternalFrame {
         			String imgDir = funcionario.getImage(); //Recupero o diretorio da imagem
         			BufferedImage imageBf;
         			if(!"noImage".equals(imgDir)){ //Se houver um diretorio diferente da imagem eu crio um obj Imagem
-//        				imageBf = ImageIO.read(new File(imgDir));
-        				imageBf = ImageIO.read(new File("C:\\Users\\TecnicoN\\Treinamento\\Fotos-Consumidor\\VITOR BARROS.jpg"));
+        				imageBf = ImageIO.read(new File(imgDir));
+//        				imageBf = ImageIO.read(new File("C:\\Users\\TecnicoN\\Treinamento\\Fotos-Consumidor\\VITOR BARROS.jpg"));
         			}else { //Se não houver imagem eu crio com a img Default
         				imageBf = ImageIO.read(getClass().getClassLoader().getResourceAsStream("Resources/imgs/noImage.png"));
         			}
-        			//imageBf = ImageIO.read(new File(imgDir));
         			dirMyPicture = imgDir;
         			painelFotoInstrutor.setImage(imageBf);
-//        			painelFotoInstrutor.update(getGraphics());
         			painelFotoInstrutor.revalidate();
         			painelFotoInstrutor.repaint();
         			minhaInternal.revalidate();
-        			//minhaInternal.repaint();
-        			//minhaInternal.update(Principal.minhaFrame.getGraphics());
         			Principal.minhaFrame.revalidate();
         			Principal.minhaFrame.repaint();
-        			//Principal.minhaFrame.getContentPane().update(Principal.minhaFrame.getGraphics());
         			System.out.println(dirMyPicture);
-//        			inicializaComponentes(); //e "Atualizo"
-//                    Principal.minhaFrame.revalidate();
-//                    Principal.minhaFrame.repaint();
         		
         			
         			aba.setSelectedIndex(0);
+        			btAlterar.setVisible(true);
+        			btSalvar.setVisible(false);
         			tfNome.setText(funcionario.getNome());
         			tfCelular.setText(funcionario.getCelular());
         			tfPrimeiraCnh.setText(funcionario.getCnh());
+        			tfPrimeiraCnh.setValue(funcionario.getCnh());
+        			System.out.println(funcionario.getCnh());
+        			
+        			
         			tfCpf.setText(funcionario.getCpf());
+        			tfCpf.setValue(funcionario.getCpf());
         			dcDataNascimento.setDate(funcionario.getData());
+        			dcDataValidadeCnh.setDate(funcionario.getValidadeCnh());
         			tfRg.setText(funcionario.getRg());
         			tfTelefone.setText(funcionario.getTelefone());
+        			tfRegistroCnh.setText(funcionario.getCnh());
+//        			jcCarro.setSelectedItem(funcionario);
+        			jcStatus.setSelectedItem(funcionario.getStatus());
+        			
         			}catch(Exception er){
         				er.printStackTrace();
         			}
@@ -535,7 +549,59 @@ public class FormCadastroInstrutor extends JInternalFrame {
         	}
 		});
         
-        
+        btAlterar.addActionListener(ev->{
+        	tfNome.setText(tfNome.getText().trim());
+            tfRegistroCnh.setText(tfRegistroCnh.getText().trim());
+            tfRg.setText(tfRg.getText().trim());
+
+            VerificadorDeCpf verifica = new VerificadorDeCpf();
+
+            if (tfNome.getText().isEmpty()) { // Validações, verifico se estão vazio
+                JOptionPane.showMessageDialog(null, "Informar o nome");
+                lbNome.setForeground(Color.RED);
+                tfNome.requestFocus(true);
+            } else if (dcDataNascimento.getDate() == null) {
+                JOptionPane.showMessageDialog(null, "Informar a data");
+                lbData.setForeground(Color.RED);
+                tfData.requestFocus(true);
+            } else if (tfRegistroCnh.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null,
+                        "Informar o registro da CNH");
+                lbRegistroCnh.setForeground(Color.RED);
+                tfRegistroCnh.requestFocus(true);
+            } else if (dcDataValidadeCnh.getDate() == null) {
+                JOptionPane.showMessageDialog(null,
+                        "Informar a data de validade");
+                lbValidadeCnh.setForeground(Color.RED);
+                tfValidadeCnh.requestFocus(true);
+            } else if (tfPrimeiraCnh.getValue() == null) {
+                JOptionPane.showMessageDialog(null,
+                        "Informar a data da Permissão");
+                lbPrimeiraCnh.setForeground(Color.RED);
+                tfPrimeiraCnh.requestFocus(true);
+            } else if (tfCpf.getValue() == null
+                    || !verifica.verificarCpf(tfCpf.getText().toString())) {
+                JOptionPane.showMessageDialog(null, "Cpf invalido");
+                lbCpf.setForeground(Color.RED);
+                tfCpf.requestFocus(true);
+            } else if (jcStatus.getSelectedIndex() == -1) {
+                JOptionPane.showMessageDialog(null, "Informar o Status");
+                lbStatus.setForeground(Color.RED);
+                jcStatus.requestFocus(true);
+            } else if (jcCarro.getSelectedIndex() == -1) {
+                JOptionPane.showMessageDialog(null, "Carro não selecionado ou nÃ£o cadastrado");
+                jcCarro.requestFocus(true);
+            }else {
+                // populando o objeto
+				populaObjInstrutor();
+				RepositoryInstrutor persistencia = new RepositoryInstrutor();
+
+				persistencia.atualizar(instrutor);
+
+				minhaInternal.dispose();
+
+            }
+        });
         
         
     }
@@ -558,11 +624,11 @@ public class FormCadastroInstrutor extends JInternalFrame {
             }
 
             if (dcDataValidadeCnh.getDate() != null) {
-                instrutor.setValidadeCnh(dcDataValidadeCnh.getDateFormatString());
+                instrutor.setValidadeCnh(dcDataValidadeCnh.getDate());
             }
 
             if (tfPrimeiraCnh.getValue() != null) {
-                instrutor.setPrimeiraCnh(tfPrimeiraCnh.getValue().toString());
+                instrutor.setPrimeiraCnh(tfPrimeiraCnh.getText());
             }
 
             if (tfCpf.getValue() != null) {
@@ -580,7 +646,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
                     : tfCelular.getValue().toString());
 
             if (jcStatus.getSelectedIndex() != -1) {
-                instrutor.setStatus(jcStatus.getSelectedItem().toString());
+                instrutor.setStatus((EnumStatus)jcStatus.getSelectedItem());
             }
 
             if (jcCarro.getSelectedIndex() != -1) {

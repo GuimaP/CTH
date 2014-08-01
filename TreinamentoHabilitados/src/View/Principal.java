@@ -417,9 +417,9 @@ public class Principal extends JFrame {
 		itCadastroFuncionario.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!isFrameInstrutorOpen) {
+				if (!Principal.isFrameInstrutorOpen) {
 					try {
-					isFrameInstrutorOpen = true; // difinindo que ja tem uma
+						Principal.isFrameInstrutorOpen = true; // difinindo que ja tem uma
 													// janela aberta
 					JInternalFrame internalFrame = new FormCadastroInstrutor();
 					getContentPane().add(internalFrame);

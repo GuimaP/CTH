@@ -27,14 +27,15 @@ public class Funcionario implements Serializable{
 	private String nome="";
 	private Date data;
 	private String cnh="";
-	private String validadeCnh="";
+	@Column(columnDefinition="date")
+	private Date validadeCnh= null;
 	private String primeiraCnh="";
 	private String rg="";
 	@Id
 	private String cpf="";
 	private String telefone="";
 	private String celular="";
-	private String status="";
+	private EnumStatus status;
 	private String dirFoto;
         
         @Lob
@@ -130,10 +131,10 @@ public class Funcionario implements Serializable{
 	public void setCnh(String cnh) {
 		this.cnh = cnh;
 	}
-	public String getValidadeCnh() {
+	public Date getValidadeCnh() {
 		return validadeCnh;
 	}
-	public void setValidadeCnh(String validadeCnh) {
+	public void setValidadeCnh(Date validadeCnh) {
 		this.validadeCnh = validadeCnh;
 	}
 	public String getPrimeiraCnh() {
@@ -166,10 +167,10 @@ public class Funcionario implements Serializable{
 	public void setCelular(String celular) {
 		this.celular = celular;
 	}
-	public String getStatus() {
+	public EnumStatus getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+	public void setStatus(EnumStatus status) {
 		this.status = status;
 	}
 	

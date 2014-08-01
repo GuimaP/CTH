@@ -1065,7 +1065,7 @@ public class FormCadastroCliente extends JInternalFrame {
 
 		this.addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent arg0) {
-				Principal.isFrameInstrutorOpen = false;
+				Principal.isFrameClienteOpen = false;
 			}
 		});
 
