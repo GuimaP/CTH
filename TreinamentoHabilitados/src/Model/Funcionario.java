@@ -9,12 +9,15 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -36,15 +39,16 @@ public class Funcionario implements Serializable{
 	private String telefone="";
 	private String celular="";
 	private EnumStatus status;
+	@Transient
 	private String dirFoto;
         
-        @Lob
-        @Column(name="image", nullable = true,columnDefinition = "mediumblob")
-        private byte[] image;
+	@Lob
+    @Column(name="image", nullable = true,columnDefinition = "mediumblob")
+    private byte[] image;
         
 	@OneToOne
-        @JoinColumn(name = "placa")//Digo que é uma chave estrangeira ...
-	private Carro tbCarroPlacaCarro;
+        @JoinColumn(name = "placa")//Digo que é uma chave estrangeira ...	
+	private Carro placa;
 	
 	public void setImage(byte[] image){
             this.image = image;
@@ -103,10 +107,10 @@ public class Funcionario implements Serializable{
         
         
         public Carro getTbCarroPlacaCarro() {
-		return tbCarroPlacaCarro;
+		return placa;
 	}
 	public void setTbCarroPlacaCarro(Carro tbCarroPlacaCarro) {
-		this.tbCarroPlacaCarro = tbCarroPlacaCarro;
+		this.placa = tbCarroPlacaCarro;
 	}
 	
 	public String getDiretorioFoto(){

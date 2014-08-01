@@ -7,6 +7,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
+import Model.Carro;
 import Model.Funcionario;
 
 /**
@@ -31,6 +32,14 @@ public class RepositoryInstrutor extends Repository<Model.Funcionario> {
         }
         
         return f;
+    }
+    
+    @Override
+    public void adicionar(Funcionario obj) {
+    	super.adicionar(obj);
+    	Carro c = obj.getTbCarroPlacaCarro();
+    	c.setOcupado(true);
+    	new RepositoryCarro().atualizar(c);
     }
     
     public List<Funcionario> getAllInstrutor() throws Exception{

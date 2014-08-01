@@ -233,7 +233,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
         lbTelefone.setBounds(5, 125, 60, 20);
         pnGeral.add(lbTelefone);
 
-        maskTelefone = new MaskFormatter("(##)####-####");
+        maskTelefone = new MaskFormatter("(##) ####-####");
         maskTelefone.setPlaceholderCharacter('_');
         maskTelefone.setValueContainsLiteralCharacters(false);
         tfTelefone = new JFormattedTextField(maskTelefone);
@@ -534,7 +534,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
         			tfRg.setText(funcionario.getRg());
         			tfTelefone.setText(funcionario.getTelefone());
         			tfRegistroCnh.setText(funcionario.getCnh());
-//        			jcCarro.setSelectedItem(funcionario);
+        			jcCarro.setSelectedItem(funcionario.getTbCarroPlacaCarro());
         			jcStatus.setSelectedItem(funcionario.getStatus());
         			
         			}catch(Exception er){
@@ -597,7 +597,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 				RepositoryInstrutor persistencia = new RepositoryInstrutor();
 
 				persistencia.atualizar(instrutor);
-
+				Principal.isFrameInstrutorOpen = false;
 				minhaInternal.dispose();
 
             }
@@ -605,6 +605,17 @@ public class FormCadastroInstrutor extends JInternalFrame {
         
         
     }
+    
+
+	private void atualiza() throws SQLException{
+		 List<Carro> lista = (List<Carro>) new RepositoryCarro().pegarTodos();
+	        for (Carro c : lista) {
+	            jcCarro.addItem(c);
+	        }
+	        
+	        listFunc = new RepositoryInstrutor().pegarTodos();
+	        tabela.setModel(new ModeloTableFuncionario(listFunc));
+	}
 
     private void populaObjInstrutor() {
         try {
