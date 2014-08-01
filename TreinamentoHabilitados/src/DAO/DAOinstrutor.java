@@ -76,7 +76,7 @@ public class DAOinstrutor extends DAOconexao {
 					funcionario.setCpf(rs.getString("CPF_INSTRUTOR"));
 					funcionario.setTelefone(rs.getString("TELEFONE_INSTRUTOR"));
 					funcionario.setCelular(rs.getString("CELULAR_INSTRUTOR"));
-					funcionario.setStatus(rs.getString("STATUS_INSTRUTOR"));
+					funcionario.setStatu(rs.getString("STATUS_INSTRUTOR"));
 					
 					carro = new Carro();
 					carro.setPlaca(rs.getString("tb_carro_placa_carro"));

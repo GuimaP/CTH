@@ -731,7 +731,20 @@ public class FormCadastroCliente extends JInternalFrame {
 	}
 
 	public void definirEventos() {
-		int inicio = 0;
+		jsParcelas.addChangeListener(new ChangeListener() {
+			int stado =0;
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				System.out.println("passei");
+				
+				if (!jsParcelas.getValue().equals(stado)){
+					dtProximoPagamento.setEnabled(true);
+				}else {
+					dtProximoPagamento.setEnabled(false);
+				}
+				
+			}
+		});
 		
 		
 		

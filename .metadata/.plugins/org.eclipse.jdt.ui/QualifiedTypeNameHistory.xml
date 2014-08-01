@@ -42,6 +42,6 @@
 <fullyQualifiedTypeName name="View.PainelCalendarioAulas"/>
 <fullyQualifiedTypeName name="View.FormAgendamento"/>
 <fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
-<fullyQualifiedTypeName name="javax.swing.event.ChangeListener"/>
 <fullyQualifiedTypeName name="javax.swing.JFormattedTextField"/>
+<fullyQualifiedTypeName name="javax.swing.event.ChangeListener"/>
 </qualifiedTypeNameHistroy>
