@@ -35,6 +35,7 @@ public class Funcionario implements Serializable{
 	private String telefone="";
 	private String celular="";
 	private String status="";
+	private String dirFoto;
         
         @Lob
         @Column(name="image", nullable = true,columnDefinition = "mediumblob")
@@ -48,44 +49,47 @@ public class Funcionario implements Serializable{
             this.image = image;
         }
         
-        public Image getImage(){
+        public String getImage(){
         	String sep = System.getProperty("file.separator");
             String dir = System.getProperty("user.home");
+            dir +=sep+"Treinamento";
+            String diretorioFoto = "noImage";
         	try {
                 
         		//Verifico se o diretorio de Resources existe...
-        		File diretorioRes = new File(dir+"res");
+        		File diretorioRes = new File(dir+sep+"res");
         		if(!diretorioRes.exists()){
         			diretorioRes.mkdir();
         		}
         		//Verifico se o diretorio de imagem existe...
-            	File diretorioImagens = new File(dir+"Treinamento"+sep+"Fotos-Consumidor");
+            	File diretorioImagens = new File(dir+sep+"Fotos-Consumidor");
             	if(!diretorioImagens.exists()){
             		diretorioImagens.mkdir();
             	}
             	
                 //Especifico o diretorio que vai salvar a imagem
-                File dirPhoto = new File(dir+sep+"Treinamento"+sep+"Fotos-Consumidor"+sep+nome+".jpg");
-
-                Image imgFoto;
-                
-                if(dirPhoto.exists()){
+                File dirPhoto = new File(dir+sep+"Fotos-Consumidor"+sep+nome+".jpg");
+                if(image != null){
                 
                 FileOutputStream ou = new FileOutputStream(dirPhoto);
-                                
+                
                 //Apontos o vetor de bytes da imagem
                 ou.write(image);
                 //Fecho o meninão aqui
                 ou.close();
+                diretorioFoto = dirPhoto.getPath();
+                
+                }
                 
                 
                 //Se encontrar o arquivo eu devolvo a imagem
-                imgFoto = new ImageIcon(dirPhoto.getPath()).getImage();
-                }else {
-                	imgFoto = new ImageIcon(getClass().getClassLoader().getResource("Resources/imgs/noImage.png")).getImage();
-                }
-
-                return imgFoto;
+//                diretorioFoto = new ImageIcon(dirPhoto.getPath()).getImage();
+                
+//                }else {
+//                	imgFoto = new ImageIcon(getClass().getClassLoader().getResource("Resources/imgs/noImage.png")).getImage();
+//                }
+                
+              
                
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Funcionario.class.getName()).log(Level.SEVERE, null, ex);
@@ -93,9 +97,7 @@ public class Funcionario implements Serializable{
                 Logger.getLogger(Funcionario.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            String dirImgPadrao = getClass().getClassLoader().getResource("Resources"+sep+"imgs"+sep+"noImage.jpg").getPath();
-            JOptionPane.showMessageDialog(null, dirImgPadrao);
-            return new ImageIcon(dirImgPadrao).getImage();
+            return diretorioFoto;
         }
         
         
@@ -105,6 +107,11 @@ public class Funcionario implements Serializable{
 	public void setTbCarroPlacaCarro(Carro tbCarroPlacaCarro) {
 		this.tbCarroPlacaCarro = tbCarroPlacaCarro;
 	}
+	
+	public String getDiretorioFoto(){
+		return dirFoto;
+	}
+	
 	public String getNome() {
 		return nome;
 	}

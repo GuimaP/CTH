@@ -43,5 +43,9 @@ public class ModeloTableFuncionario extends AbstractTableModel{
 		return colunas[column];
 	}
 	
+	public Funcionario getFuncionario(int index){
+		return func.get(index);
+	}
+	
 	
 }

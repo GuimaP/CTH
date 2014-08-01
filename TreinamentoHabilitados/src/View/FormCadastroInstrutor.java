@@ -12,9 +12,16 @@ import Model.Repository.RepositoryCarro;
 import Model.Repository.RepositoryInstrutor;
 
 import com.toedter.calendar.JDateChooser;
+import com.towel.swing.img.JImagePanel;
 
+import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -22,11 +29,16 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.AttributedCharacterIterator;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -77,7 +89,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
     
     
     private Carro carro;
-    private PainelFoto painelFotoInstrutor;
+    private JImagePanel painelFotoInstrutor;
 
     private JInternalFrame minhaInternal;
     private String dirMyPicture;
@@ -109,7 +121,8 @@ public class FormCadastroInstrutor extends JInternalFrame {
     }
 
     public void inicializaComponentes() throws ParseException, SQLException {
-        // Paineis da aba
+      try{
+    	// Paineis da aba
         pnGeral = new JPanel();
         pnGeral.setLayout(null);
         pnBusca = new JPanel();
@@ -273,9 +286,10 @@ public class FormCadastroInstrutor extends JInternalFrame {
             } catch (IOException ex) {
                 Logger.getLogger(FormCadastroInstrutor.class.getName()).log(Level.SEVERE, null, ex);
             }
-            painelFotoInstrutor = new PainelFoto(img);//e passo como parametro para desenhar na tela
+            painelFotoInstrutor = new JImagePanel(f.getPath());//e passo como parametro para desenhar na tela
         } else {
-        painelFotoInstrutor = new PainelFoto();
+        	BufferedImage imageBf = ImageIO.read(getClass().getClassLoader().getResourceAsStream("Resources/imgs/noImage.png"));
+        	painelFotoInstrutor = new JImagePanel(imageBf);
         }
         painelFotoInstrutor.setBounds(370, 10, 110, 130);
         Border bordaColorida = BorderFactory.createLineBorder(Color.GRAY);
@@ -310,6 +324,10 @@ public class FormCadastroInstrutor extends JInternalFrame {
         setTitle("Cadastro Instrutor");
         setVisible(true);
         requestFocusInWindow();
+        
+      } catch(Exception e){
+        	e.printStackTrace();
+        }
 
        
     }
@@ -320,57 +338,56 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
             public void mouseClicked(MouseEvent e) {
 
-                try {
-                    if (e.getClickCount() == 2) {
+                if (e.getClickCount() == 2) {
 
-                        
-                        //Antes de abrir a camera, eu salvo todas as informações para restaura depois
-                        populaObjInstrutor();
-                        FuncionarioController.saveInformacao(instrutor);
-                        String separador = System.getProperty("file.separator");
-                        String strPath =  System.getProperty("user.home")+separador+"Treinamento"+separador+"Fotos-Consumidor"+separador;
+				    
+				    //Antes de abrir a camera, eu salvo todas as informações para restaura depois
+//				    populaObjInstrutor();
+				    FuncionarioController.saveInformacao(instrutor);
+				    String separador = System.getProperty("file.separator");
+				    String strPath =  System.getProperty("user.home")+separador+"Treinamento"+separador+"Fotos-Consumidor"+separador;
 
 
-                        String strNameFile = tfNome.getText(); //Pego o nome que será a imagem
-                        
-                        //Instancio a janela de Cam
-                        WebCamPhotoAutoEscola dialog = new WebCamPhotoAutoEscola(Principal.minhaFrame, strPath, strNameFile);
-                        String path = "";//Inicializo a Variavel
+				    String strNameFile = tfNome.getText(); //Pego o nome que será a imagem
+				    
+				    //Instancio a janela de Cam
+				    WebCamPhotoAutoEscola dialog = new WebCamPhotoAutoEscola(Principal.minhaFrame, strPath, strNameFile);
+				    String caminhoDaImagem = "";//Inicializo a Variavel
 
-                        //Pego o caminho da imagem;
-                        path = dialog.caminhoDaImagem;
-                        
-                        //Crio um File a partir da foto
-                        File fotoTirada = new File(path);
-                        
-                        //Seto a imagem pra variavel do Instrutor
-                        Image imgFoto = new ImageIcon(path).getImage();
-                        instrutor.setImage(new byte[(int)fotoTirada.length()]);
-                        
-                        //Verifica se existe uma foto, pois pode muito bem o fulano não ter tirado uma foto.
-                        if (!path.isEmpty() & fotoTirada.exists()) {
-                            System.out.println("Imagem tirada:" + path); //Log...
-                            
-                            dirMyPicture = path;//passo o path para a variavel Global...
-                            getContentPane().removeAll(); //Removo todos os componentes...
-                            inicializaComponentes(); // Redesenho todos os commponentes...
-                            minhaInternal.revalidate(); //revalido as alterações
-                            minhaInternal.repaint(); //e "Atualizo"
-                            Principal.minhaFrame.revalidate();
-                            Principal.minhaFrame.repaint();
-                            
-                            FuncionarioController.loadInformacao(); //Recupero os dados do meu arquivo temporario
-                            populaCampos(); //E populo os campos 
+				    //Pego o caminho da imagem;
+				    caminhoDaImagem = dialog.caminhoDaImagem;
+				    
+				    //Crio um File a partir da foto
+				    File fotoTirada = new File(caminhoDaImagem);
+				    
+				    //Seto a imagem pra variavel do Instrutor
+				    Image imgFoto = new ImageIcon(caminhoDaImagem).getImage();
+				    instrutor.setImage(new byte[(int)fotoTirada.length()]);
+				    
+				    //Verifica se existe uma foto, pois pode muito bem o fulano não ter tirado uma foto.
+				    if (!caminhoDaImagem.isEmpty() & fotoTirada.exists()) {
+				        System.out.println("Imagem tirada:" + caminhoDaImagem); //Log...
+				        
+				        dirMyPicture = caminhoDaImagem;//passo o path para a variavel Global...
+				        try {
+						BufferedImage img = ImageIO.read(new File(caminhoDaImagem));	
+						painelFotoInstrutor.setImage(img);
+				        painelFotoInstrutor.repaint();
+				        painelFotoInstrutor.revalidate();
+				        minhaInternal.revalidate(); //revalido as alterações
+				        minhaInternal.repaint(); //e "Atualizo"
+				        Principal.minhaFrame.revalidate();
+				        Principal.minhaFrame.repaint();
+				        
+				        FuncionarioController.loadInformacao(); //Recupero os dados do meu arquivo temporario
+//				        populaCampos(); //E populo os campos 
+				        } catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+				    }
 
-                        }
-
-                    }
-
-                } catch (ParseException ex) {
-                    Logger.getLogger(FormCadastroInstrutor.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (SQLException ex) {
-                    Logger.getLogger(FormCadastroInstrutor.class.getName()).log(Level.SEVERE, null, ex);
-                }
+				}
 
             }
         };
@@ -421,7 +438,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
                     jcCarro.requestFocus(true);
                 }else {
                     // populando o objeto
-					populaObjInstrutor();
+//					populaObjInstrutor();
 					RepositoryInstrutor persistencia = new RepositoryInstrutor();
 
 					persistencia.adicionar(instrutor);
@@ -464,102 +481,159 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
         painelFotoInstrutor.addMouseListener(cliqueEmFoto);
 
-    }
-
-    private void populaObjInstrutor() {
-        try {
-        	if(instrutor == null){
-        		instrutor = new Funcionario();
+        tabela.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		if(e.getClickCount()==2){
+        			int index = tabela.getSelectedRow();
+        			Funcionario funcionario = ((ModeloTableFuncionario)tabela.getModel()).getFuncionario(index);
+//        			new DialogDadosFuncionario(funcionario);
+        			try{
+        			String imgDir = funcionario.getImage(); //Recupero o diretorio da imagem
+        			BufferedImage imageBf;
+        			if(!"noImage".equals(imgDir)){ //Se houver um diretorio diferente da imagem eu crio um obj Imagem
+//        				imageBf = ImageIO.read(new File(imgDir));
+        				imageBf = ImageIO.read(new File("C:\\Users\\TecnicoN\\Treinamento\\Fotos-Consumidor\\VITOR BARROS.jpg"));
+        			}else { //Se n�o houver imagem eu crio com a img Default
+        				imageBf = ImageIO.read(getClass().getClassLoader().getResourceAsStream("Resources/imgs/noImage.png"));
+        			}
+        			imageBf = ImageIO.read(new File(imgDir));
+        			dirMyPicture = imgDir;
+        			painelFotoInstrutor.setImage(imageBf);
+//        			painelFotoInstrutor.update(getGraphics());
+        			painelFotoInstrutor.revalidate();
+        			painelFotoInstrutor.repaint();
+        			minhaInternal.revalidate();
+        			//minhaInternal.repaint();
+        			//minhaInternal.update(Principal.minhaFrame.getGraphics());
+        			Principal.minhaFrame.revalidate();
+        			Principal.minhaFrame.repaint();
+        			//Principal.minhaFrame.getContentPane().update(Principal.minhaFrame.getGraphics());
+        			System.out.println(dirMyPicture);
+//        			inicializaComponentes(); //e "Atualizo"
+//                    Principal.minhaFrame.revalidate();
+//                    Principal.minhaFrame.repaint();
+        		
+        			
+        			aba.setSelectedIndex(0);
+        			tfNome.setText(funcionario.getNome());
+        			tfCelular.setText(funcionario.getCelular());
+        			tfPrimeiraCnh.setText(funcionario.getCnh());
+        			tfCpf.setText(funcionario.getCpf());
+        			dcDataNascimento.setDate(funcionario.getData());
+        			tfRg.setText(funcionario.getRg());
+        			tfTelefone.setText(funcionario.getTelefone());
+        			}catch(Exception er){
+        				er.printStackTrace();
+        			}
+        			
+        			
+//        			JImagePanel pn = new JImagePanel("asdas");
+//        			pn.revalidate();
+//        			pn.revalidate();
+        		}
         	}
-            if (!tfNome.getText().isEmpty()) {
-                instrutor.setNome(tfNome.getText());
-            }
-
-            if (dcDataNascimento.getDate() != null) {
-                instrutor.setData(dcDataNascimento.getDate());
-            }
-
-            if (!tfRegistroCnh.getText().isEmpty()) {
-                instrutor.setCnh(tfRegistroCnh.getText());
-            }
-
-            if (dcDataValidadeCnh.getDate() != null) {
-                instrutor.setValidadeCnh(dcDataValidadeCnh.getDateFormatString());
-            }
-
-            if (tfPrimeiraCnh.getValue() != null) {
-                instrutor.setPrimeiraCnh(tfPrimeiraCnh.getValue().toString());
-            }
-
-            if (tfCpf.getValue() != null) {
-                instrutor.setCpf(tfCpf.getValue().toString());
-            }else {instrutor.setCpf("");}
-
-            if (tfRg.getValue() != null) {
-                instrutor.setRg(tfRg.getText());
-            }
-
-            instrutor.setTelefone(tfTelefone.getValue() == null ? "Não Há"
-                    : tfTelefone.getValue().toString());
-
-            instrutor.setCelular(tfCelular.getValue() == null ? "Não Há"
-                    : tfCelular.getValue().toString());
-
-            if (jcStatus.getSelectedIndex() != -1) {
-                instrutor.setStatus(jcStatus.getSelectedItem().toString());
-            }
-
-            if (jcCarro.getSelectedIndex() != -1) {
-                instrutor.setTbCarroPlacaCarro((Carro) jcCarro
-                        .getSelectedItem());
-            }
-            //Pegando os bytes para salvar a imagem
-            java.io.File f = new java.io.File(dirMyPicture);
-            //Verifica se existe uma foto ja tirada
-            
-            if (f.exists()) {
-                byte[] bImg = new byte[(int) f.length()]; //Pegando o tamanho de bytes da imagem;
-                FileInputStream imgStream = new FileInputStream(f);
-                imgStream.read(bImg);
-                imgStream.close();
-                instrutor.setImage(bImg);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+		});
+        
+        
+        
+        
     }
 
-    private void populaCampos() {
-        if (!instrutor.getNome().isEmpty()) {
-            tfNome.setText(instrutor.getNome());
-        }
+//    private void populaObjInstrutor() {
+//        try {
+//        	if(instrutor == null){
+//        		instrutor = new Funcionario();
+//        	}
+//            if (!tfNome.getText().isEmpty()) {
+//                instrutor.setNome(tfNome.getText());
+//            }
+//
+//            if (dcDataNascimento.getDate() != null) {
+//                instrutor.setData(dcDataNascimento.getDate());
+//            }
+//
+//            if (!tfRegistroCnh.getText().isEmpty()) {
+//                instrutor.setCnh(tfRegistroCnh.getText());
+//            }
+//
+//            if (dcDataValidadeCnh.getDate() != null) {
+//                instrutor.setValidadeCnh(dcDataValidadeCnh.getDateFormatString());
+//            }
+//
+//            if (tfPrimeiraCnh.getValue() != null) {
+//                instrutor.setPrimeiraCnh(tfPrimeiraCnh.getValue().toString());
+//            }
+//
+//            if (tfCpf.getValue() != null) {
+//                instrutor.setCpf(tfCpf.getValue().toString());
+//            }else {instrutor.setCpf("");}
+//
+//            if (tfRg.getValue() != null) {
+//                instrutor.setRg(tfRg.getText());
+//            }
+//
+//            instrutor.setTelefone(tfTelefone.getValue() == null ? "Não Há"
+//                    : tfTelefone.getValue().toString());
+//
+//            instrutor.setCelular(tfCelular.getValue() == null ? "Não Há"
+//                    : tfCelular.getValue().toString());
+//
+//            if (jcStatus.getSelectedIndex() != -1) {
+//                instrutor.setStatus(jcStatus.getSelectedItem().toString());
+//            }
+//
+//            if (jcCarro.getSelectedIndex() != -1) {
+//                instrutor.setTbCarroPlacaCarro((Carro) jcCarro
+//                        .getSelectedItem());
+//            }
+//            //Pegando os bytes para salvar a imagem
+//            java.io.File f = new java.io.File(dirMyPicture);
+//            //Verifica se existe uma foto ja tirada
+//            
+//            if (f.exists()) {
+//                byte[] bImg = new byte[(int) f.length()]; //Pegando o tamanho de bytes da imagem;
+//                FileInputStream imgStream = new FileInputStream(f);
+//                imgStream.read(bImg);
+//                imgStream.close();
+//                instrutor.setImage(bImg);
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 
-        if (!instrutor.getCelular().isEmpty()) {
-            tfRegistroCnh.setText(instrutor.getCnh());
-        }
-        
-        if(!instrutor.getCelular().isEmpty()){
-            tfCelular.setText(instrutor.getCelular());
-        }
-        
-        if(!instrutor.getCpf().isEmpty()){
-            tfCpf.setText(instrutor.getCpf());
-        }
-        
-        if(!instrutor.getValidadeCnh().isEmpty()){
-            tfValidadeCnh.setText(instrutor.getValidadeCnh());
-        }
-        
-        if(instrutor.getData() != null){
-            dcDataNascimento.setDate(instrutor.getData());
-        }
-        
-        if(instrutor.getTbCarroPlacaCarro()!= null){
-            jcCarro.setSelectedItem(instrutor.getTbCarroPlacaCarro());
-        }
-        
-        
-
-    }
+//    private void populaCampos() {
+//        if (!instrutor.getNome().isEmpty()) {
+//            tfNome.setText(instrutor.getNome());
+//        }
+//
+//        if (!instrutor.getCelular().isEmpty()) {
+//            tfRegistroCnh.setText(instrutor.getCnh());
+//        }
+//        
+//        if(!instrutor.getCelular().isEmpty()){
+//            tfCelular.setText(instrutor.getCelular());
+//        }
+//        
+//        if(!instrutor.getCpf().isEmpty()){
+//            tfCpf.setText(instrutor.getCpf());
+//        }
+//        
+//        if(!instrutor.getValidadeCnh().isEmpty()){
+//            tfValidadeCnh.setText(instrutor.getValidadeCnh());
+//        }
+//        
+//        if(instrutor.getData() != null){
+//            dcDataNascimento.setDate(instrutor.getData());
+//        }
+//        
+//        if(instrutor.getTbCarroPlacaCarro()!= null){
+//            jcCarro.setSelectedItem(instrutor.getTbCarroPlacaCarro());
+//        }
+//        
+//        
+//
+//    }
 }
