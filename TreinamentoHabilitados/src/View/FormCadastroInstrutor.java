@@ -438,7 +438,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
                     jcCarro.requestFocus(true);
                 }else {
                     // populando o objeto
-//					populaObjInstrutor();
+					populaObjInstrutor();
 					RepositoryInstrutor persistencia = new RepositoryInstrutor();
 
 					persistencia.adicionar(instrutor);
@@ -497,7 +497,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
         			}else { //Se n�o houver imagem eu crio com a img Default
         				imageBf = ImageIO.read(getClass().getClassLoader().getResourceAsStream("Resources/imgs/noImage.png"));
         			}
-        			imageBf = ImageIO.read(new File(imgDir));
+        			//imageBf = ImageIO.read(new File(imgDir));
         			dirMyPicture = imgDir;
         			painelFotoInstrutor.setImage(imageBf);
 //        			painelFotoInstrutor.update(getGraphics());
@@ -540,69 +540,69 @@ public class FormCadastroInstrutor extends JInternalFrame {
         
     }
 
-//    private void populaObjInstrutor() {
-//        try {
-//        	if(instrutor == null){
-//        		instrutor = new Funcionario();
-//        	}
-//            if (!tfNome.getText().isEmpty()) {
-//                instrutor.setNome(tfNome.getText());
-//            }
-//
-//            if (dcDataNascimento.getDate() != null) {
-//                instrutor.setData(dcDataNascimento.getDate());
-//            }
-//
-//            if (!tfRegistroCnh.getText().isEmpty()) {
-//                instrutor.setCnh(tfRegistroCnh.getText());
-//            }
-//
-//            if (dcDataValidadeCnh.getDate() != null) {
-//                instrutor.setValidadeCnh(dcDataValidadeCnh.getDateFormatString());
-//            }
-//
-//            if (tfPrimeiraCnh.getValue() != null) {
-//                instrutor.setPrimeiraCnh(tfPrimeiraCnh.getValue().toString());
-//            }
-//
-//            if (tfCpf.getValue() != null) {
-//                instrutor.setCpf(tfCpf.getValue().toString());
-//            }else {instrutor.setCpf("");}
-//
-//            if (tfRg.getValue() != null) {
-//                instrutor.setRg(tfRg.getText());
-//            }
-//
-//            instrutor.setTelefone(tfTelefone.getValue() == null ? "Não Há"
-//                    : tfTelefone.getValue().toString());
-//
-//            instrutor.setCelular(tfCelular.getValue() == null ? "Não Há"
-//                    : tfCelular.getValue().toString());
-//
-//            if (jcStatus.getSelectedIndex() != -1) {
-//                instrutor.setStatus(jcStatus.getSelectedItem().toString());
-//            }
-//
-//            if (jcCarro.getSelectedIndex() != -1) {
-//                instrutor.setTbCarroPlacaCarro((Carro) jcCarro
-//                        .getSelectedItem());
-//            }
-//            //Pegando os bytes para salvar a imagem
-//            java.io.File f = new java.io.File(dirMyPicture);
-//            //Verifica se existe uma foto ja tirada
-//            
-//            if (f.exists()) {
-//                byte[] bImg = new byte[(int) f.length()]; //Pegando o tamanho de bytes da imagem;
-//                FileInputStream imgStream = new FileInputStream(f);
-//                imgStream.read(bImg);
-//                imgStream.close();
-//                instrutor.setImage(bImg);
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
+    private void populaObjInstrutor() {
+        try {
+        	if(instrutor == null){
+        		instrutor = new Funcionario();
+        	}
+            if (!tfNome.getText().isEmpty()) {
+                instrutor.setNome(tfNome.getText());
+            }
+
+            if (dcDataNascimento.getDate() != null) {
+                instrutor.setData(dcDataNascimento.getDate());
+            }
+
+            if (!tfRegistroCnh.getText().isEmpty()) {
+                instrutor.setCnh(tfRegistroCnh.getText());
+            }
+
+            if (dcDataValidadeCnh.getDate() != null) {
+                instrutor.setValidadeCnh(dcDataValidadeCnh.getDateFormatString());
+            }
+
+            if (tfPrimeiraCnh.getValue() != null) {
+                instrutor.setPrimeiraCnh(tfPrimeiraCnh.getValue().toString());
+            }
+
+            if (tfCpf.getValue() != null) {
+                instrutor.setCpf(tfCpf.getValue().toString());
+            }else {instrutor.setCpf("");}
+
+            if (tfRg.getValue() != null) {
+                instrutor.setRg(tfRg.getText());
+            }
+
+            instrutor.setTelefone(tfTelefone.getValue() == null ? "Não Há"
+                    : tfTelefone.getValue().toString());
+
+            instrutor.setCelular(tfCelular.getValue() == null ? "Não Há"
+                    : tfCelular.getValue().toString());
+
+            if (jcStatus.getSelectedIndex() != -1) {
+                instrutor.setStatus(jcStatus.getSelectedItem().toString());
+            }
+
+            if (jcCarro.getSelectedIndex() != -1) {
+                instrutor.setTbCarroPlacaCarro((Carro) jcCarro
+                        .getSelectedItem());
+            }
+            //Pegando os bytes para salvar a imagem
+            java.io.File f = new java.io.File(dirMyPicture);
+            //Verifica se existe uma foto ja tirada
+            
+            if (f.exists()) {
+                byte[] bImg = new byte[(int) f.length()]; //Pegando o tamanho de bytes da imagem;
+                FileInputStream imgStream = new FileInputStream(f);
+                imgStream.read(bImg);
+                imgStream.close();
+                instrutor.setImage(bImg);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 //    private void populaCampos() {
 //        if (!instrutor.getNome().isEmpty()) {

@@ -20,6 +20,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -42,10 +44,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
@@ -54,6 +58,8 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.text.MaskFormatter;
 import javax.swing.text.TabExpander;
+
+import org.eclipse.swt.widgets.Spinner;
 
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.demo.DateChooserPanel;
@@ -72,11 +78,10 @@ public class FormCadastroCliente extends JInternalFrame {
 			lbDtPagamento, lbDtProximoPagamento, lbBuscaAluno, lbAgendamento,
 			lbNomeAluno, lbCpfAluno;
 	private JTextField tfNome, tfEmail, tfProfissao, tfRegistroCnh,
-			tfLogradouro, tfBairro, tfRg, tfQuestao1, tfNumero, tfBuscaPacote,
-			tfParcelas;
+			tfLogradouro, tfBairro, tfRg, tfQuestao1, tfNumero, tfBuscaPacote;
 	private JFormattedTextField tfData, tfNascimento, tfCep, tfCpf, tfCelular,
 			tfTelefone, tfValidadeCnh, tfPrimeiraHabilitacao,
-			tfPagamentoInicial, tfPagamentoPendente, tfBuscaAluno;
+			tfPagamentoInicial, tfPagamentoPendente, tfBuscaAluno, tfParcelas;
 
 	private JButton btSalvar, btBuscarPacote, btBuscarAluno;
 
@@ -102,7 +107,7 @@ public class FormCadastroCliente extends JInternalFrame {
 	private ArrayList<Pacote> listPacote = new ArrayList<Pacote>();
 	private MaskFormatter dataMask, dataMaskNascimento, maskCep, maskNumero,
 			maskCpf, maskTelefone, maskCelular, maskValidadeCnh,
-			maskPrimeiraHabilitacao;
+			maskPrimeiraHabilitacao, maskParcelas;
 
 	private PainelCalendarioAgendamento painelCalendario;
 
@@ -123,11 +128,15 @@ public class FormCadastroCliente extends JInternalFrame {
 
 	private JButton btTarefa;
 
-	private JTextArea jtDescAula;
+	private JTextArea jTextAreaObs;
 
 	private JLabel lbDescricao;
 
 	private JCheckBox checkCpf, checkObs;
+	
+	private JFormattedTextField tfBuscaAlunoCpf;
+	
+	private JSpinner jsParcelas;
 
 	private boolean aberto = false;
 
@@ -561,44 +570,26 @@ public class FormCadastroCliente extends JInternalFrame {
 		dtPagamento.setMaxSelectableDate(dataAtual);
 		painelPagamento.add(dtPagamento);
 
-		lbTipoPagamento = new JLabel("Tipo de pagamento");
-		lbTipoPagamento.setSize(200, 20);
-		lbTipoPagamento.setLocation(430, 510);
-		painelPagamento.add(lbTipoPagamento);
-
-		jcPagamento = new JComboBox<String>(pagamento);
-		jcPagamento.setLocation(650, 510);
-		jcPagamento.setSize(120, 30);
-		jcPagamento.setSelectedIndex(-1);
-		painelPagamento.add(jcPagamento);
-
 		lbParcelas = new JLabel("Parcelas");
 		lbParcelas.setSize(100, 20);
-		lbParcelas.setLocation(430, 540);
+		lbParcelas.setLocation(430, 510);
 		painelPagamento.add(lbParcelas);
 
-		tfParcelas = new JTextField();
-		tfParcelas.setSize(120, 30);
-		tfParcelas.setLocation(650, 540);
-		painelPagamento.add(tfParcelas);
-
-		lbPagamentoInicial = new JLabel("Valor Pago");
-		lbPagamentoInicial.setSize(200, 20);
-		lbPagamentoInicial.setLocation(430, 570);
-		painelPagamento.add(lbPagamentoInicial);
-
-		tfPagamentoInicial = new JFormattedTextField();
-		tfPagamentoInicial.setSize(120, 30);
-		tfPagamentoInicial.setLocation(650, 570);
-		painelPagamento.add(tfPagamentoInicial);
-
+		//testando o jspiner
+		
+		SpinnerNumberModel nbparcelasModel;
+		nbparcelasModel = new SpinnerNumberModel(0,0,12,1);
+		jsParcelas = new JSpinner(nbparcelasModel);
+		jsParcelas.setBounds(650, 510, 120, 30);
+		painelPagamento.add(jsParcelas);
+		
 		lbDtProximoPagamento = new JLabel("Próxima Parcela");
 		lbDtProximoPagamento.setSize(100, 20);
-		lbDtProximoPagamento.setLocation(430, 600);
+		lbDtProximoPagamento.setLocation(430, 540);
 		painelPagamento.add(lbDtProximoPagamento);
 
 		dtProximoPagamento = new JDateChooser();
-		dtPagamento.setBounds(120, 30, 650, 600);
+		dtPagamento.setBounds(120, 30, 650, 540);
 
 		Calendar minimo1 = Calendar.getInstance();
 		minimo1.set(Calendar.YEAR, 1900);
@@ -607,7 +598,29 @@ public class FormCadastroCliente extends JInternalFrame {
 		dtProximoPagamento.setMinSelectableDate(minimo.getTime());
 		Date dataAtual1 = new Date(System.currentTimeMillis());
 		dtProximoPagamento.setMaxSelectableDate(dataAtual1);
+		dtProximoPagamento.setEnabled(false);
 		painelPagamento.add(dtProximoPagamento);
+
+		lbTipoPagamento = new JLabel("Tipo de pagamento");
+		lbTipoPagamento.setSize(200, 20);
+		lbTipoPagamento.setLocation(430, 570);
+		painelPagamento.add(lbTipoPagamento);
+
+		jcPagamento = new JComboBox<String>(pagamento);
+		jcPagamento.setLocation(650, 570);
+		jcPagamento.setSize(120, 30);
+		jcPagamento.setSelectedIndex(-1);
+		painelPagamento.add(jcPagamento);
+
+		lbPagamentoInicial = new JLabel("Valor Pago");
+		lbPagamentoInicial.setSize(200, 20);
+		lbPagamentoInicial.setLocation(430, 600);
+		painelPagamento.add(lbPagamentoInicial);
+
+		tfPagamentoInicial = new JFormattedTextField();
+		tfPagamentoInicial.setSize(120, 30);
+		tfPagamentoInicial.setLocation(650, 600);
+		painelPagamento.add(tfPagamentoInicial);
 
 		lbPagPendente = new JLabel("Pendente");
 		lbPagPendente.setSize(120, 20);
@@ -632,12 +645,24 @@ public class FormCadastroCliente extends JInternalFrame {
 		checkCpf = new JCheckBox();
 		checkCpf.setText("CPF");
 		checkCpf.setBounds(220, 40, 100, 20);
+		checkCpf.setSelected(false);
 		abaAgendamento.add(checkCpf);
 
+		checkObs = new JCheckBox();
+		checkObs.setText("Observações");
+		checkObs.setBounds(310, 320, 100, 20);
+		checkObs.setSelected(false);
+		abaAgendamento.add(checkObs);
+		
 		tfBuscaAluno = new JFormattedTextField();
 		tfBuscaAluno.setSize(200, 30);
 		tfBuscaAluno.setLocation(10, 40);
 		abaAgendamento.add(tfBuscaAluno);
+		
+		tfBuscaAlunoCpf = new JFormattedTextField(maskCpf);
+		tfBuscaAlunoCpf.setSize(200, 30);
+		tfBuscaAlunoCpf.setLocation(10, 40);
+		abaAgendamento.add(tfBuscaAlunoCpf);
 
 		// String que vai aparecer com o nome do aluno que foi feito a busca.
 
@@ -664,21 +689,25 @@ public class FormCadastroCliente extends JInternalFrame {
 
 		// --------------------------------------------
 
-		jtDescAula = new JTextArea();
-		jtDescAula.setBounds(10, 360, 280, 100);
-		abaAgendamento.add(jtDescAula);
-
 		lbDescricao = new JLabel("Observação");
 		lbDescricao.setBounds(10, 340, 100, 20);
+		lbDescricao.setVisible(false);
 		abaAgendamento.add(lbDescricao);
+		
+		jTextAreaObs = new JTextArea();
+		jTextAreaObs.setBounds(10, 360, 280, 100);
+		jTextAreaObs.setVisible(false);
+		abaAgendamento.add(jTextAreaObs);
+
+		
 
 		javax.swing.ImageIcon img = new javax.swing.ImageIcon(getClass()
-				.getResource("/Resources/icons").getPath() + "/Tarefas.png");
+				.getResource("/Resources/icons").getPath() + "/iconSaveTask.png");
 
-		btTarefa = new JButton(img);
+		btTarefa = new JButton("Agendar",img);
 		btTarefa.setContentAreaFilled(false);
 		btTarefa.setSize(160, 110);
-		btTarefa.setLocation(320, 70);
+		btTarefa.setLocation(100,340);
 		btTarefa.setToolTipText("Agendar aula");
 		abaAgendamento.add(btTarefa);
 
@@ -702,7 +731,43 @@ public class FormCadastroCliente extends JInternalFrame {
 	}
 
 	public void definirEventos() {
+		int inicio = 0;
+		
+		
+		
+		checkObs.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (checkObs.isSelected()){
+					jTextAreaObs.setVisible(true);
+					lbDescricao.setVisible(true);
+					btTarefa.setLocation(100,450);
+				}else{
+					jTextAreaObs.setVisible(false);
+					lbDescricao.setVisible(false);
+					btTarefa.setLocation(100,340);
+				}
+				
+			}
+		});
+		
+		checkCpf.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(checkCpf.isSelected()){
+					tfBuscaAluno.setVisible(false);
+					tfBuscaAlunoCpf.setVisible(true);
+				}else {
+					tfBuscaAluno.setVisible(true);
+					tfBuscaAlunoCpf.setVisible(false);
+				}
+				
+			}
+		});
 
+		
+		
 		btBuscarAluno.addActionListener(new ActionListener() {
 
 			@Override
