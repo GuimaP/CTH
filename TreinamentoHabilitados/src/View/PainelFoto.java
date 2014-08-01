@@ -15,10 +15,10 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author Guima
+ * @author Guima !!
  */
 public class PainelFoto extends JPanel {    
-    private String path="";
+    private String path=""; 
     private BufferedImage img;
     int cont=0;
     public PainelFoto(BufferedImage img){
