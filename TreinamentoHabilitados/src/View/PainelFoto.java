@@ -15,7 +15,8 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author Guima !!
+ * @author Guima !!@
+ 
  */
 public class PainelFoto extends JPanel {    
     private String path=""; 
