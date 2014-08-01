@@ -36,13 +36,13 @@ public class DAOinstrutor extends DAOconexao {
 			comando.setString(1, funcionario.getNome());
 			comando.setDate(2, (Date) funcionario.getData()); //TODO VEROFICAR FUNCIONAMENTO
 			comando.setString(3, funcionario.getCnh());
-			comando.setString(4, funcionario.getValidadeCnh());
+		//	comando.setString(4, funcionario.getValidadeCnh());
 			comando.setString(5, funcionario.getPrimeiraCnh());
 			comando.setString(6, funcionario.getRg());
 			comando.setString(7, funcionario.getCpf());
 			comando.setString(8, funcionario.getTelefone());
 			comando.setString(9, funcionario.getCelular());
-			comando.setString(10, funcionario.getStatus());
+		//	comando.setString(10, funcionario.getStatus());
 			comando.setString(11, funcionario.getTbCarroPlacaCarro().getPlaca());
 			comando.execute();
 			banco.desconectar();
@@ -68,15 +68,15 @@ public class DAOinstrutor extends DAOconexao {
 					funcionario.setNome(rs.getString("NOME_INSTRUTOR"));
 					funcionario.setData(rs.getDate("DATA_INSTRUTOR"));
 					funcionario.setCnh(rs.getString("CNH_INSTRUTOR"));
-					funcionario.setValidadeCnh(rs
-							.getString("VALIDADECNH_INSTRUTOR"));
+				//	funcionario.setValidadeCnh(rs
+						//	.getString("VALIDADECNH_INSTRUTOR"));
 					funcionario.setPrimeiraCnh(rs
 							.getString("PRIMEIRACNH_INSTRUTOR"));
 					funcionario.setRg(rs.getString("RG_INSTRUTOR"));
 					funcionario.setCpf(rs.getString("CPF_INSTRUTOR"));
 					funcionario.setTelefone(rs.getString("TELEFONE_INSTRUTOR"));
 					funcionario.setCelular(rs.getString("CELULAR_INSTRUTOR"));
-					funcionario.setStatus(rs.getString("STATUS_INSTRUTOR"));
+				//	funcionario.setStatu(rs.getString("STATUS_INSTRUTOR"));
 					
 					carro = new Carro();
 					carro.setPlaca(rs.getString("tb_carro_placa_carro"));
