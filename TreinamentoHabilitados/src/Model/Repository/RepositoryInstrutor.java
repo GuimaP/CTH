@@ -7,6 +7,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
+import Model.Carro;
 import Model.Funcionario;
 
 /**
@@ -17,7 +18,8 @@ public class RepositoryInstrutor extends Repository<Model.Funcionario> {
    
     
     public Funcionario findInstrutorSingle(String cpf){
-    	Session session = ConnectionFactoryConfig.getSession();//.getCurrentSession();
+//    	Session session = ConnectionFactoryConfig.getSession();//.getCurrentSession();
+    	Session session = ConnectionFactoryConfig.openManger().openSession();
     	Funcionario f =null;
         if(session != null){
             session.beginTransaction();
@@ -32,11 +34,18 @@ public class RepositoryInstrutor extends Repository<Model.Funcionario> {
         return f;
     }
     
+    @Override
+    public void adicionar(Funcionario obj) {
+    	super.adicionar(obj);
+    	Carro c = obj.getTbCarroPlacaCarro();
+    	c.setOcupado(true);
+    	new RepositoryCarro().atualizar(c);
+    }
+    
     public List<Funcionario> getAllInstrutor() throws Exception{
-    	Session session = ConnectionFactoryConfig.getSession();
+    	Session session = ConnectionFactoryConfig.openManger().openSession();
     	List<Funcionario> ls = new ArrayList<Funcionario>();
     	if(session != null || !session.isConnected()){
-    		session.beginTransaction();
     		Criteria c = session.createCriteria(Funcionario.class);
     		ls = c.list();
     	}

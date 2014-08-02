@@ -3,6 +3,7 @@ package View;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -14,8 +15,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -36,6 +39,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.swing.BoundedRangeModel;
@@ -43,6 +47,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -78,6 +83,7 @@ import Model.ModelTableEmail;
 import Model.UsuarioEmail;
 
 import com.itextpdf.text.Font;
+import com.towel.swing.img.JImagePanel;
 
 public class Principal extends JFrame {
 
@@ -99,7 +105,7 @@ public class Principal extends JFrame {
 
 	protected EmailControllerV3 email;
 	protected JPanel painelEmail;
-	private static JTable jTableEmails;
+	protected static JTable jTableEmails;
 	private List<String> listaEmails;
 	private HashMap<String, List<String>> mapEmails;
 	protected static Login loginUser;
@@ -153,8 +159,12 @@ public class Principal extends JFrame {
 		java.awt.Font fonteP = ConfigController.definePrincipalFont(15f,
 				Font.NORMAL);
 		setLayout(null);
+		
+		
 		JDesktopPane fundoDaPrincipal = new JDesktopPane();
 		setContentPane(fundoDaPrincipal);
+		
+		setContentPane(new DesktopPaneCustom());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Dimension scrnsize = toolkit.getScreenSize();
@@ -254,6 +264,7 @@ public class Principal extends JFrame {
 		jTableEmails.setFont(fonteP);
 		jTableEmails.setRowHeight(20);
 		spTbEmail = new JScrollPane(jTableEmails);
+		spTbEmail.setBackground(Color.yellow);
 //		spTbEmail.setBounds(5,txtBuscaEmail.getHeight()+txtBuscaEmail.getY(),painelEmail.getWidth()-5,25);
 		painelEmail.add(new PainelItensEmail(new ArrayList<String>(), spTbEmail, jTableEmails,painelEmail.getSize()));
 		
@@ -400,18 +411,31 @@ public class Principal extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!isFrameClienteOpen) {
+					try {
 					isFrameClienteOpen = true;
-					getContentPane().add(new FormCadastroCliente());
+					JInternalFrame internalFrame = new FormCadastroCliente();
+					getContentPane().add(internalFrame);
+					internalFrame.setSelected(true);
+					} catch (PropertyVetoException e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
 		});
 		itCadastroFuncionario.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!isFrameInstrutorOpen) {
-					isFrameInstrutorOpen = true; // difinindo que ja tem uma
+				if (!Principal.isFrameInstrutorOpen) {
+					try {
+						Principal.isFrameInstrutorOpen = true; // difinindo que ja tem uma
 													// janela aberta
-					getContentPane().add(new FormCadastroInstrutor());
+					JInternalFrame internalFrame = new FormCadastroInstrutor();
+					getContentPane().add(internalFrame);
+					internalFrame.setSelected(true);
+					} catch (PropertyVetoException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 
 			}
@@ -422,12 +446,19 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (!isFrameAgendamento) { // Se nÃ£o houver uma instancia
 											// crida, eu crio uma nova.
+					try {
 					isFrameAgendamento = true; // definindo que ja tem uma
 												// janela aberta
-					getContentPane().add(new FormAgendamento()); // Adiciono a
+					JInternalFrame internalFrame = new FormAgendamento();
+					getContentPane().add(internalFrame); // Adiciono a
 																	// Internal
 																	// Frame na
 																	// tela
+					internalFrame.setSelected(true);
+					} catch (PropertyVetoException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			}
 		});
@@ -436,8 +467,15 @@ public class Principal extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!isFrameCarro) {
+					try {
 					isFrameCarro = true;
-					getContentPane().add(new FormCadastroCarro());
+					JInternalFrame internalFrame = new FormCadastroCarro();
+					getContentPane().add(internalFrame);
+					internalFrame.setSelected(true);
+					} catch (PropertyVetoException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			}
 		});
@@ -447,18 +485,32 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				if (!isFrameCadastroPacote) { // defino se nÃ£o houver uma
 												// instancia jÃ¡ criada, eu
-												// posso criar
-					isFrameCadastroPacote = true; // difinindo que ja tem uma
-													// janela aberta
-					getContentPane().add(new FormCadastroPacote());
+					
+					try {
+					isFrameCadastroPacote = true; // difinindo que ja tem uma janela aberta
+					JInternalFrame internalFrame = new FormCadastroPacote();
+					getContentPane().add(internalFrame);
+					internalFrame.setSelected(true);
+					} catch (PropertyVetoException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
 				}
 			}
 		});
 
 		itConfiguraEmail.addActionListener(e -> {
 			if (!isViewConfiguraEmail) {
+				try {
 				isViewConfiguraEmail = true;
-				getContentPane().add(new ViewConfigEmail(loginUser));
+				JInternalFrame internalFrame = new ViewConfigEmail(loginUser);
+				getContentPane().add(internalFrame);
+				internalFrame.setSelected(true);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 
@@ -575,17 +627,22 @@ class ConfiguraEmail implements Runnable {
 		this.frame = principal;
 		this.WIDTH_TAMANHO = WIDTH_TAMANHO;
 
-		File fileConfigEmail = new File(getClass().getClassLoader()
-				.getResource("Resources/FilesConfig").getPath()); // Pego o
-																	// diretorio
-																	// que se
-																	// encontra
-																	// o arquivo
+		String diretorio = System.getProperty("user.home");
+		String sep = System.getProperty("file.separator");
+		
+		
 
 		String nameFolder = user.getUsuario() + "@emailConfig"; // e digo o nome
-																// padrão dos
+																// padrï¿½o dos
 																// arquivos de
 																// e-mail's
+		
+		File fileConfigEmail = new File(diretorio+sep+nameFolder); // Pego o
+																   // diretorio
+																   // que se
+																   // encontra
+																   // o arquivo
+		
 		confEmail = new CriptografiaConfigEmail().unCrypt(// e tento localizo-lo
 															// e
 															// descriptografa-lo
@@ -651,7 +708,7 @@ class ConfiguraEmail implements Runnable {
 															 */
 				nameFolder = nameFolder.replace(" ", "");
 
-				// Testa se é
+				// Testa se ï¿½
 				// pasta
 				// INBOX
 
@@ -685,7 +742,7 @@ class ConfiguraEmail implements Runnable {
 					}
 					
 					
-					if ("EnviarE-mail".equalsIgnoreCase(nameFolder)) { //Tem que ser junto, pois existe a validação de retirar todos os Espaços
+					if ("EnviarE-mail".equalsIgnoreCase(nameFolder)) { //Tem que ser junto, pois existe a validaï¿½ï¿½o de retirar todos os Espaï¿½os
 						
 						
 						
@@ -803,7 +860,7 @@ class ConfiguraEmail implements Runnable {
 		try {
 
 			if (confEmail != null) { // Se no construtor conseguiu localizar o
-										// arquivo então eu tento autentica-lo
+										// arquivo entï¿½o eu tento autentica-lo
 				System.out.println("Tem config");
 				// File log = new File(getClass().getClassLoader().getResource(
 				// "Resources/FilesConfig/log.txt").toURI()); //Pego o diretorio
@@ -894,6 +951,7 @@ class PainelItensEmail extends JPanel{
 		this.tb = tb;
 		this.sp = sp;
 		setSize(s);
+		setBackground(new Color(0, 0, 0, 30));
 		initComponents();
 		
 	}
@@ -901,13 +959,42 @@ class PainelItensEmail extends JPanel{
 	private void initComponents() {
 		setLayout(null);
 		txtBusca = new JTextField();
-		txtBusca.setBounds(5, 5, this.getWidth()-5, 25);
+		txtBusca.setBounds(5, 5, this.getWidth()-15, 25);
 		add(txtBusca);
 		System.out.println(sp);
 		System.out.println(txtBusca);
-		sp.setBounds(5, txtBusca.getY()+txtBusca.hashCode(), getWidth()-5, getHeight()-txtBusca.getHeight()-txtBusca.getY());
+		sp = new JScrollPane(Principal.jTableEmails);
+		sp.setBounds(5, txtBusca.getY()+txtBusca.getHeight(), this.getWidth()-15, getHeight()-txtBusca.getHeight()-txtBusca.getY());
 		add(sp);
 		
 		setVisible(true);
 	}
+	
+	//----------
+	
+	
+	
+	
+	
+	
 }
+
+class DesktopPaneCustom extends JDesktopPane{
+	public void paintComponent(Graphics g) {  
+        super.paintComponent(g);
+        try {
+        BufferedImage imagem;
+		
+			imagem = ImageIO.read(getClass().getClassLoader().getResourceAsStream("Resources/imgs/logo fundo.png"));
+		
+        if(imagem != null)  {  
+            g.drawImage(imagem, 0, 0, this.getWidth(), this.getHeight(), this);   
+        }  
+        } catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    } 
+}
+
+

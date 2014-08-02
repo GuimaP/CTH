@@ -5,6 +5,9 @@ import DAO.DAOcliente;
 import Model.Cliente;
 import Model.Cnh;
 import Model.Endereco;
+import Model.EnumFormaca;
+import Model.EnumPagamento;
+import Model.EnumSexo;
 import Model.ModeloTableCliente;
 import Model.ModeloTablePacote;
 import Model.Pacote;
@@ -13,6 +16,8 @@ import Model.Repository.Repository;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Window;
@@ -20,6 +25,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -42,10 +49,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
@@ -54,6 +63,8 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.text.MaskFormatter;
 import javax.swing.text.TabExpander;
+
+import org.eclipse.swt.widgets.Spinner;
 
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.demo.DateChooserPanel;
@@ -71,38 +82,49 @@ public class FormCadastroCliente extends JInternalFrame {
 			lbTipoPagamento, lbParcelas, lbPagamentoInicial, lbPagPendente,
 			lbDtPagamento, lbDtProximoPagamento, lbBuscaAluno, lbAgendamento,
 			lbNomeAluno, lbCpfAluno;
+	
 	private JTextField tfNome, tfEmail, tfProfissao, tfRegistroCnh,
-			tfLogradouro, tfBairro, tfRg, tfQuestao1, tfNumero, tfBuscaPacote,
-			tfParcelas;
+			tfLogradouro, tfBairro, tfRg, tfQuestao1, tfNumero, tfBuscaPacote;
+	
 	private JFormattedTextField tfData, tfNascimento, tfCep, tfCpf, tfCelular,
 			tfTelefone, tfValidadeCnh, tfPrimeiraHabilitacao,
-			tfPagamentoInicial, tfPagamentoPendente, tfBuscaAluno;
+			tfPagamentoInicial, tfPagamentoPendente, tfBuscaAluno, tfParcelas;
 
 	private JButton btSalvar, btBuscarPacote, btBuscarAluno;
 
 	private JTabbedPane abas;
 
-	private JDateChooser dtPagamento, dtProximoPagamento;
+	private JDateChooser dtPagamento, dtProximoPagamento, dtCadastroCliente, cdDataNascimento, cdValidadeCnh, cdPermissao;
 
 	private JTextArea observa;
+	
 	private JScrollPane scroll, scTable, scrollPacote;
+	
 	private ButtonGroup gQ2, gQ3;
+	
 	private JRadioButton jrQ2Yes, jrQ2No, jrQ3Yes, jrQ3No;
-	private String[] sexo = { "M", "F" };
-	private String[] escolaridade = { "Superior", "Tecnico", "MÃ©dio",
-			"Fundamental" };
-
-	private String[] pagamento = { "Dinheiro", "Débito", "Crédito", "Cheque" };
-
+	
 	private String[] pesquisa = { "Internet", "Indicaï¿½ï¿½o", "Outros" };
-	private JComboBox<String> jcSexo, jcEscolaridade, jcPesquisa, jcPagamento;
+	
+	private JComboBox<EnumFormaca> jcEscolaridade;
+	
+	private JComboBox<String> jcPesquisa;
+	
+	private JComboBox<EnumPagamento> jcPagamento;
+	
+	private JComboBox<EnumSexo> jcSexo;
+	
 	private JTable table, tablePacote;
+	
 	private String data;
+	
 	private ArrayList<Cliente> listCliente = new ArrayList<Cliente>();
+	
 	private ArrayList<Pacote> listPacote = new ArrayList<Pacote>();
+	
 	private MaskFormatter dataMask, dataMaskNascimento, maskCep, maskNumero,
 			maskCpf, maskTelefone, maskCelular, maskValidadeCnh,
-			maskPrimeiraHabilitacao;
+			maskPrimeiraHabilitacao, maskParcelas;
 
 	private PainelCalendarioAgendamento painelCalendario;
 
@@ -123,11 +145,15 @@ public class FormCadastroCliente extends JInternalFrame {
 
 	private JButton btTarefa;
 
-	private JTextArea jtDescAula;
+	private JTextArea jTextAreaObs;
 
 	private JLabel lbDescricao;
 
 	private JCheckBox checkCpf, checkObs;
+	
+	private JFormattedTextField tfBuscaAlunoCpf;
+	
+	private JSpinner jsParcelas;
 
 	private boolean aberto = false;
 
@@ -145,7 +171,7 @@ public class FormCadastroCliente extends JInternalFrame {
 
 			inicializaComponentes();
 
-			definirEventos();
+			//definirEventos();
 		} catch (ParseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 
@@ -193,253 +219,247 @@ public class FormCadastroCliente extends JInternalFrame {
 	}
 
 	public void inicializaComponentes() throws ParseException {
-		// Font que será usada para o nome do aluno e cpf
+		// Font que serï¿½ usada para o nome do aluno e cpf
 
 		abaTodos = new JPanel();
 		abaTodos.setLayout(null);
 
+		
+		
+		
+		
+		// DeclaraÃ§Ã£o do painel cliente 
 		panelCliente = new JPanel();
 		Border border = BorderFactory.createTitledBorder("Cliente");
 		panelCliente.setBorder(border);
-		panelCliente.setLayout(new GridLayout(7, 2));
-		panelCliente.setBounds(10, 20, 390, 220);
-
-		// Nome
-		lbNome = new JLabel("  Nome");
-		lbNome.setLocation(40, 40);
-		lbNome.setSize(35, 10);
+		panelCliente.setLayout(null);
+		panelCliente.setBounds(5,10 , 380, 210);
+		
+		// Inicio dos componentes do painel Cliente ----------------------------------------------
+		
+		lbNome = new JLabel("Nome");
+		lbNome.setBounds(10, 20, 100, 20);
 		panelCliente.add(lbNome);
 
 		tfNome = new JTextField();
-		tfNome.setLocation(80, 37);
-		tfNome.setSize(300, 30);
+		tfNome.setBounds(60, 20, 120, 25);
 		panelCliente.add(tfNome);
 
-		lbData = new JLabel("  Data");
-		lbData.setLocation(390, 40);
-		lbData.setSize(35, 10);
+		lbData = new JLabel("Data");
+		lbData.setBounds(190, 20, 100, 20);
 		panelCliente.add(lbData);
 
-		dataMask = new MaskFormatter("##/##/####");
-		dataMask.setPlaceholderCharacter('_');
-		tfData = new JFormattedTextField(dataMask);
-		tfData.setLocation(420, 37);
-		tfData.setSize(68, 30);
-		panelCliente.add(tfData);
-
-		lbLogradouro = new JLabel("  Rua");
-		lbLogradouro.setLocation(40, 70);
-		lbLogradouro.setSize(30, 10);
+		dtCadastroCliente = new JDateChooser();
+		dtCadastroCliente.setBounds(250	, 20, 120, 25);
+		Calendar dtCadastro = Calendar.getInstance();
+		dtCadastro.set(Calendar.YEAR, 1900);
+		dtCadastro.set(Calendar.MONTH, 1);
+		dtCadastro.set(Calendar.DATE, 1);
+		dtCadastroCliente.setMinSelectableDate(dtCadastro.getTime());
+		Date dataAtualCad = new Date(System.currentTimeMillis());
+		dtCadastroCliente.setMaxSelectableDate(dataAtualCad);
+		//dtCadastroCliente.setEnabled(false);
+		panelCliente.add(dtCadastroCliente);
+		
+		lbLogradouro = new JLabel("Rua");
+		lbLogradouro.setBounds(10, 45, 100, 20);
 		panelCliente.add(lbLogradouro);
 
 		tfLogradouro = new JTextField();
-		tfLogradouro.setLocation(80, 67);
-		tfLogradouro.setSize(250, 30);
+		tfLogradouro.setBounds(60, 45, 120, 25);
 		panelCliente.add(tfLogradouro);
-
-		lbNumero = new JLabel("  Numero");
-		lbNumero.setLocation(350, 70);
-		lbNumero.setSize(50, 10);
+		
+		lbNumero = new JLabel("Numero");
+		lbNumero.setBounds(190, 45, 100, 20);
 		panelCliente.add(lbNumero);
 
 		tfNumero = new JTextField();
-		tfNumero.setLocation(410, 67);
-		tfNumero.setSize(60, 30);
+		tfNumero.setBounds(250, 45, 120, 25);
 		panelCliente.add(tfNumero);
-
-		lbBairro = new JLabel("  Bairro");
-		lbBairro.setLocation(40, 100);
-		lbBairro.setSize(50, 10);
+	
+		lbBairro = new JLabel("Bairro");
+		lbBairro.setBounds(10, 70, 100, 20);
 		panelCliente.add(lbBairro);
 
 		tfBairro = new JTextField();
-		tfBairro.setLocation(90, 97);
-		tfBairro.setSize(180, 30);
+		tfBairro.setBounds(60, 70, 120, 25);
 		panelCliente.add(tfBairro);
-
-		lbCep = new JLabel("  Cep");
-		lbCep.setLocation(300, 100);
-		lbCep.setSize(30, 15);
+		
+		lbCep = new JLabel("Cep");
+		lbCep.setBounds(190, 70, 100, 20);
 		panelCliente.add(lbCep);
 
 		maskCep = new MaskFormatter("#####-###");
 		maskCep.setPlaceholderCharacter('_');
+		maskCep.setValueContainsLiteralCharacters(false);
 		tfCep = new JFormattedTextField(maskCep);
-		tfCep.setLocation(340, 97);
-		tfCep.setSize(67, 30);
+		tfCep.setBounds(250, 70, 120, 25);
 		panelCliente.add(tfCep);
+		
 
-		lbNascimento = new JLabel("  Data Nasc.");
-		lbNascimento.setLocation(40, 130);
-		lbNascimento.setSize(65, 15);
+		lbNascimento = new JLabel("Nasc.");
+		lbNascimento.setBounds(10, 95, 100, 20);
 		panelCliente.add(lbNascimento);
-
-		dataMaskNascimento = new MaskFormatter("##/##/####");
-		dataMaskNascimento.setPlaceholderCharacter('_');
-		tfNascimento = new JFormattedTextField(dataMaskNascimento);
-		tfNascimento.setLocation(105, 127);
-		tfNascimento.setSize(68, 30);
-		panelCliente.add(tfNascimento);
-
-		lbSexo = new JLabel("  Sexo");
-		lbSexo.setLocation(180, 130);
-		lbSexo.setSize(30, 15);
+		
+		cdDataNascimento = new JDateChooser();
+		cdDataNascimento.setBounds(60, 95, 120, 25);
+		Calendar dtNascimento = Calendar.getInstance();
+		dtNascimento.set(Calendar.YEAR, 1900);
+		dtNascimento.set(Calendar.MONTH, 1);
+		dtNascimento.set(Calendar.DATE, 1);
+		cdDataNascimento.setMinSelectableDate(dtNascimento.getTime());
+		Date dataAtualNas = new Date(System.currentTimeMillis());
+		cdDataNascimento.setMaxSelectableDate(dataAtualNas);
+		panelCliente.add(cdDataNascimento);
+			
+		lbSexo = new JLabel("Sexo");
+		lbSexo.setBounds(190, 95, 100, 20);
 		panelCliente.add(lbSexo);
 
-		// Combo box
-		jcSexo = new JComboBox<String>(sexo);
-		jcSexo.setLocation(220, 127);
-		jcSexo.setSize(50, 30);
+		jcSexo = new JComboBox<EnumSexo>(EnumSexo.values());
+		jcSexo.setBounds(250, 95, 120, 25);
 		jcSexo.setSelectedIndex(-1);
 		panelCliente.add(jcSexo);
-
-		lbCpf = new JLabel("  Cpf");
-		lbCpf.setLocation(40, 160);
-		lbCpf.setSize(30, 15);
+		
+		lbCpf = new JLabel("Cpf");
+		lbCpf.setBounds(10, 120, 100, 20);
 		panelCliente.add(lbCpf);
 
 		maskCpf = new MaskFormatter("###.###.###-##");
 		maskCpf.setPlaceholderCharacter('_');
+		maskCpf.setValueContainsLiteralCharacters(false);
 		tfCpf = new JFormattedTextField(maskCpf);
-		tfCpf.setLocation(80, 157);
-		tfCpf.setSize(94, 30);
+		tfCpf.setBounds(60, 120, 120, 25);
 		panelCliente.add(tfCpf);
-
-		lbRg = new JLabel("  Rg");
-		lbRg.setLocation(190, 160);
-		lbRg.setSize(50, 15);
+		
+		lbRg = new JLabel("Rg");
+		lbRg.setBounds(190, 120, 100, 20);
 		panelCliente.add(lbRg);
 
 		tfRg = new JTextField();
-		tfRg.setLocation(220, 157);
-		tfRg.setSize(100, 30);
+		tfRg.setBounds(250, 120, 120, 25);
 		panelCliente.add(tfRg);
-
-		lbTelefone = new JLabel("  Tel");
-		lbTelefone.setLocation(330, 160);
-		lbTelefone.setSize(50, 15);
+		
+		lbTelefone = new JLabel("Tel");
+		lbTelefone.setBounds(10, 145, 100, 20);
 		panelCliente.add(lbTelefone);
 
 		maskTelefone = new MaskFormatter("(##)####-####");
 		maskTelefone.setPlaceholderCharacter('_');
+		maskTelefone.setValueContainsLiteralCharacters(false);
 		tfTelefone = new JFormattedTextField(maskTelefone);
-		tfTelefone.setLocation(385, 157);
-		tfTelefone.setSize(88, 20);
+		tfTelefone.setBounds(60, 145, 120, 25);
 		panelCliente.add(tfTelefone);
-
-		lbCelular = new JLabel("  Cel");
-		lbCelular.setLocation(480, 160);
-		lbCelular.setSize(30, 20);
+		
+		lbCelular = new JLabel("Cel");
+		lbCelular.setBounds(190, 145, 100, 20);
 		panelCliente.add(lbCelular);
 
 		maskCelular = new MaskFormatter("(##)#-####-####");
 		maskCelular.setPlaceholderCharacter('_');
+		maskCelular.setValueContainsLiteralCharacters(false);
 		tfCelular = new JFormattedTextField(maskCelular);
-		tfCelular.setLocation(505, 157);
-		tfCelular.setSize(98, 30);
+		tfCelular.setBounds(250, 145, 120, 25);
 		panelCliente.add(tfCelular);
-
-		lbEmail = new JLabel("  E-mail");
-		lbEmail.setLocation(40, 190);
-		lbEmail.setSize(50, 15);
+		
+		lbEmail = new JLabel("E-mail");
+		lbEmail.setBounds(10, 170, 100, 20);
 		panelCliente.add(lbEmail);
 
 		tfEmail = new JTextField();
-		tfEmail.setLocation(80, 187);
-		tfEmail.setSize(200, 30);
+		tfEmail.setBounds(60, 170, 120	, 25);
 		panelCliente.add(tfEmail);
-
-		lbEscolaridade = new JLabel("  Escolaridade");
-		lbEscolaridade.setLocation(40, 220);
-		lbEscolaridade.setSize(100, 15);
+		
+		lbEscolaridade = new JLabel("FormaÃ§Ã£o");
+		lbEscolaridade.setBounds(190, 170, 100, 20);
 		panelCliente.add(lbEscolaridade);
 
-		jcEscolaridade = new JComboBox<String>(escolaridade);
-		jcEscolaridade.setLocation(120, 217);
-		jcEscolaridade.setSize(105, 30);
+		jcEscolaridade = new JComboBox<EnumFormaca>(EnumFormaca.values());
+		jcEscolaridade.setBounds(250, 170, 120, 25);
 		jcEscolaridade.setSelectedIndex(-1);
 		panelCliente.add(jcEscolaridade);
 
-		// -----
 		abaTodos.add(panelCliente);
-
-		// y = 240 ~ 250
+		
+		
+		// Fim dos componentes do painel cliente -------------------------------------------------------
+		
+		// Painel Dados Gerais
 		painelGeral = new JPanel();
 		Border border2 = BorderFactory.createTitledBorder("Dados Gerais");
-		painelGeral.setLayout(new GridLayout(9, 2));
+		painelGeral.setLayout(null);
 		painelGeral.setBorder(border2);
-		painelGeral.setBounds(10, 250, 390, 310);// TODO GERENCIANDO O LAYOUT
+		painelGeral.setBounds(5, 250, 380, 310);
 
-		lbProfissao = new JLabel("ProfissÃ£o");
-		lbProfissao.setLocation(240, 220);
-		lbProfissao.setSize(100, 15);
+		//Inicio dos componentes do painel geral -------------------------------------
+		
+		lbProfissao = new JLabel("Trabalho");
+		lbProfissao.setBounds(10,20, 100	, 20);
 		painelGeral.add(lbProfissao);
 
 		tfProfissao = new JTextField();
-		tfProfissao.setLocation(300, 217);
-		tfProfissao.setSize(100, 20);
+		tfProfissao.setBounds(60, 20, 120, 25);
 		painelGeral.add(tfProfissao);
 
 		lbRegistroCnh = new JLabel("NÂº Cnh");
-		lbRegistroCnh.setLocation(40, 250);
-		lbRegistroCnh.setSize(70, 15);
+		lbRegistroCnh.setBounds(190, 20, 100, 20);
 		painelGeral.add(lbRegistroCnh);
 
 		tfRegistroCnh = new JTextField();
-		tfRegistroCnh.setLocation(80, 247);
-		tfRegistroCnh.setSize(100, 20);
+		tfRegistroCnh.setBounds(250, 20, 120, 25);
 		painelGeral.add(tfRegistroCnh);
-
+		
 		lbValidadeCnh = new JLabel("Validade");
-		lbValidadeCnh.setLocation(190, 250);
-		lbValidadeCnh.setSize(80, 15);
+		lbValidadeCnh.setBounds(10, 45, 100, 20);
 		painelGeral.add(lbValidadeCnh);
 
-		maskValidadeCnh = new MaskFormatter("##/##/####");
-		maskValidadeCnh.setPlaceholderCharacter('_');
-		tfValidadeCnh = new JFormattedTextField(maskValidadeCnh);
-		tfValidadeCnh.setLocation(245, 247);
-		tfValidadeCnh.setSize(70, 20);
-		painelGeral.add(tfValidadeCnh);
-
-		lbPrimeiraHabilitacao = new JLabel("Dt PermissÃ£o");
-		lbPrimeiraHabilitacao.setLocation(325, 250);
-		lbPrimeiraHabilitacao.setSize(100, 15);
+		cdValidadeCnh = new JDateChooser();
+		cdValidadeCnh.setBounds(60, 45, 120, 25);
+		Calendar dtValiCnh = Calendar.getInstance();
+		dtValiCnh.set(Calendar.YEAR, 1900);
+		dtValiCnh.set(Calendar.MONTH, 1);
+		dtValiCnh.set(Calendar.DATE, 1);
+		cdDataNascimento.setMinSelectableDate(dtValiCnh.getTime());
+		Date dataValiCnh = new Date(System.currentTimeMillis());
+		cdDataNascimento.setMaxSelectableDate(dataValiCnh);
+		painelGeral.add(cdValidadeCnh);
+		
+		lbPrimeiraHabilitacao = new JLabel("PermissÃ£o");
+		lbPrimeiraHabilitacao.setBounds(190, 45, 100, 20);
 		painelGeral.add(lbPrimeiraHabilitacao);
 
-		maskPrimeiraHabilitacao = new MaskFormatter("##/##/####");
-		maskPrimeiraHabilitacao.setPlaceholderCharacter('_');
-		tfPrimeiraHabilitacao = new JFormattedTextField(maskPrimeiraHabilitacao);
-		tfPrimeiraHabilitacao.setLocation(410, 247);
-		tfPrimeiraHabilitacao.setSize(70, 20);
-		painelGeral.add(tfPrimeiraHabilitacao);
-
-		// Opï¿½ï¿½es e Grupos de questï¿½es.
+		cdPermissao = new JDateChooser();
+		cdPermissao.setBounds(250	, 45, 120, 25);
+		Calendar dtPermissao = Calendar.getInstance();
+		dtPermissao.set(Calendar.YEAR, 1900);
+		dtPermissao.set(Calendar.MONTH, 1);
+		dtPermissao.set(Calendar.DATE, 1);
+		cdDataNascimento.setMinSelectableDate(dtPermissao.getTime());
+		Date dataPermissao = new Date(System.currentTimeMillis());
+		cdDataNascimento.setMaxSelectableDate(dataPermissao);
+		painelGeral.add(cdPermissao);
+		
 		lbQ1 = new JLabel("A quanto tempo nao dirige?");
-		lbQ1.setLocation(40, 280);
-		lbQ1.setSize(200, 20);
+		lbQ1.setBounds(10, 70, 300, 20);
 		painelGeral.add(lbQ1);
 
 		tfQuestao1 = new JTextField();
-		tfQuestao1.setLocation(200, 280);
-		tfQuestao1.setSize(70, 20);
+		tfQuestao1.setBounds(190, 70, 180, 25);
 		painelGeral.add(tfQuestao1);
-
+		
 		lbQ2 = new JLabel("Tem veiculo proprio?");
-		lbQ2.setLocation(40, 310);
-		lbQ2.setSize(200, 20);
+		lbQ2.setBounds(10, 95, 300, 20);
 		painelGeral.add(lbQ2);
 
 		JPanel painelQ2 = new JPanel();
+		painelQ2.setBounds(190, 95, 100, 25);
 
 		jrQ2Yes = new JRadioButton("Sim", true);
-		jrQ2Yes.setLocation(170, 310);
-		jrQ2Yes.setSize(60, 20);
+		jrQ2Yes.setBounds(250, 95, 200, 25);
 
 		jrQ2No = new JRadioButton("NÃ£o", false);
-		jrQ2No.setLocation(240, 310);
-		jrQ2No.setSize(60, 20);
-
+		jrQ2No.setBounds(300, 95, 200, 25);
+		
 		gQ2 = new ButtonGroup();
 		gQ2.add(jrQ2Yes);
 		gQ2.add(jrQ2No);
@@ -447,9 +467,9 @@ public class FormCadastroCliente extends JInternalFrame {
 		painelQ2.add(jrQ2No);
 
 		painelGeral.add(painelQ2);
-
+		
 		JPanel painelQ3 = new JPanel(); // Painel para colocar os radios parar
-										// alinhar os radios
+							// alinhar os radios
 
 		lbQ3 = new JLabel("Ã‰ possivel treinar nele?");
 		lbQ3.setLocation(40, 340);
@@ -472,7 +492,7 @@ public class FormCadastroCliente extends JInternalFrame {
 
 		painelGeral.add(painelQ3);
 
-		lbQ4 = new JLabel("Como você soube da Karol Treinamentos?");
+		lbQ4 = new JLabel("Como vocï¿½ soube da Karol Treinamentos?");
 		lbQ4.setLocation(40, 370);
 		lbQ4.setSize(250, 20);
 		painelGeral.add(lbQ4);
@@ -517,7 +537,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		btBuscarAluno.setSize(50, 35);
 		btBuscarAluno.setLocation(400, 35);
 		btBuscarAluno
-				.setToolTipText("Botão de busca. Informa o CPF do aluno desejado");
+				.setToolTipText("Botï¿½o de busca. Informa o CPF do aluno desejado");
 		abaTodos.add(btBuscarAluno);
 
 		// Text
@@ -561,53 +581,59 @@ public class FormCadastroCliente extends JInternalFrame {
 		dtPagamento.setMaxSelectableDate(dataAtual);
 		painelPagamento.add(dtPagamento);
 
-		lbTipoPagamento = new JLabel("Tipo de pagamento");
-		lbTipoPagamento.setSize(200, 20);
-		lbTipoPagamento.setLocation(430, 510);
-		painelPagamento.add(lbTipoPagamento);
-
-		jcPagamento = new JComboBox<String>(pagamento);
-		jcPagamento.setLocation(650, 510);
-		jcPagamento.setSize(120, 30);
-		jcPagamento.setSelectedIndex(-1);
-		painelPagamento.add(jcPagamento);
-
 		lbParcelas = new JLabel("Parcelas");
 		lbParcelas.setSize(100, 20);
-		lbParcelas.setLocation(430, 540);
+		lbParcelas.setLocation(430, 510);
 		painelPagamento.add(lbParcelas);
 
-		tfParcelas = new JTextField();
-		tfParcelas.setSize(120, 30);
-		tfParcelas.setLocation(650, 540);
-		painelPagamento.add(tfParcelas);
-
-		lbPagamentoInicial = new JLabel("Valor Pago");
-		lbPagamentoInicial.setSize(200, 20);
-		lbPagamentoInicial.setLocation(430, 570);
-		painelPagamento.add(lbPagamentoInicial);
-
-		tfPagamentoInicial = new JFormattedTextField();
-		tfPagamentoInicial.setSize(120, 30);
-		tfPagamentoInicial.setLocation(650, 570);
-		painelPagamento.add(tfPagamentoInicial);
-
-		lbDtProximoPagamento = new JLabel("Próxima Parcela");
+		//testando o jspiner
+		
+		SpinnerNumberModel nbparcelasModel;
+		nbparcelasModel = new SpinnerNumberModel(1,1,12,1);
+		jsParcelas = new JSpinner(nbparcelasModel);
+		jsParcelas.setBounds(650, 510, 120, 30);
+		painelPagamento.add(jsParcelas);
+		
+		lbDtProximoPagamento = new JLabel("Prï¿½xima Parcela");
 		lbDtProximoPagamento.setSize(100, 20);
-		lbDtProximoPagamento.setLocation(430, 600);
+		lbDtProximoPagamento.setLocation(430, 540);
 		painelPagamento.add(lbDtProximoPagamento);
 
 		dtProximoPagamento = new JDateChooser();
-		dtPagamento.setBounds(120, 30, 650, 600);
+		dtPagamento.setBounds(120, 30, 650, 540);
 
 		Calendar minimo1 = Calendar.getInstance();
 		minimo1.set(Calendar.YEAR, 1900);
 		minimo1.set(Calendar.MONTH, 1);
 		minimo1.set(Calendar.DATE, 1);
 		dtProximoPagamento.setMinSelectableDate(minimo.getTime());
-		Date dataAtual1 = new Date(System.currentTimeMillis());
-		dtProximoPagamento.setMaxSelectableDate(dataAtual1);
+		Date dataAtual2 = new Date(System.currentTimeMillis());
+		dtProximoPagamento.setMaxSelectableDate(dataAtual2);
+		dtProximoPagamento.setEnabled(false);
 		painelPagamento.add(dtProximoPagamento);
+
+		lbTipoPagamento = new JLabel("Tipo de pagamento");
+		lbTipoPagamento.setSize(200, 20);
+		lbTipoPagamento.setLocation(430, 570);
+		painelPagamento.add(lbTipoPagamento);
+
+		
+		
+		jcPagamento = new JComboBox<EnumPagamento>(EnumPagamento.values());
+		jcPagamento.setLocation(650, 570);
+		jcPagamento.setSize(120, 30);
+		jcPagamento.setSelectedIndex(-1);
+		painelPagamento.add(jcPagamento);
+
+		lbPagamentoInicial = new JLabel("Valor Pago");
+		lbPagamentoInicial.setSize(200, 20);
+		lbPagamentoInicial.setLocation(430, 600);
+		painelPagamento.add(lbPagamentoInicial);
+
+		tfPagamentoInicial = new JFormattedTextField();
+		tfPagamentoInicial.setSize(120, 30);
+		tfPagamentoInicial.setLocation(650, 600);
+		painelPagamento.add(tfPagamentoInicial);
 
 		lbPagPendente = new JLabel("Pendente");
 		lbPagPendente.setSize(120, 20);
@@ -632,12 +658,24 @@ public class FormCadastroCliente extends JInternalFrame {
 		checkCpf = new JCheckBox();
 		checkCpf.setText("CPF");
 		checkCpf.setBounds(220, 40, 100, 20);
+		checkCpf.setSelected(false);
 		abaAgendamento.add(checkCpf);
 
+		checkObs = new JCheckBox();
+		checkObs.setText("Observaï¿½ï¿½es");
+		checkObs.setBounds(310, 320, 100, 20);
+		checkObs.setSelected(false);
+		abaAgendamento.add(checkObs);
+		
 		tfBuscaAluno = new JFormattedTextField();
 		tfBuscaAluno.setSize(200, 30);
 		tfBuscaAluno.setLocation(10, 40);
 		abaAgendamento.add(tfBuscaAluno);
+		
+		tfBuscaAlunoCpf = new JFormattedTextField(maskCpf);
+		tfBuscaAlunoCpf.setSize(200, 30);
+		tfBuscaAlunoCpf.setLocation(10, 40);
+		abaAgendamento.add(tfBuscaAlunoCpf);
 
 		// String que vai aparecer com o nome do aluno que foi feito a busca.
 
@@ -664,21 +702,25 @@ public class FormCadastroCliente extends JInternalFrame {
 
 		// --------------------------------------------
 
-		jtDescAula = new JTextArea();
-		jtDescAula.setBounds(10, 360, 280, 100);
-		abaAgendamento.add(jtDescAula);
-
-		lbDescricao = new JLabel("Observação");
+		lbDescricao = new JLabel("Observaï¿½ï¿½o");
 		lbDescricao.setBounds(10, 340, 100, 20);
+		lbDescricao.setVisible(false);
 		abaAgendamento.add(lbDescricao);
+		
+		jTextAreaObs = new JTextArea();
+		jTextAreaObs.setBounds(10, 360, 280, 100);
+		jTextAreaObs.setVisible(false);
+		abaAgendamento.add(jTextAreaObs);
+
+		
 
 		javax.swing.ImageIcon img = new javax.swing.ImageIcon(getClass()
-				.getResource("/Resources/icons").getPath() + "/Tarefas.png");
+				.getResource("/Resources/icons").getPath() + "/iconSaveTask.png");
 
-		btTarefa = new JButton(img);
+		btTarefa = new JButton("Agendar",img);
 		btTarefa.setContentAreaFilled(false);
 		btTarefa.setSize(160, 110);
-		btTarefa.setLocation(320, 70);
+		btTarefa.setLocation(100,340);
 		btTarefa.setToolTipText("Agendar aula");
 		abaAgendamento.add(btTarefa);
 
@@ -700,9 +742,70 @@ public class FormCadastroCliente extends JInternalFrame {
 		// getContentPane().setBackground(Color.lightGray);
 
 	}
-
+/*
 	public void definirEventos() {
+		jcPagamento.addActionListener(new ActionListener() {
+			int estado =1;
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (jcPagamento.getSelectedIndex()== 1 || jsParcelas.getValue().equals(estado)){
+					dtProximoPagamento.setEnabled(false);
+				}else 
+					dtProximoPagamento.setEnabled(true);
+				
+			}
+		});
+		
+		jsParcelas.addChangeListener(new ChangeListener() {
+			int estado =1;
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				System.out.println("passei");
+				
+				if (!jsParcelas.getValue().equals(estado)){
+					dtProximoPagamento.setEnabled(true);
+				}else {
+					dtProximoPagamento.setEnabled(false);
+				}
+				
+			}
+		});
+		
+		
+		
+		checkObs.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (checkObs.isSelected()){
+					jTextAreaObs.setVisible(true);
+					lbDescricao.setVisible(true);
+					btTarefa.setLocation(100,450);
+				}else{
+					jTextAreaObs.setVisible(false);
+					lbDescricao.setVisible(false);
+					btTarefa.setLocation(100,340);
+				}
+				
+			}
+		});
+		
+		checkCpf.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(checkCpf.isSelected()){
+					tfBuscaAluno.setVisible(false);
+					tfBuscaAlunoCpf.setVisible(true);
+				}else {
+					tfBuscaAluno.setVisible(true);
+					tfBuscaAlunoCpf.setVisible(false);
+				}
+				
+			}
+		});
 
+		
+		
 		btBuscarAluno.addActionListener(new ActionListener() {
 
 			@Override
@@ -1000,9 +1103,10 @@ public class FormCadastroCliente extends JInternalFrame {
 
 		this.addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent arg0) {
-				Principal.isFrameInstrutorOpen = false;
+				Principal.isFrameClienteOpen = false;
 			}
 		});
 
 	}
+*/
 }
