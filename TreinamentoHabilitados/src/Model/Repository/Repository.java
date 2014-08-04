@@ -24,10 +24,11 @@ public class Repository<T>  {
     public void adicionar(T obj) {
         
         EntityManager em = null;
-        Session session = ConnectionFactoryConfig.getSession();//getCurrentSession(); 
+        Session session = ConnectionFactoryConfig.openManger().openSession(); 
         session.getTransaction().begin();
         session.persist(obj);
         session.getTransaction().commit();
+        session.close();
     }
     
     public List<T> pegarTodos() throws SQLException{

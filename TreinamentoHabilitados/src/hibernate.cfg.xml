@@ -36,15 +36,21 @@
 		
 	 <property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="connection.url">jdbc:mysql://localhost:3306/tcc</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/db</property>
 		<property name="connection.username">root</property>
 
+<<<<<<< HEAD
 		<property name="connection.password">root</property>
 		<property name="hibernate.hbm2ddl.auto" > update </property>	
 
 		<property name="connection.password">root</property>
 		<property name="hibernate.hbm2ddl.auto" >update </property>	
 
+=======
+		<property name="connection.password">1q2w3e</property>
+		<property name="hibernate.hbm2ddl.auto" > update </property>	
+
+>>>>>>> 76dab0dd3c528865e4443669417ec3832096692c
 		
         <property name="current_session_context_class">thread</property>
         <property name="hibernate.max_fetch_depth" >3</property>

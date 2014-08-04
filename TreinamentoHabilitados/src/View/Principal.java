@@ -3,6 +3,7 @@ package View;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -14,6 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
@@ -37,6 +39,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.swing.BoundedRangeModel;
@@ -80,6 +83,7 @@ import Model.ModelTableEmail;
 import Model.UsuarioEmail;
 
 import com.itextpdf.text.Font;
+import com.towel.swing.img.JImagePanel;
 
 public class Principal extends JFrame {
 
@@ -155,8 +159,12 @@ public class Principal extends JFrame {
 		java.awt.Font fonteP = ConfigController.definePrincipalFont(15f,
 				Font.NORMAL);
 		setLayout(null);
+		
+		
 		JDesktopPane fundoDaPrincipal = new JDesktopPane();
 		setContentPane(fundoDaPrincipal);
+		
+		setContentPane(new DesktopPaneCustom());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Dimension scrnsize = toolkit.getScreenSize();
@@ -625,7 +633,7 @@ class ConfiguraEmail implements Runnable {
 		
 
 		String nameFolder = user.getUsuario() + "@emailConfig"; // e digo o nome
-																// padrão dos
+																// padrï¿½o dos
 																// arquivos de
 																// e-mail's
 		
@@ -700,7 +708,7 @@ class ConfiguraEmail implements Runnable {
 															 */
 				nameFolder = nameFolder.replace(" ", "");
 
-				// Testa se é
+				// Testa se ï¿½
 				// pasta
 				// INBOX
 
@@ -734,7 +742,7 @@ class ConfiguraEmail implements Runnable {
 					}
 					
 					
-					if ("EnviarE-mail".equalsIgnoreCase(nameFolder)) { //Tem que ser junto, pois existe a validação de retirar todos os Espaços
+					if ("EnviarE-mail".equalsIgnoreCase(nameFolder)) { //Tem que ser junto, pois existe a validaï¿½ï¿½o de retirar todos os Espaï¿½os
 						
 						
 						
@@ -852,7 +860,7 @@ class ConfiguraEmail implements Runnable {
 		try {
 
 			if (confEmail != null) { // Se no construtor conseguiu localizar o
-										// arquivo então eu tento autentica-lo
+										// arquivo entï¿½o eu tento autentica-lo
 				System.out.println("Tem config");
 				// File log = new File(getClass().getClassLoader().getResource(
 				// "Resources/FilesConfig/log.txt").toURI()); //Pego o diretorio
@@ -961,4 +969,32 @@ class PainelItensEmail extends JPanel{
 		
 		setVisible(true);
 	}
+	
+	//----------
+	
+	
+	
+	
+	
+	
 }
+
+class DesktopPaneCustom extends JDesktopPane{
+	public void paintComponent(Graphics g) {  
+        super.paintComponent(g);
+        try {
+        BufferedImage imagem;
+		
+			imagem = ImageIO.read(getClass().getClassLoader().getResourceAsStream("Resources/imgs/logo fundo.png"));
+		
+        if(imagem != null)  {  
+            g.drawImage(imagem, 0, 0, this.getWidth(), this.getHeight(), this);   
+        }  
+        } catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    } 
+}
+
+

@@ -32,7 +32,11 @@ public class Funcionario implements Serializable{
 	private String cnh="";
 	@Column(columnDefinition="date")
 	private Date validadeCnh= null;
+<<<<<<< HEAD
 	private String primeiraCnh="";
+=======
+	private Date primeiraCnh= null;
+>>>>>>> 76dab0dd3c528865e4443669417ec3832096692c
 	private String rg="";
 	@Id
 	private String cpf="";
@@ -141,10 +145,10 @@ public class Funcionario implements Serializable{
 	public void setValidadeCnh(Date validadeCnh) {
 		this.validadeCnh = validadeCnh;
 	}
-	public String getPrimeiraCnh() {
+	public Date getPrimeiraCnh() {
 		return primeiraCnh;
 	}
-	public void setPrimeiraCnh(String primeiraCnh) {
+	public void setPrimeiraCnh(Date primeiraCnh) {
 		this.primeiraCnh = primeiraCnh;
 	}
 	public String getRg() {

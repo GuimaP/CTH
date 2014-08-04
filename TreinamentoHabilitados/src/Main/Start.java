@@ -92,7 +92,7 @@ public class Start {
 							janela.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 							janela.setLocationRelativeTo(null);
-
+							
 							janela.setBackground(new Color(0,0,0,2)); //Fundo da Frame deixa transparente
 							janela.setContentPane(new MyPainelInvisible()); //Defino a imagem como opaque e visivel
 							janela.setLayout(new BorderLayout());

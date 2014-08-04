@@ -27,41 +27,41 @@ import Model.Funcionario;
  */
 public class FuncionarioController {
 
-    public static void saveInformacao(Funcionario f) {
-
-        try {
-            String path = new File("").getCanonicalFile() + "\\src\\Resources\\FilesTemp\\DadosTemporarioInstrutor.ser";
-            File file = new File(path);
-            FileOutputStream out = new FileOutputStream(path);
-            ObjectOutputStream objOut = new ObjectOutputStream(out);
-
-            objOut.writeObject(f);
-            objOut.close();
-            
-            
-            loadInformacao();
-        } catch (IOException ex) {
-            Logger.getLogger(FuncionarioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
-
-    public static Funcionario loadInformacao() {
-        Funcionario f = new Funcionario();
-        
-        try {
-            String path = new File("").getCanonicalFile() + "\\src\\Resources\\FilesTemp\\DadosTemporarioInstrutor.ser";
-            FileInputStream in = new FileInputStream(path);
-            ObjectInputStream objIn = new ObjectInputStream(in);
-            f = (Funcionario) objIn.readObject();
-
-        } catch (IOException er) {
-            er.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FuncionarioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        System.out.println("Serializando:" + f.getNome());
-        return f;
-    }
+//    public static void saveInformacao(Funcionario f) {
+//
+//        try {
+//            String path = new File("").getCanonicalFile() + "\\src\\Resources\\FilesTemp\\DadosTemporarioInstrutor.ser";
+//            File file = new File(path);
+//            FileOutputStream out = new FileOutputStream(path);
+//            ObjectOutputStream objOut = new ObjectOutputStream(out);
+//
+//            objOut.writeObject(f);
+//            objOut.close();
+//            
+//            
+//            loadInformacao();
+//        } catch (IOException ex) {
+//            Logger.getLogger(FuncionarioController.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//
+//    }
+//
+//    public static Funcionario loadInformacao() {
+//        Funcionario f = new Funcionario();
+//        
+//        try {
+//            String path = new File("").getCanonicalFile() + "\\src\\Resources\\FilesTemp\\DadosTemporarioInstrutor.ser";
+//            FileInputStream in = new FileInputStream(path);
+//            ObjectInputStream objIn = new ObjectInputStream(in);
+//            f = (Funcionario) objIn.readObject();
+//
+//        } catch (IOException er) {
+//            er.printStackTrace();
+//        } catch (ClassNotFoundException ex) {
+//            Logger.getLogger(FuncionarioController.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        
+//        System.out.println("Serializando:" + f.getNome());
+//        return f;
+//    }
 }
