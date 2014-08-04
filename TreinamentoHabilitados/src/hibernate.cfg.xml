@@ -38,13 +38,13 @@
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="connection.url">jdbc:mysql://localhost:3306/tcc</property>
 		<property name="connection.username">root</property>
-<<<<<<< HEAD
-		<property name="connection.password">senha</property>
+
+		<property name="connection.password">root</property>
 		<property name="hibernate.hbm2ddl.auto" > update </property>	
-=======
-		<property name="connection.password">vitor</property>
+
+		<property name="connection.password">root</property>
 		<property name="hibernate.hbm2ddl.auto" >update </property>	
->>>>>>> 53a69bfa46cd41d22f5ff9ef315d65c44f953c02
+
 		
         <property name="current_session_context_class">thread</property>
         <property name="hibernate.max_fetch_depth" >3</property>

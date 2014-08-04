@@ -166,7 +166,7 @@ public class Start {
 		String nameFile = System.getProperty("file.separator") + "Treinamento";//e o nome da pasta 
 		File diretorioProgram = new File(local+nameFile); 
 		if(!diretorioProgram.exists()){ //Verifico se existe a pasta
-			diretorioProgram.mkdir(); //Se não houve, eu crio uma
+			diretorioProgram.mkdir(); //Se nï¿½o houve, eu crio uma
 		}		
 	}
 

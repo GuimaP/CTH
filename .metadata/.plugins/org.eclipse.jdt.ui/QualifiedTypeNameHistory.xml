@@ -25,7 +25,6 @@
 <fullyQualifiedTypeName name="Model.Pagamento"/>
 <fullyQualifiedTypeName name="javax.xml.crypto.Data"/>
 <fullyQualifiedTypeName name="com.toedter.calendar.demo.DateChooserPanel"/>
-<fullyQualifiedTypeName name="com.toedter.calendar.JDateChooser"/>
 <fullyQualifiedTypeName name="javax.swing.border.LineBorder"/>
 <fullyQualifiedTypeName name="java.awt.Font"/>
 <fullyQualifiedTypeName name="Controller.ConfigController"/>
@@ -41,7 +40,16 @@
 <fullyQualifiedTypeName name="javax.swing.text.MaskFormatter"/>
 <fullyQualifiedTypeName name="View.PainelCalendarioAulas"/>
 <fullyQualifiedTypeName name="View.FormAgendamento"/>
-<fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
 <fullyQualifiedTypeName name="javax.swing.JFormattedTextField"/>
 <fullyQualifiedTypeName name="javax.swing.event.ChangeListener"/>
+<fullyQualifiedTypeName name="Model.EnumPagamento"/>
+<fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
+<fullyQualifiedTypeName name="org.eclipse.swt.widgets.Spinner"/>
+<fullyQualifiedTypeName name="java.awt.GridBagLayout"/>
+<fullyQualifiedTypeName name="java.awt.GridBagConstraints"/>
+<fullyQualifiedTypeName name="java.awt.GridLayout"/>
+<fullyQualifiedTypeName name="com.toedter.calendar.JDateChooser"/>
+<fullyQualifiedTypeName name="Model.EnumSexo"/>
+<fullyQualifiedTypeName name="Model.EnumFormaca"/>
+<fullyQualifiedTypeName name="javax.swing.JComboBox"/>
 </qualifiedTypeNameHistroy>
