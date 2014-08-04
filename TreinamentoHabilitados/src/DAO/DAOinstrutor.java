@@ -14,7 +14,7 @@ import Model.Carro;
 import Model.Funcionario;
 
 public class DAOinstrutor extends DAOconexao {
-<<<<<<< HEAD
+
 	private DAOconexao banco;
 	private String sql;
 	private PreparedStatement comando;
@@ -38,7 +38,7 @@ public class DAOinstrutor extends DAOconexao {
 			comando.setDate(2, (Date) funcionario.getData()); //TODO VEROFICAR FUNCIONAMENTO
 			comando.setString(3, funcionario.getCnh());
 		//	comando.setString(4, funcionario.getValidadeCnh());
-			comando.setString(5, funcionario.getPrimeiraCnh());
+			//comando.setString(5, funcionario.getPrimeiraCnh());
 			comando.setString(6, funcionario.getRg());
 			comando.setString(7, funcionario.getCpf());
 			comando.setString(8, funcionario.getTelefone());
@@ -71,8 +71,8 @@ public class DAOinstrutor extends DAOconexao {
 					funcionario.setCnh(rs.getString("CNH_INSTRUTOR"));
 				//	funcionario.setValidadeCnh(rs
 						//	.getString("VALIDADECNH_INSTRUTOR"));
-					funcionario.setPrimeiraCnh(rs
-							.getString("PRIMEIRACNH_INSTRUTOR"));
+				//	funcionario.setPrimeiraCnh(rs
+				//			.getString("PRIMEIRACNH_INSTRUTOR"));
 					funcionario.setRg(rs.getString("RG_INSTRUTOR"));
 					funcionario.setCpf(rs.getString("CPF_INSTRUTOR"));
 					funcionario.setTelefone(rs.getString("TELEFONE_INSTRUTOR"));
@@ -97,7 +97,7 @@ public class DAOinstrutor extends DAOconexao {
 
 		return funcionarioList;
 	}
-=======
+
 //	private DAOconexao banco;
 //	private String sql;
 //	private PreparedStatement comando;
@@ -180,6 +180,6 @@ public class DAOinstrutor extends DAOconexao {
 //
 //		return funcionarioList;
 //	}
->>>>>>> 76dab0dd3c528865e4443669417ec3832096692c
+
 
 }

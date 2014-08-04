@@ -32,11 +32,11 @@ public class Funcionario implements Serializable{
 	private String cnh="";
 	@Column(columnDefinition="date")
 	private Date validadeCnh= null;
-<<<<<<< HEAD
-	private String primeiraCnh="";
-=======
+
+
+
 	private Date primeiraCnh= null;
->>>>>>> 76dab0dd3c528865e4443669417ec3832096692c
+
 	private String rg="";
 	@Id
 	private String cpf="";
