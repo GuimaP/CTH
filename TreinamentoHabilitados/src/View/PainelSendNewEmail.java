@@ -112,8 +112,8 @@ public class PainelSendNewEmail extends JPanel{
 			Principal.btRefreshItens.setLocation(Principal.btAbrirMenuLateral.getWidth()+Principal.btAbrirMenuLateral.getX(),
 								Principal.btAbrirMenuLateral.getY());
 			
-			ConfiguraEmail.isJtreeAumentou = false;
-			ConfiguraEmail.isShowing = false;
+			
+			
 			pnEmail.revalidate();
 			barNav.remove(pnEmail);
 			barNav.revalidate();

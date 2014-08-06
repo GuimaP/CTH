@@ -41,7 +41,7 @@ public class PainelCalendarioAulas extends JPanel{
 		
 		
 		painelCalendario = new JPanel();
-		painelCalendario.setBounds(10, 150,400, 180);
+		painelCalendario.setBounds(10, 130,400, 180);
 		painelCalendario.setLayout(null);
 
 		calendario = new JCalendar();

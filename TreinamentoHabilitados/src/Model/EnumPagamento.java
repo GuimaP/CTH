@@ -1,7 +1,7 @@
 package Model;
 
 public enum EnumPagamento {
-	Debito("Débito"), Credito("Crédito"), Dinheiro("Dinheiro"), Cheque("Cheque");
+	Debito("DÃ©bito"), Credito("CrÃ©dito"), Dinheiro("Dinheiro"), Cheque("Cheque");
 	String desc;
 	private EnumPagamento(String desc) {
 		this.desc = desc;

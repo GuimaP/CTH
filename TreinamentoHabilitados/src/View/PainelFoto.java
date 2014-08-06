@@ -8,7 +8,10 @@ package View;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -32,10 +35,12 @@ public class PainelFoto extends JPanel {
     @Override
     public void paint(Graphics g) {
         super.paint(g); //To change body of generated methods, choose Tools | Templates.
+        g.drawOval(getX(), getY(), getWidth(),getHeight());
         g.drawImage(img,0,0,this.getWidth(),this.getHeight(),this);
         
+        
+        
     }
-  
     
     
 }

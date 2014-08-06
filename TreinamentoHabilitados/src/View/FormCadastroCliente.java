@@ -7,35 +7,26 @@ import Model.Cnh;
 import Model.Endereco;
 import Model.EnumFormaca;
 import Model.EnumPagamento;
+import Model.EnumQuestionario;
 import Model.EnumSexo;
+import Model.Funcionario;
 import Model.ModeloTableCliente;
 import Model.ModeloTablePacote;
 import Model.Pacote;
-import Model.Repository.ConnectionFactoryRepository;
 import Model.Repository.Repository;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Point;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import javax.persistence.EntityManager;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -56,20 +47,14 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.text.MaskFormatter;
-import javax.swing.text.TabExpander;
-
-import org.eclipse.swt.widgets.Spinner;
 
 import com.toedter.calendar.JDateChooser;
-import com.toedter.calendar.demo.DateChooserPanel;
 
-import jmapps.rtp.PanelParticipants;
 import principal.CadastroCliente;
 import principal.VerificadorDeCpf;
 
@@ -80,17 +65,17 @@ public class FormCadastroCliente extends JInternalFrame {
 			lbLogradouro, lbBairro, lbNumero, lbCep, lbRg, lbCpf, lbSexo,
 			lbObserva, lbQ1, lbQ2, lbQ3, lbQ4, lbData, lbCelular, lbPacote,
 			lbTipoPagamento, lbParcelas, lbPagamentoInicial, lbPagPendente,
-			lbDtPagamento, lbDtProximoPagamento, lbBuscaAluno, lbAgendamento,
-			lbNomeAluno, lbCpfAluno;
+			lbDtPagamento, lbDtProximoPagamento, lbBuscaAluno,
+			lbNomeAluno, lbCpfAluno, lbInstrutor;
 	
 	private JTextField tfNome, tfEmail, tfProfissao, tfRegistroCnh,
 			tfLogradouro, tfBairro, tfRg, tfQuestao1, tfNumero, tfBuscaPacote;
 	
 	private JFormattedTextField tfData, tfNascimento, tfCep, tfCpf, tfCelular,
 			tfTelefone, tfValidadeCnh, tfPrimeiraHabilitacao,
-			tfPagamentoInicial, tfPagamentoPendente, tfBuscaAluno, tfParcelas;
+			tfPagamentoInicial, tfPagamentoPendente, tfBuscaAluno;
 
-	private JButton btSalvar, btBuscarPacote, btBuscarAluno;
+	private JButton btSalvar, btBuscarPacote;
 
 	private JTabbedPane abas;
 
@@ -98,35 +83,34 @@ public class FormCadastroCliente extends JInternalFrame {
 
 	private JTextArea observa;
 	
-	private JScrollPane scroll, scTable, scrollPacote;
+	private JScrollPane scroll, scrollPacote;
 	
 	private ButtonGroup gQ2, gQ3;
 	
 	private JRadioButton jrQ2Yes, jrQ2No, jrQ3Yes, jrQ3No;
 	
-	private String[] pesquisa = { "Internet", "Indica��o", "Outros" };
-	
 	private JComboBox<EnumFormaca> jcEscolaridade;
 	
-	private JComboBox<String> jcPesquisa;
+	private JComboBox<EnumQuestionario> jcPesquisa;
 	
 	private JComboBox<EnumPagamento> jcPagamento;
 	
 	private JComboBox<EnumSexo> jcSexo;
 	
-	private JTable table, tablePacote;
+	private JComboBox<Funcionario> jcFuncionrio;
 	
-	private String data;
+	private JTable table;
 	
 	private ArrayList<Cliente> listCliente = new ArrayList<Cliente>();
 	
 	private ArrayList<Pacote> listPacote = new ArrayList<Pacote>();
 	
-	private MaskFormatter dataMask, dataMaskNascimento, maskCep, maskNumero,
+	private ArrayList<Funcionario> listFuncionario = new ArrayList<Funcionario>();
+	
+	
+	private MaskFormatter dataMask, dataMaskNascimento, maskCep,
 			maskCpf, maskTelefone, maskCelular, maskValidadeCnh,
-			maskPrimeiraHabilitacao, maskParcelas;
-
-	private PainelCalendarioAgendamento painelCalendario;
+			maskPrimeiraHabilitacao;
 
 	protected static JFrame minhaFrame;
 
@@ -135,8 +119,6 @@ public class FormCadastroCliente extends JInternalFrame {
 	Endereco endereco = new Endereco();
 	Cnh cnh = new Cnh();
 	CadastroCliente cadastro = new CadastroCliente();
-
-	private Font font;
 
 	private JPanel panelCliente, painelGeral, abaTodos, abaAgendamento,
 			painelPagamento, painelAgendamento;
@@ -155,8 +137,6 @@ public class FormCadastroCliente extends JInternalFrame {
 	
 	private JSpinner jsParcelas;
 
-	private boolean aberto = false;
-
 	public FormCadastroCliente() {
 		//
 		try {
@@ -171,7 +151,7 @@ public class FormCadastroCliente extends JInternalFrame {
 
 			inicializaComponentes();
 
-			//definirEventos();
+			definirEventos();
 		} catch (ParseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 
@@ -223,8 +203,6 @@ public class FormCadastroCliente extends JInternalFrame {
 
 		abaTodos = new JPanel();
 		abaTodos.setLayout(null);
-
-		
 		
 		
 		
@@ -389,7 +367,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		Border border2 = BorderFactory.createTitledBorder("Dados Gerais");
 		painelGeral.setLayout(null);
 		painelGeral.setBorder(border2);
-		painelGeral.setBounds(5, 250, 380, 310);
+		painelGeral.setBounds(5, 220, 380, 255);
 
 		//Inicio dos componentes do painel geral -------------------------------------
 		
@@ -452,7 +430,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		painelGeral.add(lbQ2);
 
 		JPanel painelQ2 = new JPanel();
-		painelQ2.setBounds(190, 95, 100, 25);
+		painelQ2.setBounds(250, 95, 100, 25);
 
 		jrQ2Yes = new JRadioButton("Sim", true);
 		jrQ2Yes.setBounds(250, 95, 200, 25);
@@ -468,21 +446,17 @@ public class FormCadastroCliente extends JInternalFrame {
 
 		painelGeral.add(painelQ2);
 		
-		JPanel painelQ3 = new JPanel(); // Painel para colocar os radios parar
-							// alinhar os radios
-
+		JPanel painelQ3 = new JPanel(); 
+		painelQ3.setBounds(240, 120, 120, 25);
 		lbQ3 = new JLabel("É possivel treinar nele?");
-		lbQ3.setLocation(40, 340);
-		lbQ3.setSize(150, 20);
+		lbQ3.setBounds(10, 120, 160, 20);
 		painelGeral.add(lbQ3);
 
 		jrQ3Yes = new JRadioButton("Sim", true);
-		jrQ3Yes.setLocation(190, 340);
-		jrQ3Yes.setSize(60, 20);
+		jrQ3Yes.setBounds(1,120, 60, 20);
 
 		jrQ3No = new JRadioButton("Não", false);
-		jrQ3No.setLocation(260, 340);
-		jrQ3No.setSize(60, 20);
+		jrQ3No.setBounds(300,120, 60, 20);
 
 		gQ3 = new ButtonGroup();
 		gQ3.add(jrQ3Yes);
@@ -492,66 +466,51 @@ public class FormCadastroCliente extends JInternalFrame {
 
 		painelGeral.add(painelQ3);
 
-		lbQ4 = new JLabel("Como voc� soube da Karol Treinamentos?");
-		lbQ4.setLocation(40, 370);
-		lbQ4.setSize(250, 20);
+		lbQ4 = new JLabel("Como você soube da Karol Treinamentos?");
+		lbQ4.setBounds(10, 145, 300, 20);
 		painelGeral.add(lbQ4);
 
-		jcPesquisa = new JComboBox<String>(pesquisa);
-		jcPesquisa.setLocation(290, 370);
-		jcPesquisa.setSize(105, 20);
+		jcPesquisa = new JComboBox<EnumQuestionario>(EnumQuestionario.values());
+		jcPesquisa.setBounds(250, 145, 120, 25);
 		jcPesquisa.setSelectedIndex(-1);
 		painelGeral.add(jcPesquisa);
 
-		lbObserva = new JLabel("Observações");
-		lbObserva.setLocation(60, 400);
-		lbObserva.setSize(120, 20);
+		lbObserva = new JLabel("Observações:");
+		lbObserva.setBounds(10, 170, 120, 20);
 		painelGeral.add(lbObserva);
 
 		// Obs
 		observa = new JTextArea();
 		observa.setLineWrap(true);
 		scroll = new JScrollPane(observa);
-		scroll.setLocation(60, 430);
-		scroll.setSize(300, 80);
+		scroll.setBounds(10, 195, 360, 50);
 		painelGeral.add(scroll);
 
 		abaTodos.add(painelGeral);
 
 		// Bot�o
 		btSalvar = new JButton("Salvar");
-		btSalvar.setLocation(610, 490);
-		btSalvar.setSize(180, 35);
+		btSalvar.setBounds(610	, 415, 180, 35);
 		abaTodos.add(btSalvar);
 
 		tfBuscaPacote = new JTextField();
-		tfBuscaPacote.setBounds(530, 50, 250, 25);
+		tfBuscaPacote.setBounds(530, 28, 250, 25);
 		abaTodos.add(tfBuscaPacote);
 
 		btBuscarPacote = new JButton("Buscar");
-		btBuscarPacote.setLocation(785, 50);
-		btBuscarPacote.setSize(80, 25);
+		btBuscarPacote.setBounds(785, 28, 80, 25);
 		abaTodos.add(btBuscarPacote);
-
-		btBuscarAluno = new JButton(">>");
-		btBuscarAluno.setSize(50, 35);
-		btBuscarAluno.setLocation(400, 35);
-		btBuscarAluno
-				.setToolTipText("Bot�o de busca. Informa o CPF do aluno desejado");
-		abaTodos.add(btBuscarAluno);
 
 		// Text
 
 		// Table
 		lbPacote = new JLabel("Pacote");
-		lbPacote.setSize(100, 20);
-		lbPacote.setLocation(530, 30);
+		lbPacote.setBounds(530, 10, 100, 20);
 		abaTodos.add(lbPacote);
 
 		table = new JTable(new ModeloTablePacote(listPacote));
 		scrollPacote = new JScrollPane(table);
-		scrollPacote.setSize(340, 157);
-		scrollPacote.setLocation(530, 80);
+		scrollPacote.setBounds(530, 54, 340, 163);
 		abaTodos.add(scrollPacote);
 
 		// Dados do pagamento
@@ -560,17 +519,16 @@ public class FormCadastroCliente extends JInternalFrame {
 		Border borderPag = BorderFactory
 				.createTitledBorder("Dados do Pagamento");
 		painelPagamento.setBorder(borderPag);
-		painelPagamento.setLayout(new GridLayout(6, 2));
-		painelPagamento.setBounds(525, 250, 350, 220);
+		painelPagamento.setLayout(null);
+		painelPagamento.setBounds(525, 220, 350, 180);
 		abaTodos.add(painelPagamento);
 
 		lbDtPagamento = new JLabel("Data");
-		lbDtPagamento.setSize(200, 20);
-		lbDtPagamento.setLocation(430, 480);
+		lbDtPagamento.setBounds(10, 20, 120, 20);
 		painelPagamento.add(lbDtPagamento);
 
 		dtPagamento = new JDateChooser();
-		dtPagamento.setBounds(120, 30, 650, 480);
+		dtPagamento.setBounds(170, 20, 170, 25);
 
 		Calendar minimo = Calendar.getInstance();
 		minimo.set(Calendar.YEAR, 1900);
@@ -582,25 +540,21 @@ public class FormCadastroCliente extends JInternalFrame {
 		painelPagamento.add(dtPagamento);
 
 		lbParcelas = new JLabel("Parcelas");
-		lbParcelas.setSize(100, 20);
-		lbParcelas.setLocation(430, 510);
+		lbParcelas.setBounds(10, 45, 120, 20);
 		painelPagamento.add(lbParcelas);
 
-		//testando o jspiner
-		
 		SpinnerNumberModel nbparcelasModel;
 		nbparcelasModel = new SpinnerNumberModel(1,1,12,1);
 		jsParcelas = new JSpinner(nbparcelasModel);
-		jsParcelas.setBounds(650, 510, 120, 30);
+		jsParcelas.setBounds(170, 45, 170, 25);
 		painelPagamento.add(jsParcelas);
 		
-		lbDtProximoPagamento = new JLabel("Pr�xima Parcela");
-		lbDtProximoPagamento.setSize(100, 20);
-		lbDtProximoPagamento.setLocation(430, 540);
+		lbDtProximoPagamento = new JLabel("Próxima Parcela");
+		lbDtProximoPagamento.setBounds(10, 70, 120, 20);
 		painelPagamento.add(lbDtProximoPagamento);
 
 		dtProximoPagamento = new JDateChooser();
-		dtPagamento.setBounds(120, 30, 650, 540);
+		dtProximoPagamento.setBounds(170, 70, 170, 25);
 
 		Calendar minimo1 = Calendar.getInstance();
 		minimo1.set(Calendar.YEAR, 1900);
@@ -613,69 +567,72 @@ public class FormCadastroCliente extends JInternalFrame {
 		painelPagamento.add(dtProximoPagamento);
 
 		lbTipoPagamento = new JLabel("Tipo de pagamento");
-		lbTipoPagamento.setSize(200, 20);
-		lbTipoPagamento.setLocation(430, 570);
+		lbTipoPagamento.setBounds(10, 95, 120, 20);
 		painelPagamento.add(lbTipoPagamento);
 
-		
-		
 		jcPagamento = new JComboBox<EnumPagamento>(EnumPagamento.values());
-		jcPagamento.setLocation(650, 570);
-		jcPagamento.setSize(120, 30);
+		jcPagamento.setBounds(170, 95, 170, 25);
 		jcPagamento.setSelectedIndex(-1);
 		painelPagamento.add(jcPagamento);
 
 		lbPagamentoInicial = new JLabel("Valor Pago");
-		lbPagamentoInicial.setSize(200, 20);
-		lbPagamentoInicial.setLocation(430, 600);
+		lbPagamentoInicial.setBounds(10, 120, 120, 20);
 		painelPagamento.add(lbPagamentoInicial);
 
 		tfPagamentoInicial = new JFormattedTextField();
-		tfPagamentoInicial.setSize(120, 30);
-		tfPagamentoInicial.setLocation(650, 600);
+		tfPagamentoInicial.setBounds(170, 120, 170, 25);
 		painelPagamento.add(tfPagamentoInicial);
 
 		lbPagPendente = new JLabel("Pendente");
-		lbPagPendente.setSize(120, 20);
-		lbPagPendente.setLocation(430, 630);
+		lbPagPendente.setBounds(10, 145, 120, 20);
 		painelPagamento.add(lbPagPendente);
 
 		tfPagamentoPendente = new JFormattedTextField();
-		tfPagamentoPendente.setSize(120, 30);
-		tfPagamentoPendente.setLocation(650, 630);
+		tfPagamentoPendente.setBounds(170, 145, 170, 25);
+		tfPagamentoPendente.setEnabled(false);
 		painelPagamento.add(tfPagamentoPendente);
 
 		// Componentes painel de agendamento
 
+		
+		
 		abaAgendamento = new JPanel();
 		abaAgendamento.setLayout(null);
+		
+		
 
+		painelAgendamento = new JPanel();
+		Border border3 = BorderFactory.createTitledBorder("Agendamento");
+		painelAgendamento.setLayout(null);
+		painelAgendamento.setBorder(border3);
+		painelAgendamento.setBounds(5, 10, 420, 465);
+		
 		lbBuscaAluno = new JLabel("Buscar Aluno");
 		lbBuscaAluno.setSize(200, 20);
 		lbBuscaAluno.setLocation(10, 20);
-		abaAgendamento.add(lbBuscaAluno);
+		painelAgendamento.add(lbBuscaAluno);
 
 		checkCpf = new JCheckBox();
 		checkCpf.setText("CPF");
 		checkCpf.setBounds(220, 40, 100, 20);
 		checkCpf.setSelected(false);
-		abaAgendamento.add(checkCpf);
+		painelAgendamento.add(checkCpf);
 
 		checkObs = new JCheckBox();
-		checkObs.setText("Observa��es");
+		checkObs.setText("Descrição");
 		checkObs.setBounds(310, 320, 100, 20);
 		checkObs.setSelected(false);
-		abaAgendamento.add(checkObs);
+		painelAgendamento.add(checkObs);
 		
 		tfBuscaAluno = new JFormattedTextField();
 		tfBuscaAluno.setSize(200, 30);
 		tfBuscaAluno.setLocation(10, 40);
-		abaAgendamento.add(tfBuscaAluno);
+		painelAgendamento.add(tfBuscaAluno);
 		
 		tfBuscaAlunoCpf = new JFormattedTextField(maskCpf);
 		tfBuscaAlunoCpf.setSize(200, 30);
 		tfBuscaAlunoCpf.setLocation(10, 40);
-		abaAgendamento.add(tfBuscaAlunoCpf);
+		painelAgendamento.add(tfBuscaAlunoCpf);
 
 		// String que vai aparecer com o nome do aluno que foi feito a busca.
 
@@ -684,74 +641,86 @@ public class FormCadastroCliente extends JInternalFrame {
 		lbNomeAluno.setLocation(10, 60);
 		lbNomeAluno.setFont(ConfigController.definePrincipalFont(22f,
 				Font.PLAIN));
-		lbNomeAluno.setForeground(Color.red);
-		abaAgendamento.add(lbNomeAluno);
+		lbNomeAluno.setForeground(new Color(72 ,118, 255));
+		painelAgendamento.add(lbNomeAluno);
 
 		lbCpfAluno = new JLabel("322.999.999-99");
 		lbCpfAluno.setSize(1000, 50);
 		lbCpfAluno.setLocation(10, 90);
 		lbCpfAluno
 				.setFont(ConfigController.definePrincipalFont(22, Font.PLAIN));
-		lbCpfAluno.setForeground(Color.red);
-		abaAgendamento.add(lbCpfAluno);
+		lbCpfAluno.setForeground(new Color(72 ,118, 255));
+		painelAgendamento.add(lbCpfAluno);
 
+		
+		lbInstrutor = new JLabel("Istrutor");
+		lbInstrutor.setBounds(240, 80, 100, 20);
+		painelAgendamento.add(lbInstrutor);
+		
+		jcFuncionrio = new JComboBox<Funcionario>();
+		jcFuncionrio.setBounds(240, 100, 170, 25);
+		painelAgendamento.add(jcFuncionrio);
+		
+		
 		// -------------------------------------------------------------------
 
 		// Calendario
-		new PainelCalendarioAulas(abaAgendamento);
+		new PainelCalendarioAulas(painelAgendamento);
 
 		// --------------------------------------------
 
-		lbDescricao = new JLabel("Observa��o");
-		lbDescricao.setBounds(10, 340, 100, 20);
+		lbDescricao = new JLabel("Descrição Aula:");
+		lbDescricao.setBounds(10, 310, 100, 20);
 		lbDescricao.setVisible(false);
-		abaAgendamento.add(lbDescricao);
+		painelAgendamento.add(lbDescricao);
 		
 		jTextAreaObs = new JTextArea();
-		jTextAreaObs.setBounds(10, 360, 280, 100);
+		jTextAreaObs.setBounds(10, 335, 280, 100);
 		jTextAreaObs.setVisible(false);
-		abaAgendamento.add(jTextAreaObs);
+		painelAgendamento.add(jTextAreaObs);
 
 		
 
-		javax.swing.ImageIcon img = new javax.swing.ImageIcon(getClass()
-				.getResource("/Resources/icons").getPath() + "/iconSaveTask.png");
-
-		btTarefa = new JButton("Agendar",img);
-		btTarefa.setContentAreaFilled(false);
-		btTarefa.setSize(160, 110);
-		btTarefa.setLocation(100,340);
+		
+		btTarefa = new JButton("Agendar");
+		btTarefa.setBounds(160, 360, 100, 35);
 		btTarefa.setToolTipText("Agendar aula");
-		abaAgendamento.add(btTarefa);
+		painelAgendamento.add(btTarefa);
 
+		
+		abaAgendamento.add(painelAgendamento);
+		
+		
 		abas = new JTabbedPane();
-		abas.setBounds(1, 1, 895, 620);
+		abas.setBounds(1, 1, 890, 535);
 		abas.addTab("Cadastro", abaTodos);
 		abas.addTab("Agendamento", abaAgendamento);
 		add(abas);
 
 		// PAINEL//
 		getContentPane().setLayout(null);
-		setSize(900, 625);
+		setSize(895, 540);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setVisible(true);
 		setClosable(true);
-		setTitle("Cadastro Cliente");
+		setTitle("Cliente");
 		setResizable(false);
 		setIconifiable(true);
-		// getContentPane().setBackground(Color.lightGray);
 
 	}
-/*
+
 	public void definirEventos() {
+		
 		jcPagamento.addActionListener(new ActionListener() {
 			int estado =1;
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (jcPagamento.getSelectedIndex()== 1 || jsParcelas.getValue().equals(estado)){
-					dtProximoPagamento.setEnabled(false);
-				}else 
-					dtProximoPagamento.setEnabled(true);
+				if (jcPagamento.getSelectedIndex()== 1){
+					jsParcelas.setEnabled(false);
+				}else{
+					jsParcelas.setEnabled(true);
+				}
+					
 				
 			}
 		});
@@ -779,12 +748,12 @@ public class FormCadastroCliente extends JInternalFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				if (checkObs.isSelected()){
 					jTextAreaObs.setVisible(true);
-					lbDescricao.setVisible(true);
-					btTarefa.setLocation(100,450);
+				lbDescricao.setVisible(true);
+					btTarefa.setLocation(310,345);
 				}else{
 					jTextAreaObs.setVisible(false);
 					lbDescricao.setVisible(false);
-					btTarefa.setLocation(100,340);
+					btTarefa.setLocation(160,360);
 				}
 				
 			}
@@ -801,28 +770,6 @@ public class FormCadastroCliente extends JInternalFrame {
 					tfBuscaAlunoCpf.setVisible(false);
 				}
 				
-			}
-		});
-
-		
-		
-		btBuscarAluno.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				VerificadorDeCpf verificador = new VerificadorDeCpf();
-				if (tfCpf.getValue() == null
-						|| !verificador.verificarCpf(tfCpf.getValue()
-								.toString())) {
-					JOptionPane.showMessageDialog(null,
-							"Informar um CPF valido para a busca");
-					lbCpf.setForeground(Color.red);
-					tfCpf.requestFocus(true);
-
-				} else {
-					// implementar a busca
-				}
-
 			}
 		});
 
@@ -1108,5 +1055,5 @@ public class FormCadastroCliente extends JInternalFrame {
 		});
 
 	}
-*/
+
 }
