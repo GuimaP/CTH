@@ -21,7 +21,7 @@ import Model.Carro;
 public class RepositoryCarro extends Repository<Model.Carro>{
     public List<Carro> pegarTodos() throws SQLException {
     	        List<Carro> lista = null;
-    	        Session session = ConnectionFactoryConfig.getSession();//getCurrentSession();
+    	        Session session = ConnectionFactoryConfig.openManger().openSession();//getCurrentSession();
     	        
     	        session.createCriteria(Carro.class);
     	        Criteria c = session.createCriteria(Carro.class);

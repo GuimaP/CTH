@@ -17,6 +17,7 @@ import com.towel.swing.img.JImagePanel;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -113,6 +114,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
     private JScrollPane scroll;
     private JDateChooser dcDataNascimento,dcDataValidadeCnh;
     private Funcionario instrutor;
+	private JButton btRefresh;
 
     public FormCadastroInstrutor() {
         try {
@@ -128,6 +130,12 @@ public class FormCadastroInstrutor extends JInternalFrame {
         	e.printStackTrace();
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
+    }
+    
+    public FormCadastroInstrutor(boolean mostra){
+    	this();
+    	aba.setSelectedIndex(1);
+    	
     }
 
     public void inicializaComponentes() throws ParseException, SQLException {
@@ -149,7 +157,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
         pnGeral.add(lbNome);
 
         tfNome = new JTextField();
-        tfNome.setBounds(50, 10, 305, 25);
+        tfNome.setBounds(50, 10, 325, 25);
         pnGeral.add(tfNome);
 
         //---
@@ -174,7 +182,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
         pnGeral.add(dcDataNascimento);
 
-        lbRegistroCnh = new JLabel("NÂº Cnh");
+        lbRegistroCnh = new JLabel("Nº Cnh");
         lbRegistroCnh.setBounds(213, 40, 40, 20);
         pnGeral.add(lbRegistroCnh);
 
@@ -182,7 +190,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
         maskPrimeiraCnh.setPlaceholder("_");
         maskPrimeiraCnh.setValueContainsLiteralCharacters(false);
         tfRegistroCnh = new JFormattedTextField(maskPrimeiraCnh);
-        tfRegistroCnh.setBounds(260, 40, 100, 25);
+        tfRegistroCnh.setBounds(260, 40, 115, 25);
         pnGeral.add(tfRegistroCnh);
 
         //--
@@ -198,7 +206,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
 
 
-        lbPrimeiraCnh = new JLabel("1Âº HabilitaÃ§Ã£o");
+        lbPrimeiraCnh = new JLabel("1º Habilitação");
 
         lbPrimeiraCnh.setBounds(185, 70, 90, 20);
 
@@ -225,7 +233,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
         maskRg.setValidCharacters("0123456789Xx");
         maskRg.setValueContainsLiteralCharacters(false);
         tfRg = new JFormattedTextField(maskRg);
-        tfRg.setBounds(60, 100, 100, 25);
+        tfRg.setBounds(60, 100, 115, 25);
         pnGeral.add(tfRg);
 
         lbCpf = new JLabel("Cpf");
@@ -235,7 +243,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
         maskCpf = new MaskFormatter("###.###.###-##");
         maskCpf.setPlaceholderCharacter('_');
         tfCpf = new JFormattedTextField(maskCpf);
-        tfCpf.setBounds(260, 100, 100, 25);
+        tfCpf.setBounds(260, 100, 115, 25);
         pnGeral.add(tfCpf);
 
         //--
@@ -247,7 +255,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
         maskTelefone.setPlaceholderCharacter('_');
         maskTelefone.setValueContainsLiteralCharacters(false);
         tfTelefone = new JFormattedTextField(maskTelefone);
-        tfTelefone.setBounds(60, 125, 100, 25);
+        tfTelefone.setBounds(60, 125, 115, 25);
         pnGeral.add(tfTelefone);
 
         lbCelular = new JLabel("Celular");
@@ -258,7 +266,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
         maskCelular.setPlaceholderCharacter('_');
         maskCelular.setValueContainsLiteralCharacters(false);
         tfCelular = new JFormattedTextField(maskCelular);
-        tfCelular.setBounds(260, 125, 100, 25);
+        tfCelular.setBounds(260, 125, 115, 25);
         pnGeral.add(tfCelular);
 
         //---- Fim dos Dados do CLiente
@@ -269,12 +277,13 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
         jcCarro = new JComboBox<Carro>();
         //carroList 
-        List<Carro> lista = (List<Carro>) new RepositoryCarro().pegarTodos();
-        for (Carro c : lista) {
-        	if(!c.isOcupado()){
-        		jcCarro.addItem(c);
-        	}
-        }
+//        List<Carro> lista = (List<Carro>) new RepositoryCarro().pegarTodos();
+//        for (Carro c : lista) {
+//        	if(!c.isOcupado()){
+//        		jcCarro.addItem(c);
+//        	}
+//        }
+        
         jcCarro.setBounds(60, 155, 230, 25);
         jcCarro.setSelectedIndex(-1);
         pnGeral.add(jcCarro);
@@ -295,6 +304,15 @@ public class FormCadastroInstrutor extends JInternalFrame {
         btNovo.setVisible(true);
         pnGeral.add(btNovo);
         
+        btRefresh = new JButton();
+        btRefresh.setIcon(new ImageIcon(getClass().getClassLoader().getResource("Resources/icons/btRefresh.png")));
+        btRefresh.setContentAreaFilled(true);
+        btRefresh.setSize(35, 35);
+        btRefresh.setLocation(440, 140);
+        btRefresh.setToolTipText("Atualizar as informações");
+        btRefresh.setCursor(getCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+        pnGeral.add(btRefresh);
+        
         btAlterar = new JButton("Alterar");
         btAlterar.setBounds(btNovo.getBounds());
         btAlterar.setVisible(false);
@@ -311,9 +329,8 @@ public class FormCadastroInstrutor extends JInternalFrame {
         btAlterar.setVisible(false);
         pnGeral.add(btAlterar);
 
-      
-
         
+       
         
 
 
@@ -353,10 +370,16 @@ public class FormCadastroInstrutor extends JInternalFrame {
         aba.addTab(" Busca  ", pnBusca);
         add(aba);
 
+        atualiza();
+        
         pack();
         setSize(505, 340);
         setLocation(60, 10);
 //
+        
+        getContentPane().setBackground(new Color(0,0,0,40));
+        setBackground(new Color(0,0,0,40));
+       
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setClosable(true);
         setIconifiable(true);
@@ -437,7 +460,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 				        Principal.minhaFrame.repaint();
 				        
 
-				        FuncionarioController.loadInformacao(); //Recupero os dados do meu arquivo temporario
+//				        FuncionarioController.loadInformacao(); //Recupero os dados do meu arquivo temporario
 
 //				        FuncionarioController.loadInformacao(); //Recupero os dados do meu arquivo temporario
 
@@ -729,7 +752,14 @@ public class FormCadastroInstrutor extends JInternalFrame {
             }
         });
         
-        
+        btRefresh.addActionListener(e ->{
+
+        	try {
+				atualiza();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+        });
     }
     
 
@@ -737,6 +767,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
 	private void atualiza() throws Exception{
 		 List<Carro> lista = (List<Carro>) new RepositoryCarro().pegarTodos();
+		 jcCarro.removeAllItems();
 	        for (Carro c : lista) {
 	        	if(!c.isOcupado()){
 	        		jcCarro.addItem(c);

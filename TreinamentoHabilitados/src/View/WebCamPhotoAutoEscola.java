@@ -99,7 +99,7 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable,
 
 		 		if (webcam == null) {
 		 			JOptionPane.showMessageDialog(this,"Nao foi encontrado uma Web cam conectada");
-		 			webcam.close();
+//		 			webcam.close();
 		 			return;
 		 		} else {
 
