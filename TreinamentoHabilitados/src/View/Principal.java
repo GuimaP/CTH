@@ -1,8 +1,10 @@
 package View;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Point;
@@ -13,6 +15,8 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
@@ -43,6 +47,7 @@ import javax.imageio.ImageIO;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.swing.BoundedRangeModel;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
@@ -97,6 +102,8 @@ public class Principal extends JFrame {
 	private JToolBar barraLateral;
 	private JScrollPane sp;
 	private PainelCalendarioAgendamento painelCalendario;
+	private JPanel pnMenuSuperior;
+	private JButton btAbrirMenuSuperior;
 
 	private int POSXButoon;
 	protected JTree jtreeAtalhos;
@@ -119,12 +126,10 @@ public class Principal extends JFrame {
 	protected static JPanel painelNotification;
 	
 	private JScrollPane spTbEmail;
-	private Thread gerenciaEmal;
-	private final int WIDTH_TAMANHO = 301;
 
-	private boolean hasEmailReady = false;
+	private Point point = new Point(); //Controle o movimento dos icones
 	
-
+	
 	public static boolean finished = false;
 	public static boolean carregado;
 	protected static boolean isFrameInstrutorOpen, isFrameClienteOpen,
@@ -199,6 +204,7 @@ public class Principal extends JFrame {
 		menuBarra.add(menuArquivo);
 		menuBarra.add(menuAgendamento);
 		menuBarra.add(menuRelatorio);
+		
 
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Inicio");
 
@@ -224,7 +230,7 @@ public class Principal extends JFrame {
 		barraLateral.setEnabled(false);
 		barraLateral.setLayout(null);
 		barraLateral.setSize(170, minhaFrame.getHeight() - 490);
-		barraLateral.setLocation(-(barraLateral.getWidth()), 0);
+		barraLateral.setLocation(-(barraLateral.getWidth()), 90);
 		barraLateral.setVisible(false);
 
 		sp = new JScrollPane(jtreeAtalhos);
@@ -237,7 +243,7 @@ public class Principal extends JFrame {
 		
 		btAbrirMenuLateral = new JButton(">>");
 		btAbrirMenuLateral.setFocusCycleRoot(true);
-		btAbrirMenuLateral.setBounds(5, 10, 45, 30);
+		btAbrirMenuLateral.setBounds(5, 100, 45, 30);
 		add(btAbrirMenuLateral);
 
 		POSXButoon = btAbrirMenuLateral.getX();
@@ -288,11 +294,29 @@ public class Principal extends JFrame {
 		painelNotification.add(lb);
 		add(painelNotification);
 		
+		pnMenuSuperior = new JPanel();
+		Dimension tamanhoFrame = getSize();
+		pnMenuSuperior.setSize(tamanhoFrame.width, 130);
+		pnMenuSuperior.setLocation(0, 3);
+//		pnMenuSuperior.setBackground(new Color(254,254,254,120));
+		FlowLayout layout = new FlowLayout();
+		layout.setAlignment(FlowLayout.LEADING);
 		
+		pnMenuSuperior.setLayout(layout);
+		add(pnMenuSuperior);
 		
-		PainelIcon ic = new PainelIcon();
-		add(ic);
+		btAbrirMenuSuperior = new JButton("V");
+		btAbrirMenuSuperior.setLocation((getSize().width / 2 ) - btAbrirMenuLateral.getWidth(),pnMenuSuperior.getSize().height);
+		add(btAbrirMenuSuperior);
 		
+		PainelIcon icon = new PainelIcon(pnMenuSuperior);
+		icon.setLocation(60, 500);
+		
+		PainelIcon icon2 = new PainelIcon(pnMenuSuperior);
+		icon2.setLocation(60, 560);
+		
+		add(icon);
+		add(icon2);
 		
 		getGlassPane().setVisible(true);
 		setJMenuBar(menuBarra);
@@ -340,12 +364,15 @@ public class Principal extends JFrame {
 		}).start();
 	}
 	
+	
+	
+	
+	
 	//
 	public void definirEventos() {
 
 		btAbrirMenuLateral.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				showNotication();
 				long time = (1 / 2) + (1 / 3);
 
 				if (!painelMostrando) { // ABRINDO O PAINEL
@@ -570,7 +597,29 @@ public class Principal extends JFrame {
 				minhaFrame = null;
 
 			});
+		
+//		
+//		icon.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mousePressed(MouseEvent e) {
+//				point.x= e.getX();
+//		        point.y = e.getY();
+//			}
+//			
+//			@Override
+//			public void mouseDragged(MouseEvent e) {
+//				icon.setLocation(e.getX() - point.x + icon.getLocation().x,
+//		                e.getY() - point.y + icon.getLocation().y);
+//			}
+//			
+//			@Override
+//			public void mouseReleased(MouseEvent e) {
+//				System.out.println("Soltou!!");
+//			}
+//		});
 
+		
+		
 	}
 
 }
