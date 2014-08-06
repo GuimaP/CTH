@@ -4,7 +4,6 @@
 <fullyQualifiedTypeName name="View.FormCadastroCarro"/>
 <fullyQualifiedTypeName name="Model.ModelTableCarro"/>
 <fullyQualifiedTypeName name="Model.Carro"/>
-<fullyQualifiedTypeName name="Model.Funcionario"/>
 <fullyQualifiedTypeName name="Model.ModeloTableFuncionario"/>
 <fullyQualifiedTypeName name="java.awt.ScrollPane"/>
 <fullyQualifiedTypeName name="javax.swing.JTable"/>
@@ -20,7 +19,6 @@
 <fullyQualifiedTypeName name="Model.Cliente"/>
 <fullyQualifiedTypeName name="Model.Pacote"/>
 <fullyQualifiedTypeName name="Controller.CadastroCliente"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="Controller.ClientePacotePagamento"/>
 <fullyQualifiedTypeName name="Model.Pagamento"/>
 <fullyQualifiedTypeName name="javax.xml.crypto.Data"/>
@@ -30,12 +28,10 @@
 <fullyQualifiedTypeName name="Controller.ConfigController"/>
 <fullyQualifiedTypeName name="View.PainelCalendarioAgendamento"/>
 <fullyQualifiedTypeName name="javax.swing.JFrame"/>
-<fullyQualifiedTypeName name="java.awt.Color"/>
 <fullyQualifiedTypeName name="com.toedter.calendar.JCalendar"/>
 <fullyQualifiedTypeName name="javax.swing.JPanel"/>
 <fullyQualifiedTypeName name="javax.swing.JButton"/>
 <fullyQualifiedTypeName name="javax.swing.JTextArea"/>
-<fullyQualifiedTypeName name="javax.swing.JLabel"/>
 <fullyQualifiedTypeName name="javax.swing.JCheckBox"/>
 <fullyQualifiedTypeName name="javax.swing.text.MaskFormatter"/>
 <fullyQualifiedTypeName name="View.PainelCalendarioAulas"/>
@@ -51,5 +47,10 @@
 <fullyQualifiedTypeName name="com.toedter.calendar.JDateChooser"/>
 <fullyQualifiedTypeName name="Model.EnumSexo"/>
 <fullyQualifiedTypeName name="Model.EnumFormaca"/>
+<fullyQualifiedTypeName name="Model.EnumQuestionario"/>
+<fullyQualifiedTypeName name="java.awt.Color"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="javax.swing.JComboBox"/>
+<fullyQualifiedTypeName name="Model.Funcionario"/>
+<fullyQualifiedTypeName name="javax.swing.JLabel"/>
 </qualifiedTypeNameHistroy>
