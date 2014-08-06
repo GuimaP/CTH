@@ -5,6 +5,8 @@ import Model.Pacote;
 import Model.Pagamento;
 
 public class ClientePacotePagamento {
+	
+	
 	private Cliente c;
 	private Pacote p;
 	private Pagamento pagamento;

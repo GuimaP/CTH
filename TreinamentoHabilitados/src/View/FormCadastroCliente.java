@@ -2,6 +2,7 @@ package View;
 
 import Controller.ConfigController;
 import DAO.DAOcliente;
+import Model.Agendamento;
 import Model.Cliente;
 import Model.Cnh;
 import Model.Endereco;
@@ -10,6 +11,7 @@ import Model.EnumPagamento;
 import Model.EnumQuestionario;
 import Model.EnumSexo;
 import Model.Funcionario;
+import Model.ModeloTableAgendamento;
 import Model.ModeloTableCliente;
 import Model.ModeloTablePacote;
 import Model.Pacote;
@@ -65,12 +67,12 @@ public class FormCadastroCliente extends JInternalFrame {
 			lbLogradouro, lbBairro, lbNumero, lbCep, lbRg, lbCpf, lbSexo,
 			lbObserva, lbQ1, lbQ2, lbQ3, lbQ4, lbData, lbCelular, lbPacote,
 			lbTipoPagamento, lbParcelas, lbPagamentoInicial, lbPagPendente,
-			lbDtPagamento, lbDtProximoPagamento, lbBuscaAluno,
-			lbNomeAluno, lbCpfAluno, lbInstrutor;
-	
+			lbDtPagamento, lbDtProximoPagamento, lbBuscaAluno, lbNomeAluno,
+			lbCpfAluno, lbInstrutor;
+
 	private JTextField tfNome, tfEmail, tfProfissao, tfRegistroCnh,
 			tfLogradouro, tfBairro, tfRg, tfQuestao1, tfNumero, tfBuscaPacote;
-	
+
 	private JFormattedTextField tfData, tfNascimento, tfCep, tfCpf, tfCelular,
 			tfTelefone, tfValidadeCnh, tfPrimeiraHabilitacao,
 			tfPagamentoInicial, tfPagamentoPendente, tfBuscaAluno;
@@ -79,37 +81,39 @@ public class FormCadastroCliente extends JInternalFrame {
 
 	private JTabbedPane abas;
 
-	private JDateChooser dtPagamento, dtProximoPagamento, dtCadastroCliente, cdDataNascimento, cdValidadeCnh, cdPermissao;
+	private JDateChooser dtPagamento, dtProximoPagamento, dtCadastroCliente,
+			cdDataNascimento, cdValidadeCnh, cdPermissao;
 
 	private JTextArea observa;
-	
-	private JScrollPane scroll, scrollPacote;
-	
+
+	private JScrollPane scroll, scrollPacote, scrollAulas;
+
 	private ButtonGroup gQ2, gQ3;
-	
+
 	private JRadioButton jrQ2Yes, jrQ2No, jrQ3Yes, jrQ3No;
-	
+
 	private JComboBox<EnumFormaca> jcEscolaridade;
-	
+
 	private JComboBox<EnumQuestionario> jcPesquisa;
-	
+
 	private JComboBox<EnumPagamento> jcPagamento;
-	
+
 	private JComboBox<EnumSexo> jcSexo;
-	
+
 	private JComboBox<Funcionario> jcFuncionrio;
-	
-	private JTable table;
-	
+
+	private JTable table, tableAulas;
+
 	private ArrayList<Cliente> listCliente = new ArrayList<Cliente>();
-	
+
 	private ArrayList<Pacote> listPacote = new ArrayList<Pacote>();
-	
+
 	private ArrayList<Funcionario> listFuncionario = new ArrayList<Funcionario>();
-	
-	
-	private MaskFormatter dataMask, dataMaskNascimento, maskCep,
-			maskCpf, maskTelefone, maskCelular, maskValidadeCnh,
+
+	private ArrayList<Agendamento> listAgendamentos = new ArrayList<Agendamento>();
+
+	private MaskFormatter dataMask, dataMaskNascimento, maskCep, maskCpf,
+			maskTelefone, maskCelular, maskValidadeCnh,
 			maskPrimeiraHabilitacao;
 
 	protected static JFrame minhaFrame;
@@ -121,7 +125,7 @@ public class FormCadastroCliente extends JInternalFrame {
 	CadastroCliente cadastro = new CadastroCliente();
 
 	private JPanel panelCliente, painelGeral, abaTodos, abaAgendamento,
-			painelPagamento, painelAgendamento;
+			painelPagamento, painelAgendamento, painelFoto;
 
 	// componentes usados para o calendario de agendamento de aulas.
 
@@ -132,9 +136,9 @@ public class FormCadastroCliente extends JInternalFrame {
 	private JLabel lbDescricao;
 
 	private JCheckBox checkCpf, checkObs;
-	
+
 	private JFormattedTextField tfBuscaAlunoCpf;
-	
+
 	private JSpinner jsParcelas;
 
 	public FormCadastroCliente() {
@@ -203,18 +207,17 @@ public class FormCadastroCliente extends JInternalFrame {
 
 		abaTodos = new JPanel();
 		abaTodos.setLayout(null);
-		
-		
-		
-		// Declaração do painel cliente 
+
+		// Declaração do painel cliente
 		panelCliente = new JPanel();
 		Border border = BorderFactory.createTitledBorder("Cliente");
 		panelCliente.setBorder(border);
 		panelCliente.setLayout(null);
-		panelCliente.setBounds(5,10 , 380, 210);
-		
-		// Inicio dos componentes do painel Cliente ----------------------------------------------
-		
+		panelCliente.setBounds(5, 10, 380, 210);
+
+		// Inicio dos componentes do painel Cliente
+		// ----------------------------------------------
+
 		lbNome = new JLabel("Nome");
 		lbNome.setBounds(10, 20, 100, 20);
 		panelCliente.add(lbNome);
@@ -228,7 +231,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		panelCliente.add(lbData);
 
 		dtCadastroCliente = new JDateChooser();
-		dtCadastroCliente.setBounds(250	, 20, 120, 25);
+		dtCadastroCliente.setBounds(250, 20, 120, 25);
 		Calendar dtCadastro = Calendar.getInstance();
 		dtCadastro.set(Calendar.YEAR, 1900);
 		dtCadastro.set(Calendar.MONTH, 1);
@@ -236,9 +239,9 @@ public class FormCadastroCliente extends JInternalFrame {
 		dtCadastroCliente.setMinSelectableDate(dtCadastro.getTime());
 		Date dataAtualCad = new Date(System.currentTimeMillis());
 		dtCadastroCliente.setMaxSelectableDate(dataAtualCad);
-		//dtCadastroCliente.setEnabled(false);
+		// dtCadastroCliente.setEnabled(false);
 		panelCliente.add(dtCadastroCliente);
-		
+
 		lbLogradouro = new JLabel("Rua");
 		lbLogradouro.setBounds(10, 45, 100, 20);
 		panelCliente.add(lbLogradouro);
@@ -246,7 +249,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		tfLogradouro = new JTextField();
 		tfLogradouro.setBounds(60, 45, 120, 25);
 		panelCliente.add(tfLogradouro);
-		
+
 		lbNumero = new JLabel("Numero");
 		lbNumero.setBounds(190, 45, 100, 20);
 		panelCliente.add(lbNumero);
@@ -254,7 +257,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		tfNumero = new JTextField();
 		tfNumero.setBounds(250, 45, 120, 25);
 		panelCliente.add(tfNumero);
-	
+
 		lbBairro = new JLabel("Bairro");
 		lbBairro.setBounds(10, 70, 100, 20);
 		panelCliente.add(lbBairro);
@@ -262,7 +265,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		tfBairro = new JTextField();
 		tfBairro.setBounds(60, 70, 120, 25);
 		panelCliente.add(tfBairro);
-		
+
 		lbCep = new JLabel("Cep");
 		lbCep.setBounds(190, 70, 100, 20);
 		panelCliente.add(lbCep);
@@ -273,12 +276,11 @@ public class FormCadastroCliente extends JInternalFrame {
 		tfCep = new JFormattedTextField(maskCep);
 		tfCep.setBounds(250, 70, 120, 25);
 		panelCliente.add(tfCep);
-		
 
 		lbNascimento = new JLabel("Nasc.");
 		lbNascimento.setBounds(10, 95, 100, 20);
 		panelCliente.add(lbNascimento);
-		
+
 		cdDataNascimento = new JDateChooser();
 		cdDataNascimento.setBounds(60, 95, 120, 25);
 		Calendar dtNascimento = Calendar.getInstance();
@@ -289,7 +291,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		Date dataAtualNas = new Date(System.currentTimeMillis());
 		cdDataNascimento.setMaxSelectableDate(dataAtualNas);
 		panelCliente.add(cdDataNascimento);
-			
+
 		lbSexo = new JLabel("Sexo");
 		lbSexo.setBounds(190, 95, 100, 20);
 		panelCliente.add(lbSexo);
@@ -298,7 +300,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		jcSexo.setBounds(250, 95, 120, 25);
 		jcSexo.setSelectedIndex(-1);
 		panelCliente.add(jcSexo);
-		
+
 		lbCpf = new JLabel("Cpf");
 		lbCpf.setBounds(10, 120, 100, 20);
 		panelCliente.add(lbCpf);
@@ -309,7 +311,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		tfCpf = new JFormattedTextField(maskCpf);
 		tfCpf.setBounds(60, 120, 120, 25);
 		panelCliente.add(tfCpf);
-		
+
 		lbRg = new JLabel("Rg");
 		lbRg.setBounds(190, 120, 100, 20);
 		panelCliente.add(lbRg);
@@ -317,7 +319,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		tfRg = new JTextField();
 		tfRg.setBounds(250, 120, 120, 25);
 		panelCliente.add(tfRg);
-		
+
 		lbTelefone = new JLabel("Tel");
 		lbTelefone.setBounds(10, 145, 100, 20);
 		panelCliente.add(lbTelefone);
@@ -328,7 +330,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		tfTelefone = new JFormattedTextField(maskTelefone);
 		tfTelefone.setBounds(60, 145, 120, 25);
 		panelCliente.add(tfTelefone);
-		
+
 		lbCelular = new JLabel("Cel");
 		lbCelular.setBounds(190, 145, 100, 20);
 		panelCliente.add(lbCelular);
@@ -339,15 +341,15 @@ public class FormCadastroCliente extends JInternalFrame {
 		tfCelular = new JFormattedTextField(maskCelular);
 		tfCelular.setBounds(250, 145, 120, 25);
 		panelCliente.add(tfCelular);
-		
+
 		lbEmail = new JLabel("E-mail");
 		lbEmail.setBounds(10, 170, 100, 20);
 		panelCliente.add(lbEmail);
 
 		tfEmail = new JTextField();
-		tfEmail.setBounds(60, 170, 120	, 25);
+		tfEmail.setBounds(60, 170, 120, 25);
 		panelCliente.add(tfEmail);
-		
+
 		lbEscolaridade = new JLabel("Formação");
 		lbEscolaridade.setBounds(190, 170, 100, 20);
 		panelCliente.add(lbEscolaridade);
@@ -358,10 +360,10 @@ public class FormCadastroCliente extends JInternalFrame {
 		panelCliente.add(jcEscolaridade);
 
 		abaTodos.add(panelCliente);
-		
-		
-		// Fim dos componentes do painel cliente -------------------------------------------------------
-		
+
+		// Fim dos componentes do painel cliente
+		// -------------------------------------------------------
+
 		// Painel Dados Gerais
 		painelGeral = new JPanel();
 		Border border2 = BorderFactory.createTitledBorder("Dados Gerais");
@@ -369,10 +371,11 @@ public class FormCadastroCliente extends JInternalFrame {
 		painelGeral.setBorder(border2);
 		painelGeral.setBounds(5, 220, 380, 255);
 
-		//Inicio dos componentes do painel geral -------------------------------------
-		
+		// Inicio dos componentes do painel geral
+		// -------------------------------------
+
 		lbProfissao = new JLabel("Trabalho");
-		lbProfissao.setBounds(10,20, 100	, 20);
+		lbProfissao.setBounds(10, 20, 100, 20);
 		painelGeral.add(lbProfissao);
 
 		tfProfissao = new JTextField();
@@ -386,7 +389,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		tfRegistroCnh = new JTextField();
 		tfRegistroCnh.setBounds(250, 20, 120, 25);
 		painelGeral.add(tfRegistroCnh);
-		
+
 		lbValidadeCnh = new JLabel("Validade");
 		lbValidadeCnh.setBounds(10, 45, 100, 20);
 		painelGeral.add(lbValidadeCnh);
@@ -401,13 +404,13 @@ public class FormCadastroCliente extends JInternalFrame {
 		Date dataValiCnh = new Date(System.currentTimeMillis());
 		cdDataNascimento.setMaxSelectableDate(dataValiCnh);
 		painelGeral.add(cdValidadeCnh);
-		
+
 		lbPrimeiraHabilitacao = new JLabel("Permissão");
 		lbPrimeiraHabilitacao.setBounds(190, 45, 100, 20);
 		painelGeral.add(lbPrimeiraHabilitacao);
 
 		cdPermissao = new JDateChooser();
-		cdPermissao.setBounds(250	, 45, 120, 25);
+		cdPermissao.setBounds(250, 45, 120, 25);
 		Calendar dtPermissao = Calendar.getInstance();
 		dtPermissao.set(Calendar.YEAR, 1900);
 		dtPermissao.set(Calendar.MONTH, 1);
@@ -416,7 +419,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		Date dataPermissao = new Date(System.currentTimeMillis());
 		cdDataNascimento.setMaxSelectableDate(dataPermissao);
 		painelGeral.add(cdPermissao);
-		
+
 		lbQ1 = new JLabel("A quanto tempo nao dirige?");
 		lbQ1.setBounds(10, 70, 300, 20);
 		painelGeral.add(lbQ1);
@@ -424,7 +427,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		tfQuestao1 = new JTextField();
 		tfQuestao1.setBounds(190, 70, 180, 25);
 		painelGeral.add(tfQuestao1);
-		
+
 		lbQ2 = new JLabel("Tem veiculo proprio?");
 		lbQ2.setBounds(10, 95, 300, 20);
 		painelGeral.add(lbQ2);
@@ -437,7 +440,7 @@ public class FormCadastroCliente extends JInternalFrame {
 
 		jrQ2No = new JRadioButton("Não", false);
 		jrQ2No.setBounds(300, 95, 200, 25);
-		
+
 		gQ2 = new ButtonGroup();
 		gQ2.add(jrQ2Yes);
 		gQ2.add(jrQ2No);
@@ -445,18 +448,18 @@ public class FormCadastroCliente extends JInternalFrame {
 		painelQ2.add(jrQ2No);
 
 		painelGeral.add(painelQ2);
-		
-		JPanel painelQ3 = new JPanel(); 
+
+		JPanel painelQ3 = new JPanel();
 		painelQ3.setBounds(240, 120, 120, 25);
 		lbQ3 = new JLabel("É possivel treinar nele?");
 		lbQ3.setBounds(10, 120, 160, 20);
 		painelGeral.add(lbQ3);
 
 		jrQ3Yes = new JRadioButton("Sim", true);
-		jrQ3Yes.setBounds(1,120, 60, 20);
+		jrQ3Yes.setBounds(1, 120, 60, 20);
 
 		jrQ3No = new JRadioButton("Não", false);
-		jrQ3No.setBounds(300,120, 60, 20);
+		jrQ3No.setBounds(300, 120, 60, 20);
 
 		gQ3 = new ButtonGroup();
 		gQ3.add(jrQ3Yes);
@@ -490,7 +493,7 @@ public class FormCadastroCliente extends JInternalFrame {
 
 		// Bot�o
 		btSalvar = new JButton("Salvar");
-		btSalvar.setBounds(610	, 415, 180, 35);
+		btSalvar.setBounds(610, 415, 180, 35);
 		abaTodos.add(btSalvar);
 
 		tfBuscaPacote = new JTextField();
@@ -544,11 +547,11 @@ public class FormCadastroCliente extends JInternalFrame {
 		painelPagamento.add(lbParcelas);
 
 		SpinnerNumberModel nbparcelasModel;
-		nbparcelasModel = new SpinnerNumberModel(1,1,12,1);
+		nbparcelasModel = new SpinnerNumberModel(1, 1, 12, 1);
 		jsParcelas = new JSpinner(nbparcelasModel);
 		jsParcelas.setBounds(170, 45, 170, 25);
 		painelPagamento.add(jsParcelas);
-		
+
 		lbDtProximoPagamento = new JLabel("Próxima Parcela");
 		lbDtProximoPagamento.setBounds(10, 70, 120, 20);
 		painelPagamento.add(lbDtProximoPagamento);
@@ -594,19 +597,15 @@ public class FormCadastroCliente extends JInternalFrame {
 
 		// Componentes painel de agendamento
 
-		
-		
 		abaAgendamento = new JPanel();
 		abaAgendamento.setLayout(null);
-		
-		
 
 		painelAgendamento = new JPanel();
 		Border border3 = BorderFactory.createTitledBorder("Agendamento");
 		painelAgendamento.setLayout(null);
 		painelAgendamento.setBorder(border3);
 		painelAgendamento.setBounds(5, 10, 420, 465);
-		
+
 		lbBuscaAluno = new JLabel("Buscar Aluno");
 		lbBuscaAluno.setSize(200, 20);
 		lbBuscaAluno.setLocation(10, 20);
@@ -623,12 +622,12 @@ public class FormCadastroCliente extends JInternalFrame {
 		checkObs.setBounds(310, 320, 100, 20);
 		checkObs.setSelected(false);
 		painelAgendamento.add(checkObs);
-		
+
 		tfBuscaAluno = new JFormattedTextField();
 		tfBuscaAluno.setSize(200, 30);
 		tfBuscaAluno.setLocation(10, 40);
 		painelAgendamento.add(tfBuscaAluno);
-		
+
 		tfBuscaAlunoCpf = new JFormattedTextField(maskCpf);
 		tfBuscaAlunoCpf.setSize(200, 30);
 		tfBuscaAlunoCpf.setLocation(10, 40);
@@ -641,7 +640,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		lbNomeAluno.setLocation(10, 60);
 		lbNomeAluno.setFont(ConfigController.definePrincipalFont(22f,
 				Font.PLAIN));
-		lbNomeAluno.setForeground(new Color(72 ,118, 255));
+		lbNomeAluno.setForeground(new Color(72, 118, 255));
 		painelAgendamento.add(lbNomeAluno);
 
 		lbCpfAluno = new JLabel("322.999.999-99");
@@ -649,19 +648,17 @@ public class FormCadastroCliente extends JInternalFrame {
 		lbCpfAluno.setLocation(10, 90);
 		lbCpfAluno
 				.setFont(ConfigController.definePrincipalFont(22, Font.PLAIN));
-		lbCpfAluno.setForeground(new Color(72 ,118, 255));
+		lbCpfAluno.setForeground(new Color(72, 118, 255));
 		painelAgendamento.add(lbCpfAluno);
 
-		
 		lbInstrutor = new JLabel("Istrutor");
 		lbInstrutor.setBounds(240, 80, 100, 20);
 		painelAgendamento.add(lbInstrutor);
-		
+
 		jcFuncionrio = new JComboBox<Funcionario>();
 		jcFuncionrio.setBounds(240, 100, 170, 25);
 		painelAgendamento.add(jcFuncionrio);
-		
-		
+
 		// -------------------------------------------------------------------
 
 		// Calendario
@@ -673,24 +670,35 @@ public class FormCadastroCliente extends JInternalFrame {
 		lbDescricao.setBounds(10, 310, 100, 20);
 		lbDescricao.setVisible(false);
 		painelAgendamento.add(lbDescricao);
-		
+
 		jTextAreaObs = new JTextArea();
 		jTextAreaObs.setBounds(10, 335, 280, 100);
 		jTextAreaObs.setVisible(false);
 		painelAgendamento.add(jTextAreaObs);
 
-		
+		tableAulas = new JTable(new ModeloTableAgendamento(listAgendamentos));
+		scrollAulas = new JScrollPane(tableAulas);
+		scrollAulas.setBounds(455, 170, 420, 300);
+		abaAgendamento.add(scrollAulas);
 
-		
+		// ------------------------------------------------------------------
+
+		// Excluir apos implementar a foto
+		painelFoto = new JPanel();
+		Border border1 = BorderFactory.createTitledBorder("Foto");
+		painelFoto.setBorder(border1);
+		painelFoto.setLayout(null);
+		painelFoto.setBounds(580, 20, 150, 150);
+		abaAgendamento.add(painelFoto);
+		// ---------------------------------------------------------------
+
 		btTarefa = new JButton("Agendar");
 		btTarefa.setBounds(160, 360, 100, 35);
 		btTarefa.setToolTipText("Agendar aula");
 		painelAgendamento.add(btTarefa);
 
-		
 		abaAgendamento.add(painelAgendamento);
-		
-		
+
 		abas = new JTabbedPane();
 		abas.setBounds(1, 1, 890, 535);
 		abas.addTab("Cadastro", abaTodos);
@@ -710,66 +718,65 @@ public class FormCadastroCliente extends JInternalFrame {
 	}
 
 	public void definirEventos() {
-		
+
 		jcPagamento.addActionListener(new ActionListener() {
-			int estado =1;
+			int estado = 1;
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (jcPagamento.getSelectedIndex()== 1){
+				if (jcPagamento.getSelectedIndex() == 1) {
 					jsParcelas.setEnabled(false);
-				}else{
+				} else {
 					jsParcelas.setEnabled(true);
 				}
-					
-				
+
 			}
 		});
-		
+
 		jsParcelas.addChangeListener(new ChangeListener() {
-			int estado =1;
+			int estado = 1;
+
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				System.out.println("passei");
-				
-				if (!jsParcelas.getValue().equals(estado)){
+
+				if (!jsParcelas.getValue().equals(estado)) {
 					dtProximoPagamento.setEnabled(true);
-				}else {
+				} else {
 					dtProximoPagamento.setEnabled(false);
 				}
-				
+
 			}
 		});
-		
-		
-		
+
 		checkObs.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (checkObs.isSelected()){
+				if (checkObs.isSelected()) {
 					jTextAreaObs.setVisible(true);
-				lbDescricao.setVisible(true);
-					btTarefa.setLocation(310,345);
-				}else{
+					lbDescricao.setVisible(true);
+					btTarefa.setLocation(310, 345);
+				} else {
 					jTextAreaObs.setVisible(false);
 					lbDescricao.setVisible(false);
-					btTarefa.setLocation(160,360);
+					btTarefa.setLocation(160, 360);
 				}
-				
+
 			}
 		});
-		
+
 		checkCpf.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(checkCpf.isSelected()){
+				if (checkCpf.isSelected()) {
 					tfBuscaAluno.setVisible(false);
 					tfBuscaAlunoCpf.setVisible(true);
-				}else {
+				} else {
 					tfBuscaAluno.setVisible(true);
 					tfBuscaAlunoCpf.setVisible(false);
 				}
-				
+
 			}
 		});
 
