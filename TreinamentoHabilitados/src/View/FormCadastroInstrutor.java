@@ -182,7 +182,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
         pnGeral.add(dcDataNascimento);
 
-        lbRegistroCnh = new JLabel("Nº Cnh");
+        lbRegistroCnh = new JLabel("Nï¿½ Cnh");
         lbRegistroCnh.setBounds(213, 40, 40, 20);
         pnGeral.add(lbRegistroCnh);
 
@@ -206,7 +206,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
 
 
-        lbPrimeiraCnh = new JLabel("1º Habilitação");
+        lbPrimeiraCnh = new JLabel("1ï¿½ Habilitaï¿½ï¿½o");
 
         lbPrimeiraCnh.setBounds(185, 70, 90, 20);
 
@@ -309,7 +309,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
         btRefresh.setContentAreaFilled(true);
         btRefresh.setSize(35, 35);
         btRefresh.setLocation(440, 140);
-        btRefresh.setToolTipText("Atualizar as informações");
+        btRefresh.setToolTipText("Atualizar as informaï¿½ï¿½es");
         btRefresh.setCursor(getCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
         pnGeral.add(btRefresh);
         

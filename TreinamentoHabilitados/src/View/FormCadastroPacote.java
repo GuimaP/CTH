@@ -201,6 +201,10 @@ public class FormCadastroPacote extends JInternalFrame {
                 	pacote.setPrecoPacote(tfPrecoPacote.getText());
                 	pacote.setPrecoAula(tfPrecoAula.getText());
                     repo.adicionar(pacote);
+<<<<<<< HEAD
+=======
+                    listPacote = new RepositoryPacote().buscarPacote();
+>>>>>>> b466833785be140a9edc44a6aed6f7c4ffa50afc
                     populaTable();
                 }
 
