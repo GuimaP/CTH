@@ -8,11 +8,13 @@ package View;
 import Model.ModeloTablePacote;
 import Model.Pacote;
 import Model.Repository.Repository;
+import Model.Repository.RepositoryPacote;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
@@ -44,7 +46,7 @@ public class FormCadastroPacote extends JInternalFrame {
 
     private JScrollPane scroll;
 
-    private ArrayList<Pacote> listPacote = new ArrayList<Pacote>();
+    private List<Pacote> listPacote = new ArrayList<Pacote>();
 
     private Pacote pacote;
 
@@ -52,13 +54,20 @@ public class FormCadastroPacote extends JInternalFrame {
 
     public FormCadastroPacote() {
         isDialogBuscaPacoteOpen = false;
+        listPacote = new RepositoryPacote().buscarPacote();
         inicializaComponentes();
         definirEventos();
+        populaTable();
     }
 
-    public void populaList() {
+    public void populaTable() {
+    	List<Pacote> ls = new ArrayList<Pacote>();
         for (Pacote p : listPacote) {
-
+        
+        	listPacote = new RepositoryPacote().buscarPacote();
+        	tabela.setModel(new ModeloTablePacote(listPacote));
+        	scroll.revalidate();
+        	
         }
     }
 
@@ -76,7 +85,7 @@ public class FormCadastroPacote extends JInternalFrame {
 
         //Componentes da Aba de Cadastro
         //Descricao;
-        lbDescricao = new JLabel("Descrição");
+        lbDescricao = new JLabel("Descriï¿½ï¿½o");
         lbDescricao.setSize(100, 20);  //100 20
         lbDescricao.setLocation(5, 20); //5 60
         pnGeral.add(lbDescricao);
@@ -87,7 +96,7 @@ public class FormCadastroPacote extends JInternalFrame {
         pnGeral.add(tfDescricao);
 
         //Aulas
-        lbAulas = new JLabel("Nº Aulas");
+        lbAulas = new JLabel("Nï¿½ Aulas");
         lbAulas.setSize(100, 20);
         lbAulas.setLocation(5, 50);
         pnGeral.add(lbAulas);
@@ -98,7 +107,7 @@ public class FormCadastroPacote extends JInternalFrame {
         pnGeral.add(tfAulas);
 
         //PreÃ§o Aula
-        lbPrecoAula = new JLabel("Preço Aula");
+        lbPrecoAula = new JLabel("Preï¿½o Aula");
         lbPrecoAula.setSize(100, 20);
         lbPrecoAula.setLocation(5, 100);
         pnGeral.add(lbPrecoAula);
@@ -165,7 +174,7 @@ public class FormCadastroPacote extends JInternalFrame {
                 tfPrecoPacote.setText(tfPrecoPacote.getText().trim());
 
                 if (tfDescricao.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Informar descrição");
+                    JOptionPane.showMessageDialog(null, "Informar descriï¿½ï¿½o");
                     tfDescricao.requestFocus();
                     lbDescricao.setForeground(Color.red);
                 } else if (tfAulas.getText().isEmpty()) {
@@ -173,17 +182,26 @@ public class FormCadastroPacote extends JInternalFrame {
                     tfAulas.requestFocus();
                     lbAulas.setForeground(Color.red);
                 } else if (tfPrecoAula.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Informar o preço da aula");
+                    JOptionPane.showMessageDialog(null, "Informar o preï¿½o da aula");
                     tfPrecoAula.requestFocus();
                     lbPrecoAula.setForeground(Color.red);
                 } else if (tfPrecoPacote.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Informar o preço do pacote");
+                    JOptionPane.showMessageDialog(null, "Informar o preï¿½o do pacote");
                     tfPrecoPacote.requestFocus();
                     lbPrecoPacote.setForeground(Color.red);
                 } else {
-
-                    Repository<Pacote> repo = new Repository<Pacote>();
+                	RepositoryPacote repo= new RepositoryPacote();
+                	if(pacote == null){
+                		pacote = new Pacote();
+                	}
+                	
+                	pacote.setAulas(tfAulas.getText());
+                	pacote.setDescAulas(tfDescricao.getText());
+                	pacote.setDescricao(tfDescricao.getText());
+                	pacote.setPrecoPacote(tfPrecoPacote.getText());
+                	pacote.setPrecoAula(tfPrecoAula.getText());
                     repo.adicionar(pacote);
+                    populaTable();
                 }
 
             }

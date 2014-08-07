@@ -1,16 +1,17 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.jws.WebParam.Mode;
 import javax.swing.table.AbstractTableModel;
 
 public class ModeloTableCliente extends AbstractTableModel {
 
-	ArrayList<Cliente> cliente;
+	List<Cliente> cliente;
 	String[] colunas = { "Aluno", "Cpf"};
 
-	public ModeloTableCliente(ArrayList<Cliente> cliente) {
+	public ModeloTableCliente(List<Cliente> cliente) {
 		this.cliente = cliente;
 	}
 

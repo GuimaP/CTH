@@ -6,11 +6,11 @@ import javax.swing.table.AbstractTableModel;
 
 public class ModeloTableAgendamento extends AbstractTableModel {
 
-	ArrayList<Agendamento> listAgendamento;
-	String[] colunas = { "Aula", "Descrição", "Data", "Hora" };
+	ArrayList<Aula> aulas;
+	String[] colunas = { "Aula","Data", "Hora", "Descrição" };
 
-	public ModeloTableAgendamento(ArrayList<Agendamento> listAgendamento) {
-		this.listAgendamento = listAgendamento;
+	public ModeloTableAgendamento(ArrayList<Aula> aulas) {
+		this.aulas = aulas;
 	}
 
 	@Override
@@ -20,7 +20,7 @@ public class ModeloTableAgendamento extends AbstractTableModel {
 
 	@Override
 	public int getRowCount() {
-		return listAgendamento.size();
+		return aulas.size();
 
 	}
 
@@ -29,13 +29,14 @@ public class ModeloTableAgendamento extends AbstractTableModel {
 
 		switch (columnIndex) {
 		case 0:
-			return listAgendamento.get(rowIndex).getAulas().getId();
+			return rowIndex;
 		case 1:
-			return listAgendamento.get(rowIndex).getAulas().getDescricao();
+			return aulas.get(rowIndex).getData();
 		case 2:
-			return listAgendamento.get(rowIndex).getData();
+			
+			return aulas.get(rowIndex).getHora();
 		case 3:
-			return listAgendamento.get(rowIndex).getHora();
+			return aulas.get(rowIndex).getDescAulas();
 		default:
 			break;
 
