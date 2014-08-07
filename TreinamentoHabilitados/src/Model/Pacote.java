@@ -5,16 +5,19 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.GeneratorType;
 
 @Entity
 public class Pacote {
-	@Id//Digo que é uma ID
+	@Id//Digo que ï¿½ uma ID
 	@GeneratedValue //E que vai ser gerado automaticamente
 	private long idPacote;
 	
-	@Column(nullable=false) //Não pode ser nula o valor
+	@Column(nullable=false) //Nï¿½o pode ser nula o valor
     private String descricao;
 	@Column(nullable=false)
     private String aulas;
@@ -22,11 +25,32 @@ public class Pacote {
     private String precoAula;
 	@Column(nullable=false)
     private String precoPacote;
+	@Column(nullable=false)
+	private String descAulas;
+	
+	@ManyToOne
+	@JoinColumn(name="idCliente",nullable = true)
+	
+	private Cliente idCliente;
 	
 	
 	
-	
-	
+	public long getIdPacote() {
+		return idPacote;
+	}
+
+	public void setIdPacote(long idPacote) {
+		this.idPacote = idPacote;
+	}
+
+	public String getDescAulas() {
+		return descAulas;
+	}
+
+	public void setDescAulas(String descAulas) {
+		this.descAulas = descAulas;
+	}
+
 	public String getPrecoAula() {
         return precoAula;
     }

@@ -86,6 +86,7 @@ import Model.Login;
 import Model.MensagemEmail;
 import Model.ModelTableEmail;
 import Model.UsuarioEmail;
+import View.Components.MenuSuperior;
 
 import com.itextpdf.text.Font;
 import com.towel.swing.img.JImagePanel;
@@ -102,15 +103,13 @@ public class Principal extends JFrame {
 	private JToolBar barraLateral;
 	private JScrollPane sp;
 	private PainelCalendarioAgendamento painelCalendario;
-	private JPanel pnMenuSuperior;
-	private JButton btAbrirMenuSuperior;
+	protected static JPanel pnMenuSuperior;
+	
 
 	private int POSXButoon;
 	protected JTree jtreeAtalhos;
 
 	protected EmailControllerV3 email;
-	protected JPanel painelEmail;
-	protected static JTable jTableEmails;
 	private List<String> listaEmails;
 	private HashMap<String, List<String>> mapEmails;
 	protected static Login loginUser;
@@ -118,7 +117,7 @@ public class Principal extends JFrame {
 	protected static JTextField txtBuscaEmail;
 
 
-	protected static JButton btRefreshItens;
+	protected static JButton btRefreshItens,btAbrirMenuSuperior,btAdicionar;
 	protected static JButton btAbrirMenuLateral;
 	protected static JFrame minhaFrame; // Frame para setar a dialogs
 
@@ -134,15 +133,15 @@ public class Principal extends JFrame {
 	public static boolean carregado;
 	protected static boolean isFrameInstrutorOpen, isFrameClienteOpen,
 			isFrameCadastroPacote, isFrameAgendamento, isFrameCarro,
-			isViewConfiguraEmail, isPainelEmailShow;
+			isViewConfiguraEmail, isPainelEmailShow,isMenuSuperiorShow;
 
 	public Principal(Login usuario) {
 
 		try {
-
+			isMenuSuperiorShow = true;
 			minhaFrame = this;
 			this.loginUser = usuario;
-			this.painelEmail = null;
+//			this.painelEmail = null;
 
 			inicializaComponentes();
 			definirEventos();
@@ -230,7 +229,7 @@ public class Principal extends JFrame {
 		barraLateral.setEnabled(false);
 		barraLateral.setLayout(null);
 		barraLateral.setSize(170, minhaFrame.getHeight() - 490);
-		barraLateral.setLocation(-(barraLateral.getWidth()), 90);
+		barraLateral.setLocation(-(barraLateral.getWidth()), 120);
 		barraLateral.setVisible(false);
 
 		sp = new JScrollPane(jtreeAtalhos);
@@ -243,8 +242,7 @@ public class Principal extends JFrame {
 		
 		btAbrirMenuLateral = new JButton(">>");
 		btAbrirMenuLateral.setFocusCycleRoot(true);
-		btAbrirMenuLateral.setBounds(5, 100, 45, 30);
-		add(btAbrirMenuLateral);
+		btAbrirMenuLateral.setBounds(5, 130, 45, 30);		add(btAbrirMenuLateral);
 
 		POSXButoon = btAbrirMenuLateral.getX();
 
@@ -256,19 +254,6 @@ public class Principal extends JFrame {
 															 */
 		painelCalendario.setFont(fonteP);
 
-		
-
-		painelEmail = new JPanel(); // INICANDO O PAINEL
-		painelEmail.setLayout(new GridLayout(1, 1));
-		
-		jTableEmails = new JTable(new ModelTableEmail(new ArrayList<String>()));
-		jTableEmails.setFont(fonteP);
-		jTableEmails.setRowHeight(20);
-		spTbEmail = new JScrollPane(jTableEmails);
-		spTbEmail.setBackground(Color.yellow);
-//		spTbEmail.setBounds(5,txtBuscaEmail.getHeight()+txtBuscaEmail.getY(),painelEmail.getWidth()-5,25);
-		
-		
 
 		add(painelCalendario);
 
@@ -294,29 +279,30 @@ public class Principal extends JFrame {
 		painelNotification.add(lb);
 		add(painelNotification);
 		
-		pnMenuSuperior = new JPanel();
+		pnMenuSuperior = new MenuSuperior();
 		Dimension tamanhoFrame = getSize();
 		pnMenuSuperior.setSize(tamanhoFrame.width, 130);
-		pnMenuSuperior.setLocation(0, 3);
+		pnMenuSuperior.setLocation(0, 0);
 //		pnMenuSuperior.setBackground(new Color(254,254,254,120));
 		FlowLayout layout = new FlowLayout();
 		layout.setAlignment(FlowLayout.LEADING);
 		
-		pnMenuSuperior.setLayout(layout);
+//		pnMenuSuperior.setLayout(layout);
+		
 		add(pnMenuSuperior);
 		
 		btAbrirMenuSuperior = new JButton("V");
+		btAbrirMenuSuperior.setSize(60,30);
 		btAbrirMenuSuperior.setLocation((getSize().width / 2 ) - btAbrirMenuLateral.getWidth(),pnMenuSuperior.getSize().height);
 		add(btAbrirMenuSuperior);
 		
-		PainelIcon icon = new PainelIcon(pnMenuSuperior);
-		icon.setLocation(60, 500);
 		
-		PainelIcon icon2 = new PainelIcon(pnMenuSuperior);
-		icon2.setLocation(60, 560);
 		
-		add(icon);
-		add(icon2);
+		btAdicionar = new JButton("+");
+		btAdicionar.setSize(80, 80);
+		btAdicionar.setLocation(this.getWidth() - btAdicionar.getWidth() - 20,600);
+		add(btAdicionar);
+		
 		
 		getGlassPane().setVisible(true);
 		setJMenuBar(menuBarra);
@@ -371,6 +357,14 @@ public class Principal extends JFrame {
 	//
 	public void definirEventos() {
 
+		btAdicionar.addActionListener(evt->{
+			PainelIcon icon = new PainelIcon((MenuSuperior) pnMenuSuperior);
+			icon.setLocation(60, 500);
+
+			add(icon);
+			
+		});
+		
 		btAbrirMenuLateral.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				long time = (1 / 2) + (1 / 3);
@@ -409,9 +403,9 @@ public class Principal extends JFrame {
 											.log(Level.SEVERE, null, ex);
 								}
 							}
-							if (isPainelEmailShow) {
-								barraLateral.add(painelEmail);
-							}
+//							if (isPainelEmailShow) {
+//								barraLateral.add(painelEmail);
+//							}
 
 							btAbrirMenuLateral.setText("<<");
 						}
@@ -420,7 +414,7 @@ public class Principal extends JFrame {
 
 				} else { // FECHANDO
 
-					barraLateral.remove(painelEmail);
+//					barraLateral.remove(painelEmail);
 					barraLateral.revalidate();
 
 					painelMostrando = false;
@@ -598,26 +592,51 @@ public class Principal extends JFrame {
 
 			});
 		
-//		
-//		icon.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mousePressed(MouseEvent e) {
-//				point.x= e.getX();
-//		        point.y = e.getY();
-//			}
-//			
-//			@Override
-//			public void mouseDragged(MouseEvent e) {
-//				icon.setLocation(e.getX() - point.x + icon.getLocation().x,
-//		                e.getY() - point.y + icon.getLocation().y);
-//			}
-//			
-//			@Override
-//			public void mouseReleased(MouseEvent e) {
-//				System.out.println("Soltou!!");
-//			}
-//		});
 
+		btAbrirMenuSuperior.addActionListener(evt->{
+			new Thread(()->{
+				try {
+				int yPanel = Principal.pnMenuSuperior.getY();
+				int yButton = Principal.btAbrirMenuSuperior.getY();
+				final int xPanel = Principal.pnMenuSuperior.getX();
+				final int xButon = Principal.btAbrirMenuSuperior.getX();
+				if(Principal.isMenuSuperiorShow){ //Se o menu estiver visivel
+					int yPanelFinal = -Principal.pnMenuSuperior.getHeight();
+					Principal.isMenuSuperiorShow= false;
+					while(yPanel >= yPanelFinal){
+						Principal.pnMenuSuperior.setLocation(xPanel,yPanel);
+						Principal.btAbrirMenuSuperior.setLocation(xButon,yButton);
+//						yPanel -=2;
+//						yButton -=2;
+						yPanel--;
+						yButton--;
+							Thread.sleep(1/2);
+				
+					}
+					
+				}else{
+					Principal.isMenuSuperiorShow= true;
+						int yPanelFinal =  0;
+						
+						while(yPanel <= yPanelFinal){
+							Principal.pnMenuSuperior.setLocation(xPanel,yPanel);
+							Principal.btAbrirMenuSuperior.setLocation(xButon,yButton);
+//							yPanel -=2;
+//							yButton -=2;
+							yPanel++;
+							yButton++;
+								Thread.sleep(1/2);
+					
+						}
+						
+					
+				}
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}).start();
+		});
 		
 		
 	}

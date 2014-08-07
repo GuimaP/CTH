@@ -2,9 +2,11 @@ package Model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 @Entity
@@ -26,8 +28,23 @@ public class Cliente {
 	private String sexo;
 	private String celular;
 	
+	@Lob
+    @Column(name="image", nullable = true,columnDefinition = "mediumblob")
+    private byte[] image;
 	
 	
+	public byte[] getImage() {
+		return image;
+	}
+
+
+
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
+
+
+
 	public String getCelular() {
 		return celular;
 	}

@@ -7,6 +7,8 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -14,11 +16,11 @@ import javax.swing.table.AbstractTableModel;
  * @author Vitor
  */
 public class ModeloTablePacote extends AbstractTableModel{
-    ArrayList<Pacote> listPacote;
-    String[] colunas = {"Descrição", "Aulas", "Preço"};
+    List<Pacote> listPacote;
+    String[] colunas = {"Descriï¿½ï¿½o", "Aulas", "Preï¿½o"};
         
-    public ModeloTablePacote(ArrayList<Pacote> listPacote){
-        this.listPacote = listPacote;
+    public ModeloTablePacote(List<Pacote> listPacote2){
+        this.listPacote = listPacote2;
     }
     @Override
     public int getRowCount() {

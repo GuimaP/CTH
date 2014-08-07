@@ -2,7 +2,7 @@ package View;
 
 import Controller.ConfigController;
 import DAO.DAOcliente;
-import Model.Agendamento;
+import Model.Aula;
 import Model.Cliente;
 import Model.Cnh;
 import Model.Endereco;
@@ -16,24 +16,38 @@ import Model.ModeloTableCliente;
 import Model.ModeloTablePacote;
 import Model.Pacote;
 import Model.Repository.Repository;
+import Model.Repository.RepositoryCliente;
+import Model.Repository.RepositoryPacote;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -55,7 +69,10 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.text.MaskFormatter;
 
+import org.eclipse.swt.custom.PopupList;
+
 import com.toedter.calendar.JDateChooser;
+import com.towel.swing.img.JImagePanel;
 
 import principal.CadastroCliente;
 import principal.VerificadorDeCpf;
@@ -104,13 +121,13 @@ public class FormCadastroCliente extends JInternalFrame {
 
 	private JTable table, tableAulas;
 
-	private ArrayList<Cliente> listCliente = new ArrayList<Cliente>();
+	private List<Cliente> listCliente = new ArrayList<Cliente>();
 
-	private ArrayList<Pacote> listPacote = new ArrayList<Pacote>();
+	private List<Pacote> listPacote = new ArrayList<Pacote>();
 
 	private ArrayList<Funcionario> listFuncionario = new ArrayList<Funcionario>();
 
-	private ArrayList<Agendamento> listAgendamentos = new ArrayList<Agendamento>();
+	private ArrayList<Aula> listAulas = new ArrayList<Aula>();
 
 	private MaskFormatter dataMask, dataMaskNascimento, maskCep, maskCpf,
 			maskTelefone, maskCelular, maskValidadeCnh,
@@ -141,21 +158,26 @@ public class FormCadastroCliente extends JInternalFrame {
 
 	private JSpinner jsParcelas;
 
+	private String dirMyPicture;
+
+	private JImagePanel painelFotoInstrutor;
+
+	private MouseAdapter cliqueEmFoto;
+	
+	private JComponent minhaInternal;
+
 	public FormCadastroCliente() {
 		//
 		try {
+			listPacote = new RepositoryPacote().buscarPacote();
 			Cliente c = new Cliente();
-			// try {
-			// daoCliente = new DAOcliente();
-			// listCliente = daoCliente.buscarTodos();
-			// } catch (SQLException e) {
-			//
-			// JOptionPane.showMessageDialog(null, e.getMessage());
-			// }
-
+			dirMyPicture = "";
+			minhaInternal = this;
 			inicializaComponentes();
 
 			definirEventos();
+			
+			popuTable();
 		} catch (ParseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 
@@ -165,7 +187,7 @@ public class FormCadastroCliente extends JInternalFrame {
 
 	public void limparCampos() {
 		tfNome.setText("");
-		tfData.setValue(dataMask);
+
 		tfLogradouro.setText("");
 		tfNumero.setText("");
 		tfBairro.setText("");
@@ -188,18 +210,17 @@ public class FormCadastroCliente extends JInternalFrame {
 		cliente = null;
 	}
 
-	public void populaList() {
-		try {
-			for (Cliente c : listCliente) {
-				ArrayList<Cliente> l = new ArrayList<Cliente>();
-				l = daoCliente.buscarTodos();
-
-				listCliente = l;
-				table.setModel(new ModeloTableCliente(listCliente));
+	public void popuTable() {
+		List<Pacote> l = new ArrayList<Pacote>();
+			for (Pacote p : listPacote) {
+				
+				
+				listPacote = new RepositoryPacote().buscarPacote();
+				table.setModel(new ModeloTablePacote(listPacote));
+				scroll.revalidate();
+			
 			}
-		} catch (SQLException e1) {
-
-		}
+		
 	}
 
 	public void inicializaComponentes() throws ParseException {
@@ -215,6 +236,29 @@ public class FormCadastroCliente extends JInternalFrame {
 		panelCliente.setLayout(null);
 		panelCliente.setBounds(5, 10, 380, 210);
 
+		try{
+		java.io.File f = new java.io.File(dirMyPicture);//Verifico se existe alguma diretorio
+        if (f.exists()) { //Verifica se tem alguma foto existente para carregar
+            BufferedImage img = null; 
+            try { 
+                img = ImageIO.read(f);//Tento ler o arquivo e carregar numa imagem.
+            } catch (IOException ex) {
+                Logger.getLogger(FormCadastroInstrutor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            painelFotoInstrutor = new JImagePanel(f.getPath());//e passo como parametro para desenhar na tela
+        } else {
+        	BufferedImage imageBf = ImageIO.read(getClass().getClassLoader().getResourceAsStream("Resources/imgs/noImage.png"));
+        	painelFotoInstrutor = new JImagePanel(imageBf);
+        }
+        painelFotoInstrutor.setBounds(405, 10, 110, 130);
+        Border bordaColorida = BorderFactory.createLineBorder(Color.GRAY);
+        Border bordaPainelFoto = BorderFactory.createTitledBorder(bordaColorida, "Foto do Instrutor");
+        painelFotoInstrutor.setBorder(bordaPainelFoto);
+        abaTodos.add(painelFotoInstrutor);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
 		// Inicio dos componentes do painel Cliente
 		// ----------------------------------------------
 
@@ -307,7 +351,7 @@ public class FormCadastroCliente extends JInternalFrame {
 
 		maskCpf = new MaskFormatter("###.###.###-##");
 		maskCpf.setPlaceholderCharacter('_');
-		maskCpf.setValueContainsLiteralCharacters(false);
+		//maskCpf.setValueContainsLiteralCharacters(false);
 		tfCpf = new JFormattedTextField(maskCpf);
 		tfCpf.setBounds(60, 120, 120, 25);
 		panelCliente.add(tfCpf);
@@ -515,7 +559,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		scrollPacote = new JScrollPane(table);
 		scrollPacote.setBounds(530, 54, 340, 163);
 		abaTodos.add(scrollPacote);
-
+		popuTable();
 		// Dados do pagamento
 
 		painelPagamento = new JPanel();
@@ -676,7 +720,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		jTextAreaObs.setVisible(false);
 		painelAgendamento.add(jTextAreaObs);
 
-		tableAulas = new JTable(new ModeloTableAgendamento(listAgendamentos));
+		tableAulas = new JTable(new ModeloTableAgendamento(listAulas));
 		scrollAulas = new JScrollPane(tableAulas);
 		scrollAulas.setBounds(455, 170, 420, 300);
 		abaAgendamento.add(scrollAulas);
@@ -719,6 +763,90 @@ public class FormCadastroCliente extends JInternalFrame {
 
 	public void definirEventos() {
 
+        this.cliqueEmFoto = new MouseAdapter() {
+            private Object webcam;
+
+            public void mouseClicked(MouseEvent e) {
+
+                if (e.getClickCount() == 2) {
+
+				    
+
+//				    populaObjInstrutor();
+//				    FuncionarioController.saveInformacao(instrutor);
+				    String separador = System.getProperty("file.separator");
+				    String strPath =  System.getProperty("user.home")+separador+"Treinamento"+separador+"Fotos-Consumidor"+separador;
+
+
+
+
+				    String strNameFile = tfNome.getText(); //Pego o nome que serÃ¡ a imagem
+
+				    
+				    //Instancio a janela de Cam
+				    WebCamPhotoAutoEscola dialog = new WebCamPhotoAutoEscola(Principal.minhaFrame, strPath, strNameFile);
+				    String caminhoDaImagem = "";//Inicializo a Variavel
+
+				    //Pego o caminho da imagem;
+				    caminhoDaImagem = dialog.caminhoDaImagem;
+				    
+				    //Crio um File a partir da foto
+				    File fotoTirada = new File(caminhoDaImagem);
+				    
+
+
+				    
+				    if(cliente == null){
+				    	cliente = new Cliente();
+				    }
+				    
+
+				    //Seto a imagem pra variavel do Instrutor
+				    Image imgFoto = new ImageIcon(caminhoDaImagem).getImage();
+				    cliente.setImage(new byte[(int)fotoTirada.length()]);
+				    
+
+				    //Verifica se existe uma foto, pois pode muito bem o fulano não ter tirado uma foto.
+
+				    //Verifica se existe uma foto, pois pode muito bem o fulano nÃ£o ter tirado uma foto.
+
+				    if (!caminhoDaImagem.isEmpty() & fotoTirada.exists()) {
+				        System.out.println("Imagem tirada:" + caminhoDaImagem); //Log...
+				        
+				        dirMyPicture = caminhoDaImagem;//passo o path para a variavel Global...
+				        try {
+						BufferedImage img = ImageIO.read(new File(caminhoDaImagem));	
+						painelFotoInstrutor.setImage(img);
+				        painelFotoInstrutor.repaint();
+				        painelFotoInstrutor.revalidate();
+
+				        minhaInternal.revalidate(); //revalido as alterações
+		        minhaInternal.revalidate(); //revalido as alteraÃ§Ãµes
+
+				        minhaInternal.repaint(); //e "Atualizo"
+				        Principal.minhaFrame.revalidate();
+				        Principal.minhaFrame.repaint();
+				        
+
+//				        FuncionarioController.loadInformacao(); //Recupero os dados do meu arquivo temporario
+
+//				        FuncionarioController.loadInformacao(); //Recupero os dados do meu arquivo temporario
+
+//				        populaCampos(); //E populo os campos 
+				        } catch (IOException e1) {
+							// 	
+							e1.printStackTrace();
+						}
+				    }
+
+				}
+
+            }
+        };
+
+		
+        painelFotoInstrutor.addMouseListener(cliqueEmFoto);
+        
 		jcPagamento.addActionListener(new ActionListener() {
 			int estado = 1;
 
@@ -786,12 +914,12 @@ public class FormCadastroCliente extends JInternalFrame {
 
 				// valida��es
 				tfNome.setText(tfNome.getText().trim());
-				tfData.setText(tfData.getText().trim());
+			
 				tfLogradouro.setText(tfLogradouro.getText().trim());
 				tfNumero.setText(tfNumero.getText().trim());
 				tfBairro.setText(tfBairro.getText().trim());
 				tfCep.setText(tfCep.getText().trim());
-				tfNascimento.setText(tfNascimento.getText().trim());
+
 				tfBairro.setText(tfBairro.getText().trim());
 				tfRg.setText(tfRg.getText().trim());
 				tfEmail.setText(tfEmail.getText().trim());
@@ -804,10 +932,7 @@ public class FormCadastroCliente extends JInternalFrame {
 					JOptionPane.showMessageDialog(null, "Informar o nome");
 					lbNome.setForeground(Color.red);
 					tfNome.requestFocus(true);
-				} else if (tfData.getValue() == null) {
-					JOptionPane.showMessageDialog(null, "Informar a data");
-					lbData.setForeground(Color.red);
-					tfData.requestFocus(true);
+				
 				} else if (tfLogradouro.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Informar a rua");
 					lbLogradouro.setForeground(Color.red);
@@ -820,11 +945,7 @@ public class FormCadastroCliente extends JInternalFrame {
 					JOptionPane.showMessageDialog(null, "Informar o cep");
 					lbCep.setForeground(Color.red);
 					tfCep.requestFocus(true);
-				} else if (tfNascimento.getValue() == null) {
-					JOptionPane.showMessageDialog(null,
-							"Informar a data de nascimento");
-					lbNascimento.setForeground(Color.red);
-					tfNascimento.requestFocus(true);
+				
 				} else if (tfCep.getValue() == null) {
 					JOptionPane.showMessageDialog(null, "Informar o cep");
 					lbCep.setForeground(Color.red);
@@ -843,17 +964,8 @@ public class FormCadastroCliente extends JInternalFrame {
 							"Informar o numero de registro da CNH");
 					lbRegistroCnh.setForeground(Color.red);
 					tfRegistroCnh.requestFocus(true);
-				} else if (tfValidadeCnh.getValue() == null) {
-					JOptionPane.showMessageDialog(null,
-							"Informar a data de validade da CNH");
-					lbValidadeCnh.setForeground(Color.red);
-					tfValidadeCnh.requestFocus(true);
-				} else if (tfPrimeiraHabilitacao.getValue() == null) {
-					JOptionPane.showMessageDialog(null,
-							"Informar a data da permi��o");
-					lbPrimeiraHabilitacao.setForeground(Color.red);
-					tfPrimeiraHabilitacao.requestFocus(true);
-				} else if (jcPesquisa.getSelectedIndex() == -1) {
+				
+				}  else if (jcPesquisa.getSelectedIndex() == -1) {
 					JOptionPane.showMessageDialog(null,
 							"Selecionar uma das opções");
 					jcPesquisa.requestFocus(true);
@@ -861,14 +973,14 @@ public class FormCadastroCliente extends JInternalFrame {
 
 					// populando os objetos
 					cliente.setNome(tfNome.getText());
-					cadastro.setData(tfData.getText());
+					cadastro.setData(dtCadastroCliente.getDate().toString());
 					endereco.setLogradouro(tfLogradouro.getText());
 
 					endereco.setNumero(Long.parseLong(tfNumero.getText()));
 					endereco.setBairro(tfBairro.getText());
 					endereco.setCep(tfCep.getText());
-					Date dt = new Date(tfNascimento.getText());
-					cliente.setNascimento(dt);
+					
+					cliente.setNascimento(cdDataNascimento.getDate());
 					cliente.setSexo(jcSexo.getSelectedItem().toString());
 					cliente.setCpf(tfCpf.getText());
 					cliente.setRg(tfRg.getText());
@@ -883,8 +995,8 @@ public class FormCadastroCliente extends JInternalFrame {
 					}
 					cliente.setProfissao(tfProfissao.getText());
 					cnh.setRegistroCnh(tfRegistroCnh.getText());
-					cnh.setDtValidade(tfValidadeCnh.getText());
-					cnh.setPrimeiraHabilitacao(tfPrimeiraHabilitacao.getText());
+					cnh.setDtValidade(cdValidadeCnh.getDate().toString());
+					cnh.setPrimeiraHabilitacao(cdPermissao.getDate().toString());
 					cadastro.setPesquisa1(tfQuestao1.getText());
 					if (jrQ2Yes.isSelected()) {
 						cadastro.setPesquisa2("sim");
@@ -907,8 +1019,8 @@ public class FormCadastroCliente extends JInternalFrame {
 						JOptionPane.showMessageDialog(null, erro.getMessage());
 					}
 
-					// populaList();
-					limparCampos();
+					popuTable();
+
 
 					// TODO n�o esquecer de aplicar o ternario para os
 					// FORMATEDTEXTFIELD

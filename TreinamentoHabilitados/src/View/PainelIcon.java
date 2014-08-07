@@ -3,6 +3,7 @@ package View;
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.util.Currency;
 
 import javax.imageio.ImageIO;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -26,11 +28,15 @@ import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.layout.GridLayout;
 import org.w3c.dom.events.MouseEvent;
 
+import View.Components.MenuSuperior;
+
 public class PainelIcon extends JPanel implements MouseListener,MouseMotionListener {
 	private Point point;
 	private JLabel lbTexto;
-	private JPanel menuSup;
-	public PainelIcon(JPanel menuSup){
+	private MenuSuperior menuSup;
+	private JButton btAdicionar;
+	
+	public PainelIcon(MenuSuperior menuSup){
 		point = new Point();
 		this.menuSup = menuSup;
 		initComponents();
@@ -47,12 +53,16 @@ public class PainelIcon extends JPanel implements MouseListener,MouseMotionListe
 
 	private void initComponents() {
 		setCursor(getCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
+	
 		setBackground(new Color(0,0,0,80));
 		add(new JLabel("TExto"));
 		setSize(80,80);
 	}
 
 
+	
+	
+	
 
 	@Override
 	public void mouseDragged(java.awt.event.MouseEvent e) {
@@ -100,14 +110,14 @@ public class PainelIcon extends JPanel implements MouseListener,MouseMotionListe
 	@Override
 	public void mouseReleased(java.awt.event.MouseEvent e) {
 		if(this.getX() <= menuSup.getWidth() && this.getY() <= menuSup.getHeight()){
-			menuSup.add(this,BorderLayout.WEST);
+			menuSup.adicionar(this);
 //			menuSup.update(Principal.minhaFrame.getGraphics());
 			menuSup.revalidate();
 			Principal.minhaFrame.repaint();
 			Principal.minhaFrame.revalidate();
 			Dimension tamanhoFrame = Principal.minhaFrame.getSize();
 			menuSup.setSize(tamanhoFrame.width, 130);
-			menuSup.setLocation(0, 3);
+			menuSup.setLocation(0, 0);
 //			menuSup.repaint();
 		}
 		
