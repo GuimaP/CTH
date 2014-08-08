@@ -20,9 +20,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
-import Model.Carro;
-import Model.ModelTableCarro;
-import Model.Repository.Repository;
+import model.*;
+import model.repository.*;
+import model.table.ModelTableCarro;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -61,7 +61,7 @@ public class FormCadastroCarro extends JInternalFrame {
 		pnBusca = new JPanel();
 		pnBusca.setLayout(null);
 
-		// informações do carro
+		// informaï¿½ï¿½es do carro
 		lbAno = new JLabel("Ano");
 		lbAno.setLocation(5, 10);
 		lbAno.setSize(30, 20);
@@ -165,7 +165,7 @@ public class FormCadastroCarro extends JInternalFrame {
 					carro.setMarca(tfMarca.getText());
 					carro.setModelo(tfModelo.getText());
 					carro.setPlaca(tfPlaca.getValue().toString());
-					Repository<Model.Carro> repo = new Repository<Carro>();
+					Repository<model.Carro> repo = new Repository<Carro>();
 					repo.adicionar(carro);
 				}
 			}

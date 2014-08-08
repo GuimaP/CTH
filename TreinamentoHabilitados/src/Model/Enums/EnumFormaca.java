@@ -1,4 +1,4 @@
-package Model;
+package model.enums;
 
 public enum EnumFormaca {
 	Superior("Superior"), Tecnico("Técnico"), Medio("Médio"), Fundamental("Fundamental");

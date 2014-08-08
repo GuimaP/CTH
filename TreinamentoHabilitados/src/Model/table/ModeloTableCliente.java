@@ -1,10 +1,12 @@
-package Model;
+package model.table;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.jws.WebParam.Mode;
 import javax.swing.table.AbstractTableModel;
+
+import model.Cliente;
 
 public class ModeloTableCliente extends AbstractTableModel {
 

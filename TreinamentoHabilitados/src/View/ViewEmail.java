@@ -32,8 +32,9 @@ import javax.swing.JTextField;
 
 
 import javax.swing.LayoutStyle;
-import Controller.EmailControllerV3;
-import Model.MensagemEmail;
+
+import controller.EmailControllerV3;
+import model.MensagemEmail;
 
 public class ViewEmail extends JInternalFrame{
 	private JButton btReply;

@@ -1,6 +1,8 @@
-package Model;
+package model;
 
-import javax.annotation.Generated;
+import java.util.Date;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,84 +10,96 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
-import org.hibernate.annotations.GeneratorType;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "tb_pacote")
 public class Pacote {
-	@Id//Digo que � uma ID
-	@GeneratedValue //E que vai ser gerado automaticamente
-	private long idPacote;
-	
-	@Column(nullable=false) //N�o pode ser nula o valor
-    private String descricao;
-	@Column(nullable=false)
-    private String aulas;
-	@Column(nullable=false)
-    private String precoAula;
-	@Column(nullable=false)
-    private String precoPacote;
-	@Column(nullable=false)
-	private String descAulas;
-	
-	@ManyToOne
-	@JoinColumn(name="idCliente",nullable = true)
-	
-	private Cliente idCliente;
-	
-	
-	
-	public long getIdPacote() {
-		return idPacote;
+
+	@Id
+	@GeneratedValue
+	private long id;
+
+	@ManyToOne(targetEntity = Cliente.class)
+	@JoinColumn(name = "idCliente")
+	private Cliente cliente;
+
+	@OneToOne(targetEntity = Servico.class)
+	@JoinColumn(name = "idPacote")
+	private Servico servico;
+
+	@OneToMany(mappedBy = "pacote", targetEntity = Aula.class)
+	private List<Aula> aulas;
+
+	// dados do pagamento
+	private double parcelas;
+	private double valorPago;
+	private double valorPendente;
+	private Date dtPagamento;
+
+	public Servico getServico() {
+		return servico;
 	}
 
-	public void setIdPacote(long idPacote) {
-		this.idPacote = idPacote;
+	public void setServico(Servico servico) {
+		this.servico = servico;
 	}
 
-	public String getDescAulas() {
-		return descAulas;
+	public double getParcelas() {
+		return parcelas;
 	}
 
-	public void setDescAulas(String descAulas) {
-		this.descAulas = descAulas;
+	public void setParcelas(double parcelas) {
+		this.parcelas = parcelas;
 	}
 
-	public String getPrecoAula() {
-        return precoAula;
-    }
+	public double getValorPago() {
+		return valorPago;
+	}
 
-    public void setPrecoAula(String precoAula) {
-        this.precoAula = precoAula;
-    }
+	public void setValorPago(double valorPago) {
+		this.valorPago = valorPago;
+	}
 
-    public String getPrecoPacote() {
-        return precoPacote;
-    }
+	public double getValorPendente() {
+		return valorPendente;
+	}
 
-    public void setPrecoPacote(String precoPacote) {
-        this.precoPacote = precoPacote;
-    }
+	public void setValorPendente(double valorPendente) {
+		this.valorPendente = valorPendente;
+	}
 
-    public String getDescricao() {
-        return descricao;
-    }
+	public Date getDtPagamento() {
+		return dtPagamento;
+	}
 
-    public void setDescricao(String Descricao) {
-        this.descricao = Descricao;
-    }
+	public void setDtPagamento(Date dtPagamento) {
+		this.dtPagamento = dtPagamento;
+	}
 
-    public String getAulas() {
-        return aulas;
-    }
+	public long getId() {
+		return id;
+	}
 
-    public void setAulas(String aulas) {
-        this.aulas = aulas;
-    }
+	public void setId(long id) {
+		this.id = id;
+	}
 
-    @Override
-    public String toString() {
-        return (descricao);
-    }
-    
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+	public List<Aula> getAulas() {
+		return aulas;
+	}
+
+	public void setAulas(List<Aula> aulas) {
+		this.aulas = aulas;
+	}
+
 }

@@ -1,19 +1,20 @@
 package View;
 
-import Controller.FuncionarioController;
-import Controller.LogController;
-import DAO.DAOcarro;
-import Model.Carro;
-import Model.EnumStatus;
-import Model.Funcionario;
-import Model.ModeloTableFuncionario;
-import Model.Repository.ConnectionFactoryRepository;
-import Model.Repository.Repository;
-import Model.Repository.RepositoryCarro;
-import Model.Repository.RepositoryInstrutor;
+import model.Carro;
+import model.Funcionario;
+import model.enums.EnumStatus;
+import model.repository.ConnectionFactoryRepository;
+import model.repository.Repository;
+import model.repository.RepositoryCarro;
+import model.repository.RepositoryInstrutor;
+import model.table.ModeloTableFuncionario;
 
 import com.toedter.calendar.JDateChooser;
 import com.towel.swing.img.JImagePanel;
+
+import controller.FuncionarioController;
+import controller.LogController;
+import controller.VerificadorDeCpf;
 
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -71,8 +72,6 @@ import javax.swing.text.MaskFormatter;
 import org.eclipse.swt.custom.CBanner;
 import org.hibernate.internal.util.BytesHelper;
 
-import principal.VerificadorDeCpf;
-
 public class FormCadastroInstrutor extends JInternalFrame {
 
     private JLabel lbNome, lbData, lbRegistroCnh, lbValidadeCnh, lbPrimeiraCnh,
@@ -93,7 +92,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
     private String[] status = {"Ativo", "Inativo"}; //Substituir por enums
     List<Carro> carroList;
 //    Carro[] carroVetor; //Ver pra que serve. spaoksaposa
-    private DAOcarro daoCarro = new DAOcarro(); 
+    
     
     
     private Carro carro;

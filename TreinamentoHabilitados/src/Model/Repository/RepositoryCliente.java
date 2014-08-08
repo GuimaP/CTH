@@ -1,4 +1,4 @@
-package Model.Repository;
+package model.repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import org.bridj.cpp.std.list;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 
-import Model.Cliente;
+import model.Cliente;
 
 public class RepositoryCliente extends Repository<Cliente>{
 

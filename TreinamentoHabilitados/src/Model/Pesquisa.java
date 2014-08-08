@@ -1,17 +1,18 @@
-package principal;
+package model;
 
 import java.awt.datatransfer.ClipboardOwner;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
-import Model.Cliente;
-import Model.Cnh;
-import Model.Endereco;
 
 @Entity
-public class CadastroCliente {
+@Table(name = "tb_pesquisa")
+public class Pesquisa {
 	@Id
 	@GeneratedValue
 	private long idPesquisa;
@@ -22,6 +23,9 @@ public class CadastroCliente {
 	private String pesquisa4;
 	private String observacao;
 
+	
+	
+	
 	public String getObservacao() {
 		return observacao;
 	}

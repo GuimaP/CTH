@@ -5,11 +5,11 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import Model.Tarefa;
+import model.Tarefa;
 
 public class TableModelListaTarefas extends AbstractTableModel {
 
-	private String colunas[] = {"Data","Hora","Descrição "};
+	private String colunas[] = {"Data","Hora","Descriï¿½ï¿½o "};
 	private List<Tarefa> listaTarefas;
 	public TableModelListaTarefas(List<Tarefa> lista ) {
 		this.listaTarefas = lista;

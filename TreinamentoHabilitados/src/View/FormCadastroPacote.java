@@ -5,10 +5,10 @@
  */
 package View;
 
-import Model.ModeloTablePacote;
-import Model.Pacote;
-import Model.Repository.Repository;
-import Model.Repository.RepositoryPacote;
+import model.Servico;
+import model.repository.Repository;
+import model.repository.RepositoryServico;
+import model.table.ModeloTableServico;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -46,26 +46,26 @@ public class FormCadastroPacote extends JInternalFrame {
 
     private JScrollPane scroll;
 
-    private List<Pacote> listPacote = new ArrayList<Pacote>();
+    private List<Servico> listPacote = new ArrayList<Servico>();
 
-    private Pacote pacote;
+    private Servico servico;
 
     public static boolean isDialogBuscaPacoteOpen;
 
     public FormCadastroPacote() {
         isDialogBuscaPacoteOpen = false;
-        listPacote = new RepositoryPacote().buscarPacote();
+        listPacote = new RepositoryServico().buscbarServico();
         inicializaComponentes();
         definirEventos();
         populaTable();
     }
 
     public void populaTable() {
-    	List<Pacote> ls = new ArrayList<Pacote>();
-        for (Pacote p : listPacote) {
+    	List<Servico> ls = new ArrayList<Servico>();
+        for (Servico p : listPacote) {
         
-        	listPacote = new RepositoryPacote().buscarPacote();
-        	tabela.setModel(new ModeloTablePacote(listPacote));
+        	listPacote = new RepositoryServico().buscbarServico();
+        	tabela.setModel(new ModeloTableServico(listPacote));
         	scroll.revalidate();
         	
         }
@@ -117,8 +117,8 @@ public class FormCadastroPacote extends JInternalFrame {
         tfPrecoAula.setLocation(70, 100);
         pnGeral.add(tfPrecoAula);
 
-        //Preço Pacote
-        lbPrecoPacote = new JLabel("Pacote");
+        //Preço Servico
+        lbPrecoPacote = new JLabel("Servico");
         lbPrecoPacote.setSize(100, 20);
         lbPrecoPacote.setLocation(5, 130);
         pnGeral.add(lbPrecoPacote);
@@ -135,7 +135,7 @@ public class FormCadastroPacote extends JInternalFrame {
         pnGeral.add(btSalvar);
 
         // Componentes da Aba de Busca
-        tabela = new JTable(new ModeloTablePacote(listPacote));
+        tabela = new JTable(new ModeloTableServico(listPacote));
         scroll = new JScrollPane(tabela);
         scroll.setSize(371, 150);
         scroll.setLocation(2, 5);
@@ -158,7 +158,7 @@ public class FormCadastroPacote extends JInternalFrame {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);
         setClosable(true);
-        setTitle("Cadastro de Pacote");
+        setTitle("Cadastro de Servico");
         setResizable(false);
         setIconifiable(true);
 
@@ -186,25 +186,25 @@ public class FormCadastroPacote extends JInternalFrame {
                     tfPrecoAula.requestFocus();
                     lbPrecoAula.setForeground(Color.red);
                 } else if (tfPrecoPacote.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Informar o pre�o do pacote");
+                    JOptionPane.showMessageDialog(null, "Informar o pre�o do servico");
                     tfPrecoPacote.requestFocus();
                     lbPrecoPacote.setForeground(Color.red);
                 } else {
-                	RepositoryPacote repo= new RepositoryPacote();
-                	if(pacote == null){
-                		pacote = new Pacote();
+                	RepositoryServico repo= new RepositoryServico();
+                	if(servico == null){
+                		servico = new Servico();
                 	}
                 	
-                	pacote.setAulas(tfAulas.getText());
-                	pacote.setDescAulas(tfDescricao.getText());
-                	pacote.setDescricao(tfDescricao.getText());
-                	pacote.setPrecoPacote(tfPrecoPacote.getText());
-                	pacote.setPrecoAula(tfPrecoAula.getText());
-                    repo.adicionar(pacote);
-<<<<<<< HEAD
-=======
-                    listPacote = new RepositoryPacote().buscarPacote();
->>>>>>> b466833785be140a9edc44a6aed6f7c4ffa50afc
+                	servico.setAulas(tfAulas.getText());
+                	servico.setDescAulas(tfDescricao.getText());
+                	servico.setDescricao(tfDescricao.getText());
+                	servico.setPrecoPacote(tfPrecoPacote.getText());
+                	servico.setPrecoAula(tfPrecoAula.getText());
+                    repo.adicionar(servico);
+
+
+                    listPacote = new RepositoryServico().buscbarServico();
+
                     populaTable();
                 }
 

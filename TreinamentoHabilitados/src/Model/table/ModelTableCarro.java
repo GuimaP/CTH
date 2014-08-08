@@ -1,8 +1,10 @@
-package Model;
+package model.table;
 
 import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
+
+import model.Carro;
 
 public class ModelTableCarro extends AbstractTableModel {
 

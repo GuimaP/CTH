@@ -1,8 +1,10 @@
-package Model;
+package model.table;
 
 import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
+
+import model.Aula;
 
 public class ModeloTableAgendamento extends AbstractTableModel {
 
@@ -34,7 +36,7 @@ public class ModeloTableAgendamento extends AbstractTableModel {
 			return aulas.get(rowIndex).getData();
 		case 2:
 			
-			return aulas.get(rowIndex).getHora();
+			return aulas.get(rowIndex).getData().getHours();
 		case 3:
 			return aulas.get(rowIndex).getDescAulas();
 		default:

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package controller;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 
 import javax.tools.FileObject;
 
-import Model.Funcionario;
+import model.Funcionario;
 
 /**
  *

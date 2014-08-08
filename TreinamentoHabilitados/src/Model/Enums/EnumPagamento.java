@@ -1,4 +1,4 @@
-package Model;
+package model.enums;
 
 public enum EnumPagamento {
 	Debito("Débito"), Credito("Crédito"), Dinheiro("Dinheiro"), Cheque("Cheque");

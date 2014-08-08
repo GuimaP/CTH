@@ -5,12 +5,9 @@
  */
 package View;
 
-import Main.Start;
-import Model.Tarefa;
-import Model.Enums.Prioridade;
-import Model.Repository.ConnectionFactoryConfig;
-import Model.Repository.Repository;
-import Model.Repository.RepositoryTarefa;
+import model.*;
+import model.enums.*;
+import model.repository.*;
 import Testes.painelTeste1;
 
 import java.awt.Point;
@@ -65,6 +62,8 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import javax.transaction.Transactional.TxType;
 
+import main.Start;
+
 import org.hibernate.Hibernate;
 import org.hibernate.exception.GenericJDBCException;
 
@@ -83,7 +82,7 @@ public class PainelCalendarioAgendamento extends JPanel {
 	private JTable tbTarefas;
 	private JCalendar calendario;
 
-	// Criação de Novas Tarefas
+	// Criaï¿½ï¿½o de Novas Tarefas
 	private JTextField tfDataSelecionada;
 	private JTextArea tfDescricaoTarefa;
 	private JSpinner spHora, spMinutos;
@@ -97,7 +96,7 @@ public class PainelCalendarioAgendamento extends JPanel {
 	private JPanel myPanel;
 	// --
 
-	// Criação tabela de calendario
+	// Criaï¿½ï¿½o tabela de calendario
 	private JPanel painelCalendario;
 	private JLabel lbFecharCalendario;
 	private ImageIcon imgClose;
@@ -113,7 +112,7 @@ public class PainelCalendarioAgendamento extends JPanel {
 		imgClose = new ImageIcon(getClass().getResource("/Resources/icons")
 				.getPath() + "/closeDesc.png");
 		repoTarefa = new RepositoryTarefa(); // Inicio o repositorio da Classe
-		isShowingList = false; // por default ele não está mostrando a lista de
+		isShowingList = false; // por default ele nï¿½o estï¿½ mostrando a lista de
 								// tarefas
 		areOpen = false; // o mesmo para o menu de NOVA TAREFA
 
@@ -125,7 +124,7 @@ public class PainelCalendarioAgendamento extends JPanel {
 	private void initComponents() {
 		try {
 
-			myPanel = this; // para manipulação da Panel dentro de eventos...
+			myPanel = this; // para manipulaï¿½ï¿½o da Panel dentro de eventos...
 			setSize(TAMANHO);
 			setLayout(null);
 			setBackground(new Color(0, 0, 0, 40));
@@ -140,7 +139,7 @@ public class PainelCalendarioAgendamento extends JPanel {
 			calendario.setCalendar(Calendar.getInstance());
 			calendario.setSize(painelCalendario.getWidth(),
 					painelCalendario.getHeight());
-			calendario.setTodayButtonVisible(true); // Mostrando o botão HOJE do
+			calendario.setTodayButtonVisible(true); // Mostrando o botï¿½o HOJE do
 													// JCalendar
 			calendario.setTodayButtonText("Hoje");
 			calendario.getDayChooser().setAlwaysFireDayProperty(true);
@@ -161,7 +160,7 @@ public class PainelCalendarioAgendamento extends JPanel {
 					- (btAgendarTarefa.getWidth() / 2), 220);
 			add(btAgendarTarefa);
 
-			lbFecharCalendario = new JLabel(imgClose); // Botão para fechar a
+			lbFecharCalendario = new JLabel(imgClose); // Botï¿½o para fechar a
 														// list de calendar
 			lbFecharCalendario.setBounds(5, btAgendarTarefa.getY(), 30, 30);
 			lbFecharCalendario.setCursor(Cursor
@@ -213,7 +212,7 @@ public class PainelCalendarioAgendamento extends JPanel {
 						JOptionPane.showMessageDialog(
 								this,
 								"Ops, Ocorreu um erro, entre em contato com o Administrador do Sistema,\n"
-										+ "Descrição do erro: \n"
+										+ "Descriï¿½ï¿½o do erro: \n"
 										+ erro.getMessage());
 					}
 				});
@@ -277,7 +276,7 @@ public class PainelCalendarioAgendamento extends JPanel {
 		spDescricao = new JScrollPane(tfDescricaoTarefa);
 		spDescricao.setSize(painelNewTask.getWidth() - 20, 50);
 		spDescricao.setLocation(10, tfDataSelecionada.getY() + 30);
-		spDescricao.setToolTipText("Insira a Descrição da Tarefa");
+		spDescricao.setToolTipText("Insira a Descriï¿½ï¿½o da Tarefa");
 		spDescricao.setVisible(false); // Escondo os detalhes de Agendamento
 		painelNewTask.add(spDescricao);
 
@@ -374,7 +373,7 @@ public class PainelCalendarioAgendamento extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
-				if (areOpen) { // Fecha somente, se já estiver aberto
+				if (areOpen) { // Fecha somente, se jï¿½ estiver aberto
 					hideNewTask();
 				}
 
@@ -386,7 +385,7 @@ public class PainelCalendarioAgendamento extends JPanel {
 	}
 
 	/**
-	 * Metodo responsavel pela criação das listas de tarefas do dia...
+	 * Metodo responsavel pela criaï¿½ï¿½o das listas de tarefas do dia...
 	 */
 	private void createListTask() throws Throwable {
 		try{
@@ -471,7 +470,7 @@ public class PainelCalendarioAgendamento extends JPanel {
 			erro.printStackTrace();
 			JOptionPane.showMessageDialog(this,
 					"Ops, Ocorreu um erro, entre em contato com o Administrador do Sistema,\n"
-							+ "Descrição do erro: \n" + erro.getMessage());
+							+ "Descriï¿½ï¿½o do erro: \n" + erro.getMessage());
 		}
 	}
 
@@ -509,11 +508,11 @@ public class PainelCalendarioAgendamento extends JPanel {
 	}
 	
 	private void mostrar() {
-		// TODO AÇÃO PARA MOSTRAR O CALENDARIO INTEIRO
+		// TODO Aï¿½ï¿½O PARA MOSTRAR O CALENDARIO INTEIRO
 	}
 
 	private void esconder() {
-		// TODO AÇÃO PARA ESCONDER O CALENDARIO
+		// TODO Aï¿½ï¿½O PARA ESCONDER O CALENDARIO
 	}
 
 	/**

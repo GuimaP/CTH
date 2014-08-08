@@ -14,8 +14,8 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.border.LineBorder;
 
-import Controller.EmailControllerV3;
-import Model.MensagemEmail;
+import controller.EmailControllerV3;
+import model.MensagemEmail;
 
 
 public class PainelSendNewEmail extends JPanel{
@@ -69,7 +69,7 @@ public class PainelSendNewEmail extends JPanel{
 		add(txtAssunto);
 			
 		/**
-		 * Montando o espaço restante de onde vai ficar o e-mail
+		 * Montando o espaï¿½o restante de onde vai ficar o e-mail
 		 */
 		Dimension tamanho = new Dimension();
 		tamanho.width = widht - 15;

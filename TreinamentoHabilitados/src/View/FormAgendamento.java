@@ -20,10 +20,9 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import Model.Cliente;
-import Model.Funcionario;
-import Model.ModeloTableCliente;
-import Model.ModeloTableFuncionario;
+import model.*;
+import model.table.ModeloTableCliente;
+import model.table.ModeloTableFuncionario;
 
 /**
  *
@@ -103,7 +102,7 @@ public class FormAgendamento extends JInternalFrame {
 		pnGeral.add(scrollInstrutor);
 		
 		//Info Pacotes.
-		lbBuscaPacote = new JLabel("Buscar Pacote");
+		lbBuscaPacote = new JLabel("Buscar Servico");
 		lbBuscaPacote.setSize(150, 20);
 		lbBuscaPacote.setLocation(5, 400);
 		pnGeral.add(lbBuscaPacote);

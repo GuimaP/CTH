@@ -1,4 +1,4 @@
-package Model;
+package model.enums;
 
 public enum EnumQuestionario {
 	Internet("Internet"), Indicacoes("Indicações"), Outros("Outros");

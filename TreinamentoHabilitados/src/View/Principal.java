@@ -79,17 +79,18 @@ import javax.swing.tree.TreeSelectionModel;
 
 import org.eclipse.swt.internal.ole.win32.ISpecifyPropertyPages;
 
-import Controller.ConfigController;
-import Controller.CriptografiaConfigEmail;
-import Controller.EmailControllerV3;
-import Model.Login;
-import Model.MensagemEmail;
-import Model.ModelTableEmail;
-import Model.UsuarioEmail;
+import model.Login;
+import model.MensagemEmail;
+import model.UsuarioEmail;
+import model.table.ModelTableEmail;
 import View.Components.MenuSuperior;
 
 import com.itextpdf.text.Font;
 import com.towel.swing.img.JImagePanel;
+
+import controller.ConfigController;
+import controller.CriptografiaConfigEmail;
+import controller.EmailControllerV3;
 
 public class Principal extends JFrame {
 
@@ -185,7 +186,7 @@ public class Principal extends JFrame {
 		itCadastroCliente = new JMenuItem("Cadastro Aluno");
 		itCadastroFuncionario = new JMenuItem("Cadastro Funcionario");
 		itAgendamento = new JMenuItem("Agendar Aula");
-		itCadastroPacote = new JMenuItem("Cadastro Pacote");
+		itCadastroPacote = new JMenuItem("Cadastro Servico");
 		itCadastroCarro = new JMenuItem("Cadastro Carro");
 		itConfiguraEmail = new JMenuItem("Configurar E-mail");
 		itFazerLogoff = new JMenuItem("Fazer Logoff");
@@ -275,26 +276,26 @@ public class Principal extends JFrame {
 		int y = 120 + this.getHeight()-10;
 		painelNotification.setLocation(this.getWidth() - painelNotification.getWidth(), y);
 		painelNotification.setBackground(new Color(201, 229, 0,160));
-		JLabel lb = new JLabel("Você recebeu uma nova mensagem!");
+		JLabel lb = new JLabel("Vocï¿½ recebeu uma nova mensagem!");
 		painelNotification.add(lb);
 		add(painelNotification);
 		
-		pnMenuSuperior = new MenuSuperior();
-		Dimension tamanhoFrame = getSize();
-		pnMenuSuperior.setSize(tamanhoFrame.width, 130);
-		pnMenuSuperior.setLocation(0, 0);
-//		pnMenuSuperior.setBackground(new Color(254,254,254,120));
-		FlowLayout layout = new FlowLayout();
-		layout.setAlignment(FlowLayout.LEADING);
-		
-//		pnMenuSuperior.setLayout(layout);
-		
-		add(pnMenuSuperior);
-		
-		btAbrirMenuSuperior = new JButton("V");
-		btAbrirMenuSuperior.setSize(60,30);
-		btAbrirMenuSuperior.setLocation((getSize().width / 2 ) - btAbrirMenuLateral.getWidth(),pnMenuSuperior.getSize().height);
-		add(btAbrirMenuSuperior);
+//		pnMenuSuperior = new MenuSuperior();
+//		Dimension tamanhoFrame = getSize();
+//		pnMenuSuperior.setSize(tamanhoFrame.width, 130);
+//		pnMenuSuperior.setLocation(0, 0);
+////		pnMenuSuperior.setBackground(new Color(254,254,254,120));
+//		FlowLayout layout = new FlowLayout();
+//		layout.setAlignment(FlowLayout.LEADING);
+//		
+////		pnMenuSuperior.setLayout(layout);
+//		
+//		add(pnMenuSuperior);
+//		
+//		btAbrirMenuSuperior = new JButton("V");
+//		btAbrirMenuSuperior.setSize(60,30);
+//		btAbrirMenuSuperior.setLocation((getSize().width / 2 ) - btAbrirMenuLateral.getWidth(),pnMenuSuperior.getSize().height);
+//		add(btAbrirMenuSuperior);
 		
 		
 		

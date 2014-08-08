@@ -1,4 +1,4 @@
-package Model.Repository;
+package model.repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,14 +7,14 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import Model.Carro;
-import Model.Funcionario;
+import model.Carro;
+import model.Funcionario;
 
 /**
  *@author Guima
  * Classe responsavel pela Persistencia da Base de dados
  */
-public class RepositoryInstrutor extends Repository<Model.Funcionario> {
+public class RepositoryInstrutor extends Repository<model.Funcionario> {
    
     
     public Funcionario findInstrutorSingle(String cpf){

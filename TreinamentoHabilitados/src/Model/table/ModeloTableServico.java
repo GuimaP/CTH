@@ -4,22 +4,24 @@
  * and open the template in the editor.
  */
 
-package Model;
+package model.table;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import model.Servico;
+
 /**
  *
  * @author Vitor
  */
-public class ModeloTablePacote extends AbstractTableModel{
-    List<Pacote> listPacote;
+public class ModeloTableServico extends AbstractTableModel{
+    List<Servico> listPacote;
     String[] colunas = {"Descri��o", "Aulas", "Pre�o"};
         
-    public ModeloTablePacote(List<Pacote> listPacote2){
+    public ModeloTableServico(List<Servico> listPacote2){
         this.listPacote = listPacote2;
     }
     @Override

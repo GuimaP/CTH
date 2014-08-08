@@ -1,4 +1,4 @@
-package Controller;
+package controller;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,9 +32,9 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
 import javax.mail.search.SearchTerm;
 
-import Model.MensagemEmail;
-import Model.MenssagemResultQuery;
-import Model.UsuarioEmail;
+import model.MensagemEmail;
+import model.MenssagemResultQuery;
+import model.UsuarioEmail;
 
 import com.sun.mail.imap.IMAPFolder;
 import com.sun.mail.imap.SortTerm;
@@ -253,7 +253,7 @@ public class EmailControllerV3 {
 					}
 					ms = m;
 				} else {
-					ms = "Não foi possivel identificar o tipo de formato!";
+					ms = "Nï¿½o foi possivel identificar o tipo de formato!";
 				}
 			System.out.println(ms);
 
@@ -518,7 +518,7 @@ public int countMessage() throws MessagingException{
 				itens = mapItensViews.get(folder);
 			
 				if(inicio < itens.size()){ //O Limite tem que ser menor do que a lista
-					if(fim < itens.size()){ //Ver se o limite que estou pedindo é menor que o fim
+					if(fim < itens.size()){ //Ver se o limite que estou pedindo ï¿½ menor que o fim
 						for(int i = inicio; i < fim;i++){
 							ls.add( itens.get(i));
 						}
@@ -561,7 +561,7 @@ public int countMessage() throws MessagingException{
 		Folder[] folders = store.getDefaultFolder().list();
 		for (Folder f : folders) {
 			System.out.println(f.getName());
-			if(f.list().length == 0){ //Somente se não houver sub pastas
+			if(f.list().length == 0){ //Somente se nï¿½o houver sub pastas
 				lsFolders.add(f.getName());
 			}
 		}
@@ -582,7 +582,7 @@ public int countMessage() throws MessagingException{
 		boolean ssl = e.isSsl();
 
 		Properties prop = new Properties();
-		// Definindo as configurações de conexão
+		// Definindo as configuraï¿½ï¿½es de conexï¿½o
 		prop.setProperty("mail.smtp.host", host);
 		prop.setProperty("mail.smtp.port", String.valueOf(port));
 		prop.put("mail.smtp.port", String.valueOf(port));
@@ -593,7 +593,7 @@ public int countMessage() throws MessagingException{
 			prop.put("mail.smtp.socketFactory.class",
 					"javax.net.ssl.SSLSocketFactory");
 		}
-		prop.put("mail.smtp.auth", "true"); // e requer autenticação
+		prop.put("mail.smtp.auth", "true"); // e requer autenticaï¿½ï¿½o
 try{
 		session = Session.getDefaultInstance(prop,
 				new javax.mail.Authenticator() {
@@ -606,7 +606,7 @@ try{
 		store.connect(hostRecieve, user, pass);
 		return true;
 	}catch(Exception er){
-		er.printStackTrace(); //TODO POSTERGAR EXCESSÃO
+		er.printStackTrace(); //TODO POSTERGAR EXCESSï¿½O
 		return false;
 	}
 		

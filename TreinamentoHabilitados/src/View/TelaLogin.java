@@ -28,10 +28,10 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
-import Controller.ConfigController;
-import Main.Start;
-import Model.Login;
-import Model.Repository.LoginRepository;
+import main.Start;
+import controller.ConfigController;
+import model.Login;
+import model.repository.LoginRepository;
 
 import java.awt.Color;
 
@@ -164,7 +164,7 @@ public class TelaLogin extends JFrame {
                         }
 
                     } catch (Exception e1) {
-                    	JOptionPane.showMessageDialog(null, "Houve um falha ao conectar com o banco! Descrição do erro "
+                    	JOptionPane.showMessageDialog(null, "Houve um falha ao conectar com o banco! Descriï¿½ï¿½o do erro "
                     			+ "\n''"+e1.getMessage()+"''");
                     	e1.printStackTrace();
 

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package Model.Repository;
+package model.repository;
 
 import java.sql.SQLException;
 import java.util.List;

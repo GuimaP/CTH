@@ -1,23 +1,10 @@
 package View;
 
-import Controller.ConfigController;
-import DAO.DAOcliente;
-import Model.Aula;
-import Model.Cliente;
-import Model.Cnh;
-import Model.Endereco;
-import Model.EnumFormaca;
-import Model.EnumPagamento;
-import Model.EnumQuestionario;
-import Model.EnumSexo;
-import Model.Funcionario;
-import Model.ModeloTableAgendamento;
-import Model.ModeloTableCliente;
-import Model.ModeloTablePacote;
-import Model.Pacote;
-import Model.Repository.Repository;
-import Model.Repository.RepositoryCliente;
-import Model.Repository.RepositoryPacote;
+import model.repository.*;
+import model.table.ModeloTableAgendamento;
+import model.table.ModeloTableServico;
+import model.enums.*;
+import model.*;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -74,8 +61,8 @@ import org.eclipse.swt.custom.PopupList;
 import com.toedter.calendar.JDateChooser;
 import com.towel.swing.img.JImagePanel;
 
-import principal.CadastroCliente;
-import principal.VerificadorDeCpf;
+import controller.ConfigController;
+import controller.VerificadorDeCpf;
 
 public class FormCadastroCliente extends JInternalFrame {
 
@@ -123,7 +110,7 @@ public class FormCadastroCliente extends JInternalFrame {
 
 	private List<Cliente> listCliente = new ArrayList<Cliente>();
 
-	private List<Pacote> listPacote = new ArrayList<Pacote>();
+	private List<Servico> listPacote = new ArrayList<Servico>();
 
 	private ArrayList<Funcionario> listFuncionario = new ArrayList<Funcionario>();
 
@@ -135,11 +122,9 @@ public class FormCadastroCliente extends JInternalFrame {
 
 	protected static JFrame minhaFrame;
 
-	private DAOcliente daoCliente;
 	Cliente cliente = new Cliente();
-	Endereco endereco = new Endereco();
-	Cnh cnh = new Cnh();
-	CadastroCliente cadastro = new CadastroCliente();
+
+	Pesquisa cadastro = new Pesquisa();
 
 	private JPanel panelCliente, painelGeral, abaTodos, abaAgendamento,
 			painelPagamento, painelAgendamento, painelFoto;
@@ -169,7 +154,7 @@ public class FormCadastroCliente extends JInternalFrame {
 	public FormCadastroCliente() {
 		//
 		try {
-			listPacote = new RepositoryPacote().buscarPacote();
+			listPacote = new RepositoryServico().buscbarServico();
 			Cliente c = new Cliente();
 			dirMyPicture = "";
 			minhaInternal = this;
@@ -211,12 +196,12 @@ public class FormCadastroCliente extends JInternalFrame {
 	}
 
 	public void popuTable() {
-		List<Pacote> l = new ArrayList<Pacote>();
-			for (Pacote p : listPacote) {
+		List<Servico> l = new ArrayList<Servico>();
+			for (Servico p : listPacote) {
 				
 				
-				listPacote = new RepositoryPacote().buscarPacote();
-				table.setModel(new ModeloTablePacote(listPacote));
+				listPacote = new RepositoryServico().buscbarServico();
+				table.setModel(new ModeloTableServico(listPacote));
 				scroll.revalidate();
 			
 			}
@@ -551,11 +536,11 @@ public class FormCadastroCliente extends JInternalFrame {
 		// Text
 
 		// Table
-		lbPacote = new JLabel("Pacote");
+		lbPacote = new JLabel("Servico");
 		lbPacote.setBounds(530, 10, 100, 20);
 		abaTodos.add(lbPacote);
 
-		table = new JTable(new ModeloTablePacote(listPacote));
+		table = new JTable(new ModeloTableServico(listPacote));
 		scrollPacote = new JScrollPane(table);
 		scrollPacote.setBounds(530, 54, 340, 163);
 		abaTodos.add(scrollPacote);
@@ -974,11 +959,7 @@ public class FormCadastroCliente extends JInternalFrame {
 					// populando os objetos
 					cliente.setNome(tfNome.getText());
 					cadastro.setData(dtCadastroCliente.getDate().toString());
-					endereco.setLogradouro(tfLogradouro.getText());
-
-					endereco.setNumero(Long.parseLong(tfNumero.getText()));
-					endereco.setBairro(tfBairro.getText());
-					endereco.setCep(tfCep.getText());
+					
 					
 					cliente.setNascimento(cdDataNascimento.getDate());
 					cliente.setSexo(jcSexo.getSelectedItem().toString());
@@ -994,9 +975,7 @@ public class FormCadastroCliente extends JInternalFrame {
 								.getSelectedItem().toString());
 					}
 					cliente.setProfissao(tfProfissao.getText());
-					cnh.setRegistroCnh(tfRegistroCnh.getText());
-					cnh.setDtValidade(cdValidadeCnh.getDate().toString());
-					cnh.setPrimeiraHabilitacao(cdPermissao.getDate().toString());
+					
 					cadastro.setPesquisa1(tfQuestao1.getText());
 					if (jrQ2Yes.isSelected()) {
 						cadastro.setPesquisa2("sim");

@@ -1,4 +1,4 @@
-package Model;
+package model.table;
 
 import java.io.ObjectInputStream.GetField;
 import java.text.ParseException;
@@ -8,6 +8,8 @@ import java.util.List;
 import javax.media.Format;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.text.MaskFormatter;
+
+import model.Funcionario;
 public class ModeloTableFuncionario extends AbstractTableModel{
 	
 	List<Funcionario> func;

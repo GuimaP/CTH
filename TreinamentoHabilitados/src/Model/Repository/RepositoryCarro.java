@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package Model.Repository;
+package model.repository;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -12,13 +12,13 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 
-import Model.Carro;
+import model.Carro;
 
 /**
  *
  * @author Guima
  */
-public class RepositoryCarro extends Repository<Model.Carro>{
+public class RepositoryCarro extends Repository<model.Carro>{
     public List<Carro> pegarTodos() throws SQLException {
     	        List<Carro> lista = null;
     	        Session session = ConnectionFactoryConfig.openManger().openSession();//getCurrentSession();
