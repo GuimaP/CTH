@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package Model.Repository;
+package model.repository;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -19,40 +19,50 @@ import org.hibernate.criterion.Restrictions;
  *
  * @author Guima
  */
-public class Repository<T>  {
-    
-    public void adicionar(T obj) {
-        
-        EntityManager em = null;
-        Session session = ConnectionFactoryConfig.openManger().openSession(); 
-        session.getTransaction().begin();
-        session.persist(obj);
-        session.getTransaction().commit();
-        session.close();
-    }
-    
-    public List<T> pegarTodos() throws SQLException{
-        List<T> lista = null;
-        Session session = ConnectionFactoryConfig.getSession();//getCurrentSession();
-        if(!session.isConnected()){
-        	ConnectionFactoryConfig.generateSession();
-        }
-        session.beginTransaction();
-        session.createCriteria(this.getClass());
-        Criteria c = session.createCriteria(this.getClass());
-        lista = c.list();
-        session.getTransaction().commit();
-        
-        session.close();
-        return lista;
-    }
-    
-   public void atualizar (T obj){
-	   Session s = ConnectionFactoryConfig.getSession();//.getCurrentSession();
-	   s.beginTransaction();
-	   s.merge(obj);
-	   s.getTransaction().commit();
-	   
-   }
-    
+public class Repository<T> {
+
+	public void adicionar(T obj) throws Exception {
+		try {
+			EntityManager em = null;
+			Session session = ConnectionFactoryConfig.openManger()
+					.openSession();
+			session.getTransaction().begin();
+			session.persist(obj);
+			session.getTransaction().commit();
+			session.close();
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
+	}
+
+	public List<T> buscarTodos() throws Exception {
+
+		try {
+			List<T> lista = null;
+			Session session = ConnectionFactoryConfig.getSession();// getCurrentSession();
+			if (!session.isConnected()) {
+				ConnectionFactoryConfig.generateSession();
+			}
+			session.beginTransaction();
+			session.createCriteria(this.getClass());
+			Criteria c = session.createCriteria(this.getClass());
+			lista = c.list();
+			session.getTransaction().commit();
+
+			session.close();
+			return lista;
+		} catch (Exception e) {
+			throw new Exception();
+		}
+
+	}
+
+	public void atualizar(T obj) {
+		Session s = ConnectionFactoryConfig.getSession();// .getCurrentSession();
+		s.beginTransaction();
+		s.merge(obj);
+		s.getTransaction().commit();
+
+	}
+
 }

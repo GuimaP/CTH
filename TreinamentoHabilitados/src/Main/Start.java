@@ -1,10 +1,8 @@
-package Main;
+package main;
 
-import Controller.ConfigController;
-import Controller.LogController;
-import Model.Login;
-import Model.Repository.ConnectionFactoryConfig;
-import Model.Repository.ConnectionFactoryRepository;
+import model.Login;
+import model.repository.ConnectionFactoryConfig;
+import model.repository.ConnectionFactoryRepository;
 import View.MyPainelInvisible;
 import View.Principal;
 import View.TelaLogin;
@@ -58,6 +56,9 @@ import org.hibernate.Session;
 import org.hibernate.exception.GenericJDBCException;
 
 import com.ibm.media.ShowDocumentEvent;
+
+import controller.ConfigController;
+import controller.LogController;
 
 public class Start {
 

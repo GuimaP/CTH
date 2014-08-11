@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 
 
@@ -16,9 +16,10 @@ import javax.persistence.Transient;
 
 
 
+
 import com.towel.time.Hour;
 
-import Model.Enums.Prioridade;
+import model.enums.Prioridade;
 @Entity
 public class Tarefa implements Serializable {
 	@Id
@@ -46,7 +47,7 @@ public class Tarefa implements Serializable {
 //	
 //	
 //	/**
-//	 * Ajustado termporariamente, até ter uma compatibilidade com a nova API de LocalDateTime no Hibernate
+//	 * Ajustado termporariamente, atï¿½ ter uma compatibilidade com a nova API de LocalDateTime no Hibernate
 //	 * @return LocalDateTime
 //	 */
 //	@Deprecated
@@ -68,7 +69,7 @@ public class Tarefa implements Serializable {
 //		return dateHoraTarefa;
 //	}
 //	/**
-//	 * Ajustado termporariamente, até ter uma compatibilidade com a nova API de LocalDateTime no Hibernate
+//	 * Ajustado termporariamente, atï¿½ ter uma compatibilidade com a nova API de LocalDateTime no Hibernate
 //	 * @param Local Date Time,e depois transforma em Date
 //	 */
 //	@Deprecated
@@ -90,7 +91,7 @@ public class Tarefa implements Serializable {
 //		System.out.println(horaCompromisso);
 //
 //		dt.setYear(year-1900); //Gambiarra para pegar o ano certo... posak
-//		dt.setMonth(month-1); //Gambs pra pegar o mes certo... fazê o que...
+//		dt.setMonth(month-1); //Gambs pra pegar o mes certo... fazï¿½ o que...
 //		dt.setDate(day);
 //		
 //

@@ -7,6 +7,7 @@
 	<item value="F:\vitor.senai\4º Semestre\TCC\TreinamentoHabilitados\Jars" key="org.eclipse.jdt.ui.lastextjar"/>
 	<item value="2" key="TypeHierarchyViewPart.hierarchyview"/>
 	<section name="org.eclipse.ltk.ui.refactoring.settings">
+		<item value="false" key="renameSubpackages"/>
 		<item value="true" key="updateQualifiedNames"/>
 		<item value="*" key="patterns"/>
 		<item value="true" key="updateSimilarElements"/>
@@ -31,12 +32,12 @@
 		<item value="529" key="DIALOG_WIDTH"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 		<item value="696" key="DIALOG_HEIGHT"/>
-		<item value="8" key="DIALOG_Y_ORIGIN"/>
-		<item value="427" key="DIALOG_X_ORIGIN"/>
+		<item value="15" key="DIALOG_Y_ORIGIN"/>
+		<item value="629" key="DIALOG_X_ORIGIN"/>
 	</section>
 	<section name="RefactoringWizard.preview">
 		<item value="570" key="width"/>
-		<item value="370" key="height"/>
+		<item value="375" key="height"/>
 	</section>
 	<section name="SourceActionDialog.methods">
 		<item value="false" key="SynchronizedModifier"/>
@@ -53,6 +54,9 @@
 		<item value="2" key="pageIndex"/>
 	</section>
 	<section name="quick_assist_proposal_size">
+	</section>
+	<section name="NewPackageWizardPage">
+		<item value="false" key="create_package_info_java"/>
 	</section>
 	<section name="completion_proposal_size">
 		<item value="221" key="contextSelector.size.y"/>

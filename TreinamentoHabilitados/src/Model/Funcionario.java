@@ -1,4 +1,4 @@
-    package Model;
+    package model;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,6 +20,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+
+import model.enums.EnumStatus;
 
 import java.awt.Image;
 

@@ -1,4 +1,4 @@
-package Controller;
+package controller;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -12,9 +12,9 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import Main.Start;
+import main.Start;
 /**
- * Classe responsavel pelas definições de configurações do programa, como por exemplo, definir imagem,definir
+ * Classe responsavel pelas definiï¿½ï¿½es de configuraï¿½ï¿½es do programa, como por exemplo, definir imagem,definir
  * o "Lembrar senha" e entre outras coisas.
  * @author Guima
  *

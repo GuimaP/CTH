@@ -5,6 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.text.ParseException;
 
 import javax.swing.JButton;
@@ -20,12 +23,14 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
-import Model.Carro;
-import Model.ModelTableCarro;
-import Model.Repository.Repository;
+import controller.ControllerFormCarro;
+import model.*;
+import model.repository.*;
+import model.table.ModelTableCarro;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,33 +40,69 @@ public class FormCadastroCarro extends JInternalFrame {
 	private JTextField tfAno, tfMarca, tfModelo;
 	private JFormattedTextField tfPlaca;
 	private MaskFormatter maskPalca;
-	private JButton btSalvar, btExcluir;
+	private JButton btSalvar, btExcluir, btNovo;
 	private JPanel pnGeral, pnBusca;
 	private JTable tabela;
 	private JScrollPane scroll;
 	private JTabbedPane abas;
 	
-	private ArrayList<Carro> listCarro = new ArrayList<Carro>();
+	private JInternalFrame myInternal;
+	
+	private Carro carro;
+	
+	private List<Carro> listCarro = new ArrayList<Carro>();
+	
+	private RepositoryCarro repoCarro;
 
 	public FormCadastroCarro() {
 
 		try {
+			carro = new Carro();
 			inicializaComponentes();
 			definirEventos();
+			listCarro = new ControllerFormCarro().buscarCarro();
+			populaTable();
 		} catch (ParseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			return;
+		}catch (Exception e2){
+			JOptionPane.showMessageDialog(null,e2.getMessage());
 		}
 	}
 
+	public void limparCampos(){
+		carro = null;
+		tfModelo.setText("");
+		tfMarca.setText("");
+		tfAno.setText("");
+		tfPlaca.setText("");
+	}
+	
+	
+	public void populaTable(){
+		try {
+			for(Carro c : listCarro){
+				listCarro = new ControllerFormCarro().buscarCarro();
+				tabela.setModel(new ModelTableCarro(listCarro));
+				scroll.revalidate();
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+	}
+	
+	
+	
 	public void inicializaComponentes() throws ParseException {
+		myInternal = this;
+		
 		// Paineis
 		pnGeral = new JPanel();
 		pnGeral.setLayout(null);
 		pnBusca = new JPanel();
 		pnBusca.setLayout(null);
 
-		// informações do carro
+		// informaï¿½ï¿½es do carro
 		lbAno = new JLabel("Ano");
 		lbAno.setLocation(5, 10);
 		lbAno.setSize(30, 20);
@@ -107,9 +148,13 @@ public class FormCadastroCarro extends JInternalFrame {
 		pnGeral.add(tfPlaca);
 		// Button
 		btSalvar = new JButton("Salvar");
-		btSalvar.setLocation(70, 135);
+		btSalvar.setLocation(10, 135);
 		btSalvar.setSize(100, 30);
 		pnGeral.add(btSalvar);
+		
+		btNovo = new JButton("Novo");
+		btNovo.setBounds(125, 135, 100, 30);
+		pnGeral.add(btNovo);
 
 		//Componentes do pnBusca.
 		
@@ -160,13 +205,20 @@ public class FormCadastroCarro extends JInternalFrame {
 					lbMarca.setForeground(Color.RED);
 					tfMarca.requestFocus(true);
 				} else {
-					Carro carro = new Carro();
-					carro.setAno(Long.parseLong(tfAno.getText()));
-					carro.setMarca(tfMarca.getText());
-					carro.setModelo(tfModelo.getText());
-					carro.setPlaca(tfPlaca.getValue().toString());
-					Repository<Model.Carro> repo = new Repository<Carro>();
-					repo.adicionar(carro);
+					try {
+						Carro carro = new Carro();
+						carro.setAno(Long.parseLong(tfAno.getText()));
+						carro.setMarca(tfMarca.getText());
+						carro.setModelo(tfModelo.getText());
+						carro.setPlaca(tfPlaca.getValue().toString());
+						Repository<model.Carro> repo = new Repository<Carro>();
+						repo.adicionar(carro);
+						listCarro = new ControllerFormCarro().buscarCarro();
+						populaTable();
+					} catch (Exception e2) {
+						JOptionPane.showMessageDialog(null, e2.getMessage());
+					}
+					
 				}
 			}
 		});
@@ -216,7 +268,60 @@ public class FormCadastroCarro extends JInternalFrame {
 
 			}
 		});
-
+		tabela.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getClickCount()==2){
+					int index = tabela.getSelectedRow();
+					Carro carroTable = ((ModelTableCarro)tabela.getModel()).getCarro(index);
+					carro = carroTable;
+					
+					
+					abas.setSelectedIndex(0);
+					
+					tfMarca.setText(carro.getMarca());
+					tfModelo.setText(carro.getModelo());
+					
+					tfAno.setText(carro.getAno()+"");
+					tfPlaca.setText(carro.getPlaca());
+					
+				}
+				
+			}
+		});
+		btNovo.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			limparCampos();
+				
+			}
+		});
 	}
-
+	
 }

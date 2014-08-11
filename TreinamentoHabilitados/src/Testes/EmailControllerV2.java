@@ -35,8 +35,6 @@ import javax.mail.search.SearchTerm;
 
 import com.itextpdf.awt.geom.misc.Messages;
 
-import Model.MensagemEmail;
-import Model.UsuarioEmail;
 
 public class EmailControllerV2 {
 //	private Session session;
@@ -241,10 +239,10 @@ public class EmailControllerV2 {
 //	public synchronized MensagemEmail lerEmails(Message msg) throws Exception {
 //		if (store.isConnected()) {
 //			if(nTentativas > 4){ //Numero de tentativas se esgotou
-//				return null; //Então eu retorno null
+//				return null; //Entï¿½o eu retorno null
 //			}
 //			nTentativas++;
-//			return lerEmails(msg); //SE NÃO, EU USO A RECURSIVIDADE
+//			return lerEmails(msg); //SE Nï¿½O, EU USO A RECURSIVIDADE
 //			
 //		} else {
 //			nTentativas = 0;
@@ -299,7 +297,7 @@ public class EmailControllerV2 {
 //					}
 //					msEmail.setTexto(m);
 //				} else {
-//					msEmail.setTexto("Não foi possivel identificar o tipo de formato!");
+//					msEmail.setTexto("Nï¿½o foi possivel identificar o tipo de formato!");
 //				}
 //			}
 //			
@@ -342,7 +340,7 @@ public class EmailControllerV2 {
 //		boolean ssl = configEmail.isSsl();
 //
 //		Properties prop = new Properties();
-//		// Definindo as configurações de conexão
+//		// Definindo as configuraï¿½ï¿½es de conexï¿½o
 //		prop.setProperty("mail.smtp.host", host);
 //		prop.setProperty("mail.smtp.port", String.valueOf(port));
 //		prop.put("mail.smtp.port", String.valueOf(port));
@@ -353,7 +351,7 @@ public class EmailControllerV2 {
 //		prop.put("mail.smtp.socketFactory.class",
 //				"javax.net.ssl.SSLSocketFactory");
 //		}
-//		prop.put("mail.smtp.auth", "true"); // e requer autenticação
+//		prop.put("mail.smtp.auth", "true"); // e requer autenticaï¿½ï¿½o
 //
 //		session = Session.getDefaultInstance(prop,
 //				new javax.mail.Authenticator() {
@@ -409,7 +407,7 @@ public class EmailControllerV2 {
 //		boolean ssl = e.isSsl();
 //
 //		Properties prop = new Properties();
-//		// Definindo as configurações de conexão
+//		// Definindo as configuraï¿½ï¿½es de conexï¿½o
 //		prop.setProperty("mail.smtp.host", host);
 //		prop.setProperty("mail.smtp.port", String.valueOf(port));
 //		prop.put("mail.smtp.port", String.valueOf(port));
@@ -419,7 +417,7 @@ public class EmailControllerV2 {
 //			prop.put("mail.smtp.socketFactory.class",
 //					"javax.net.ssl.SSLSocketFactory");
 //			}
-//		prop.put("mail.smtp.auth", "true"); // e requer autenticação
+//		prop.put("mail.smtp.auth", "true"); // e requer autenticaï¿½ï¿½o
 //
 //		session = Session.getDefaultInstance(prop,
 //				new javax.mail.Authenticator() {

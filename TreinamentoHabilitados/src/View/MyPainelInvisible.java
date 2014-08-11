@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-import Controller.ConfigController;
+import controller.ConfigController;
 
 
 	public class MyPainelInvisible extends JPanel {
