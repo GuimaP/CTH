@@ -23,10 +23,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
-<<<<<<< HEAD
+
 import controller.ControllerFormCarro;
-=======
->>>>>>> 7d65b131852601e51864f3810890bf9d83e08edc
+
 import model.*;
 import model.repository.*;
 import model.table.ModelTableCarro;
@@ -208,7 +207,7 @@ public class FormCadastroCarro extends JInternalFrame {
 					lbMarca.setForeground(Color.RED);
 					tfMarca.requestFocus(true);
 				} else {
-<<<<<<< HEAD
+
 					try {
 						Carro carro = new Carro();
 						carro.setAno(Long.parseLong(tfAno.getText()));
@@ -223,15 +222,7 @@ public class FormCadastroCarro extends JInternalFrame {
 						JOptionPane.showMessageDialog(null, e2.getMessage());
 					}
 					
-=======
-					Carro carro = new Carro();
-					carro.setAno(Long.parseLong(tfAno.getText()));
-					carro.setMarca(tfMarca.getText());
-					carro.setModelo(tfModelo.getText());
-					carro.setPlaca(tfPlaca.getValue().toString());
-					Repository<model.Carro> repo = new Repository<Carro>();
-					repo.adicionar(carro);
->>>>>>> 7d65b131852601e51864f3810890bf9d83e08edc
+
 				}
 			}
 		});

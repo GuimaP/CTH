@@ -5,10 +5,8 @@
  */
 package View;
 
-<<<<<<< HEAD:TreinamentoHabilitados/src/View/FormCadastroServico.java
 import model.Carro;
-=======
->>>>>>> 7d65b131852601e51864f3810890bf9d83e08edc:TreinamentoHabilitados/src/View/FormCadastroPacote.java
+
 import model.Servico;
 import model.repository.Repository;
 import model.repository.RepositoryServico;
@@ -38,291 +36,261 @@ import javax.swing.JTextField;
  */
 public class FormCadastroServico extends JInternalFrame {
 
-    private JLabel lbDescricao, lbAulas, lbPrecoAula, lbPrecoPacote;
+	private JLabel lbDescricao, lbAulas, lbPrecoAula, lbPrecoPacote;
 
-    private JTextField tfDescricao, tfAulas, tfPrecoAula, tfPrecoPacote;
+	private JTextField tfDescricao, tfAulas, tfPrecoAula, tfPrecoPacote;
 
-    private JButton btSalvar, btBuscar, btExcluir, btNovo;
+	private JButton btSalvar, btBuscar, btExcluir, btNovo;
 
-    private JTabbedPane aba;
+	private JTabbedPane aba;
 
-    private JPanel pnGeral, pnBusca;
+	private JPanel pnGeral, pnBusca;
 
-    private JTable tabela;
+	private JTable tabela;
 
-    private JScrollPane scroll;
+	private JScrollPane scroll;
 
-    private List<Servico> listPacote = new ArrayList<Servico>();
+	private List<Servico> listPacote = new ArrayList<Servico>();
 
-    private Servico servico;
+	private Servico servico;
 
-    public static boolean isDialogBuscaPacoteOpen;
+	public static boolean isDialogBuscaPacoteOpen;
 
-<<<<<<< HEAD:TreinamentoHabilitados/src/View/FormCadastroServico.java
-    public FormCadastroServico() {
-        try {
-        	isDialogBuscaPacoteOpen = false;
-            listPacote = new RepositoryServico().buscarServico();
-            inicializaComponentes();
-            definirEventos();
-            populaTable();
-		} catch (Exception e) {
-			JOptionPane.showConfirmDialog(null, e.getMessage());
-		}
-    	
-    	
-=======
-    public FormCadastroPacote() {
-        isDialogBuscaPacoteOpen = false;
-        listPacote = new RepositoryServico().buscbarServico();
-        inicializaComponentes();
-        definirEventos();
-        populaTable();
->>>>>>> 7d65b131852601e51864f3810890bf9d83e08edc:TreinamentoHabilitados/src/View/FormCadastroPacote.java
-    }
-
-    
-   
-    public void populaTable() {
-<<<<<<< HEAD:TreinamentoHabilitados/src/View/FormCadastroServico.java
-    	try {
-    		List<Servico> ls = new ArrayList<Servico>();
-            for (Servico p : listPacote) {
-            
-            	listPacote = new RepositoryServico().buscarServico();
-            	tabela.setModel(new ModeloTableServico(listPacote));
-            	scroll.revalidate();
-            }
+	public FormCadastroServico() {
+		try {
+			isDialogBuscaPacoteOpen = false;
+			listPacote = new RepositoryServico().buscarServico();
+			inicializaComponentes();
+			definirEventos();
+			populaTable();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
-=======
-    	List<Servico> ls = new ArrayList<Servico>();
-        for (Servico p : listPacote) {
-        
-        	listPacote = new RepositoryServico().buscbarServico();
-        	tabela.setModel(new ModeloTableServico(listPacote));
-        	scroll.revalidate();
->>>>>>> 7d65b131852601e51864f3810890bf9d83e08edc:TreinamentoHabilitados/src/View/FormCadastroPacote.java
-        	
-        
-    }
+	}
 
-    public void limparCampos() {
-    	servico = null;
-    	tfAulas.setText("");
-    	tfDescricao.setText("");
-    	tfPrecoAula.setText("");
-    	tfPrecoPacote.setText("");
-    }
+	public void populaTable() {
 
-    public void inicializaComponentes() {
-        // Paineis das abas
+		try {
+			List<Servico> ls = new ArrayList<Servico>();
+			for (Servico p : listPacote) {
 
-        pnGeral = new JPanel();
-        pnGeral.setLayout(null);
-        pnBusca = new JPanel();
-        pnBusca.setLayout(null);
+				listPacote = new RepositoryServico().buscarServico();
+				tabela.setModel(new ModeloTableServico(listPacote));
+				scroll.revalidate();
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
 
-        //Componentes da Aba de Cadastro
-        //Descricao;
-        lbDescricao = new JLabel("Descri��o");
-        lbDescricao.setSize(100, 20);  //100 20
-        lbDescricao.setLocation(5, 20); //5 60
-        pnGeral.add(lbDescricao);
+	}
 
-        tfDescricao = new JTextField();
-        tfDescricao.setSize(300, 25); //300 25
-        tfDescricao.setLocation(70, 20); // 70 60
-        pnGeral.add(tfDescricao);
+	public void limparCampos() {
+		servico = null;
+		tfAulas.setText("");
+		tfDescricao.setText("");
+		tfPrecoAula.setText("");
+		tfPrecoPacote.setText("");
+	}
 
-        //Aulas
-        lbAulas = new JLabel("N� Aulas");
-        lbAulas.setSize(100, 20);
-        lbAulas.setLocation(5, 50);
-        pnGeral.add(lbAulas);
+	public void inicializaComponentes() {
+		// Paineis das abas
 
-        tfAulas = new JTextField();
-        tfAulas.setSize(50, 25);
-        tfAulas.setLocation(70, 50);
-        pnGeral.add(tfAulas);
+		pnGeral = new JPanel();
+		pnGeral.setLayout(null);
+		pnBusca = new JPanel();
+		pnBusca.setLayout(null);
 
-        //Preço Aula
-        lbPrecoAula = new JLabel("Pre�o Aula");
-        lbPrecoAula.setSize(100, 20);
-        lbPrecoAula.setLocation(5, 100);
-        pnGeral.add(lbPrecoAula);
+		// Componentes da Aba de Cadastro
+		// Descricao;
+		lbDescricao = new JLabel("Descri��o");
+		lbDescricao.setSize(100, 20); // 100 20
+		lbDescricao.setLocation(5, 20); // 5 60
+		pnGeral.add(lbDescricao);
 
-        tfPrecoAula = new JTextField();
-        tfPrecoAula.setSize(80, 25);
-        tfPrecoAula.setLocation(70, 100);
-        pnGeral.add(tfPrecoAula);
+		tfDescricao = new JTextField();
+		tfDescricao.setSize(300, 25); // 300 25
+		tfDescricao.setLocation(70, 20); // 70 60
+		pnGeral.add(tfDescricao);
 
-        //Preço Servico
-        lbPrecoPacote = new JLabel("Servico");
-        lbPrecoPacote.setSize(100, 20);
-        lbPrecoPacote.setLocation(5, 130);
-        pnGeral.add(lbPrecoPacote);
+		// Aulas
+		lbAulas = new JLabel("N� Aulas");
+		lbAulas.setSize(100, 20);
+		lbAulas.setLocation(5, 50);
+		pnGeral.add(lbAulas);
 
-        tfPrecoPacote = new JTextField();
-        tfPrecoPacote.setSize(80, 25);
-        tfPrecoPacote.setLocation(70, 130);
-        pnGeral.add(tfPrecoPacote);
+		tfAulas = new JTextField();
+		tfAulas.setSize(50, 25);
+		tfAulas.setLocation(70, 50);
+		pnGeral.add(tfAulas);
 
-        //Botão
-        btSalvar = new JButton("Salvar");
-        btSalvar.setSize(100, 30);
-        btSalvar.setLocation(70, 160);
-        pnGeral.add(btSalvar);
-        
-        btNovo = new JButton("Novo");
-        btNovo.setBounds(200, 160, 100, 30);
-        pnGeral.add(btNovo);
+		// Preço Aula
+		lbPrecoAula = new JLabel("Pre�o Aula");
+		lbPrecoAula.setSize(100, 20);
+		lbPrecoAula.setLocation(5, 100);
+		pnGeral.add(lbPrecoAula);
 
-        // Componentes da Aba de Busca
-        tabela = new JTable(new ModeloTableServico(listPacote));
-        scroll = new JScrollPane(tabela);
-        scroll.setSize(371, 150);
-        scroll.setLocation(2, 5);
-        pnBusca.add(scroll);
+		tfPrecoAula = new JTextField();
+		tfPrecoAula.setSize(80, 25);
+		tfPrecoAula.setLocation(70, 100);
+		pnGeral.add(tfPrecoAula);
 
-        btExcluir = new JButton("Excluir");
-        btExcluir.setSize(100, 30);
-        btExcluir.setLocation(140, 160);
-        pnBusca.add(btExcluir);
+		// Preço Servico
+		lbPrecoPacote = new JLabel("Servico");
+		lbPrecoPacote.setSize(100, 20);
+		lbPrecoPacote.setLocation(5, 130);
+		pnGeral.add(lbPrecoPacote);
 
-        aba = new JTabbedPane();
-        aba.setBounds(1, 1, 385, 295);
-        aba.addTab("Cadastro", pnGeral);
-        aba.addTab(" Busca  ", pnBusca);
-        add(aba);
+		tfPrecoPacote = new JTextField();
+		tfPrecoPacote.setSize(80, 25);
+		tfPrecoPacote.setLocation(70, 130);
+		pnGeral.add(tfPrecoPacote);
 
-        getContentPane().setLayout(null);
-        setSize(390, 280);
-        setLocation(60, 10);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setVisible(true);
-        setClosable(true);
-        setTitle("Cadastro de Servico");
-        setResizable(false);
-        setIconifiable(true);
+		// Botão
+		btSalvar = new JButton("Salvar");
+		btSalvar.setSize(100, 30);
+		btSalvar.setLocation(70, 160);
+		pnGeral.add(btSalvar);
 
-    }
+		btNovo = new JButton("Novo");
+		btNovo.setBounds(200, 160, 100, 30);
+		pnGeral.add(btNovo);
 
-    public void definirEventos() {
-        btSalvar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tfDescricao.setText(tfDescricao.getText().trim());
-                tfAulas.setText(tfAulas.getText().trim());
-                tfPrecoAula.setText(tfPrecoAula.getText().trim());
-                tfPrecoPacote.setText(tfPrecoPacote.getText().trim());
+		// Componentes da Aba de Busca
+		tabela = new JTable(new ModeloTableServico(listPacote));
+		scroll = new JScrollPane(tabela);
+		scroll.setSize(371, 150);
+		scroll.setLocation(2, 5);
+		pnBusca.add(scroll);
 
-                if (tfDescricao.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Informar descri��o");
-                    tfDescricao.requestFocus();
-                    lbDescricao.setForeground(Color.red);
-                } else if (tfAulas.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Informar o numero de aulas");
-                    tfAulas.requestFocus();
-                    lbAulas.setForeground(Color.red);
-                } else if (tfPrecoAula.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Informar o pre�o da aula");
-                    tfPrecoAula.requestFocus();
-                    lbPrecoAula.setForeground(Color.red);
-                } else if (tfPrecoPacote.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Informar o pre�o do servico");
-                    tfPrecoPacote.requestFocus();
-                    lbPrecoPacote.setForeground(Color.red);
-                } else {
-                	RepositoryServico repo= new RepositoryServico();
-                	if(servico == null){
-                		servico = new Servico();
-                	}
-                	
-<<<<<<< HEAD:TreinamentoHabilitados/src/View/FormCadastroServico.java
-                	try {
-                		servico.setAulas(tfAulas.getText());
-                    	servico.setDescAulas(tfDescricao.getText());
-                    	servico.setDescricao(tfDescricao.getText());
-                    	servico.setPrecoPacote(tfPrecoPacote.getText());
-                    	servico.setPrecoAula(tfPrecoAula.getText());
-                        repo.adicionar(servico);
-                        listPacote = new RepositoryServico().buscarServico();
-                        populaTable();
+		btExcluir = new JButton("Excluir");
+		btExcluir.setSize(100, 30);
+		btExcluir.setLocation(140, 160);
+		pnBusca.add(btExcluir);
+
+		aba = new JTabbedPane();
+		aba.setBounds(1, 1, 385, 295);
+		aba.addTab("Cadastro", pnGeral);
+		aba.addTab(" Busca  ", pnBusca);
+		add(aba);
+
+		getContentPane().setLayout(null);
+		setSize(390, 280);
+		setLocation(60, 10);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setVisible(true);
+		setClosable(true);
+		setTitle("Cadastro de Servico");
+		setResizable(false);
+		setIconifiable(true);
+
+	}
+
+	public void definirEventos() {
+		btSalvar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tfDescricao.setText(tfDescricao.getText().trim());
+				tfAulas.setText(tfAulas.getText().trim());
+				tfPrecoAula.setText(tfPrecoAula.getText().trim());
+				tfPrecoPacote.setText(tfPrecoPacote.getText().trim());
+
+				if (tfDescricao.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Informar descri��o");
+					tfDescricao.requestFocus();
+					lbDescricao.setForeground(Color.red);
+				} else if (tfAulas.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null,
+							"Informar o numero de aulas");
+					tfAulas.requestFocus();
+					lbAulas.setForeground(Color.red);
+				} else if (tfPrecoAula.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null,
+							"Informar o pre�o da aula");
+					tfPrecoAula.requestFocus();
+					lbPrecoAula.setForeground(Color.red);
+				} else if (tfPrecoPacote.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null,
+							"Informar o pre�o do servico");
+					tfPrecoPacote.requestFocus();
+					lbPrecoPacote.setForeground(Color.red);
+				} else {
+					RepositoryServico repo = new RepositoryServico();
+					if (servico == null) {
+						servico = new Servico();
+					}
+
+					try {
+						servico.setAulas(tfAulas.getText());
+						servico.setDescAulas(tfDescricao.getText());
+						servico.setDescricao(tfDescricao.getText());
+						servico.setPrecoPacote(tfPrecoPacote.getText());
+						servico.setPrecoAula(tfPrecoAula.getText());
+						repo.adicionar(servico);
+						listPacote = new RepositoryServico().buscarServico();
+						populaTable();
 					} catch (Exception e2) {
-						JOptionPane.showMessageDialog(null, e2.getMessage());			}
-=======
-                	servico.setAulas(tfAulas.getText());
-                	servico.setDescAulas(tfDescricao.getText());
-                	servico.setDescricao(tfDescricao.getText());
-                	servico.setPrecoPacote(tfPrecoPacote.getText());
-                	servico.setPrecoAula(tfPrecoAula.getText());
-                    repo.adicionar(servico);
+						JOptionPane.showMessageDialog(null, e2.getMessage());
+					}
 
+				}
 
-                    listPacote = new RepositoryServico().buscbarServico();
+			}
+		});
 
-                    populaTable();
->>>>>>> 7d65b131852601e51864f3810890bf9d83e08edc:TreinamentoHabilitados/src/View/FormCadastroPacote.java
-                }
+		tabela.addMouseListener(new MouseListener() {
 
-            }
-        });
-
-        tabela.addMouseListener(new MouseListener() {
-			
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mousePressed(MouseEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.getClickCount()==2){
-					
+				if (e.getClickCount() == 2) {
+
 					int index = tabela.getSelectedRow();
-					Servico servicoTable = ((ModeloTableServico)tabela.getModel()).getServico(index);
+					Servico servicoTable = ((ModeloTableServico) tabela
+							.getModel()).getServico(index);
 					servico = servicoTable;
 					aba.setSelectedIndex(0);
-					
+
 					tfAulas.setText(servico.getAulas());
 					tfDescricao.setText(servico.getDescricao());
 					tfPrecoAula.setText(servico.getPrecoAula());
 					tfPrecoPacote.setText(servico.getPrecoPacote());
-					
+
 				}
-				
+
 			}
 		});
-        btNovo.addActionListener(new ActionListener() {
-			
+		btNovo.addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				limparCampos();
-				
+
 			}
 		});
-    }
+	}
 
 }

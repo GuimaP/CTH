@@ -11,8 +11,6 @@ import java.lang.Thread.UncaughtExceptionHandler;
 
 import javax.swing.JFrame;
 
-
-
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamEvent;
 import com.github.sarxos.webcam.WebcamListener;
@@ -20,11 +18,7 @@ import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamPicker;
 import com.github.sarxos.webcam.WebcamResolution;
 
-<<<<<<< HEAD
-import controller.ControllerFuncionario;
-=======
-import controller.FuncionarioController;
->>>>>>> 7d65b131852601e51864f3810890bf9d83e08edc
+import controller.ControllerFormFuncionario;
 
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -94,7 +88,7 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable,
 		setTitle("Auto Escola");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLayout(new BorderLayout());
-		
+
 		addWindowListener(this);
 
 		picker = new WebcamPicker();
@@ -102,19 +96,19 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable,
 
 		webcam = picker.getSelectedWebcam();
 
-		 		if (webcam == null) {
-		 			JOptionPane.showMessageDialog(this,"Nao foi encontrado uma Web cam conectada");
-//		 			webcam.close();
-		 			return;
-		 		} else {
+		if (webcam == null) {
+			JOptionPane.showMessageDialog(this,
+					"Nao foi encontrado uma Web cam conectada");
+			// webcam.close();
+			return;
+		} else {
 
-		 			webcam.setViewSize(WebcamResolution.VGA.getSize());
-		 			webcam.addWebcamListener(WebCamPhotoAutoEscola.this);
+			webcam.setViewSize(WebcamResolution.VGA.getSize());
+			webcam.addWebcamListener(WebCamPhotoAutoEscola.this);
 
-		 			panel = new WebcamPanel(webcam, false);
-		 			panel.setFPSDisplayed(true);
+			panel = new WebcamPanel(webcam, false);
+			panel.setFPSDisplayed(true);
 
-			
 			btTakePicture = new JButton("Tirar Foto");
 			btTakePicture.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -122,11 +116,11 @@ public class WebCamPhotoAutoEscola extends JDialog implements Runnable,
 						java.io.File f = new java.io.File(diretorioParaSalvar
 								+ nomeArquivo + ".jpg");
 						java.io.File dirSave = new File(diretorioParaSalvar);
-						
-						if(!dirSave.exists()){
+
+						if (!dirSave.exists()) {
 							dirSave.mkdir();
 						}
-						
+
 						if (f.exists()) {
 							f.delete();
 						}

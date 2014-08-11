@@ -18,7 +18,7 @@ import model.Carro;
  *
  * @author Guima
  */
-<<<<<<< HEAD
+
 public class RepositoryCarro extends Repository<Carro> {
 
 	public void adicionar(Carro carro) throws Exception {
@@ -51,19 +51,5 @@ public class RepositoryCarro extends Repository<Carro> {
 		}
 
 	}
-=======
-public class RepositoryCarro extends Repository<model.Carro>{
-    public List<Carro> pegarTodos() throws SQLException {
-    	        List<Carro> lista = null;
-    	        Session session = ConnectionFactoryConfig.openManger().openSession();//getCurrentSession();
-    	        
-    	        session.createCriteria(Carro.class);
-    	        Criteria c = session.createCriteria(Carro.class);
-    	        lista = c.list();
-    	        
-    	        session.close();
-    	        return lista;
-    	    
-    }
->>>>>>> 7d65b131852601e51864f3810890bf9d83e08edc
+
 }

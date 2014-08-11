@@ -25,7 +25,7 @@ import model.Funcionario;
  *
  * @author Guima
  */
-public class ControllerFuncionario {
+public class ControllerFormFuncionario {
 
     public static void saveInformacao(Funcionario f) {
 
@@ -41,7 +41,7 @@ public class ControllerFuncionario {
             
            loadInformacao();
         } catch (IOException ex) {
-           Logger.getLogger(ControllerFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+           Logger.getLogger(ControllerFormFuncionario.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -58,7 +58,7 @@ public class ControllerFuncionario {
         } catch (IOException er) {
             er.printStackTrace();
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ControllerFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ControllerFormFuncionario.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         System.out.println("Serializando:" + f.getNome());

@@ -108,10 +108,10 @@ public class ReportUtil {
 		
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		List<Carro> lstCarros;
 		try {
-			lstCarros = new RepositoryCarro().pegarTodos();
+			lstCarros = new RepositoryCarro().buscarTodos();
 			HashMap<String, String>paramaters = new HashMap<String, String>();
 			String nomeRelatorioJasper = "Carros";
 			String nomeRelatorioSaida = "carross";
@@ -127,6 +127,8 @@ public class ReportUtil {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}catch(Exception e){
+			throw new Exception(e);
 		}
 		
 	}

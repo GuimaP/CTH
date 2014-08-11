@@ -9,15 +9,25 @@ public class ControllerPacote {
 	private Pacote p;
 	private RepositoryPacote repP;
 	
-	public void adicionar (Pacote p){
-		this.p = p;
-		repP = new RepositoryPacote();
-		repP.adicionar(p);
+	public void adicionar (Pacote p) throws Exception{
+		try {
+			this.p = p;
+			repP = new RepositoryPacote();
+			repP.adicionar(p);
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
+		
 		
 	}
-	public List<Pacote> buscarTodos(){
-		repP = new RepositoryPacote();
-		return repP.buscarTodos();
+	public List<Pacote> buscarTodos() throws Exception{
+		try {
+			repP = new RepositoryPacote();
+			return repP.buscarTodos();
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
+		
 	}
 
 }
