@@ -6,13 +6,21 @@ import model.enums.EnumStatus;
 import model.repository.ConnectionFactoryRepository;
 import model.repository.Repository;
 import model.repository.RepositoryCarro;
+<<<<<<< HEAD
 import model.repository.RepositoryFuncionario;
+=======
+import model.repository.RepositoryInstrutor;
+>>>>>>> 7d65b131852601e51864f3810890bf9d83e08edc
 import model.table.ModeloTableFuncionario;
 
 import com.toedter.calendar.JDateChooser;
 import com.towel.swing.img.JImagePanel;
 
+<<<<<<< HEAD
 import controller.ControllerFuncionario;
+=======
+import controller.FuncionarioController;
+>>>>>>> 7d65b131852601e51864f3810890bf9d83e08edc
 import controller.LogController;
 import controller.VerificadorDeCpf;
 

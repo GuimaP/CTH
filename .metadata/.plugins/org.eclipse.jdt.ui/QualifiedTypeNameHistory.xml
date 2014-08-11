@@ -1,9 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
+<<<<<<< HEAD
+=======
+<fullyQualifiedTypeName name="java.awt.GridBagConstraints"/>
+<fullyQualifiedTypeName name="java.awt.GridLayout"/>
+<fullyQualifiedTypeName name="com.toedter.calendar.JDateChooser"/>
+<fullyQualifiedTypeName name="Model.EnumSexo"/>
+<fullyQualifiedTypeName name="Model.EnumFormaca"/>
+<fullyQualifiedTypeName name="Model.EnumQuestionario"/>
+<fullyQualifiedTypeName name="java.awt.Color"/>
+<fullyQualifiedTypeName name="javax.swing.JComboBox"/>
+<fullyQualifiedTypeName name="javax.swing.JLabel"/>
+<fullyQualifiedTypeName name="javax.swing.table.AbstractTableModel"/>
+<fullyQualifiedTypeName name="javax.swing.JTable"/>
+<fullyQualifiedTypeName name="Model.Agendamento"/>
+<fullyQualifiedTypeName name="Model.ModeloTableAgendamento"/>
+<fullyQualifiedTypeName name="javax.swing.JScrollPane"/>
+>>>>>>> 7d65b131852601e51864f3810890bf9d83e08edc
 <fullyQualifiedTypeName name="javax.xml.crypto.Data"/>
 <fullyQualifiedTypeName name="java.awt.List"/>
 <fullyQualifiedTypeName name="java.lang.InternalError"/>
 <fullyQualifiedTypeName name="Model.Repository.Repository"/>
+<<<<<<< HEAD
+=======
+<fullyQualifiedTypeName name="java.lang.Exception"/>
+>>>>>>> 7d65b131852601e51864f3810890bf9d83e08edc
 <fullyQualifiedTypeName name="org.bridj.cpp.std.list"/>
 <fullyQualifiedTypeName name="Model.Repository.ConnectionFactoryConfig"/>
 <fullyQualifiedTypeName name="Model.Repository.RepositoryCliente"/>
@@ -21,6 +42,10 @@
 <fullyQualifiedTypeName name="Model.Aula"/>
 <fullyQualifiedTypeName name="javax.persistence.Id"/>
 <fullyQualifiedTypeName name="javax.persistence.GeneratedValue"/>
+<<<<<<< HEAD
+=======
+<fullyQualifiedTypeName name="model.Aula"/>
+>>>>>>> 7d65b131852601e51864f3810890bf9d83e08edc
 <fullyQualifiedTypeName name="javax.persistence.Column"/>
 <fullyQualifiedTypeName name="java.sql.Date"/>
 <fullyQualifiedTypeName name="java.util.Date"/>
@@ -30,6 +55,7 @@
 <fullyQualifiedTypeName name="javax.persistence.JoinColumn"/>
 <fullyQualifiedTypeName name="model.Pagamento"/>
 <fullyQualifiedTypeName name="java.sql.SQLException"/>
+<<<<<<< HEAD
 <fullyQualifiedTypeName name="model.Cliente"/>
 <fullyQualifiedTypeName name="model.repository.RepositoryCliente"/>
 <fullyQualifiedTypeName name="model.Pesquisa"/>
@@ -60,4 +86,20 @@
 <fullyQualifiedTypeName name="model.table.ModeloTableServico"/>
 <fullyQualifiedTypeName name="model.Carro"/>
 <fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
+=======
+<fullyQualifiedTypeName name="org.hibernate.Session"/>
+<fullyQualifiedTypeName name="model.repository.ConnectionFactoryConfig"/>
+<fullyQualifiedTypeName name="org.hibernate.Criteria"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="model.Cliente"/>
+<fullyQualifiedTypeName name="model.Pacote"/>
+<fullyQualifiedTypeName name="model.repository.RepositoryPacote"/>
+<fullyQualifiedTypeName name="model.repository.RepositoryCliente"/>
+<fullyQualifiedTypeName name="model.repository.Repository"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="model.Pesquisa"/>
+<fullyQualifiedTypeName name="model.repository.RepositoryPesquisa"/>
+<fullyQualifiedTypeName name="model.Servico"/>
+<fullyQualifiedTypeName name="model.repository.RepositoryServico"/>
+>>>>>>> 7d65b131852601e51864f3810890bf9d83e08edc
 </qualifiedTypeNameHistroy>

@@ -20,7 +20,11 @@ import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamPicker;
 import com.github.sarxos.webcam.WebcamResolution;
 
+<<<<<<< HEAD
 import controller.ControllerFuncionario;
+=======
+import controller.FuncionarioController;
+>>>>>>> 7d65b131852601e51864f3810890bf9d83e08edc
 
 import java.awt.Point;
 import java.awt.event.ActionEvent;

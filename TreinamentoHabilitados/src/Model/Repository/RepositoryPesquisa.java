@@ -11,6 +11,7 @@ import model.Pesquisa;
 
 public class RepositoryPesquisa extends Repository<Pesquisa>{
 	
+<<<<<<< HEAD
 	public void adicionar (Pesquisa p)throws Exception{
 		try {
 			Session session = ConnectionFactoryConfig.openManger().openSession();
@@ -37,6 +38,25 @@ public class RepositoryPesquisa extends Repository<Pesquisa>{
 		
 		
 		
+=======
+	public void adicionar (Pesquisa p){
+		Session session = ConnectionFactoryConfig.openManger().openSession();
+		session.beginTransaction();
+		session.persist(p);
+		session.getTransaction().commit();
+		
+	}
+	
+	public List<Pesquisa> buscarTodos(){
+		
+		Session session = ConnectionFactoryConfig.openManger().openSession();
+		List<Pesquisa> listPesquisa = new ArrayList<Pesquisa>();
+		Criteria c = session.createCriteria(Pesquisa.class);
+		listPesquisa = c.list();
+		
+		
+		return listPesquisa;
+>>>>>>> 7d65b131852601e51864f3810890bf9d83e08edc
 	}
 	
 

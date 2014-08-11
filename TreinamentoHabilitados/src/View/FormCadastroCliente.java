@@ -154,7 +154,11 @@ public class FormCadastroCliente extends JInternalFrame {
 	public FormCadastroCliente() {
 		//
 		try {
+<<<<<<< HEAD
 			listPacote = new RepositoryServico().buscarServico();
+=======
+			listPacote = new RepositoryServico().buscbarServico();
+>>>>>>> 7d65b131852601e51864f3810890bf9d83e08edc
 			Cliente c = new Cliente();
 			dirMyPicture = "";
 			minhaInternal = this;
@@ -199,9 +203,16 @@ public class FormCadastroCliente extends JInternalFrame {
 
 	public void popuTable() {
 		List<Servico> l = new ArrayList<Servico>();
+<<<<<<< HEAD
 		try {
 			for (Servico p : listPacote) {
 				listPacote = new RepositoryServico().buscarServico();
+=======
+			for (Servico p : listPacote) {
+				
+				
+				listPacote = new RepositoryServico().buscbarServico();
+>>>>>>> 7d65b131852601e51864f3810890bf9d83e08edc
 				table.setModel(new ModeloTableServico(listPacote));
 				scroll.revalidate();
 			

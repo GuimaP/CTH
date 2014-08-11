@@ -14,7 +14,11 @@ import model.Funcionario;
  *@author Guima
  * Classe responsavel pela Persistencia da Base de dados
  */
+<<<<<<< HEAD:TreinamentoHabilitados/src/Model/Repository/RepositoryFuncionario.java
 public class RepositoryFuncionario extends Repository<model.Funcionario> {
+=======
+public class RepositoryInstrutor extends Repository<model.Funcionario> {
+>>>>>>> 7d65b131852601e51864f3810890bf9d83e08edc:TreinamentoHabilitados/src/Model/Repository/RepositoryInstrutor.java
    
     
     public Funcionario findInstrutorSingle(String cpf){

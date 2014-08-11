@@ -4,14 +4,21 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+<<<<<<< HEAD
 import model.Aula;
+=======
+>>>>>>> 7d65b131852601e51864f3810890bf9d83e08edc
 import model.Cliente;
 import model.Pacote;
 import model.Pesquisa;
 import model.Servico;
+<<<<<<< HEAD
 import model.repository.RepositoryAula;
 import model.repository.RepositoryCliente;
 import model.repository.RepositoryPacote;
+=======
+import model.repository.RepositoryCliente;
+>>>>>>> 7d65b131852601e51864f3810890bf9d83e08edc
 import model.repository.RepositoryPesquisa;
 import model.repository.RepositoryServico;
 
@@ -19,6 +26,7 @@ public class ControllerFormCliente {
 	private Cliente c;
 	private Servico s;
 	private Pesquisa p;
+<<<<<<< HEAD
 	private Pacote pacote;
 	private Aula a;
 
@@ -105,5 +113,31 @@ public class ControllerFormCliente {
 		} catch (Exception e) {
 			throw new Exception(e);
 		}
+=======
+	private RepositoryServico repoS;
+	private RepositoryCliente repC;
+	private RepositoryPesquisa repPes;
+	
+	public void adicionarCliente(Cliente c) throws SQLException {
+		this.c = c;
+		repC = new RepositoryCliente();
+		repC.adicionar(c);
+	}
+
+	public List<Cliente> buscarCliente() {
+		repC = new RepositoryCliente();
+		return repC.buscarTodos();
+	}
+
+	public void adicionarPesquisa (Pesquisa p ){
+		this.p = p;
+		repPes = new RepositoryPesquisa();
+		repPes.adicionar(p);
+	}
+	public List<Pesquisa> buscarPesquisa(){
+		repPes = new RepositoryPesquisa();
+		return repPes.buscarTodos();
+		
+>>>>>>> 7d65b131852601e51864f3810890bf9d83e08edc
 	}
 }

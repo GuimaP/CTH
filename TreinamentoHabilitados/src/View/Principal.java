@@ -280,22 +280,22 @@ public class Principal extends JFrame {
 		painelNotification.add(lb);
 		add(painelNotification);
 		
-		pnMenuSuperior = new MenuSuperior();
-		Dimension tamanhoFrame = getSize();
-		pnMenuSuperior.setSize(tamanhoFrame.width, 130);
-		pnMenuSuperior.setLocation(0, 0);
-//		pnMenuSuperior.setBackground(new Color(254,254,254,120));
-		FlowLayout layout = new FlowLayout();
-		layout.setAlignment(FlowLayout.LEADING);
-		
-//		pnMenuSuperior.setLayout(layout);
-		
-		add(pnMenuSuperior);
-		
-		btAbrirMenuSuperior = new JButton("V");
-		btAbrirMenuSuperior.setSize(60,30);
-		btAbrirMenuSuperior.setLocation((getSize().width / 2 ) - btAbrirMenuLateral.getWidth(),pnMenuSuperior.getSize().height);
-		add(btAbrirMenuSuperior);
+//		pnMenuSuperior = new MenuSuperior();
+//		Dimension tamanhoFrame = getSize();
+//		pnMenuSuperior.setSize(tamanhoFrame.width, 130);
+//		pnMenuSuperior.setLocation(0, 0);
+////		pnMenuSuperior.setBackground(new Color(254,254,254,120));
+//		FlowLayout layout = new FlowLayout();
+//		layout.setAlignment(FlowLayout.LEADING);
+//		
+////		pnMenuSuperior.setLayout(layout);
+//		
+//		add(pnMenuSuperior);
+//		
+//		btAbrirMenuSuperior = new JButton("V");
+//		btAbrirMenuSuperior.setSize(60,30);
+//		btAbrirMenuSuperior.setLocation((getSize().width / 2 ) - btAbrirMenuLateral.getWidth(),pnMenuSuperior.getSize().height);
+//		add(btAbrirMenuSuperior);
 		
 		
 		

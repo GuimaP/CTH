@@ -5,7 +5,10 @@
  */
 package View;
 
+<<<<<<< HEAD:TreinamentoHabilitados/src/View/FormCadastroServico.java
 import model.Carro;
+=======
+>>>>>>> 7d65b131852601e51864f3810890bf9d83e08edc:TreinamentoHabilitados/src/View/FormCadastroPacote.java
 import model.Servico;
 import model.repository.Repository;
 import model.repository.RepositoryServico;
@@ -55,6 +58,7 @@ public class FormCadastroServico extends JInternalFrame {
 
     public static boolean isDialogBuscaPacoteOpen;
 
+<<<<<<< HEAD:TreinamentoHabilitados/src/View/FormCadastroServico.java
     public FormCadastroServico() {
         try {
         	isDialogBuscaPacoteOpen = false;
@@ -67,11 +71,20 @@ public class FormCadastroServico extends JInternalFrame {
 		}
     	
     	
+=======
+    public FormCadastroPacote() {
+        isDialogBuscaPacoteOpen = false;
+        listPacote = new RepositoryServico().buscbarServico();
+        inicializaComponentes();
+        definirEventos();
+        populaTable();
+>>>>>>> 7d65b131852601e51864f3810890bf9d83e08edc:TreinamentoHabilitados/src/View/FormCadastroPacote.java
     }
 
     
    
     public void populaTable() {
+<<<<<<< HEAD:TreinamentoHabilitados/src/View/FormCadastroServico.java
     	try {
     		List<Servico> ls = new ArrayList<Servico>();
             for (Servico p : listPacote) {
@@ -83,6 +96,14 @@ public class FormCadastroServico extends JInternalFrame {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
+=======
+    	List<Servico> ls = new ArrayList<Servico>();
+        for (Servico p : listPacote) {
+        
+        	listPacote = new RepositoryServico().buscbarServico();
+        	tabela.setModel(new ModeloTableServico(listPacote));
+        	scroll.revalidate();
+>>>>>>> 7d65b131852601e51864f3810890bf9d83e08edc:TreinamentoHabilitados/src/View/FormCadastroPacote.java
         	
         
     }
@@ -219,6 +240,7 @@ public class FormCadastroServico extends JInternalFrame {
                 		servico = new Servico();
                 	}
                 	
+<<<<<<< HEAD:TreinamentoHabilitados/src/View/FormCadastroServico.java
                 	try {
                 		servico.setAulas(tfAulas.getText());
                     	servico.setDescAulas(tfDescricao.getText());
@@ -230,6 +252,19 @@ public class FormCadastroServico extends JInternalFrame {
                         populaTable();
 					} catch (Exception e2) {
 						JOptionPane.showMessageDialog(null, e2.getMessage());			}
+=======
+                	servico.setAulas(tfAulas.getText());
+                	servico.setDescAulas(tfDescricao.getText());
+                	servico.setDescricao(tfDescricao.getText());
+                	servico.setPrecoPacote(tfPrecoPacote.getText());
+                	servico.setPrecoAula(tfPrecoAula.getText());
+                    repo.adicionar(servico);
+
+
+                    listPacote = new RepositoryServico().buscbarServico();
+
+                    populaTable();
+>>>>>>> 7d65b131852601e51864f3810890bf9d83e08edc:TreinamentoHabilitados/src/View/FormCadastroPacote.java
                 }
 
             }

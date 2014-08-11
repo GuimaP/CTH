@@ -10,6 +10,7 @@ public class ControllerServico {
 	private Servico s;
 	private  RepositoryServico repoS;
 	
+<<<<<<< HEAD
 public void adicionarServico(Servico s)throws Exception {
 		try {
 			this.s = s;
@@ -32,5 +33,18 @@ public void adicionarServico(Servico s)throws Exception {
 		
 		
 		
+=======
+public void adicionarServico(Servico s)throws SQLException {
+		
+		this.s = s;
+		repoS = new RepositoryServico();
+		repoS.adicionar(s);
+		
+	}
+	
+	public List<Servico> buscarServico (){
+		repoS = new RepositoryServico();
+		return repoS.buscbarServico();
+>>>>>>> 7d65b131852601e51864f3810890bf9d83e08edc
 	}
 }
