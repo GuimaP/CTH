@@ -1,8 +1,17 @@
 INDEX VERSION 1.127+F:\vitor.senai\quartoSemestre\TCC\.metadata\.plugins\org.eclipse.jdt.core
 3907589288.index
+<<<<<<< HEAD
 2673425919.index
 648820999.index
 2503134553.index
+=======
+3306715711.index
+2673425919.index
+648820999.index
+4066281800.index
+2503134553.index
+1746355392.index
+>>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 366216946.index
 1259023562.index
 3167461448.index
@@ -11,6 +20,10 @@ INDEX VERSION 1.127+F:\vitor.senai\quartoSemestre\TCC\.metadata\.plugins\org.ecl
 1244022644.index
 3108700863.index
 2863255783.index
+<<<<<<< HEAD
+=======
+1385408076.index
+>>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 465688780.index
 1369127545.index
 4245235585.index
@@ -25,6 +38,10 @@ INDEX VERSION 1.127+F:\vitor.senai\quartoSemestre\TCC\.metadata\.plugins\org.ecl
 4183445374.index
 2705315894.index
 18406961.index
+<<<<<<< HEAD
+=======
+4003720020.index
+>>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 3408534854.index
 1286246275.index
 3034005069.index
@@ -46,11 +63,19 @@ INDEX VERSION 1.127+F:\vitor.senai\quartoSemestre\TCC\.metadata\.plugins\org.ecl
 2145570006.index
 3252748595.index
 2943934462.index
+<<<<<<< HEAD
 1789339268.index
 3852759103.index
 4071307540.index
 2823371735.index
 552871308.index
+=======
+4071307540.index
+3852759103.index
+1789339268.index
+552871308.index
+2823371735.index
+>>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 4077668519.index
 3224974857.index
 1555232857.index

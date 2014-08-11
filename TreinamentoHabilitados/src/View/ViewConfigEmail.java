@@ -65,7 +65,15 @@ public class ViewConfigEmail extends JInternalFrame {
         
         tfSenha = new JPasswordField();
         tfSenha.setBounds(5, lbSenha.getHeight()+lbSenha.getY(), getWidth()-20, 30);
+<<<<<<< HEAD
         tfSenha.setEchoChar('*');
+=======
+
+        tfSenha.setEchoChar('�');
+
+        tfSenha.setEchoChar('_');
+
+>>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
         add(tfSenha);
         
         lbHostEntrada = new JLabel("Host de Entrada:  ");

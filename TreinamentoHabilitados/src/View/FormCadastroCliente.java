@@ -148,25 +148,35 @@ public class FormCadastroCliente extends JInternalFrame {
 	private JImagePanel painelFotoInstrutor;
 
 	private MouseAdapter cliqueEmFoto;
-	
+
 	private JComponent minhaInternal;
 
 	public FormCadastroCliente() {
 		//
 		try {
+<<<<<<< HEAD
 			listPacote = new RepositoryServico().buscarServico();
+=======
+
+			listPacote = new RepositoryServico().buscarServico();
+
+>>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 			Cliente c = new Cliente();
 			dirMyPicture = "";
 			minhaInternal = this;
 			inicializaComponentes();
 
 			definirEventos();
-			
+
 			popuTable();
 		} catch (ParseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 
+<<<<<<< HEAD
 		}catch (Exception e1){
+=======
+		} catch (Exception e1) {
+>>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 			JOptionPane.showMessageDialog(null, e1.getMessage());
 		}
 
@@ -199,19 +209,34 @@ public class FormCadastroCliente extends JInternalFrame {
 
 	public void popuTable() {
 		List<Servico> l = new ArrayList<Servico>();
+<<<<<<< HEAD
 		try {
 			for (Servico p : listPacote) {
 				listPacote = new RepositoryServico().buscarServico();
+=======
+
+		try {
+
+			for (Servico p : listPacote) {
+
+				listPacote = new RepositoryServico().buscarServico();
+
+>>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 				table.setModel(new ModeloTableServico(listPacote));
 				scroll.revalidate();
-			
+
 			}
 		} catch (Exception e) {
 			JOptionPane.showConfirmDialog(null, e.getMessage());
+<<<<<<< HEAD
 		}	
 		
 		
 		
+=======
+		}
+
+>>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 	}
 
 	public void inicializaComponentes() throws ParseException {
@@ -227,29 +252,42 @@ public class FormCadastroCliente extends JInternalFrame {
 		panelCliente.setLayout(null);
 		panelCliente.setBounds(5, 10, 380, 210);
 
-		try{
-		java.io.File f = new java.io.File(dirMyPicture);//Verifico se existe alguma diretorio
-        if (f.exists()) { //Verifica se tem alguma foto existente para carregar
-            BufferedImage img = null; 
-            try { 
-                img = ImageIO.read(f);//Tento ler o arquivo e carregar numa imagem.
-            } catch (IOException ex) {
-                Logger.getLogger(FormCadastroInstrutor.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            painelFotoInstrutor = new JImagePanel(f.getPath());//e passo como parametro para desenhar na tela
-        } else {
-        	BufferedImage imageBf = ImageIO.read(getClass().getClassLoader().getResourceAsStream("Resources/imgs/noImage.png"));
-        	painelFotoInstrutor = new JImagePanel(imageBf);
-        }
-        painelFotoInstrutor.setBounds(405, 10, 110, 130);
-        Border bordaColorida = BorderFactory.createLineBorder(Color.GRAY);
-        Border bordaPainelFoto = BorderFactory.createTitledBorder(bordaColorida, "Foto do Instrutor");
-        painelFotoInstrutor.setBorder(bordaPainelFoto);
-        abaTodos.add(painelFotoInstrutor);
-		}catch(Exception e){
+		try {
+			java.io.File f = new java.io.File(dirMyPicture);// Verifico se
+															// existe alguma
+															// diretorio
+			if (f.exists()) { // Verifica se tem alguma foto existente para
+								// carregar
+				BufferedImage img = null;
+				try {
+					img = ImageIO.read(f);// Tento ler o arquivo e carregar numa
+											// imagem.
+				} catch (IOException ex) {
+					Logger.getLogger(FormCadastroInstrutor.class.getName())
+							.log(Level.SEVERE, null, ex);
+				}
+				painelFotoInstrutor = new JImagePanel(f.getPath());// e passo
+																	// como
+																	// parametro
+																	// para
+																	// desenhar
+																	// na tela
+			} else {
+				BufferedImage imageBf = ImageIO.read(getClass()
+						.getClassLoader().getResourceAsStream(
+								"Resources/imgs/noImage.png"));
+				painelFotoInstrutor = new JImagePanel(imageBf);
+			}
+			painelFotoInstrutor.setBounds(405, 10, 110, 130);
+			Border bordaColorida = BorderFactory.createLineBorder(Color.GRAY);
+			Border bordaPainelFoto = BorderFactory.createTitledBorder(
+					bordaColorida, "Foto do Instrutor");
+			painelFotoInstrutor.setBorder(bordaPainelFoto);
+			abaTodos.add(painelFotoInstrutor);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		// Inicio dos componentes do painel Cliente
 		// ----------------------------------------------
 
@@ -342,7 +380,7 @@ public class FormCadastroCliente extends JInternalFrame {
 
 		maskCpf = new MaskFormatter("###.###.###-##");
 		maskCpf.setPlaceholderCharacter('_');
-		//maskCpf.setValueContainsLiteralCharacters(false);
+		// maskCpf.setValueContainsLiteralCharacters(false);
 		tfCpf = new JFormattedTextField(maskCpf);
 		tfCpf.setBounds(60, 120, 120, 25);
 		panelCliente.add(tfCpf);
@@ -754,90 +792,102 @@ public class FormCadastroCliente extends JInternalFrame {
 
 	public void definirEventos() {
 
-        this.cliqueEmFoto = new MouseAdapter() {
-            private Object webcam;
+		this.cliqueEmFoto = new MouseAdapter() {
+			private Object webcam;
 
-            public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent e) {
 
-                if (e.getClickCount() == 2) {
-
-				    
-
+<<<<<<< HEAD
 //				    populaObjInstrutor();
 //				    ControllerFuncionario.saveInformacao(instrutor);
 				    String separador = System.getProperty("file.separator");
 				    String strPath =  System.getProperty("user.home")+separador+"Treinamento"+separador+"Fotos-Consumidor"+separador;
+=======
+				if (e.getClickCount() == 2) {
+>>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 
+					// populaObjInstrutor();
+					// ControllerFormFuncionario.saveInformacao(instrutor);
+					String separador = System.getProperty("file.separator");
+					String strPath = System.getProperty("user.home")
+							+ separador + "Treinamento" + separador
+							+ "Fotos-Consumidor" + separador;
 
+					String strNameFile = tfNome.getText(); // Pego o nome que
+															// serÃ¡ a imagem
 
+					// Instancio a janela de Cam
+					WebCamPhotoAutoEscola dialog = new WebCamPhotoAutoEscola(
+							Principal.minhaFrame, strPath, strNameFile);
+					String caminhoDaImagem = "";// Inicializo a Variavel
 
-				    String strNameFile = tfNome.getText(); //Pego o nome que serÃ¡ a imagem
+					// Pego o caminho da imagem;
+					caminhoDaImagem = dialog.caminhoDaImagem;
 
-				    
-				    //Instancio a janela de Cam
-				    WebCamPhotoAutoEscola dialog = new WebCamPhotoAutoEscola(Principal.minhaFrame, strPath, strNameFile);
-				    String caminhoDaImagem = "";//Inicializo a Variavel
+					// Crio um File a partir da foto
+					File fotoTirada = new File(caminhoDaImagem);
 
-				    //Pego o caminho da imagem;
-				    caminhoDaImagem = dialog.caminhoDaImagem;
-				    
-				    //Crio um File a partir da foto
-				    File fotoTirada = new File(caminhoDaImagem);
-				    
+					if (cliente == null) {
+						cliente = new Cliente();
+					}
 
+					// Seto a imagem pra variavel do Instrutor
+					Image imgFoto = new ImageIcon(caminhoDaImagem).getImage();
+					cliente.setImage(new byte[(int) fotoTirada.length()]);
 
-				    
-				    if(cliente == null){
-				    	cliente = new Cliente();
-				    }
-				    
+					// Verifica se existe uma foto, pois pode muito bem o fulano
+					// não ter tirado uma foto.
 
-				    //Seto a imagem pra variavel do Instrutor
-				    Image imgFoto = new ImageIcon(caminhoDaImagem).getImage();
-				    cliente.setImage(new byte[(int)fotoTirada.length()]);
-				    
+					// Verifica se existe uma foto, pois pode muito bem o fulano
+					// nÃ£o ter tirado uma foto.
 
-				    //Verifica se existe uma foto, pois pode muito bem o fulano não ter tirado uma foto.
+					if (!caminhoDaImagem.isEmpty() & fotoTirada.exists()) {
+						System.out.println("Imagem tirada:" + caminhoDaImagem); // Log...
 
-				    //Verifica se existe uma foto, pois pode muito bem o fulano nÃ£o ter tirado uma foto.
+						dirMyPicture = caminhoDaImagem;// passo o path para a
+														// variavel Global...
+						try {
+							BufferedImage img = ImageIO.read(new File(
+									caminhoDaImagem));
+							painelFotoInstrutor.setImage(img);
+							painelFotoInstrutor.repaint();
+							painelFotoInstrutor.revalidate();
 
-				    if (!caminhoDaImagem.isEmpty() & fotoTirada.exists()) {
-				        System.out.println("Imagem tirada:" + caminhoDaImagem); //Log...
-				        
-				        dirMyPicture = caminhoDaImagem;//passo o path para a variavel Global...
-				        try {
-						BufferedImage img = ImageIO.read(new File(caminhoDaImagem));	
-						painelFotoInstrutor.setImage(img);
-				        painelFotoInstrutor.repaint();
-				        painelFotoInstrutor.revalidate();
+							minhaInternal.revalidate(); // revalido as
+														// alterações
+							minhaInternal.revalidate(); // revalido as
+														// alteraÃ§Ãµes
 
-				        minhaInternal.revalidate(); //revalido as alterações
-		        minhaInternal.revalidate(); //revalido as alteraÃ§Ãµes
+							minhaInternal.repaint(); // e "Atualizo"
+							Principal.minhaFrame.revalidate();
+							Principal.minhaFrame.repaint();
 
-				        minhaInternal.repaint(); //e "Atualizo"
-				        Principal.minhaFrame.revalidate();
-				        Principal.minhaFrame.repaint();
-				        
-
+<<<<<<< HEAD
 //				        ControllerFuncionario.loadInformacao(); //Recupero os dados do meu arquivo temporario
 
 //				        ControllerFuncionario.loadInformacao(); //Recupero os dados do meu arquivo temporario
+=======
+							// ControllerFormFuncionario.loadInformacao();
+							// //Recupero os dados do meu arquivo temporario
 
-//				        populaCampos(); //E populo os campos 
-				        } catch (IOException e1) {
-							// 	
+							// ControllerFormFuncionario.loadInformacao();
+							// //Recupero os dados do meu arquivo temporario
+>>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
+
+							// populaCampos(); //E populo os campos
+						} catch (IOException e1) {
+							//
 							e1.printStackTrace();
 						}
-				    }
+					}
 
 				}
 
-            }
-        };
+			}
+		};
 
-		
-        painelFotoInstrutor.addMouseListener(cliqueEmFoto);
-        
+		painelFotoInstrutor.addMouseListener(cliqueEmFoto);
+
 		jcPagamento.addActionListener(new ActionListener() {
 			int estado = 1;
 
@@ -905,7 +955,7 @@ public class FormCadastroCliente extends JInternalFrame {
 
 				// valida��es
 				tfNome.setText(tfNome.getText().trim());
-			
+
 				tfLogradouro.setText(tfLogradouro.getText().trim());
 				tfNumero.setText(tfNumero.getText().trim());
 				tfBairro.setText(tfBairro.getText().trim());
@@ -923,7 +973,7 @@ public class FormCadastroCliente extends JInternalFrame {
 					JOptionPane.showMessageDialog(null, "Informar o nome");
 					lbNome.setForeground(Color.red);
 					tfNome.requestFocus(true);
-				
+
 				} else if (tfLogradouro.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Informar a rua");
 					lbLogradouro.setForeground(Color.red);
@@ -936,7 +986,7 @@ public class FormCadastroCliente extends JInternalFrame {
 					JOptionPane.showMessageDialog(null, "Informar o cep");
 					lbCep.setForeground(Color.red);
 					tfCep.requestFocus(true);
-				
+
 				} else if (tfCep.getValue() == null) {
 					JOptionPane.showMessageDialog(null, "Informar o cep");
 					lbCep.setForeground(Color.red);
@@ -955,8 +1005,8 @@ public class FormCadastroCliente extends JInternalFrame {
 							"Informar o numero de registro da CNH");
 					lbRegistroCnh.setForeground(Color.red);
 					tfRegistroCnh.requestFocus(true);
-				
-				}  else if (jcPesquisa.getSelectedIndex() == -1) {
+
+				} else if (jcPesquisa.getSelectedIndex() == -1) {
 					JOptionPane.showMessageDialog(null,
 							"Selecionar uma das opções");
 					jcPesquisa.requestFocus(true);
@@ -965,8 +1015,12 @@ public class FormCadastroCliente extends JInternalFrame {
 					// populando os objetos
 					cliente.setNome(tfNome.getText());
 					cadastro.setData(dtCadastroCliente.getDate().toString());
+<<<<<<< HEAD
 					
 					
+=======
+
+>>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 					cliente.setNascimento(cdDataNascimento.getDate());
 					cliente.setSexo(jcSexo.getSelectedItem().toString());
 					cliente.setCpf(tfCpf.getText());
@@ -981,7 +1035,11 @@ public class FormCadastroCliente extends JInternalFrame {
 								.getSelectedItem().toString());
 					}
 					cliente.setProfissao(tfProfissao.getText());
+<<<<<<< HEAD
 					
+=======
+
+>>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 					cadastro.setPesquisa1(tfQuestao1.getText());
 					if (jrQ2Yes.isSelected()) {
 						cadastro.setPesquisa2("sim");
@@ -1005,7 +1063,6 @@ public class FormCadastroCliente extends JInternalFrame {
 					}
 
 					popuTable();
-
 
 					// TODO n�o esquecer de aplicar o ternario para os
 					// FORMATEDTEXTFIELD

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
+<<<<<<< HEAD
 <fullyQualifiedTypeName name="javax.xml.crypto.Data"/>
 <fullyQualifiedTypeName name="java.awt.List"/>
 <fullyQualifiedTypeName name="java.lang.InternalError"/>
@@ -60,4 +61,13 @@
 <fullyQualifiedTypeName name="model.table.ModeloTableServico"/>
 <fullyQualifiedTypeName name="model.Carro"/>
 <fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
+=======
+<fullyQualifiedTypeName name="java.lang.Exception"/>
+<fullyQualifiedTypeName name="model.repository.Repository"/>
+<fullyQualifiedTypeName name="model.repository.RepositoryInstrutor"/>
+<fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
+<fullyQualifiedTypeName name="model.repository.RepositoryServico"/>
+<fullyQualifiedTypeName name="com.towel.swing.img.JImagePanel"/>
+<fullyQualifiedTypeName name="model.enums.EnumStatus"/>
+>>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 </qualifiedTypeNameHistroy>

@@ -20,6 +20,10 @@ import model.Carro;
  *
  * @author Guima
  */
+<<<<<<< HEAD
+=======
+
+>>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 public class RepositoryCarro extends Repository<Carro> {
 
 	public void adicionar(Carro carro) throws Exception {
@@ -43,7 +47,10 @@ public class RepositoryCarro extends Repository<Carro> {
 
 			session.createCriteria(Carro.class);
 			Criteria c = session.createCriteria(Carro.class);
+<<<<<<< HEAD
 			c.add(Restrictions.eq("placa", "bma-2222"));
+=======
+>>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 			lista = c.list();
 
 			session.close();
@@ -53,4 +60,8 @@ public class RepositoryCarro extends Repository<Carro> {
 		}
 
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 }

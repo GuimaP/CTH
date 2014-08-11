@@ -284,11 +284,19 @@ public class Principal extends JFrame {
 //		Dimension tamanhoFrame = getSize();
 //		pnMenuSuperior.setSize(tamanhoFrame.width, 130);
 //		pnMenuSuperior.setLocation(0, 0);
+<<<<<<< HEAD
 //		pnMenuSuperior.setBackground(new Color(254,254,254,120));
 //		FlowLayout layout = new FlowLayout();
 //		layout.setAlignment(FlowLayout.LEADING);
 //		
 //		pnMenuSuperior.setLayout(layout);
+=======
+////		pnMenuSuperior.setBackground(new Color(254,254,254,120));
+//		FlowLayout layout = new FlowLayout();
+//		layout.setAlignment(FlowLayout.LEADING);
+//		
+////		pnMenuSuperior.setLayout(layout);
+>>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 //		
 //		add(pnMenuSuperior);
 //		
