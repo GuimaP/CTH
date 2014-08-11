@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package Model.Repository;
+package model.repository;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -12,23 +12,42 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 
-import Model.Carro;
+import model.Carro;
 
 /**
  *
  * @author Guima
  */
-public class RepositoryCarro extends Repository<Model.Carro>{
-    public List<Carro> pegarTodos() throws SQLException {
-    	        List<Carro> lista = null;
-    	        Session session = ConnectionFactoryConfig.openManger().openSession();//getCurrentSession();
-    	        
-    	        session.createCriteria(Carro.class);
-    	        Criteria c = session.createCriteria(Carro.class);
-    	        lista = c.list();
-    	        
-    	        session.close();
-    	        return lista;
-    	    
-    }
+public class RepositoryCarro extends Repository<Carro> {
+
+	public void adicionar(Carro carro) throws Exception {
+		try {
+			Session session = ConnectionFactoryConfig.openManger()
+					.openSession();
+			session.beginTransaction();
+			session.persist(carro);
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
+
+	}
+
+	public List<Carro> buscarTodos() throws Exception {
+		try {
+			List<Carro> lista = null;
+			Session session = ConnectionFactoryConfig.openManger()
+					.openSession();// getCurrentSession();
+
+			session.createCriteria(Carro.class);
+			Criteria c = session.createCriteria(Carro.class);
+			lista = c.list();
+
+			session.close();
+			return lista;
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
+
+	}
 }

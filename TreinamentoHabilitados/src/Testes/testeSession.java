@@ -4,10 +4,10 @@ import org.hibernate.JDBCException;
 import org.hibernate.Session;
 import org.hibernate.exception.GenericJDBCException;
 
-import Model.Login;
-import Model.Tarefa;
-import Model.Repository.ConnectionFactoryConfig;
-import Model.Repository.ConnectionFactoryRepository;
+import model.Login;
+import model.Tarefa;
+import model.repository.ConnectionFactoryConfig;
+import model.repository.ConnectionFactoryRepository;
 
 public class testeSession {
 	public static void main(String[] args) {

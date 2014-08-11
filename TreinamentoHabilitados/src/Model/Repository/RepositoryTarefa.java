@@ -1,4 +1,4 @@
-package Model.Repository;
+package model.repository;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -8,9 +8,9 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import Model.Tarefa;
+import model.Tarefa;
 
-public class RepositoryTarefa extends Repository<Model.Tarefa> {
+public class RepositoryTarefa extends Repository<model.Tarefa> {
 //	public java.util.List<Model.Tarefa> getAllTarefasToday(
 //			java.time.LocalDateTime dt) {
 //		try {
@@ -34,13 +34,13 @@ public class RepositoryTarefa extends Repository<Model.Tarefa> {
 //		}
 //	}
 
-	public java.util.List<Model.Tarefa> getAllTarefasToday(java.util.Date dt)
+	public java.util.List<model.Tarefa> getAllTarefasToday(java.util.Date dt)
 			throws Throwable {
 		java.util.List<Tarefa> list = new java.util.ArrayList<Tarefa>();
 		
 		
-		Session session = Model.Repository.ConnectionFactoryConfig.getSession();
-				//.openSession(); //Pego a conexão Já existente
+		Session session = model.repository.ConnectionFactoryConfig.getSession();
+				//.openSession(); //Pego a conexï¿½o Jï¿½ existente
 		if(!session.isConnected()){
 			ConnectionFactoryConfig.generateSession();
 		}

@@ -1,4 +1,4 @@
-package Model.Repository;
+package model.repository;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -36,7 +36,7 @@ public class ConnectionFactoryRepository {
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("autoEscolaNew",map);
         entityManager =  factory.createEntityManager();
         }catch(GenericJDBCException  erro){
-        	JOptionPane.showMessageDialog(null, "Falha na Comunicação com o banco de dados");
+        	JOptionPane.showMessageDialog(null, "Falha na Comunicaï¿½ï¿½o com o banco de dados");
         	
         }catch (Throwable e) {
 			System.out.println(e.getMessage());

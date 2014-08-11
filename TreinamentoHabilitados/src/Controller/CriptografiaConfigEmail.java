@@ -1,4 +1,4 @@
-package Controller;
+package controller;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,8 +27,8 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import Model.ICrypt;
-import Model.UsuarioEmail;
+import model.ICrypt;
+import model.UsuarioEmail;
 
 import com.itextpdf.text.pdf.codec.Base64;
 import com.itextpdf.text.pdf.hyphenation.CharVector;

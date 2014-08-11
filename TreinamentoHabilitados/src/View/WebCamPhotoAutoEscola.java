@@ -1,7 +1,5 @@
 package View;
 
-import Controller.FuncionarioController;
-
 import java.awt.BorderLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -14,12 +12,15 @@ import java.lang.Thread.UncaughtExceptionHandler;
 import javax.swing.JFrame;
 
 
+
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamEvent;
 import com.github.sarxos.webcam.WebcamListener;
 import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamPicker;
 import com.github.sarxos.webcam.WebcamResolution;
+
+import controller.ControllerFuncionario;
 
 import java.awt.Point;
 import java.awt.event.ActionEvent;

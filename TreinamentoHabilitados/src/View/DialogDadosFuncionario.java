@@ -12,7 +12,7 @@ import javax.swing.JDialog;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 
-import Model.Funcionario;
+import model.Funcionario;
 
 public class DialogDadosFuncionario extends JDialog{
 	private JLabel lbNome,lbDataNasc,lbCnh,lbRg,lbCpf,lbTelefone,lbCelular;
@@ -46,7 +46,7 @@ public class DialogDadosFuncionario extends JDialog{
 			BufferedImage imageBf;
 			if(!"noImage".equals(imgDir)){ //Se houver um diretorio diferente da imagem eu crio um obj Imagem
 				imageBf = ImageIO.read(new File(imgDir));
-			}else { //Se não houver imagem eu crio com a img Default
+			}else { //Se nï¿½o houver imagem eu crio com a img Default
 				imageBf = ImageIO.read(getClass().getClassLoader().getResourceAsStream("Resources/imgs/noImage.png"));
 			}
 			imageBf = ImageIO.read(new File(imgDir));

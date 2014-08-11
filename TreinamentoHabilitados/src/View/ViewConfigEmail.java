@@ -6,6 +6,7 @@ import java.io.File;
 
 
 
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -19,10 +20,11 @@ import javax.swing.JTextField;
 
 
 
-import Controller.CriptografiaConfigEmail;
-import Controller.EmailControllerV3;
-import Model.Login;
-import Model.UsuarioEmail;
+
+import controller.CriptografiaConfigEmail;
+import controller.EmailControllerV3;
+import model.Login;
+import model.UsuarioEmail;
 
 
 public class ViewConfigEmail extends JInternalFrame {
@@ -63,7 +65,7 @@ public class ViewConfigEmail extends JInternalFrame {
         
         tfSenha = new JPasswordField();
         tfSenha.setBounds(5, lbSenha.getHeight()+lbSenha.getY(), getWidth()-20, 30);
-        tfSenha.setEchoChar('•');
+        tfSenha.setEchoChar('ï¿½');
         add(tfSenha);
         
         lbHostEntrada = new JLabel("Host de Entrada:  ");
@@ -82,7 +84,7 @@ public class ViewConfigEmail extends JInternalFrame {
         tfPort.setBounds(lbPort.getX() +40, lbPort.getY(), 50, 30);
         add(tfPort);
         //--
-        lbHostSaida = new JLabel("Host de Saída");
+        lbHostSaida = new JLabel("Host de Saï¿½da");
         lbHostSaida.setBounds(5, lbHostEntrada.getY()+lbHostEntrada.getHeight()+5, 80, 20);
         add(lbHostSaida);
        
@@ -134,7 +136,7 @@ public class ViewConfigEmail extends JInternalFrame {
 			try{	 
 			boolean sucess = true;
 			if(this.tfEmail.getText().isEmpty()){
-				msg = "É necessario colocar um e-mail";
+				msg = "ï¿½ necessario colocar um e-mail";
 					sucess = false;
 			}else if (!this.tfEmail.getText().contains("@")){
 				msg = "Insira um e-mail valido";
@@ -143,10 +145,10 @@ public class ViewConfigEmail extends JInternalFrame {
 				msg = "coloque um senha!";
 				sucess = false;
 			}else if(this.tfHostEntrada.getText().isEmpty()){
-				msg = "Coloque um endereço de entrada";
+				msg = "Coloque um endereï¿½o de entrada";
 				sucess = false;
 			}else if(this.tfHostSaida.getText().isEmpty()){
-				msg = "Coloque um endereço de Saida";
+				msg = "Coloque um endereï¿½o de Saida";
 				sucess = false;
 			}else if(this.tfPort.getText().isEmpty()){
 				msg = "Coloque uma porta";
@@ -181,11 +183,11 @@ public class ViewConfigEmail extends JInternalFrame {
 								
 							 String nameFolder = loginUser.getUsuario()+"@emailConfig";
 							 new CriptografiaConfigEmail().encrypt(us, nameFolder);
-							 JOptionPane.showMessageDialog(null, "Faça log-off para que as alterções sejam feitas");
+							 JOptionPane.showMessageDialog(null, "Faï¿½a log-off para que as alterï¿½ï¿½es sejam feitas");
 					
 							 this.dispose();
 						 }else {
-							 JOptionPane.showMessageDialog(null, "Não Autenticado ");
+							 JOptionPane.showMessageDialog(null, "Nï¿½o Autenticado ");
 						 }
 					} catch (Exception e) {
 						e.printStackTrace();

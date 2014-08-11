@@ -1,19 +1,20 @@
 package View;
 
-import Controller.FuncionarioController;
-import Controller.LogController;
-import DAO.DAOcarro;
-import Model.Carro;
-import Model.EnumStatus;
-import Model.Funcionario;
-import Model.ModeloTableFuncionario;
-import Model.Repository.ConnectionFactoryRepository;
-import Model.Repository.Repository;
-import Model.Repository.RepositoryCarro;
-import Model.Repository.RepositoryInstrutor;
+import model.Carro;
+import model.Funcionario;
+import model.enums.EnumStatus;
+import model.repository.ConnectionFactoryRepository;
+import model.repository.Repository;
+import model.repository.RepositoryCarro;
+import model.repository.RepositoryFuncionario;
+import model.table.ModeloTableFuncionario;
 
 import com.toedter.calendar.JDateChooser;
 import com.towel.swing.img.JImagePanel;
+
+import controller.ControllerFuncionario;
+import controller.LogController;
+import controller.VerificadorDeCpf;
 
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -71,8 +72,6 @@ import javax.swing.text.MaskFormatter;
 import org.eclipse.swt.custom.CBanner;
 import org.hibernate.internal.util.BytesHelper;
 
-import principal.VerificadorDeCpf;
-
 public class FormCadastroInstrutor extends JInternalFrame {
 
     private JLabel lbNome, lbData, lbRegistroCnh, lbValidadeCnh, lbPrimeiraCnh,
@@ -93,7 +92,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
     private String[] status = {"Ativo", "Inativo"}; //Substituir por enums
     List<Carro> carroList;
 //    Carro[] carroVetor; //Ver pra que serve. spaoksaposa
-    private DAOcarro daoCarro = new DAOcarro(); 
+    
     
     
     private Carro carro;
@@ -122,7 +121,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
             instrutor = new Funcionario();
             instrutor = null;
-            listFunc = new RepositoryInstrutor().getAllInstrutor();
+            listFunc = new RepositoryFuncionario().getAllInstrutor();
             inicializaComponentes();
             definirEventos();
 
@@ -405,7 +404,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 				    
 
 //				    populaObjInstrutor();
-//				    FuncionarioController.saveInformacao(instrutor);
+//				    ControllerFuncionario.saveInformacao(instrutor);
 				    String separador = System.getProperty("file.separator");
 				    String strPath =  System.getProperty("user.home")+separador+"Treinamento"+separador+"Fotos-Consumidor"+separador;
 
@@ -460,9 +459,9 @@ public class FormCadastroInstrutor extends JInternalFrame {
 				        Principal.minhaFrame.repaint();
 				        
 
-//				        FuncionarioController.loadInformacao(); //Recupero os dados do meu arquivo temporario
+//				        ControllerFuncionario.loadInformacao(); //Recupero os dados do meu arquivo temporario
 
-//				        FuncionarioController.loadInformacao(); //Recupero os dados do meu arquivo temporario
+//				        ControllerFuncionario.loadInformacao(); //Recupero os dados do meu arquivo temporario
 
 //				        populaCampos(); //E populo os campos 
 				        } catch (IOException e1) {
@@ -524,7 +523,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
                 }else {
                     // populando o objeto
 					populaObjInstrutor();
-					RepositoryInstrutor persistencia = new RepositoryInstrutor();
+					RepositoryFuncionario persistencia = new RepositoryFuncionario();
 
 					persistencia.adicionar(instrutor);
 					Principal.isFrameClienteOpen = false;
@@ -735,7 +734,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
             }else {
                 // populando o objeto
 				populaObjInstrutor();
-				RepositoryInstrutor persistencia = new RepositoryInstrutor();
+				RepositoryFuncionario persistencia = new RepositoryFuncionario();
 
 				persistencia.atualizar(instrutor);
 				Principal.isFrameInstrutorOpen = false;
@@ -766,7 +765,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
 
 	private void atualiza() throws Exception{
-		 List<Carro> lista = (List<Carro>) new RepositoryCarro().pegarTodos();
+		 List<Carro> lista = (List<Carro>) new RepositoryCarro().buscarTodos();
 		 jcCarro.removeAllItems();
 	        for (Carro c : lista) {
 	        	if(!c.isOcupado()){
@@ -774,7 +773,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 	        	}
 	        }
 	        
-	        listFunc = new RepositoryInstrutor().getAllInstrutor();
+	        listFunc = new RepositoryFuncionario().getAllInstrutor();
 	        tabela.setModel(new ModeloTableFuncionario(listFunc));
 	        scroll.revalidate();
 	        minhaInternal.revalidate();

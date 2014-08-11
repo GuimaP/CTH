@@ -14,8 +14,10 @@ import javax.swing.JTextArea;
 
 
 
-import Controller.EmailControllerV3;
-import Model.MensagemEmail;
+
+import controller.EmailControllerV3;
+import model.MensagemEmail;
+
 
 
 

@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 import java.util.Date;
 
@@ -6,7 +6,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -28,6 +30,131 @@ public class Cliente {
 	private String sexo;
 	private String celular;
 	
+	// dados da CNH
+	
+	private String primeiraHabilitacao;
+	private String registroCnh;
+	private String dtValidade;
+	
+	// dados do endereço
+	
+	private long idEndereco;
+	private String logradouro;
+	private String Bairro;
+	private long numero;
+	private String cep;
+	
+	// pesquisa
+	@OneToOne(targetEntity=Pesquisa.class)
+	private Pesquisa pesquisa;
+	
+	
+	
+	public Pesquisa getPesquisa() {
+		return pesquisa;
+	}
+
+
+
+	public void setPesquisa(Pesquisa pesquisa) {
+		this.pesquisa = pesquisa;
+	}
+
+
+
+	public String getPrimeiraHabilitacao() {
+		return primeiraHabilitacao;
+	}
+
+
+
+	public void setPrimeiraHabilitacao(String primeiraHabilitacao) {
+		this.primeiraHabilitacao = primeiraHabilitacao;
+	}
+
+
+
+	public String getRegistroCnh() {
+		return registroCnh;
+	}
+
+
+
+	public void setRegistroCnh(String registroCnh) {
+		this.registroCnh = registroCnh;
+	}
+
+
+
+	public String getDtValidade() {
+		return dtValidade;
+	}
+
+
+
+	public void setDtValidade(String dtValidade) {
+		this.dtValidade = dtValidade;
+	}
+
+
+
+	public long getIdEndereco() {
+		return idEndereco;
+	}
+
+
+
+	public void setIdEndereco(long idEndereco) {
+		this.idEndereco = idEndereco;
+	}
+
+
+
+	public String getLogradouro() {
+		return logradouro;
+	}
+
+
+
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
+	}
+
+
+
+	public String getBairro() {
+		return Bairro;
+	}
+
+
+
+	public void setBairro(String bairro) {
+		Bairro = bairro;
+	}
+
+
+
+	public long getNumero() {
+		return numero;
+	}
+
+
+
+	public void setNumero(long numero) {
+		this.numero = numero;
+	}
+
+
+
+	public String getCep() {
+		return cep;
+	}
+
+
+
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
 	@Lob
     @Column(name="image", nullable = true,columnDefinition = "mediumblob")
     private byte[] image;

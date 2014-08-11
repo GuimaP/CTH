@@ -1,8 +1,7 @@
-package Model.Repository;
+package model.repository;
 
-import Main.Start;
-import Model.Funcionario;
-import Model.Login;
+import model.Funcionario;
+import model.Login;
 
 import java.sql.SQLClientInfoException;
 import java.sql.SQLException;
@@ -12,6 +11,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+
+import main.Start;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
