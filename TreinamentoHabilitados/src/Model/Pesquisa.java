@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import model.enums.EnumQuestionario;
+
 
 @Entity
 @Table(name = "tb_pesquisa")
@@ -16,11 +18,10 @@ public class Pesquisa {
 	@Id
 	@GeneratedValue
 	private long idPesquisa;
-	private String data;
-	private String pesquisa1;
-	private String pesquisa2;
-	private String pesquisa3;
-	private String pesquisa4;
+	private String tempoQueNaoDirige;
+	private String temVeiculo;
+	private String possivelDirigirNele;
+	private EnumQuestionario pesquisa4;
 	private String observacao;
 
 	
@@ -34,44 +35,52 @@ public class Pesquisa {
 		this.observacao = observacao;
 	}
 
-	public String getPesquisa4() {
+	
+	
+	
+
+	public EnumQuestionario getPesquisa4() {
 		return pesquisa4;
 	}
 
-	public void setPesquisa4(String pesquisa4) {
+	public void setPesquisa4(EnumQuestionario pesquisa4) {
 		this.pesquisa4 = pesquisa4;
 	}
 
-	public String getPesquisa1() {
-		return pesquisa1;
+	public long getIdPesquisa() {
+		return idPesquisa;
 	}
 
-	public void setPesquisa1(String pesquisa1) {
-		this.pesquisa1 = pesquisa1;
+	public void setIdPesquisa(long idPesquisa) {
+		this.idPesquisa = idPesquisa;
 	}
 
-	public String getPesquisa2() {
-		return pesquisa2;
+	public String getTempoQueNaoDirige() {
+		return tempoQueNaoDirige;
 	}
 
-	public void setPesquisa2(String pesquisa2) {
-		this.pesquisa2 = pesquisa2;
+	public void setTempoQueNaoDirige(String tempoQueNaoDirige) {
+		this.tempoQueNaoDirige = tempoQueNaoDirige;
 	}
 
-	public String getPesquisa3() {
-		return pesquisa3;
+
+
+	public String getTemVeiculo() {
+		return temVeiculo;
 	}
 
-	public void setPesquisa3(String pesquisa3) {
-		this.pesquisa3 = pesquisa3;
+	public void setTemVeiculo(String temVeiculo) {
+		this.temVeiculo = temVeiculo;
 	}
 
-	public String getData() {
-		return data;
+	public String getPossivelDirigirNele() {
+		return possivelDirigirNele;
 	}
 
-	public void setData(String data) {
-		this.data = data;
+	public void setPossivelDirigirNele(String possivelDirigirNele) {
+		this.possivelDirigirNele = possivelDirigirNele;
 	}
+
+
 
 }

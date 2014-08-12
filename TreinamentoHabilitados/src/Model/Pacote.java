@@ -21,6 +21,8 @@ public class Pacote {
 	@GeneratedValue
 	private long id;
 
+	private Date data;
+
 	@ManyToOne(targetEntity = Cliente.class)
 	@JoinColumn(name = "idCliente")
 	private Cliente cliente;
@@ -100,6 +102,14 @@ public class Pacote {
 
 	public void setAulas(List<Aula> aulas) {
 		this.aulas = aulas;
+	}
+
+	public Date getData() {
+		return data;
+	}
+
+	public void setData(Date data) {
+		this.data = data;
 	}
 
 }

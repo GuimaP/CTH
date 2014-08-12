@@ -11,11 +11,6 @@ import java.lang.Thread.UncaughtExceptionHandler;
 
 import javax.swing.JFrame;
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamEvent;
 import com.github.sarxos.webcam.WebcamListener;
@@ -23,11 +18,7 @@ import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamPicker;
 import com.github.sarxos.webcam.WebcamResolution;
 
-<<<<<<< HEAD
-import controller.ControllerFuncionario;
-=======
 import controller.ControllerFormFuncionario;
->>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 
 import java.awt.Point;
 import java.awt.event.ActionEvent;

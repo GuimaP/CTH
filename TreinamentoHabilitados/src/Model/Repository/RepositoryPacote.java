@@ -36,9 +36,6 @@ public class RepositoryPacote extends Repository<Pacote> {
 		} catch (Exception e) {
 			throw new Exception(e);
 		}
-<<<<<<< HEAD
-=======
 
->>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 	}
 }

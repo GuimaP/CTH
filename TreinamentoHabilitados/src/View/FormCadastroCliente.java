@@ -15,6 +15,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -62,6 +63,7 @@ import com.toedter.calendar.JDateChooser;
 import com.towel.swing.img.JImagePanel;
 
 import controller.ConfigController;
+import controller.ControllerFormCliente;
 import controller.VerificadorDeCpf;
 
 public class FormCadastroCliente extends JInternalFrame {
@@ -75,18 +77,18 @@ public class FormCadastroCliente extends JInternalFrame {
 			lbCpfAluno, lbInstrutor;
 
 	private JTextField tfNome, tfEmail, tfProfissao, tfRegistroCnh,
-			tfLogradouro, tfBairro, tfRg, tfQuestao1, tfNumero, tfBuscaPacote;
+			tfLogradouro, tfBairro, tfRg, tfQuestao1, tfBuscaPacote;
 
 	private JFormattedTextField tfData, tfNascimento, tfCep, tfCpf, tfCelular,
 			tfTelefone, tfValidadeCnh, tfPrimeiraHabilitacao,
-			tfPagamentoInicial, tfPagamentoPendente, tfBuscaAluno;
+			tfPagamentoInicial, tfPagamentoPendente, tfBuscaAluno, tfNumero;
 
 	private JButton btSalvar, btBuscarPacote;
 
 	private JTabbedPane abas;
 
 	private JDateChooser dtPagamento, dtProximoPagamento, dtCadastroCliente,
-			cdDataNascimento, cdValidadeCnh, cdPermissao;
+			dtDataNascimento, dtValidadeCnh, dtPermissao;
 
 	private JTextArea observa;
 
@@ -122,9 +124,23 @@ public class FormCadastroCliente extends JInternalFrame {
 
 	protected static JFrame minhaFrame;
 
-	Cliente cliente = new Cliente();
+	private Cliente cliente;
 
-	Pesquisa cadastro = new Pesquisa();
+	private Pesquisa pesquisa;
+	
+	private Pacote pacote;
+	
+	private Servico servico;
+	
+	private long idServico;
+	
+	
+	private ControllerFormCliente controllerCli;
+	
+	
+	
+	
+	
 
 	private JPanel panelCliente, painelGeral, abaTodos, abaAgendamento,
 			painelPagamento, painelAgendamento, painelFoto;
@@ -154,14 +170,14 @@ public class FormCadastroCliente extends JInternalFrame {
 	public FormCadastroCliente() {
 		//
 		try {
-<<<<<<< HEAD
-			listPacote = new RepositoryServico().buscarServico();
-=======
 
+			cliente = null;
+			pesquisa = null;
+			pacote = null;
+			
 			listPacote = new RepositoryServico().buscarServico();
 
->>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
-			Cliente c = new Cliente();
+			
 			dirMyPicture = "";
 			minhaInternal = this;
 			inicializaComponentes();
@@ -172,11 +188,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		} catch (ParseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 
-<<<<<<< HEAD
-		}catch (Exception e1){
-=======
 		} catch (Exception e1) {
->>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 			JOptionPane.showMessageDialog(null, e1.getMessage());
 		}
 
@@ -209,11 +221,6 @@ public class FormCadastroCliente extends JInternalFrame {
 
 	public void popuTable() {
 		List<Servico> l = new ArrayList<Servico>();
-<<<<<<< HEAD
-		try {
-			for (Servico p : listPacote) {
-				listPacote = new RepositoryServico().buscarServico();
-=======
 
 		try {
 
@@ -221,22 +228,14 @@ public class FormCadastroCliente extends JInternalFrame {
 
 				listPacote = new RepositoryServico().buscarServico();
 
->>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 				table.setModel(new ModeloTableServico(listPacote));
 				scroll.revalidate();
 
 			}
 		} catch (Exception e) {
 			JOptionPane.showConfirmDialog(null, e.getMessage());
-<<<<<<< HEAD
-		}	
-		
-		
-		
-=======
 		}
 
->>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 	}
 
 	public void inicializaComponentes() throws ParseException {
@@ -327,7 +326,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		lbNumero.setBounds(190, 45, 100, 20);
 		panelCliente.add(lbNumero);
 
-		tfNumero = new JTextField();
+		tfNumero = new JFormattedTextField();
 		tfNumero.setBounds(250, 45, 120, 25);
 		panelCliente.add(tfNumero);
 
@@ -354,16 +353,16 @@ public class FormCadastroCliente extends JInternalFrame {
 		lbNascimento.setBounds(10, 95, 100, 20);
 		panelCliente.add(lbNascimento);
 
-		cdDataNascimento = new JDateChooser();
-		cdDataNascimento.setBounds(60, 95, 120, 25);
+		dtDataNascimento = new JDateChooser();
+		dtDataNascimento.setBounds(60, 95, 120, 25);
 		Calendar dtNascimento = Calendar.getInstance();
 		dtNascimento.set(Calendar.YEAR, 1900);
 		dtNascimento.set(Calendar.MONTH, 1);
 		dtNascimento.set(Calendar.DATE, 1);
-		cdDataNascimento.setMinSelectableDate(dtNascimento.getTime());
+		dtDataNascimento.setMinSelectableDate(dtNascimento.getTime());
 		Date dataAtualNas = new Date(System.currentTimeMillis());
-		cdDataNascimento.setMaxSelectableDate(dataAtualNas);
-		panelCliente.add(cdDataNascimento);
+		dtDataNascimento.setMaxSelectableDate(dataAtualNas);
+		panelCliente.add(dtDataNascimento);
 
 		lbSexo = new JLabel("Sexo");
 		lbSexo.setBounds(190, 95, 100, 20);
@@ -467,31 +466,31 @@ public class FormCadastroCliente extends JInternalFrame {
 		lbValidadeCnh.setBounds(10, 45, 100, 20);
 		painelGeral.add(lbValidadeCnh);
 
-		cdValidadeCnh = new JDateChooser();
-		cdValidadeCnh.setBounds(60, 45, 120, 25);
+		dtValidadeCnh = new JDateChooser();
+		dtValidadeCnh.setBounds(60, 45, 120, 25);
 		Calendar dtValiCnh = Calendar.getInstance();
 		dtValiCnh.set(Calendar.YEAR, 1900);
 		dtValiCnh.set(Calendar.MONTH, 1);
 		dtValiCnh.set(Calendar.DATE, 1);
-		cdDataNascimento.setMinSelectableDate(dtValiCnh.getTime());
+		dtDataNascimento.setMinSelectableDate(dtValiCnh.getTime());
 		Date dataValiCnh = new Date(System.currentTimeMillis());
-		cdDataNascimento.setMaxSelectableDate(dataValiCnh);
-		painelGeral.add(cdValidadeCnh);
+		dtDataNascimento.setMaxSelectableDate(dataValiCnh);
+		painelGeral.add(dtValidadeCnh);
 
 		lbPrimeiraHabilitacao = new JLabel("Permissão");
 		lbPrimeiraHabilitacao.setBounds(190, 45, 100, 20);
 		painelGeral.add(lbPrimeiraHabilitacao);
 
-		cdPermissao = new JDateChooser();
-		cdPermissao.setBounds(250, 45, 120, 25);
+		dtPermissao = new JDateChooser();
+		dtPermissao.setBounds(250, 45, 120, 25);
 		Calendar dtPermissao = Calendar.getInstance();
 		dtPermissao.set(Calendar.YEAR, 1900);
 		dtPermissao.set(Calendar.MONTH, 1);
 		dtPermissao.set(Calendar.DATE, 1);
-		cdDataNascimento.setMinSelectableDate(dtPermissao.getTime());
+		dtDataNascimento.setMinSelectableDate(dtPermissao.getTime());
 		Date dataPermissao = new Date(System.currentTimeMillis());
-		cdDataNascimento.setMaxSelectableDate(dataPermissao);
-		painelGeral.add(cdPermissao);
+		dtDataNascimento.setMaxSelectableDate(dataPermissao);
+		painelGeral.add(this.dtPermissao);
 
 		lbQ1 = new JLabel("A quanto tempo nao dirige?");
 		lbQ1.setBounds(10, 70, 300, 20);
@@ -791,20 +790,57 @@ public class FormCadastroCliente extends JInternalFrame {
 	}
 
 	public void definirEventos() {
+		
+		table.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2){
+					int index = table.getSelectedRow();
+					Servico servicoTable = ((ModeloTableServico) table
+							.getModel()).getServico(index);
+					if(servico == null){
+						servico = new Servico();
+					}
+					
+					servico = servicoTable;
+
+					
+				}
+				
+			}
+		});
 
 		this.cliqueEmFoto = new MouseAdapter() {
 			private Object webcam;
 
 			public void mouseClicked(MouseEvent e) {
 
-<<<<<<< HEAD
-//				    populaObjInstrutor();
-//				    ControllerFuncionario.saveInformacao(instrutor);
-				    String separador = System.getProperty("file.separator");
-				    String strPath =  System.getProperty("user.home")+separador+"Treinamento"+separador+"Fotos-Consumidor"+separador;
-=======
 				if (e.getClickCount() == 2) {
->>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 
 					// populaObjInstrutor();
 					// ControllerFormFuncionario.saveInformacao(instrutor);
@@ -862,17 +898,11 @@ public class FormCadastroCliente extends JInternalFrame {
 							Principal.minhaFrame.revalidate();
 							Principal.minhaFrame.repaint();
 
-<<<<<<< HEAD
-//				        ControllerFuncionario.loadInformacao(); //Recupero os dados do meu arquivo temporario
-
-//				        ControllerFuncionario.loadInformacao(); //Recupero os dados do meu arquivo temporario
-=======
 							// ControllerFormFuncionario.loadInformacao();
 							// //Recupero os dados do meu arquivo temporario
 
 							// ControllerFormFuncionario.loadInformacao();
 							// //Recupero os dados do meu arquivo temporario
->>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 
 							// populaCampos(); //E populo os campos
 						} catch (IOException e1) {
@@ -1013,60 +1043,75 @@ public class FormCadastroCliente extends JInternalFrame {
 				} else {
 
 					// populando os objetos
+					
+					if(cliente == null || pesquisa == null || pacote == null){
+						cliente = new Cliente();
+						pesquisa = new Pesquisa();
+						pacote = new Pacote();
+					}
 					cliente.setNome(tfNome.getText());
-					cadastro.setData(dtCadastroCliente.getDate().toString());
-<<<<<<< HEAD
-					
-					
-=======
-
->>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
-					cliente.setNascimento(cdDataNascimento.getDate());
-					cliente.setSexo(jcSexo.getSelectedItem().toString());
+					pacote.setData(dtCadastroCliente.getDate());
+					cliente.setLogradouro(tfLogradouro.getText());
+					cliente.setNumero(Long.parseLong(tfNumero.getText()));
+					cliente.setBairro(tfBairro.getText());
+					cliente.setCep(tfCep.getText());
+					cliente.setNascimento(dtDataNascimento.getDate());
+					cliente.setSexo((EnumSexo) jcSexo.getSelectedItem());
 					cliente.setCpf(tfCpf.getText());
 					cliente.setRg(tfRg.getText());
 					cliente.setTelefone(tfTelefone.getText());
 					cliente.setCelular(tfCelular.getText());
 					cliente.setEmail(tfEmail.getText());
-					if (jcEscolaridade.getSelectedIndex() == -1) {
-						cliente.setEscolaridade("");
-					} else {
-						cliente.setEscolaridade(jcEscolaridade
-								.getSelectedItem().toString());
-					}
+					cliente.setEscolaridade((EnumFormaca)jcEscolaridade.getSelectedItem());
 					cliente.setProfissao(tfProfissao.getText());
-<<<<<<< HEAD
+					cliente.setRegistroCnh(tfRegistroCnh.getText());
+					cliente.setDtValidade(dtValidadeCnh.getDate());
+					cliente.setPrimeiraHabilitacao(dtPermissao.getDate());
+					pesquisa.setTempoQueNaoDirige(tfQuestao1.getText());
+					if(jrQ2Yes.isSelected()){
+						pesquisa.setTemVeiculo("sim");
+					}else{
+						pesquisa.setTemVeiculo("Não");
+					}
 					
-=======
-
->>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
-					cadastro.setPesquisa1(tfQuestao1.getText());
-					if (jrQ2Yes.isSelected()) {
-						cadastro.setPesquisa2("sim");
-					} else {
-						cadastro.setPesquisa2("não");
+					if(jrQ3Yes.isSelected()){
+						pesquisa.setPossivelDirigirNele("Sim");
+					}else{
+						pesquisa.setPossivelDirigirNele("Não");
 					}
-					if (jrQ3Yes.isSelected()) {
-						cadastro.setPesquisa3("sim");
-					} else {
-						cadastro.setPesquisa3("não");
-					}
-					cadastro.setPesquisa4(jcPesquisa.getSelectedItem()
-							.toString());
-					cadastro.setObservacao(observa.getText());
-
+					
+					pesquisa.setPesquisa4((EnumQuestionario)jcPesquisa.getSelectedItem());
+					pesquisa.setObservacao(observa.getText());
+					
+				
 					try {
-						Repository<Cliente> repo = new Repository<Cliente>();
-						repo.adicionar(cliente);
+						controllerCli = new ControllerFormCliente();
+						cliente.setPesquisa(pesquisa);
+						
+						controllerCli.adicionarPesquisa(pesquisa);
+						controllerCli.adicionarCliente(cliente);
+						
+						
+						pacote.setServico(servico);
+						pacote.setCliente(cliente);
+					
+						controllerCli.adicionarPacote(pacote);
+						
+						
+						
+						
+						popuTable();
+						
 					} catch (Exception erro) {
 						JOptionPane.showMessageDialog(null, erro.getMessage());
+						erro.printStackTrace();
 					}
 
-					popuTable();
+					
 
 					// TODO n�o esquecer de aplicar o ternario para os
 					// FORMATEDTEXTFIELD
-					// limpar os campos ap�s o cadastro.
+					// limpar os campos ap�s o pesquisa.
 				}
 
 			}

@@ -6,23 +6,16 @@ import model.enums.EnumStatus;
 import model.repository.ConnectionFactoryRepository;
 import model.repository.Repository;
 import model.repository.RepositoryCarro;
-<<<<<<< HEAD
-import model.repository.RepositoryFuncionario;
-=======
-
 import model.repository.RepositoryInstrutor;
->>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 import model.table.ModeloTableFuncionario;
 
 import com.toedter.calendar.JDateChooser;
 import com.towel.swing.img.JImagePanel;
 
-<<<<<<< HEAD
-import controller.ControllerFuncionario;
-=======
 
 
->>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
+
+
 import controller.LogController;
 import controller.VerificadorDeCpf;
 
@@ -37,6 +30,8 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -86,9 +81,9 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
 	private JLabel lbNome, lbData, lbRegistroCnh, lbValidadeCnh, lbPrimeiraCnh,
 			lbTelefone, lbCelular, lbRg, lbCpf, lbCarro, lbStatus;
-	private JTextField tfNome, tfRegistroCnh;
+	private JTextField tfNome;
 	private JFormattedTextField tfData, tfValidadeCnh, tfTelefone, tfCelular,
-			tfCpf, tfRg;
+			tfCpf, tfRg,tfRegistroCnh;
 	private JDateChooser tfPrimeiraCnh;
 	private MaskFormatter maskData, maskValidadeCnh, maskPrimeiraCnh,
 			maskTelefone, maskCelular, maskCpf, maskRg;
@@ -104,20 +99,9 @@ public class FormCadastroInstrutor extends JInternalFrame {
 	private Carro carro;
 	private JImagePanel painelFotoInstrutor;
 
-<<<<<<< HEAD
-    private String[] status = {"Ativo", "Inativo"}; //Substituir por enums
-    List<Carro> carroList;
-//    Carro[] carroVetor; //Ver pra que serve. spaoksaposa
-    
-    
-    
-    private Carro carro;
-    private JImagePanel painelFotoInstrutor;
-=======
 	private JInternalFrame minhaInternal;
 	private String dirMyPicture;
 	private MouseAdapter cliqueEmFoto;
->>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 
 	private JTabbedPane aba;
 	private JPanel pnGeral, pnBusca;
@@ -195,7 +179,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
 			pnGeral.add(dcDataNascimento);
 
-			lbRegistroCnh = new JLabel("N� Cnh");
+			lbRegistroCnh = new JLabel("N� Cnh");
 			lbRegistroCnh.setBounds(213, 40, 40, 20);
 			pnGeral.add(lbRegistroCnh);
 
@@ -204,6 +188,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 			maskPrimeiraCnh.setValueContainsLiteralCharacters(false);
 			tfRegistroCnh = new JFormattedTextField(maskPrimeiraCnh);
 			tfRegistroCnh.setBounds(260, 40, 115, 25);
+			tfRegistroCnh.setFocusLostBehavior(JFormattedTextField.COMMIT);
 			pnGeral.add(tfRegistroCnh);
 
 			// --
@@ -216,16 +201,12 @@ public class FormCadastroInstrutor extends JInternalFrame {
 			dcDataValidadeCnh.setBounds(60, 70, 120, 25);
 			pnGeral.add(dcDataValidadeCnh);
 
-			lbPrimeiraCnh = new JLabel("1� Habilita��o");
+			lbPrimeiraCnh = new JLabel("1� Habilita��o");
 
 			lbPrimeiraCnh.setBounds(185, 70, 90, 20);
 
 			pnGeral.add(lbPrimeiraCnh);
 
-			// maskPrimeiraCnh = new MaskFormatter("##/##/####");
-			// maskPrimeiraCnh.setPlaceholderCharacter('_');
-			// maskPrimeiraCnh.setValueContainsLiteralCharacters(false);
-			// tfPrimeiraCnh = new JFormattedTextField(maskPrimeiraCnh);
 			tfPrimeiraCnh = new JDateChooser();
 			tfPrimeiraCnh.setBounds(260, 70, 115, 25);
 
@@ -240,6 +221,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 			maskRg.setPlaceholder("_");
 			maskRg.setValidCharacters("0123456789Xx");
 			maskRg.setValueContainsLiteralCharacters(false);
+			
 			tfRg = new JFormattedTextField(maskRg);
 			tfRg.setBounds(60, 100, 115, 25);
 			pnGeral.add(tfRg);
@@ -252,6 +234,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 			maskCpf.setPlaceholderCharacter('_');
 			tfCpf = new JFormattedTextField(maskCpf);
 			tfCpf.setBounds(260, 100, 115, 25);
+			tfCpf.setFocusLostBehavior(JFormattedTextField.COMMIT);
 			pnGeral.add(tfCpf);
 
 			// --
@@ -284,14 +267,6 @@ public class FormCadastroInstrutor extends JInternalFrame {
 			pnGeral.add(lbCarro);
 
 			jcCarro = new JComboBox<Carro>();
-			// carroList
-			// List<Carro> lista = (List<Carro>) new
-			// RepositoryCarro().pegarTodos();
-			// for (Carro c : lista) {
-			// if(!c.isOcupado()){
-			// jcCarro.addItem(c);
-			// }
-			// }
 
 			jcCarro.setBounds(60, 155, 230, 25);
 			jcCarro.setSelectedIndex(-1);
@@ -318,7 +293,8 @@ public class FormCadastroInstrutor extends JInternalFrame {
 			btRefresh.setContentAreaFilled(true);
 			btRefresh.setSize(35, 35);
 			btRefresh.setLocation(440, 140);
-			btRefresh.setToolTipText("Atualizar as informa��es");
+			btRefresh.setContentAreaFilled(false);
+			btRefresh.setToolTipText("Atualizar as informa��es");
 			btRefresh.setCursor(getCursor().getPredefinedCursor(
 					Cursor.HAND_CURSOR));
 			pnGeral.add(btRefresh);
@@ -451,359 +427,6 @@ public class FormCadastroInstrutor extends JInternalFrame {
 					// Verifica se existe uma foto, pois pode muito bem o fulano
 					// não ter tirado uma foto.
 
-<<<<<<< HEAD
-    public FormCadastroInstrutor() {
-        try {
-            dirMyPicture = "";
-
-            instrutor = new Funcionario();
-            instrutor = null;
-            listFunc = new RepositoryFuncionario().getAllInstrutor();
-            inicializaComponentes();
-            definirEventos();
-
-        } catch (Exception e) {
-        	e.printStackTrace();
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
-    }
-    
-    public FormCadastroInstrutor(boolean mostra){
-    	this();
-    	aba.setSelectedIndex(1);
-    	
-    }
-
-    public void inicializaComponentes() throws ParseException, SQLException {
-      try{
-    	// Paineis da aba
-        pnGeral = new JPanel();
-        pnGeral.setLayout(null);
-        pnBusca = new JPanel();
-        pnBusca.setLayout(null);
-
-        // Componentes da aba "Geral"
-        carro = new Carro();
-        minhaInternal = this;
-        // Label
-        setLayout(null);
-        //---Dados do Cliente
-        lbNome = new JLabel("Nome");
-        lbNome.setBounds(5, 10, 40, 20);
-        pnGeral.add(lbNome);
-
-        tfNome = new JTextField();
-        tfNome.setBounds(50, 10, 325, 25);
-        pnGeral.add(tfNome);
-
-        //---
-        lbData = new JLabel("Data");
-        lbData.setBounds(5, 40, 40, 20);
-        pnGeral.add(lbData);
-        
-        dcDataNascimento = new JDateChooser();
-
-        dcDataNascimento.setBounds(60, 40, 120, 25);
-        //dcDataNascimento.setSize(130, 25);
-
-        Calendar minimo = Calendar.getInstance();
-        minimo.set(Calendar.YEAR,1900);
-        minimo.set(Calendar.MONTH,1);
-        minimo.set(Calendar.DATE, 1);
-        dcDataNascimento.setMinSelectableDate(minimo.getTime());
-        Date dataAtual = new Date(System.currentTimeMillis());
-        dcDataNascimento.setMaxSelectableDate(dataAtual);
-        dcDataNascimento.setBounds(60, 40, 120, 25);
-        
-
-        pnGeral.add(dcDataNascimento);
-
-        lbRegistroCnh = new JLabel("N� Cnh");
-        lbRegistroCnh.setBounds(213, 40, 40, 20);
-        pnGeral.add(lbRegistroCnh);
-
-        MaskFormatter maskPrimeiraCnh = new MaskFormatter("###########");
-        maskPrimeiraCnh.setPlaceholder("_");
-        maskPrimeiraCnh.setValueContainsLiteralCharacters(false);
-        tfRegistroCnh = new JFormattedTextField(maskPrimeiraCnh);
-        tfRegistroCnh.setBounds(260, 40, 115, 25);
-        pnGeral.add(tfRegistroCnh);
-
-        //--
-        lbValidadeCnh = new JLabel("Validade");
-        lbValidadeCnh.setBounds(5, 70, 60, 20);
-        pnGeral.add(lbValidadeCnh);
-
-        dcDataValidadeCnh = new JDateChooser();
-        dcDataValidadeCnh.setMinSelectableDate(minimo.getTime());
-        dcDataValidadeCnh.setBounds(60, 70, 120, 25);
-        pnGeral.add(dcDataValidadeCnh);
-        
-
-
-
-        lbPrimeiraCnh = new JLabel("1� Habilita��o");
-
-        lbPrimeiraCnh.setBounds(185, 70, 90, 20);
-
-        
-        pnGeral.add(lbPrimeiraCnh);
-
-
-//        maskPrimeiraCnh = new MaskFormatter("##/##/####");
-//        maskPrimeiraCnh.setPlaceholderCharacter('_');
-//        maskPrimeiraCnh.setValueContainsLiteralCharacters(false);
-//        tfPrimeiraCnh = new JFormattedTextField(maskPrimeiraCnh);
-        tfPrimeiraCnh = new JDateChooser();
-        tfPrimeiraCnh.setBounds(260, 70, 115, 25);
-
-        pnGeral.add(tfPrimeiraCnh);
-
-        //--
-        lbRg = new JLabel("Rg");
-        lbRg.setBounds(5, 100, 40, 20);
-        pnGeral.add(lbRg);
-
-        maskRg = new MaskFormatter("##.###.###.-A");
-        maskRg.setPlaceholder("_");
-        maskRg.setValidCharacters("0123456789Xx");
-        maskRg.setValueContainsLiteralCharacters(false);
-        tfRg = new JFormattedTextField(maskRg);
-        tfRg.setBounds(60, 100, 115, 25);
-        pnGeral.add(tfRg);
-
-        lbCpf = new JLabel("Cpf");
-        lbCpf.setBounds(230, 100, 40, 20);
-        pnGeral.add(lbCpf);
-
-        maskCpf = new MaskFormatter("###.###.###-##");
-        maskCpf.setPlaceholderCharacter('_');
-        tfCpf = new JFormattedTextField(maskCpf);
-        tfCpf.setBounds(260, 100, 115, 25);
-        pnGeral.add(tfCpf);
-
-        //--
-        lbTelefone = new JLabel("Telefone");
-        lbTelefone.setBounds(5, 125, 60, 20);
-        pnGeral.add(lbTelefone);
-
-        maskTelefone = new MaskFormatter("(##) ####-####");
-        maskTelefone.setPlaceholderCharacter('_');
-        maskTelefone.setValueContainsLiteralCharacters(false);
-        tfTelefone = new JFormattedTextField(maskTelefone);
-        tfTelefone.setBounds(60, 125, 115, 25);
-        pnGeral.add(tfTelefone);
-
-        lbCelular = new JLabel("Celular");
-        lbCelular.setBounds(210, 125, 60, 20);
-        pnGeral.add(lbCelular);
-
-        maskCelular = new MaskFormatter("(##)#-####-####");
-        maskCelular.setPlaceholderCharacter('_');
-        maskCelular.setValueContainsLiteralCharacters(false);
-        tfCelular = new JFormattedTextField(maskCelular);
-        tfCelular.setBounds(260, 125, 115, 25);
-        pnGeral.add(tfCelular);
-
-        //---- Fim dos Dados do CLiente
-        //--
-        lbCarro = new JLabel("Carro");
-        lbCarro.setBounds(5, 155, 40, 20);
-        pnGeral.add(lbCarro);
-
-        jcCarro = new JComboBox<Carro>();
-        //carroList 
-//        List<Carro> lista = (List<Carro>) new RepositoryCarro().pegarTodos();
-//        for (Carro c : lista) {
-//        	if(!c.isOcupado()){
-//        		jcCarro.addItem(c);
-//        	}
-//        }
-        
-        jcCarro.setBounds(60, 155, 230, 25);
-        jcCarro.setSelectedIndex(-1);
-        pnGeral.add(jcCarro);
-
-        lbStatus = new JLabel("Status");
-        lbStatus.setBounds(5, 180, 40, 20);
-        pnGeral.add(lbStatus);
-
-        jcStatus = new JComboBox<EnumStatus>(EnumStatus.values());
-        
-        jcStatus.setBounds(60, 180, 230, 25);
-        jcStatus.setSelectedIndex(-1);
-        pnGeral.add(jcStatus);
-
-        
-        btNovo = new JButton("Novo!");
-        btNovo.setBounds(180, 220, 100, 30);
-        btNovo.setVisible(true);
-        pnGeral.add(btNovo);
-        
-        btRefresh = new JButton();
-        btRefresh.setIcon(new ImageIcon(getClass().getClassLoader().getResource("Resources/icons/btRefresh.png")));
-        btRefresh.setContentAreaFilled(true);
-        btRefresh.setSize(35, 35);
-        btRefresh.setLocation(440, 140);
-        btRefresh.setToolTipText("Atualizar as informa��es");
-        btRefresh.setCursor(getCursor().getPredefinedCursor(Cursor.HAND_CURSOR));
-        pnGeral.add(btRefresh);
-        
-        btAlterar = new JButton("Alterar");
-        btAlterar.setBounds(btNovo.getBounds());
-        btAlterar.setVisible(false);
-        pnGeral.add(btAlterar);
-        
-        btSalvar = new JButton("Salvar");
-        btSalvar.setLocation(btAlterar.getX() - btAlterar.getWidth() - 5, btAlterar.getY() );
-        btSalvar.setSize(btAlterar.getWidth(), btAlterar.getHeight());
-        pnGeral.add(btSalvar);
-        
-
-        btAlterar = new JButton("Alterar");
-        btAlterar.setBounds(btSalvar.getBounds());
-        btAlterar.setVisible(false);
-        pnGeral.add(btAlterar);
-
-        
-       
-        
-
-
-        java.io.File f = new java.io.File(dirMyPicture);//Verifico se existe alguma diretorio
-        if (f.exists()) { //Verifica se tem alguma foto existente para carregar
-            BufferedImage img = null; 
-            try { 
-                img = ImageIO.read(f);//Tento ler o arquivo e carregar numa imagem.
-            } catch (IOException ex) {
-                Logger.getLogger(FormCadastroInstrutor.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            painelFotoInstrutor = new JImagePanel(f.getPath());//e passo como parametro para desenhar na tela
-        } else {
-        	BufferedImage imageBf = ImageIO.read(getClass().getClassLoader().getResourceAsStream("Resources/imgs/noImage.png"));
-        	painelFotoInstrutor = new JImagePanel(imageBf);
-        }
-        painelFotoInstrutor.setBounds(375, 10, 110, 130);
-        Border bordaColorida = BorderFactory.createLineBorder(Color.GRAY);
-        Border bordaPainelFoto = BorderFactory.createTitledBorder(bordaColorida, "Foto do Instrutor");
-        painelFotoInstrutor.setBorder(bordaPainelFoto);
-        pnGeral.add(painelFotoInstrutor);
-
-        // Componentes da aba "Busca"
-        btExcluir = new JButton("Excluir");
-        btExcluir.setBounds(180, 220, 100, 30);
-        pnBusca.add(btExcluir);
-
-        tabela = new JTable(new ModeloTableFuncionario(listFunc));
-        scroll = new JScrollPane(tabela);
-        scroll.setLocation(2, 5);
-        scroll.setSize(482, 210);
-        pnBusca.add(scroll);
-
-        aba = new JTabbedPane();
-        aba.setBounds(1, 1, 490, 295);
-        aba.addTab("Cadastro", pnGeral);
-        aba.addTab(" Busca  ", pnBusca);
-        add(aba);
-
-        atualiza();
-        
-        pack();
-        setSize(505, 340);
-        setLocation(60, 10);
-//
-        
-        getContentPane().setBackground(new Color(0,0,0,40));
-        setBackground(new Color(0,0,0,40));
-       
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setClosable(true);
-        setIconifiable(true);
-        setTitle("Cadastro Instrutor");
-        setVisible(true);
-        requestFocusInWindow();
-        
-      } catch(Exception e){
-        	e.printStackTrace();
-        }
-
-       
-    }
-
-    public void definirEventos() {
-        this.cliqueEmFoto = new MouseAdapter() {
-            private Object webcam;
-
-            public void mouseClicked(MouseEvent e) {
-
-                if (e.getClickCount() == 2) {
-
-				    
-
-//				    populaObjInstrutor();
-//				    ControllerFuncionario.saveInformacao(instrutor);
-				    String separador = System.getProperty("file.separator");
-				    String strPath =  System.getProperty("user.home")+separador+"Treinamento"+separador+"Fotos-Consumidor"+separador;
-
-
-
-
-				    String strNameFile = tfNome.getText(); //Pego o nome que serÃ¡ a imagem
-
-				    
-				    //Instancio a janela de Cam
-				    WebCamPhotoAutoEscola dialog = new WebCamPhotoAutoEscola(Principal.minhaFrame, strPath, strNameFile);
-				    String caminhoDaImagem = "";//Inicializo a Variavel
-
-				    //Pego o caminho da imagem;
-				    caminhoDaImagem = dialog.caminhoDaImagem;
-				    
-				    //Crio um File a partir da foto
-				    File fotoTirada = new File(caminhoDaImagem);
-				    
-
-
-				    
-				    if(instrutor == null){
-				    	instrutor = new Funcionario();
-				    }
-				    
-
-				    //Seto a imagem pra variavel do Instrutor
-				    Image imgFoto = new ImageIcon(caminhoDaImagem).getImage();
-				    instrutor.setImage(new byte[(int)fotoTirada.length()]);
-				    
-
-				    //Verifica se existe uma foto, pois pode muito bem o fulano não ter tirado uma foto.
-
-				    //Verifica se existe uma foto, pois pode muito bem o fulano nÃ£o ter tirado uma foto.
-
-				    if (!caminhoDaImagem.isEmpty() & fotoTirada.exists()) {
-				        System.out.println("Imagem tirada:" + caminhoDaImagem); //Log...
-				        
-				        dirMyPicture = caminhoDaImagem;//passo o path para a variavel Global...
-				        try {
-						BufferedImage img = ImageIO.read(new File(caminhoDaImagem));	
-						painelFotoInstrutor.setImage(img);
-				        painelFotoInstrutor.repaint();
-				        painelFotoInstrutor.revalidate();
-
-				        minhaInternal.revalidate(); //revalido as alterações
-		        minhaInternal.revalidate(); //revalido as alteraÃ§Ãµes
-
-				        minhaInternal.repaint(); //e "Atualizo"
-				        Principal.minhaFrame.revalidate();
-				        Principal.minhaFrame.repaint();
-				        
-
-//				        ControllerFuncionario.loadInformacao(); //Recupero os dados do meu arquivo temporario
-
-//				        ControllerFuncionario.loadInformacao(); //Recupero os dados do meu arquivo temporario
-
-//				        populaCampos(); //E populo os campos 
-				        } catch (IOException e1) {
-							// 	
-=======
 					// Verifica se existe uma foto, pois pode muito bem o fulano
 					// nÃ£o ter tirado uma foto.
 
@@ -829,84 +452,14 @@ public class FormCadastroInstrutor extends JInternalFrame {
 							Principal.minhaFrame.revalidate();
 							Principal.minhaFrame.repaint();
 
-							// ControllerFormFuncionario.loadInformacao();
-							// //Recupero os dados do meu arquivo temporario
-
-							// ControllerFormFuncionario.loadInformacao();
-							// //Recupero os dados do meu arquivo temporario
-
-							// populaCampos(); //E populo os campos
 						} catch (IOException e1) {
 							//
->>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 							e1.printStackTrace();
 						}
 					}
 
 				}
 
-<<<<<<< HEAD
-            }
-        };
-
-        btSalvar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-              try{
-            	tfNome.setText(tfNome.getText().trim());
-                tfRegistroCnh.setText(tfRegistroCnh.getText().trim());
-                tfRg.setText(tfRg.getText().trim());
-
-                VerificadorDeCpf verifica = new VerificadorDeCpf();
-
-                if (tfNome.getText().isEmpty()) { // Validações, verifico se estão vazio
-                    JOptionPane.showMessageDialog(null, "Informar o nome");
-                    lbNome.setForeground(Color.RED);
-                    tfNome.requestFocus(true);
-                } else if (dcDataNascimento.getDate() == null) {
-                    JOptionPane.showMessageDialog(null, "Informar a data");
-                    lbData.setForeground(Color.RED);
-                    tfData.requestFocus(true);
-                } else if (tfRegistroCnh.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(null,
-                            "Informar o registro da CNH");
-                    lbRegistroCnh.setForeground(Color.RED);
-                    tfRegistroCnh.requestFocus(true);
-                } else if (dcDataValidadeCnh.getDate() == null) {
-                    JOptionPane.showMessageDialog(null,
-                            "Informar a data de validade");
-                    lbValidadeCnh.setForeground(Color.RED);
-                    tfValidadeCnh.requestFocus(true);
-                } else if (tfPrimeiraCnh.getDate() == null) {
-                    JOptionPane.showMessageDialog(null,
-                            "Informar a data da Permissão");
-                    lbPrimeiraCnh.setForeground(Color.RED);
-                    tfPrimeiraCnh.requestFocus(true);
-                } else if (tfCpf.getValue() == null
-                        || !verifica.verificarCpf(tfCpf.getText().toString())) {
-                    JOptionPane.showMessageDialog(null, "Cpf invalido");
-                    lbCpf.setForeground(Color.RED);
-                    tfCpf.requestFocus(true);
-                } else if (jcStatus.getSelectedIndex() == -1) {
-                    JOptionPane.showMessageDialog(null, "Informar o Status");
-                    lbStatus.setForeground(Color.RED);
-                    jcStatus.requestFocus(true);
-                } else if (jcCarro.getSelectedIndex() == -1) {
-                    JOptionPane.showMessageDialog(null, "Carro não selecionado ou nÃ£o cadastrado");
-                    jcCarro.requestFocus(true);
-                }else {
-                    // populando o objeto
-					populaObjInstrutor();
-					RepositoryFuncionario persistencia = new RepositoryFuncionario();
-
-					persistencia.adicionar(instrutor);
-					Principal.isFrameClienteOpen = false;
-
-					minhaInternal.dispose();
-
-					atualiza();
-					limparCampos();
-=======
 			}
 		};
 
@@ -920,8 +473,8 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
 					VerificadorDeCpf verifica = new VerificadorDeCpf();
 
-					if (tfNome.getText().isEmpty()) { // Validações, verifico se
-														// estão vazio
+					if (tfNome.getText().isEmpty()) { // Valida��es, verifico se
+														// est�o vazio
 						JOptionPane.showMessageDialog(null, "Informar o nome");
 						lbNome.setForeground(Color.RED);
 						tfNome.requestFocus(true);
@@ -994,7 +547,6 @@ public class FormCadastroInstrutor extends JInternalFrame {
 			public void keyTyped(KeyEvent e) {
 				String texto = tfNome.getText().toUpperCase();
 				tfNome.setText(texto);
->>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 
 			}
 
@@ -1010,78 +562,10 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
 			}
 		});
-<<<<<<< HEAD
-    
-        btAlterar.addActionListener(ev->{
-
-        	tfNome.setText(tfNome.getText().trim());
-            tfRegistroCnh.setText(tfRegistroCnh.getText().trim());
-            tfRg.setText(tfRg.getText().trim());
-
-            VerificadorDeCpf verifica = new VerificadorDeCpf();
-
-            if (tfNome.getText().isEmpty()) { // Valida��es, verifico se est�o vazio
-
-        	try{
-        	tfNome.setText(tfNome.getText().trim());
-            tfRegistroCnh.setText(tfRegistroCnh.getText().trim());
-            tfRg.setText(tfRg.getText().trim());
-            
-           
-            if (tfNome.getText().isEmpty()) { // Validações, verifico se estão vazio
-
-                JOptionPane.showMessageDialog(null, "Informar o nome");
-                lbNome.setForeground(Color.RED);
-                tfNome.requestFocus(true);
-            } else if (dcDataNascimento.getDate() == null) {
-                JOptionPane.showMessageDialog(null, "Informar a data");
-                lbData.setForeground(Color.RED);
-                tfData.requestFocus(true);
-            } else if (tfRegistroCnh.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null,
-                        "Informar o registro da CNH");
-                lbRegistroCnh.setForeground(Color.RED);
-                tfRegistroCnh.requestFocus(true);
-            } else if (dcDataValidadeCnh.getDate() == null) {
-                JOptionPane.showMessageDialog(null,
-                        "Informar a data de validade");
-                lbValidadeCnh.setForeground(Color.RED);
-                tfValidadeCnh.requestFocus(true);
-
-            } else if (tfPrimeiraCnh.getDate() == null) {
-                JOptionPane.showMessageDialog(null,
-                        "Informar a data da Permissão");
-
-                lbPrimeiraCnh.setForeground(Color.RED);
-                tfPrimeiraCnh.requestFocus(true);
-            } else if (tfCpf.getValue() == null
-                    || !verifica.verificarCpf(tfCpf.getText().toString())) {
-                JOptionPane.showMessageDialog(null, "Cpf invalido");
-                lbCpf.setForeground(Color.RED);
-                tfCpf.requestFocus(true);
-            } else if (jcStatus.getSelectedIndex() == -1) {
-                JOptionPane.showMessageDialog(null, "Informar o Status");
-                lbStatus.setForeground(Color.RED);
-                jcStatus.requestFocus(true);
-            } else if (jcCarro.getSelectedIndex() == -1) {
-
-                JOptionPane.showMessageDialog(null, "Carro n�o selecionado ou não cadastrado");
-
-                JOptionPane.showMessageDialog(null, "Carro não selecionado ou nÃ£o cadastrado");
-
-                jcCarro.requestFocus(true);
-            }else {
-                // populando o objeto
-				populaObjInstrutor();
-				RepositoryFuncionario persistencia = new RepositoryFuncionario();
-
-				persistencia.atualizar(instrutor);
-=======
 
 		this.addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent arg0) {
 				System.out.println("passo aqui");
->>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 				Principal.isFrameInstrutorOpen = false;
 				System.out.println(Principal.isFrameInstrutorOpen);
 			}
@@ -1286,6 +770,8 @@ public class FormCadastroInstrutor extends JInternalFrame {
 						}
 					}
 				});
+		
+		tfRegistroCnh.addFocusListener(ada);
 
 		btRefresh.addActionListener(e -> {
 
@@ -1294,30 +780,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
-<<<<<<< HEAD
-        });
-    }
-    
-
-
-
-	private void atualiza() throws Exception{
-		 List<Carro> lista = (List<Carro>) new RepositoryCarro().buscarTodos();
-		 jcCarro.removeAllItems();
-	        for (Carro c : lista) {
-	        	if(!c.isOcupado()){
-	        		jcCarro.addItem(c);
-	        	}
-	        }
-	        
-	        listFunc = new RepositoryFuncionario().getAllInstrutor();
-	        tabela.setModel(new ModeloTableFuncionario(listFunc));
-	        scroll.revalidate();
-	        minhaInternal.revalidate();
-
-=======
 		});
->>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 	}
 
 	private void atualiza() throws Exception {
@@ -1462,9 +925,19 @@ public class FormCadastroInstrutor extends JInternalFrame {
 			painelFotoInstrutor.setImage(ImageIO.read(getClass()
 					.getClassLoader().getResourceAsStream(
 							"Resources/imgs/noImage.png")));
+			btAlterar.setVisible(false);
+			btSalvar.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 	}
+	
+	FocusAdapter ada = new FocusAdapter() {
+		@Override
+		public void focusGained(FocusEvent arg0) {
+			super.focusGained(arg0);
+			tfRegistroCnh.setSelectionStart(0);
+		}
+	};
 }

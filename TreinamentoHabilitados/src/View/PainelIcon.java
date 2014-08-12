@@ -109,7 +109,18 @@ public class PainelIcon extends JPanel implements MouseListener,MouseMotionListe
 
 	@Override
 	public void mouseReleased(java.awt.event.MouseEvent e) {
-	
+		if(this.getX() <= menuSup.getWidth() && this.getY() <= menuSup.getHeight()){
+			menuSup.adicionar(this);
+//			menuSup.update(Principal.minhaFrame.getGraphics());
+			menuSup.revalidate();
+			Principal.minhaFrame.repaint();
+			Principal.minhaFrame.revalidate();
+			Dimension tamanhoFrame = Principal.minhaFrame.getSize();
+			menuSup.setSize(tamanhoFrame.width, 130);
+			menuSup.setLocation(0, 0);
+//			menuSup.repaint();
+		}
+		
 		
 		
 	}

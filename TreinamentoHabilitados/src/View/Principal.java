@@ -1,6 +1,7 @@
 package View;
 
 import java.awt.BorderLayout;
+import java.awt.Button;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -59,6 +60,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -122,6 +124,9 @@ public class Principal extends JFrame {
 	protected static JButton btAbrirMenuLateral;
 	protected static JFrame minhaFrame; // Frame para setar a dialogs
 
+	private JPopupMenu popup;
+	private JMenuItem itMnAdicionar;
+	
 	
 	protected static JPanel painelNotification;
 	
@@ -129,6 +134,8 @@ public class Principal extends JFrame {
 
 	private Point point = new Point(); //Controle o movimento dos icones
 	
+	private int xMouse,yMouse;
+
 	
 	public static boolean finished = false;
 	public static boolean carregado;
@@ -280,37 +287,17 @@ public class Principal extends JFrame {
 		painelNotification.add(lb);
 		add(painelNotification);
 		
-//		pnMenuSuperior = new MenuSuperior();
-//		Dimension tamanhoFrame = getSize();
-//		pnMenuSuperior.setSize(tamanhoFrame.width, 130);
-//		pnMenuSuperior.setLocation(0, 0);
-<<<<<<< HEAD
-//		pnMenuSuperior.setBackground(new Color(254,254,254,120));
-//		FlowLayout layout = new FlowLayout();
-//		layout.setAlignment(FlowLayout.LEADING);
-//		
-//		pnMenuSuperior.setLayout(layout);
-=======
-////		pnMenuSuperior.setBackground(new Color(254,254,254,120));
-//		FlowLayout layout = new FlowLayout();
-//		layout.setAlignment(FlowLayout.LEADING);
-//		
-////		pnMenuSuperior.setLayout(layout);
->>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
-//		
-//		add(pnMenuSuperior);
-//		
-//		btAbrirMenuSuperior = new JButton("V");
-//		btAbrirMenuSuperior.setSize(60,30);
-//		btAbrirMenuSuperior.setLocation((getSize().width / 2 ) - btAbrirMenuLateral.getWidth(),pnMenuSuperior.getSize().height);
-//		add(btAbrirMenuSuperior);
-		
 		
 		
 		btAdicionar = new JButton("+");
 		btAdicionar.setSize(80, 80);
 		btAdicionar.setLocation(this.getWidth() - btAdicionar.getWidth() - 20,600);
 		add(btAdicionar);
+		
+		popup = new JPopupMenu("Menu");
+		itMnAdicionar = new JMenuItem("Adicionar Atalho");
+		popup.add(itMnAdicionar);
+		add(popup);
 		
 		
 		getGlassPane().setVisible(true);
@@ -366,13 +353,26 @@ public class Principal extends JFrame {
 	//
 	public void definirEventos() {
 
-		btAdicionar.addActionListener(evt->{
-			PainelIcon icon = new PainelIcon((MenuSuperior) pnMenuSuperior);
-			icon.setLocation(60, 500);
+		
+		this.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				
+				if(e.getButton() == java.awt.event.MouseEvent.BUTTON3){
+					popup.show(minhaFrame, e.getX(), e.getY());
+					xMouse = e.getX();
+					yMouse = e.getY();
+				}
+			};
+		});
+		
+		itMnAdicionar.addActionListener(e->{
+			PainelIcon icon = new PainelIcon();
+			icon.setLocation(this.xMouse, this.yMouse);
 
 			add(icon);
-			
 		});
+		
+		
 		
 		btAbrirMenuLateral.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -588,51 +588,51 @@ public class Principal extends JFrame {
 			});
 		
 
-		btAbrirMenuSuperior.addActionListener(evt->{
-			new Thread(()->{
-				try {
-				int yPanel = Principal.pnMenuSuperior.getY();
-				int yButton = Principal.btAbrirMenuSuperior.getY();
-				final int xPanel = Principal.pnMenuSuperior.getX();
-				final int xButon = Principal.btAbrirMenuSuperior.getX();
-				if(Principal.isMenuSuperiorShow){ //Se o menu estiver visivel
-					int yPanelFinal = -Principal.pnMenuSuperior.getHeight();
-					Principal.isMenuSuperiorShow= false;
-					while(yPanel >= yPanelFinal){
-						Principal.pnMenuSuperior.setLocation(xPanel,yPanel);
-						Principal.btAbrirMenuSuperior.setLocation(xButon,yButton);
+//		btAbrirMenuSuperior.addActionListener(evt->{
+//			new Thread(()->{
+//				try {
+//				int yPanel = Principal.pnMenuSuperior.getY();
+//				int yButton = Principal.btAbrirMenuSuperior.getY();
+//				final int xPanel = Principal.pnMenuSuperior.getX();
+//				final int xButon = Principal.btAbrirMenuSuperior.getX();
+//				if(Principal.isMenuSuperiorShow){ //Se o menu estiver visivel
+//					int yPanelFinal = -Principal.pnMenuSuperior.getHeight();
+//					Principal.isMenuSuperiorShow= false;
+//					while(yPanel >= yPanelFinal){
+//						Principal.pnMenuSuperior.setLocation(xPanel,yPanel);
+//						Principal.btAbrirMenuSuperior.setLocation(xButon,yButton);
 //						yPanel -=2;
 //						yButton -=2;
-						yPanel--;
-						yButton--;
-							Thread.sleep(1/2);
-				
-					}
-					
-				}else{
-					Principal.isMenuSuperiorShow= true;
-						int yPanelFinal =  0;
-						
-						while(yPanel <= yPanelFinal){
-							Principal.pnMenuSuperior.setLocation(xPanel,yPanel);
-							Principal.btAbrirMenuSuperior.setLocation(xButon,yButton);
+//						yPanel--;
+//						yButton--;
+//							Thread.sleep(1/2);
+//				
+//					}
+//					
+//				}else{
+//					Principal.isMenuSuperiorShow= true;
+//						int yPanelFinal =  0;
+//						
+//						while(yPanel <= yPanelFinal){
+//							Principal.pnMenuSuperior.setLocation(xPanel,yPanel);
+//							Principal.btAbrirMenuSuperior.setLocation(xButon,yButton);
 //							yPanel -=2;
 //							yButton -=2;
-							yPanel++;
-							yButton++;
-								Thread.sleep(1/2);
-					
-						}
-						
-					
-				}
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}).start();
-		});
-		
+//							yPanel++;
+//							yButton++;
+//								Thread.sleep(1/2);
+//					
+//						}
+//						
+//					
+//				}
+//				} catch (Exception e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
+//			}).start();
+//		});
+//		
 		
 	}
 
@@ -816,7 +816,24 @@ class CheckNewMessages implements Runnable {
 	
 
 
-class DesktopPaneCustom extends JDesktopPane{
+class DesktopPaneCustom extends JDesktopPane implements MouseListener{
+	private javax.swing.JPopupMenu pop;
+	private JMenuItem itMnAdicionar;
+	public DesktopPaneCustom(){
+		pop = new javax.swing.JPopupMenu();
+		 itMnAdicionar = new JMenuItem("Adicionar");
+		 itMnAdicionar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Clique");
+				
+			}
+		});
+		 pop.add(itMnAdicionar);
+		 pop.addMouseListener(this);
+	}
+	
 	public void paintComponent(Graphics g) {  
         super.paintComponent(g);
         try {
@@ -831,7 +848,40 @@ class DesktopPaneCustom extends JDesktopPane{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    } 
+    }
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		System.out.println("clique");
+		if(e.getButton() == java.awt.event.MouseEvent.BUTTON3){
+			pop.show(this, e.getX(), e.getY());
+		}
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	} 
 }
 
 

@@ -13,12 +13,11 @@ public class RepositoryCliente extends Repository<Cliente> {
 
 	public void adicionar(Cliente cliente) throws Exception {
 		try {
-			Session sessiom = ConnectionFactoryConfig.openManger()
-					.openSession();
+			Session sessiom = ConnectionFactoryConfig.openManger().openSession();
 			sessiom.beginTransaction();
 			sessiom.persist(cliente);
 			sessiom.getTransaction().commit();
-
+			sessiom.close();
 		} catch (Exception e) {
 			throw new Exception(e);
 		}

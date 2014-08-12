@@ -4,22 +4,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-<<<<<<< HEAD
-import model.Aula;
-=======
 
 import model.Aula;
 
->>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 import model.Cliente;
 import model.Pacote;
 import model.Pesquisa;
 import model.Servico;
-<<<<<<< HEAD
-import model.repository.RepositoryAula;
-import model.repository.RepositoryCliente;
-import model.repository.RepositoryPacote;
-=======
 
 import model.repository.RepositoryAula;
 import model.repository.RepositoryCliente;
@@ -27,7 +18,6 @@ import model.repository.RepositoryPacote;
 
 import model.repository.RepositoryCliente;
 
->>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 import model.repository.RepositoryPesquisa;
 import model.repository.RepositoryServico;
 
@@ -35,10 +25,7 @@ public class ControllerFormCliente {
 	private Cliente c;
 	private Servico s;
 	private Pesquisa p;
-<<<<<<< HEAD
-=======
 
->>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 	private Pacote pacote;
 	private Aula a;
 
@@ -125,12 +112,9 @@ public class ControllerFormCliente {
 		} catch (Exception e) {
 			throw new Exception(e);
 		}
-<<<<<<< HEAD
-=======
 
 
 
 
->>>>>>> 27bb23bc526c9b3c27eb9af8a424da068ccb1ac3
 	}
 }
