@@ -1083,6 +1083,15 @@ public class FormCadastroCliente extends JInternalFrame {
 					pesquisa.setPesquisa4((EnumQuestionario)jcPesquisa.getSelectedItem());
 					pesquisa.setObservacao(observa.getText());
 					
+					pacote.setDtPagamento(dtPagamento.getDate());
+					pacote.setParcelas(Double.parseDouble(jsParcelas.getValue().toString()));
+					pacote.setDtProximaParcela(dtProximoPagamento.getDate());
+					pacote.setTipoPagamento((EnumPagamento)jcPagamento.getSelectedItem());
+					pacote.setValorPago(Double.parseDouble(tfPagamentoInicial.getText()));
+					//pacote.setValorPendente(Double.parseDouble(tfPagamentoPendente.getText()));
+					
+					
+					
 				
 					try {
 						controllerCli = new ControllerFormCliente();

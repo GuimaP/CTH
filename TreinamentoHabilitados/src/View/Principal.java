@@ -366,7 +366,7 @@ public class Principal extends JFrame {
 		});
 		
 		itMnAdicionar.addActionListener(e->{
-			PainelIcon icon = new PainelIcon();
+			PainelIcon icon = new PainelIcon(null);
 			icon.setLocation(this.xMouse, this.yMouse);
 
 			add(icon);

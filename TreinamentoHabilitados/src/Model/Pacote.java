@@ -13,6 +13,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import model.enums.EnumPagamento;
+
 @Entity
 @Table(name = "tb_pacote")
 public class Pacote {
@@ -39,6 +41,8 @@ public class Pacote {
 	private double valorPago;
 	private double valorPendente;
 	private Date dtPagamento;
+	private Date dtProximaParcela;
+	private EnumPagamento tipoPagamento;
 
 	public Servico getServico() {
 		return servico;
@@ -58,6 +62,24 @@ public class Pacote {
 
 	public double getValorPago() {
 		return valorPago;
+	}
+	
+	
+
+	public EnumPagamento getTipoPagamento() {
+		return tipoPagamento;
+	}
+
+	public void setTipoPagamento(EnumPagamento tipoPagamento) {
+		this.tipoPagamento = tipoPagamento;
+	}
+
+	public Date getDtProximaParcela() {
+		return dtProximaParcela;
+	}
+
+	public void setDtProximaParcela(Date dtProximaParcela) {
+		this.dtProximaParcela = dtProximaParcela;
 	}
 
 	public void setValorPago(double valorPago) {
