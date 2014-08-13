@@ -20,11 +20,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -83,6 +85,8 @@ public class FormCadastroCliente extends JInternalFrame {
 			tfTelefone, tfValidadeCnh, tfPrimeiraHabilitacao,
 			tfPagamentoInicial, tfPagamentoPendente, tfBuscaAluno, tfNumero;
 
+	private NumberFormat decimal;
+
 	private JButton btSalvar, btBuscarPacote;
 
 	private JTabbedPane abas;
@@ -127,20 +131,14 @@ public class FormCadastroCliente extends JInternalFrame {
 	private Cliente cliente;
 
 	private Pesquisa pesquisa;
-	
+
 	private Pacote pacote;
-	
+
 	private Servico servico;
-	
+
 	private long idServico;
-	
-	
+
 	private ControllerFormCliente controllerCli;
-	
-	
-	
-	
-	
 
 	private JPanel panelCliente, painelGeral, abaTodos, abaAgendamento,
 			painelPagamento, painelAgendamento, painelFoto;
@@ -167,17 +165,18 @@ public class FormCadastroCliente extends JInternalFrame {
 
 	private JComponent minhaInternal;
 
+	private boolean checkSelecionado;
+
 	public FormCadastroCliente() {
 		//
 		try {
-
+			checkSelecionado = false;
 			cliente = null;
 			pesquisa = null;
 			pacote = null;
-			
+
 			listPacote = new RepositoryServico().buscarServico();
 
-			
 			dirMyPicture = "";
 			minhaInternal = this;
 			inicializaComponentes();
@@ -239,6 +238,7 @@ public class FormCadastroCliente extends JInternalFrame {
 	}
 
 	public void inicializaComponentes() throws ParseException {
+
 		// Font que ser� usada para o nome do aluno e cpf
 
 		abaTodos = new JPanel();
@@ -707,7 +707,7 @@ public class FormCadastroCliente extends JInternalFrame {
 
 		// String que vai aparecer com o nome do aluno que foi feito a busca.
 
-		lbNomeAluno = new JLabel("'Vitor Barros'"); // Teste
+		lbNomeAluno = new JLabel(); // Teste
 		lbNomeAluno.setSize(1000, 50);
 		lbNomeAluno.setLocation(10, 60);
 		lbNomeAluno.setFont(ConfigController.definePrincipalFont(22f,
@@ -715,7 +715,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		lbNomeAluno.setForeground(new Color(72, 118, 255));
 		painelAgendamento.add(lbNomeAluno);
 
-		lbCpfAluno = new JLabel("322.999.999-99");
+		lbCpfAluno = new JLabel();
 		lbCpfAluno.setSize(1000, 50);
 		lbCpfAluno.setLocation(10, 90);
 		lbCpfAluno
@@ -790,48 +790,167 @@ public class FormCadastroCliente extends JInternalFrame {
 	}
 
 	public void definirEventos() {
-		
+
+		// buscando aluno pelo nome
+
+		tfBuscaAluno.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				String nomeAluno = "";
+				String cpfAluno = "";
+
+				if (e.getKeyCode() == 10) {
+
+					try {
+
+						/*
+						List<Pacote> listPacote = new ArrayList<Pacote>();
+						RepositoryPacote repoPacote = new RepositoryPacote();
+						
+						listPacote = repoPacote.buscarTodos();
+						for(Pacote p : listPacote){
+							if(tfBuscaAluno.getText().equals(p.getCliente().getNome())){
+								cpfAluno = p.getCliente().getCpf();
+								nomeAluno = p.getCliente().getNome();
+								
+								pacote = p;
+							}
+						}
+						*/
+						
+						List<Cliente> listaCliente = new ArrayList<Cliente>();
+						RepositoryCliente repo = new RepositoryCliente();
+
+						listaCliente = repo.buscarTodos();
+
+						for (Cliente c : listaCliente) {
+							if (tfBuscaAluno.getText().equals(c.getNome())) {
+
+								cpfAluno = c.getCpf();
+								nomeAluno = c.getNome();
+
+								cliente = c;
+
+							}
+						}
+						
+						if (nomeAluno.equals("")) {
+							JOptionPane
+									.showMessageDialog(null,
+											"Aluno não encontrado,ou nome incorreto, efetue a busca pelo CPF");
+							lbNomeAluno.setText(null);
+							lbCpfAluno.setText(null);
+						} else {
+							lbNomeAluno.setText(nomeAluno);
+							lbCpfAluno.setText(cpfAluno);
+						}
+
+					} catch (Exception e2) {
+						JOptionPane.showMessageDialog(null, e2.getMessage());
+
+					}
+				}
+
+			}
+		});
+
+		tfPagamentoInicial.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+
+				if (Character.isDigit(e.getKeyChar()) || e.getKeyCode() == 8) {
+
+					if (tfPagamentoInicial.getText().isEmpty()) {
+						tfPagamentoPendente.setText(servico.getPrecoPacote());
+					}
+
+					double pagaPendente = Double.parseDouble(servico
+							.getPrecoPacote());
+
+					double pagaInicial = Double.parseDouble(tfPagamentoInicial
+							.getText());
+
+					pagaPendente = pagaPendente - pagaInicial;
+
+					System.out.println(pagaPendente);
+
+					tfPagamentoPendente.setText(pagaPendente + "");
+				} else if (e.getKeyCode() != 8 && e.getKeyCode() != 44
+						&& e.getKeyCode() != 10 && e.getKeyCode() != 130) {
+					tfPagamentoInicial.setText("");
+					JOptionPane
+							.showMessageDialog(null, "Somente numeros e ','");
+				}
+
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+
+			}
+		});
+
 		table.addMouseListener(new MouseListener() {
-			
+
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mousePressed(MouseEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2){
+				if (e.getClickCount() == 2) {
 					int index = table.getSelectedRow();
 					Servico servicoTable = ((ModeloTableServico) table
 							.getModel()).getServico(index);
-					if(servico == null){
+					if (servico == null) {
 						servico = new Servico();
 					}
-					
+
 					servico = servicoTable;
 
-					
+					tfPagamentoPendente.setText(servico.getPrecoPacote());
+
 				}
-				
+
 			}
 		});
 
@@ -925,8 +1044,10 @@ public class FormCadastroCliente extends JInternalFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (jcPagamento.getSelectedIndex() == 1) {
 					jsParcelas.setEnabled(false);
+					dtProximoPagamento.setEnabled(false);
 				} else {
 					jsParcelas.setEnabled(true);
+					dtProximoPagamento.setEnabled(true);
 				}
 
 			}
@@ -943,6 +1064,7 @@ public class FormCadastroCliente extends JInternalFrame {
 					dtProximoPagamento.setEnabled(true);
 				} else {
 					dtProximoPagamento.setEnabled(false);
+
 				}
 
 			}
@@ -953,10 +1075,14 @@ public class FormCadastroCliente extends JInternalFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (checkObs.isSelected()) {
+
 					jTextAreaObs.setVisible(true);
 					lbDescricao.setVisible(true);
 					btTarefa.setLocation(310, 345);
+
 				} else {
+					checkSelecionado = false;
+
 					jTextAreaObs.setVisible(false);
 					lbDescricao.setVisible(false);
 					btTarefa.setLocation(160, 360);
@@ -971,9 +1097,91 @@ public class FormCadastroCliente extends JInternalFrame {
 				if (checkCpf.isSelected()) {
 					tfBuscaAluno.setVisible(false);
 					tfBuscaAlunoCpf.setVisible(true);
+
+					// buscando aluno atraves do cpf
+					tfBuscaAlunoCpf.addKeyListener(new KeyListener() {
+
+						@Override
+						public void keyTyped(KeyEvent e) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void keyReleased(KeyEvent e) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void keyPressed(KeyEvent e) {
+							String nomeAluno = "";
+							String cpfAluno = "";
+
+						
+							
+							if (e.getKeyCode() == 10) {
+								
+
+								try {
+									/*
+									List<Pacote> listPacote = new ArrayList<Pacote>();
+									RepositoryPacote repoPacote = new RepositoryPacote();
+									 listPacote = repoPacote.buscarTodos();
+									 
+									 for(Pacote p : listPacote){
+										 if(tfBuscaAlunoCpf.getText().equals(p.getCliente().getCpf())){
+											 cpfAluno = p.getCliente().getCpf();
+											 nomeAluno = p.getCliente().getNome();
+											 
+											// pacote = p;
+										 }
+									 }
+									
+									*/
+									List<Cliente> listaCliente = new ArrayList<Cliente>();
+									RepositoryCliente repo = new RepositoryCliente();
+
+									listaCliente = repo.buscarTodos();
+
+									for (Cliente c : listaCliente) {
+
+										if (tfBuscaAlunoCpf.getText().equals(
+												c.getCpf())) {
+
+											cpfAluno = c.getCpf();
+											nomeAluno = c.getNome();
+
+											cliente = c;
+
+										}
+									}
+									
+									if (cpfAluno.equals("")) {
+										JOptionPane
+												.showMessageDialog(null,
+														"Aluno não encontrado, ou Cpf invalido");
+										lbNomeAluno.setText(null);
+										lbCpfAluno.setText(null);
+									} else {
+										lbNomeAluno.setText(nomeAluno);
+										lbCpfAluno.setText(cpfAluno);
+									}
+
+								} catch (Exception e2) {
+									JOptionPane.showMessageDialog(null,
+											e2.getMessage());
+
+								}
+							}
+
+						}
+					});
+
 				} else {
 					tfBuscaAluno.setVisible(true);
 					tfBuscaAlunoCpf.setVisible(false);
+
 				}
 
 			}
@@ -1043,8 +1251,8 @@ public class FormCadastroCliente extends JInternalFrame {
 				} else {
 
 					// populando os objetos
-					
-					if(cliente == null || pesquisa == null || pacote == null){
+
+					if (cliente == null || pesquisa == null || pacote == null) {
 						cliente = new Cliente();
 						pesquisa = new Pesquisa();
 						pacote = new Pacote();
@@ -1062,61 +1270,59 @@ public class FormCadastroCliente extends JInternalFrame {
 					cliente.setTelefone(tfTelefone.getText());
 					cliente.setCelular(tfCelular.getText());
 					cliente.setEmail(tfEmail.getText());
-					cliente.setEscolaridade((EnumFormaca)jcEscolaridade.getSelectedItem());
+					cliente.setEscolaridade((EnumFormaca) jcEscolaridade
+							.getSelectedItem());
 					cliente.setProfissao(tfProfissao.getText());
 					cliente.setRegistroCnh(tfRegistroCnh.getText());
 					cliente.setDtValidade(dtValidadeCnh.getDate());
 					cliente.setPrimeiraHabilitacao(dtPermissao.getDate());
 					pesquisa.setTempoQueNaoDirige(tfQuestao1.getText());
-					if(jrQ2Yes.isSelected()){
+					if (jrQ2Yes.isSelected()) {
 						pesquisa.setTemVeiculo("sim");
-					}else{
+					} else {
 						pesquisa.setTemVeiculo("Não");
 					}
-					
-					if(jrQ3Yes.isSelected()){
+
+					if (jrQ3Yes.isSelected()) {
 						pesquisa.setPossivelDirigirNele("Sim");
-					}else{
+					} else {
 						pesquisa.setPossivelDirigirNele("Não");
 					}
-					
-					pesquisa.setPesquisa4((EnumQuestionario)jcPesquisa.getSelectedItem());
+
+					pesquisa.setPesquisa4((EnumQuestionario) jcPesquisa
+							.getSelectedItem());
 					pesquisa.setObservacao(observa.getText());
-					
+
 					pacote.setDtPagamento(dtPagamento.getDate());
-					pacote.setParcelas(Double.parseDouble(jsParcelas.getValue().toString()));
+					pacote.setParcelas(Double.parseDouble(jsParcelas.getValue()
+							.toString()));
 					pacote.setDtProximaParcela(dtProximoPagamento.getDate());
-					pacote.setTipoPagamento((EnumPagamento)jcPagamento.getSelectedItem());
-					pacote.setValorPago(Double.parseDouble(tfPagamentoInicial.getText()));
-					//pacote.setValorPendente(Double.parseDouble(tfPagamentoPendente.getText()));
-					
-					
-					
-				
+					pacote.setTipoPagamento((EnumPagamento) jcPagamento
+							.getSelectedItem());
+					pacote.setValorPago(Double.parseDouble(tfPagamentoInicial
+							.getText()));
+
+					pacote.setValorPendente(Double
+							.parseDouble(tfPagamentoPendente.getText()));
+
 					try {
 						controllerCli = new ControllerFormCliente();
 						cliente.setPesquisa(pesquisa);
-						
+
 						controllerCli.adicionarPesquisa(pesquisa);
 						controllerCli.adicionarCliente(cliente);
-						
-						
+
 						pacote.setServico(servico);
 						pacote.setCliente(cliente);
-					
+
 						controllerCli.adicionarPacote(pacote);
-						
-						
-						
-						
+
 						popuTable();
-						
+
 					} catch (Exception erro) {
 						JOptionPane.showMessageDialog(null, erro.getMessage());
 						erro.printStackTrace();
 					}
-
-					
 
 					// TODO n�o esquecer de aplicar o ternario para os
 					// FORMATEDTEXTFIELD
