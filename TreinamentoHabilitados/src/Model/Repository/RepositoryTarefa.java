@@ -39,7 +39,7 @@ public class RepositoryTarefa extends Repository<model.Tarefa> {
 		java.util.List<Tarefa> list = new java.util.ArrayList<Tarefa>();
 		
 		
-		Session session = model.repository.ConnectionFactoryConfig.getSession();
+		Session session = model.repository.ConnectionFactoryConfig.openManger().openSession();
 				//.openSession(); //Pego a conex�o J� existente
 		if(!session.isConnected()){
 			ConnectionFactoryConfig.generateSession();

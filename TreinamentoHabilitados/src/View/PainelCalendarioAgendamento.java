@@ -12,7 +12,6 @@ import Testes.painelTeste1;
 
 import java.awt.Point;
 
-import com.sun.media.rtsp.protocol.PauseMessage;
 import com.toedter.calendar.JCalendar;
 
 import java.awt.BorderLayout;

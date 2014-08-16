@@ -5,7 +5,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.media.Format;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.text.MaskFormatter;
 

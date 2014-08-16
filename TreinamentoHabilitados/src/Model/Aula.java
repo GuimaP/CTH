@@ -21,7 +21,7 @@ public class Aula {
 	@GeneratedValue
 	private long idAula;
 	private String descAulas;
-	private Date data;
+	private java.util.Date data;
 	
 	@ManyToOne
 	@JoinColumn(name = "cpf")
@@ -48,11 +48,11 @@ public class Aula {
 		this.instrutor = instrutor;
 	}
 
-	public Date getData() {
+	public java.util.Date getData() {
 		return data;
 	}
-	public void setData(Date data) {
-		this.data = data;
+	public void setData(java.util.Date dataSelecionada) {
+		this.data = dataSelecionada;
 	}
 	public long getId() {
 		return idAula;

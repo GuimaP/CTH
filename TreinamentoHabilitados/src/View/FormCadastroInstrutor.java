@@ -8,13 +8,10 @@ import model.repository.Repository;
 import model.repository.RepositoryCarro;
 import model.repository.RepositoryInstrutor;
 import model.table.ModeloTableFuncionario;
+import View.Components.UpperCaseDocument;
 
 import com.toedter.calendar.JDateChooser;
 import com.towel.swing.img.JImagePanel;
-
-
-
-
 
 import controller.LogController;
 import controller.VerificadorDeCpf;
@@ -55,7 +52,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
-import javax.media.rtp.event.NewReceiveStreamEvent;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -75,52 +71,51 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.text.MaskFormatter;
 
 import org.eclipse.swt.custom.CBanner;
+import org.hibernate.ejb.criteria.expression.function.UpperFunction;
 import org.hibernate.internal.util.BytesHelper;
 
 public class FormCadastroInstrutor extends JInternalFrame {
 
-	private JLabel lbNome, lbData, lbRegistroCnh, lbValidadeCnh, lbPrimeiraCnh,
+	private static JLabel lbNome, lbData, lbRegistroCnh, lbValidadeCnh, lbPrimeiraCnh,
 			lbTelefone, lbCelular, lbRg, lbCpf, lbCarro, lbStatus;
-	private JTextField tfNome;
-	private JFormattedTextField tfData, tfValidadeCnh, tfTelefone, tfCelular,
-			tfCpf, tfRg,tfRegistroCnh;
-	private JDateChooser tfPrimeiraCnh;
-	private MaskFormatter maskData, maskValidadeCnh, maskPrimeiraCnh,
-			maskTelefone, maskCelular, maskCpf, maskRg;
-	private JComboBox<Carro> jcCarro;
-	private JComboBox<EnumStatus> jcStatus;
+	private static JTextField tfNome;
+	private JFormattedTextField tfTelefone, tfCelular, tfCpf, tfRg,
+			tfRegistroCnh;
+	private static JDateChooser tfPrimeiraCnh;
+	private static MaskFormatter maskTelefone, maskCelular, maskCpf, maskRg;
+	private static JComboBox<Carro> jcCarro;
+	private static JComboBox<EnumStatus> jcStatus;
 
-	private JButton btSalvar, btExcluir, btShowCalendar, btAlterar, btNovo, bt;
+	private static JButton btSalvar, btExcluir, btAlterar, btNovo, bt;
 
-	private String[] status = { "Ativo", "Inativo" }; // Substituir por enums
-	List<Carro> carroList;
-	// Carro[] carroVetor; //Ver pra que serve. spaoksaposa
+	private static JImagePanel painelFotoInstrutor;
 
-	private Carro carro;
-	private JImagePanel painelFotoInstrutor;
+	private static JInternalFrame minhaInternal;
+	private static String dirMyPicture;
+	private static MouseAdapter cliqueEmFoto;
 
-	private JInternalFrame minhaInternal;
-	private String dirMyPicture;
-	private MouseAdapter cliqueEmFoto;
+	private static JTabbedPane aba;
+	private static JPanel pnGeral, pnBusca;
 
-	private JTabbedPane aba;
-	private JPanel pnGeral, pnBusca;
+	private static List<Funcionario> listFunc;
+	private static JTable tabela;
 
-	private List<Funcionario> listFunc;
-	private JTable tabela;
-
-	private JScrollPane scroll;
-	private JDateChooser dcDataNascimento, dcDataValidadeCnh;
+	private static JScrollPane scroll;
+	private static JDateChooser dcDataNascimento, dcDataValidadeCnh;
 	private Funcionario instrutor;
-	private JButton btRefresh;
+	private static JButton btRefresh;
+	private static RepositoryInstrutor repo;
+	private static VerificadorDeCpf verifica;
+	private static UpperCaseDocument upperDocument;
 
 	public FormCadastroInstrutor() {
 		try {
+			upperDocument = new UpperCaseDocument();
 			dirMyPicture = "";
-
+			repo = new RepositoryInstrutor();
 			instrutor = new Funcionario();
 			instrutor = null;
-			listFunc = new RepositoryInstrutor().getAllInstrutor();
+			listFunc = repo.getAllInstrutor();
 			inicializaComponentes();
 			definirEventos();
 
@@ -143,9 +138,10 @@ public class FormCadastroInstrutor extends JInternalFrame {
 			pnGeral.setLayout(null);
 			pnBusca = new JPanel();
 			pnBusca.setLayout(null);
+			
 
 			// Componentes da aba "Geral"
-			carro = new Carro();
+			// carro = null;
 			minhaInternal = this;
 			// Label
 			setLayout(null);
@@ -155,6 +151,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 			pnGeral.add(lbNome);
 
 			tfNome = new JTextField();
+			tfNome.setDocument(upperDocument);
 			tfNome.setBounds(50, 10, 325, 25);
 			pnGeral.add(tfNome);
 
@@ -164,7 +161,6 @@ public class FormCadastroInstrutor extends JInternalFrame {
 			pnGeral.add(lbData);
 
 			dcDataNascimento = new JDateChooser();
-
 			dcDataNascimento.setBounds(60, 40, 120, 25);
 			// dcDataNascimento.setSize(130, 25);
 
@@ -179,7 +175,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
 			pnGeral.add(dcDataNascimento);
 
-			lbRegistroCnh = new JLabel("Nº Cnh");
+			lbRegistroCnh = new JLabel("Nï¿½ Cnh");
 			lbRegistroCnh.setBounds(213, 40, 40, 20);
 			pnGeral.add(lbRegistroCnh);
 
@@ -201,7 +197,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 			dcDataValidadeCnh.setBounds(60, 70, 120, 25);
 			pnGeral.add(dcDataValidadeCnh);
 
-			lbPrimeiraCnh = new JLabel("1º Habilitação");
+			lbPrimeiraCnh = new JLabel("1ï¿½ Habilitaï¿½ï¿½o");
 
 			lbPrimeiraCnh.setBounds(185, 70, 90, 20);
 
@@ -221,7 +217,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 			maskRg.setPlaceholder("_");
 			maskRg.setValidCharacters("0123456789Xx");
 			maskRg.setValueContainsLiteralCharacters(false);
-			
+
 			tfRg = new JFormattedTextField(maskRg);
 			tfRg.setBounds(60, 100, 115, 25);
 			pnGeral.add(tfRg);
@@ -294,7 +290,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 			btRefresh.setSize(35, 35);
 			btRefresh.setLocation(440, 140);
 			btRefresh.setContentAreaFilled(false);
-			btRefresh.setToolTipText("Atualizar as informações");
+			btRefresh.setToolTipText("Atualizar as informaï¿½ï¿½es");
 			btRefresh.setCursor(getCursor().getPredefinedCursor(
 					Cursor.HAND_CURSOR));
 			pnGeral.add(btRefresh);
@@ -329,7 +325,6 @@ public class FormCadastroInstrutor extends JInternalFrame {
 							.log(Level.SEVERE, null, ex);
 				}
 				painelFotoInstrutor = new JImagePanel(f.getPath());// e passo
-																	// como
 																	// parametro
 																	// para
 																	// desenhar
@@ -364,6 +359,8 @@ public class FormCadastroInstrutor extends JInternalFrame {
 			aba.addTab(" Busca  ", pnBusca);
 			add(aba);
 
+			verifica = new VerificadorDeCpf();
+
 			atualiza();
 
 			pack();
@@ -395,8 +392,6 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
 				if (e.getClickCount() == 2) {
 
-					// populaObjInstrutor();
-					// ControllerFormFuncionario.saveInformacao(instrutor);
 					String separador = System.getProperty("file.separator");
 					String strPath = System.getProperty("user.home")
 							+ separador + "Treinamento" + separador
@@ -438,20 +433,20 @@ public class FormCadastroInstrutor extends JInternalFrame {
 						try {
 							BufferedImage img = ImageIO.read(new File(
 									caminhoDaImagem));
-						
+
 							painelFotoInstrutor.setImage(img);
-							painelFotoInstrutor.repaint();
-							painelFotoInstrutor.revalidate();
-
-							minhaInternal.revalidate(); // revalido as
-														// alteraÃ§Ãµes
-							minhaInternal.revalidate(); // revalido as
-														// alteraÃƒÂ§ÃƒÂµes
-
-							minhaInternal.repaint(); // e "Atualizo"
-							Principal.minhaFrame.revalidate();
-							Principal.minhaFrame.repaint();
-
+							
+							  painelFotoInstrutor.repaint();
+							  painelFotoInstrutor.revalidate();
+							 
+							
+							  minhaInternal.revalidate(); // revalido as //alteraÃ§Ãµes 
+							  minhaInternal.revalidate(); //revalido as // alteraÃƒÂ§ÃƒÂµes
+							 
+							  minhaInternal.repaint(); // e "Atualizo"
+							  Principal.minhaFrame.revalidate();
+							 Principal.minhaFrame.repaint();
+							 
 						} catch (IOException e1) {
 							//
 							e1.printStackTrace();
@@ -464,6 +459,8 @@ public class FormCadastroInstrutor extends JInternalFrame {
 		};
 
 		btSalvar.addActionListener(new ActionListener() {
+			private VerificadorDeCpf verifica = FormCadastroInstrutor.this.verifica;
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -471,17 +468,15 @@ public class FormCadastroInstrutor extends JInternalFrame {
 					tfRegistroCnh.setText(tfRegistroCnh.getText().trim());
 					tfRg.setText(tfRg.getText().trim());
 
-					VerificadorDeCpf verifica = new VerificadorDeCpf();
-
-					if (tfNome.getText().isEmpty()) { // Validações, verifico se
-														// estão vazio
+					if (tfNome.getText().isEmpty()) { // Validaï¿½ï¿½es, verifico se
+														// estï¿½o vazio
 						JOptionPane.showMessageDialog(null, "Informar o nome");
 						lbNome.setForeground(Color.RED);
 						tfNome.requestFocus(true);
 					} else if (dcDataNascimento.getDate() == null) {
 						JOptionPane.showMessageDialog(null, "Informar a data");
 						lbData.setForeground(Color.RED);
-						tfData.requestFocus(true);
+						dcDataNascimento.requestFocus(true);
 					} else if (tfRegistroCnh.getText().isEmpty()) {
 						JOptionPane.showMessageDialog(null,
 								"Informar o registro da CNH");
@@ -491,14 +486,14 @@ public class FormCadastroInstrutor extends JInternalFrame {
 						JOptionPane.showMessageDialog(null,
 								"Informar a data de validade");
 						lbValidadeCnh.setForeground(Color.RED);
-						tfValidadeCnh.requestFocus(true);
+						dcDataValidadeCnh.requestFocus(true);
 					} else if (tfPrimeiraCnh.getDate() == null) {
 						JOptionPane.showMessageDialog(null,
 								"Informar a data da PermissÃ£o");
 						lbPrimeiraCnh.setForeground(Color.RED);
 						tfPrimeiraCnh.requestFocus(true);
 					} else if (tfCpf.getValue() == null
-							|| !verifica.verificarCpf(tfCpf.getText()
+							|| !this.verifica.verificarCpf(tfCpf.getText()
 									.toString())) {
 						JOptionPane.showMessageDialog(null, "Cpf invalido");
 						lbCpf.setForeground(Color.RED);
@@ -515,21 +510,17 @@ public class FormCadastroInstrutor extends JInternalFrame {
 					} else {
 						// populando o objeto
 						populaObjInstrutor();
-						RepositoryInstrutor persistencia = new RepositoryInstrutor();
 
 						instrutor.setNome(tfNome.getText());
 						instrutor.setRg(tfRg.getText());
 						instrutor.setCelular(tfCelular.getText());
 						instrutor.setCnh(tfRegistroCnh.getText());
 						instrutor.setCpf(tfCpf.getText());
-						instrutor.setStatus((EnumStatus) jcStatus.getSelectedItem());
-						
-						
-						
-						persistencia.adicionar(instrutor);
-						Principal.isFrameClienteOpen = false;
+						instrutor.setStatus((EnumStatus) jcStatus
+								.getSelectedItem());
 
-			
+						repo.adicionar(instrutor);
+						Principal.isFrameClienteOpen = false;
 
 						atualiza();
 						limparCampos();
@@ -542,7 +533,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 			}
 		});
 
-		tfNome.addKeyListener(new KeyListener() {
+		/*tfNome.addKeyListener(new KeyListener() {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				String texto = tfNome.getText().toUpperCase();
@@ -562,12 +553,13 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
 			}
 		});
-
+*/
 		this.addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent arg0) {
-				System.out.println("passo aqui");
 				Principal.isFrameInstrutorOpen = false;
 				System.out.println(Principal.isFrameInstrutorOpen);
+				setVisible(false);
+				limparCampos();
 			}
 
 		});
@@ -612,6 +604,8 @@ public class FormCadastroInstrutor extends JInternalFrame {
 															// diferente da
 															// imagem eu crio um
 															// obj Imagem
+							System.out.println("um diretorio");
+							System.err.println(imgDir);
 							imageBf = ImageIO.read(new File(imgDir));
 							// imageBf = ImageIO.read(new
 							// File("C:\\Users\\TecnicoN\\Treinamento\\Fotos-Consumidor\\VITOR BARROS.jpg"));
@@ -625,12 +619,13 @@ public class FormCadastroInstrutor extends JInternalFrame {
 						}
 						dirMyPicture = imgDir;
 						painelFotoInstrutor.setImage(imageBf);
+
 						painelFotoInstrutor.revalidate();
 						painelFotoInstrutor.repaint();
 						minhaInternal.revalidate();
+						minhaInternal.repaint();
 						Principal.minhaFrame.revalidate();
 						Principal.minhaFrame.repaint();
-						System.out.println(dirMyPicture);
 
 						aba.setSelectedIndex(0);
 						btAlterar.setVisible(true);
@@ -653,14 +648,17 @@ public class FormCadastroInstrutor extends JInternalFrame {
 						jcCarro.setSelectedItem(funcionario
 								.getTbCarroPlacaCarro());
 
-						if (jcCarro.getItemCount() == 0) { // Se nÃ£o houver
-															// nenhum carro
-															// disponivel, entÃ£o
-															// eu seto apenas o
-															// carro do
-															// instrutor
+						if (jcCarro.getItemCount() == 0) {/*
+														 * Se nÃ£o houver nenhum
+														 * carro disponivel,
+														 * entÃ£o eu seto apenas
+														 * o carro do instrutor
+														 */
 							jcCarro.addItem(funcionario.getTbCarroPlacaCarro());
-						} else {
+						} else { /*
+								 * Caso contario, eu seleciono o carro do
+								 * instrutor na list
+								 */
 							jcCarro.setSelectedItem(funcionario
 									.getTbCarroPlacaCarro());
 						}
@@ -670,10 +668,6 @@ public class FormCadastroInstrutor extends JInternalFrame {
 					} catch (Exception er) {
 						er.printStackTrace();
 					}
-
-					// JImagePanel pn = new JImagePanel("asdas");
-					// pn.revalidate();
-					// pn.revalidate();
 
 				}
 			}
@@ -710,7 +704,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 								JOptionPane.showMessageDialog(null,
 										"Informar a data");
 								lbData.setForeground(Color.RED);
-								tfData.requestFocus(true);
+								dcDataNascimento.requestFocus(true);
 							} else if (tfRegistroCnh.getText().isEmpty()) {
 								JOptionPane.showMessageDialog(null,
 										"Informar o registro da CNH");
@@ -720,7 +714,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 								JOptionPane.showMessageDialog(null,
 										"Informar a data de validade");
 								lbValidadeCnh.setForeground(Color.RED);
-								tfValidadeCnh.requestFocus(true);
+								dcDataValidadeCnh.requestFocus(true);
 
 							} else if (tfPrimeiraCnh.getDate() == null) {
 								JOptionPane.showMessageDialog(null,
@@ -754,9 +748,8 @@ public class FormCadastroInstrutor extends JInternalFrame {
 							} else {
 								// populando o objeto
 								populaObjInstrutor();
-								RepositoryInstrutor persistencia = new RepositoryInstrutor();
 
-								persistencia.atualizar(instrutor);
+								repo.atualizar(instrutor);
 								Principal.isFrameInstrutorOpen = false;
 
 								minhaInternal.dispose();
@@ -770,7 +763,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 						}
 					}
 				});
-		
+
 		tfRegistroCnh.addFocusListener(ada);
 
 		btRefresh.addActionListener(e -> {
@@ -917,11 +910,11 @@ public class FormCadastroInstrutor extends JInternalFrame {
 			instrutor = null;
 			jcCarro.setSelectedIndex(-1);
 			jcStatus.setSelectedItem(-1);
-			painelFotoInstrutor.revalidate();
-			painelFotoInstrutor.repaint();
-			minhaInternal.revalidate();
-			Principal.minhaFrame.revalidate();
-			Principal.minhaFrame.repaint();
+			/*
+			 * painelFotoInstrutor.revalidate(); painelFotoInstrutor.repaint();
+			 * minhaInternal.revalidate(); Principal.minhaFrame.revalidate();
+			 * Principal.minhaFrame.repaint();
+			 */
 			painelFotoInstrutor.setImage(ImageIO.read(getClass()
 					.getClassLoader().getResourceAsStream(
 							"Resources/imgs/noImage.png")));
@@ -932,7 +925,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 		}
 
 	}
-	
+
 	FocusAdapter ada = new FocusAdapter() {
 		@Override
 		public void focusGained(FocusEvent arg0) {

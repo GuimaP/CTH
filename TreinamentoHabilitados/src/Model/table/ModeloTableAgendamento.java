@@ -1,6 +1,7 @@
 package model.table;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -8,10 +9,10 @@ import model.Aula;
 
 public class ModeloTableAgendamento extends AbstractTableModel {
 
-	ArrayList<Aula> aulas;
+	List<Aula> aulas;
 	String[] colunas = { "Aula","Data", "Hora", "Descrição" };
 
-	public ModeloTableAgendamento(ArrayList<Aula> aulas) {
+	public ModeloTableAgendamento(List<Aula> aulas) {
 		this.aulas = aulas;
 	}
 
