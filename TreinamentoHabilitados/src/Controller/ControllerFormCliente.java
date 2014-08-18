@@ -79,7 +79,7 @@ public class ControllerFormCliente {
 	public List<Servico> buscarServico() throws Exception {
 		try {
 			repoSer = new RepositoryServico();
-			return repoSer.buscarTodos();
+			return repoSer.buscarServico();
 		} catch (Exception e) {
 			throw new Exception(e);
 		}

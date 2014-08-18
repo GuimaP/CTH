@@ -1,54 +1,23 @@
 package View;
 
-import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
-import java.net.URISyntaxException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.swing.BoundedRangeModel;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
@@ -61,37 +30,18 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
-import org.eclipse.swt.internal.ole.win32.ISpecifyPropertyPages;
-
 import model.Login;
-import model.MensagemEmail;
-import model.UsuarioEmail;
-import model.table.ModelTableEmail;
-import View.Components.MenuSuperior;
-
-import com.itextpdf.text.Font;
-import com.towel.swing.img.JImagePanel;
-
+import model.threads.ThreadConfigEmail;
+import model.threads.ThreadNotificationEmail;
 import controller.ConfigController;
-import controller.CriptografiaConfigEmail;
 import controller.EmailControllerV3;
 
 public class Principal extends JFrame {
@@ -99,96 +49,112 @@ public class Principal extends JFrame {
 	private JMenuBar menuBarra;
 	private JMenu menuArquivo, menuAgendamento, menuRelatorio;
 	private JMenuItem itSair, itCadastroCliente, itCadastroFuncionario,
-			itAgendamento, itCadastroPacote, itCadastroCarro,
-			itConfiguraEmail, itFazerLogoff;
-	
-	private boolean painelMostrando = false;
+			itAgendamento, itCadastroPacote, itCadastroCarro, itConfiguraEmail,
+			itFazerLogoff;
+
+	private static boolean painelMostrando = false;
 	private JToolBar barraLateral;
 	private JScrollPane sp;
 	private PainelCalendarioAgendamento painelCalendario;
-	protected static JPanel pnMenuSuperior;
-	
+	protected JPanel pnMenuSuperior;
 
-	private int POSXButoon;
-	protected JTree jtreeAtalhos;
+	// private int POSXButoon;
+	protected static JTree jtreeAtalhos;
 
-	protected EmailControllerV3 email;
-	private List<String> listaEmails;
-	private HashMap<String, List<String>> mapEmails;
+	protected static EmailControllerV3 email;
 	protected static Login loginUser;
-	
+
 	protected static JTextField txtBuscaEmail;
 
-
-	protected static JButton btRefreshItens,btAbrirMenuSuperior,btAdicionar;
+	protected static JButton btRefreshItens;
 	protected static JButton btAbrirMenuLateral;
 	protected static JFrame minhaFrame; // Frame para setar a dialogs
 
 	private JPopupMenu popup;
 	private JMenuItem itMnAdicionar;
-	
-	
 	protected static JPanel painelNotification;
-	
-	private JScrollPane spTbEmail;
 
-	private Point point = new Point(); //Controle o movimento dos icones
-	
-	private int xMouse,yMouse;
+	// Thread
+	private static ThreadNotificationEmail tNotification;
+	private static ThreadConfigEmail tConfigEmail;
+	// Telas
+	private FormAgendamento formAgendamento;
+	private FormCadastroCarro formCarro;
+	private FormCadastroCliente formCliente;
+	private FormCadastroInstrutor formInstrutor;
+	private FormCadastroServico formServico;
+	private static FormConfigEmail formEmail;
 
-	
+	private int xMouse, yMouse;
+
 	public static boolean finished = false;
 	public static boolean carregado;
 	protected static boolean isFrameInstrutorOpen, isFrameClienteOpen,
 			isFrameCadastroPacote, isFrameAgendamento, isFrameCarro,
-			isViewConfiguraEmail, isPainelEmailShow,isMenuSuperiorShow;
+			isViewConfiguraEmail, isPainelEmailShow, isMenuSuperiorShow,
+			isFrameConfigEmail, isFrameServico;
 
-	public Principal(Login usuario) {
+	public Principal() {
 
 		try {
 			isMenuSuperiorShow = true;
 			minhaFrame = this;
-			this.loginUser = usuario;
-//			this.painelEmail = null;
-
 			inicializaComponentes();
 			definirEventos();
-			new Thread(new ConfiguraEmail(usuario))
-					.start();
 
-			isFrameClienteOpen = isFrameInstrutorOpen = isFrameCadastroPacote = isFrameAgendamento = isFrameCarro = isViewConfiguraEmail = false;
+			tNotification = new ThreadNotificationEmail(painelNotification,
+					minhaFrame);
+			tConfigEmail = new ThreadConfigEmail();
+
+			// Inicando variaveis booleanas
+			isFrameClienteOpen = isFrameInstrutorOpen = isFrameCadastroPacote = isFrameAgendamento = isFrameCarro = isViewConfiguraEmail = isFrameConfigEmail = isFrameServico = false;
 		} catch (Exception e) {
+			JOptionPane.showMessageDialog(
+							null,
+							"Houve um problema na construção da tela,a aplicação será finalizada...\n "
+							+ "caso o erro persista favor entrar em contato com o administrador do sitema");
+
 			e.printStackTrace();
+			System.exit(0);
 		}
+	}
+
+	public static Login getLoginUser() {
+		return loginUser;
+	}
+
+	public static void setLoginUser(Login loginUser) {
+		Principal.loginUser = loginUser;
+		tConfigEmail.setUser(loginUser);
+		tConfigEmail.start();
+		formEmail = new FormConfigEmail(loginUser);
+		formEmail.setVisible(false);
+		minhaFrame.getContentPane().add(formEmail);
+
 	}
 
 	public void inicializaComponentes() throws IOException {
 		// Definindo o layout e a imagem de fundo
 		java.awt.Font fonteP = ConfigController.definePrincipalFont(15f,
-				Font.NORMAL);
+				Font.PLAIN);
 		setLayout(null);
-		
-		
-		JDesktopPane fundoDaPrincipal = new JDesktopPane();
-		setContentPane(fundoDaPrincipal);
-		
+		tNotification = new ThreadNotificationEmail(painelNotification,
+				minhaFrame);
 		setContentPane(new DesktopPaneCustom());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Dimension scrnsize = toolkit.getScreenSize();
 		setSize(scrnsize);
-
 		setIconImage(ConfigController.defineIcon());
-
 		//
 		menuBarra = new JMenuBar();
 		menuBarra.setFont(fonteP);
 		//
-
 		menuArquivo = new JMenu("Arquivo");
 		menuAgendamento = new JMenu("Agendamento");
 		menuRelatorio = new JMenu("Relatorio");
 		//
+
 		itSair = new JMenuItem("Sair");
 		itCadastroCliente = new JMenuItem("Cadastro Aluno");
 		itCadastroFuncionario = new JMenuItem("Cadastro Funcionario");
@@ -211,7 +177,6 @@ public class Principal extends JFrame {
 		menuBarra.add(menuArquivo);
 		menuBarra.add(menuAgendamento);
 		menuBarra.add(menuRelatorio);
-		
 
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Inicio");
 
@@ -232,7 +197,6 @@ public class Principal extends JFrame {
 		jtreeAtalhos.expandRow(60);
 		jtreeAtalhos.setFont(fonteP);
 
-
 		barraLateral = new JToolBar();
 		barraLateral.setEnabled(false);
 		barraLateral.setLayout(null);
@@ -246,13 +210,10 @@ public class Principal extends JFrame {
 
 		add(barraLateral);
 
-		
-		
 		btAbrirMenuLateral = new JButton(">>");
 		btAbrirMenuLateral.setFocusCycleRoot(true);
-		btAbrirMenuLateral.setBounds(5, 130, 45, 30);		add(btAbrirMenuLateral);
-
-		POSXButoon = btAbrirMenuLateral.getX();
+		btAbrirMenuLateral.setBounds(5, 130, 45, 30);
+		add(btAbrirMenuLateral);
 
 		java.awt.Point p = new Point(minhaFrame.getWidth() - 405, 100);
 		painelCalendario = new PainelCalendarioAgendamento(p);/*
@@ -261,7 +222,6 @@ public class Principal extends JFrame {
 															 * tela
 															 */
 		painelCalendario.setFont(fonteP);
-
 
 		add(painelCalendario);
 
@@ -277,106 +237,79 @@ public class Principal extends JFrame {
 		btRefreshItens.setVisible(false);
 		add(btRefreshItens);
 
-		
 		painelNotification = new JPanel();
-		painelNotification.setSize(300,120);
-		int y = 120 + this.getHeight()-10;
-		painelNotification.setLocation(this.getWidth() - painelNotification.getWidth(), y);
-		painelNotification.setBackground(new Color(201, 229, 0,160));
+		painelNotification.setSize(300, 120);
+		int y = 120 + this.getHeight() - 10;
+		painelNotification.setLocation(
+				this.getWidth() - painelNotification.getWidth(), y);
+		painelNotification.setBackground(new Color(201, 229, 0, 160));
 		JLabel lb = new JLabel("Vocï¿½ recebeu uma nova mensagem!");
 		painelNotification.add(lb);
 		add(painelNotification);
-		
-		
-		
-		btAdicionar = new JButton("+");
-		btAdicionar.setSize(80, 80);
-		btAdicionar.setLocation(this.getWidth() - btAdicionar.getWidth() - 20,600);
-		add(btAdicionar);
-		
+
+		/**
+		 * Criando as telas
+		 */
+		formAgendamento = new FormAgendamento();
+		formAgendamento.setVisible(false);
+		getContentPane().add(formAgendamento);
+
+		formCarro = new FormCadastroCarro();
+		formCarro.setVisible(false);
+		getContentPane().add(formCarro);
+
+		formCliente = new FormCadastroCliente();
+		formCliente.setVisible(false);
+		getContentPane().add(formCliente);
+
+		formInstrutor = new FormCadastroInstrutor();
+		formInstrutor.setVisible(false);
+		getContentPane().add(formInstrutor);
+
+		formServico = new FormCadastroServico();
+		formServico.setVisible(false);
+		getContentPane().add(formServico);
+
 		popup = new JPopupMenu("Menu");
 		itMnAdicionar = new JMenuItem("Adicionar Atalho");
 		popup.add(itMnAdicionar);
 		add(popup);
-		
-		
-		getGlassPane().setVisible(true);
+
+		// getGlassPane().setVisible(true);
 		setJMenuBar(menuBarra);
 		setLocationRelativeTo(null);
 		setTitle("Karol Habilitados v 1.3.1");
-		// setResizable(false);
-		setVisible(true);
 
 	}
 
-	
-	
-	protected static void showNotication(){
-		new Thread(()->{
-			int y = Principal.painelNotification.getY();
-			try {
-			System.out.println(y);
-			if(y>= Principal.minhaFrame.getHeight()-40){
-//			if(y>= 120){
-				int yFinal = Principal.minhaFrame.getHeight() -Principal.painelNotification.getHeight() ;
-//				int yFinal = 120;
-				int pontoRetorno = y;
-				while(y >= yFinal){
-					Principal.painelNotification.setLocation(Principal.painelNotification.getX(),y);
-					y--;
-					Thread.sleep(2*20);
-				}
-				
-				Thread.sleep(5*1000);
-				
-				while(y < pontoRetorno){
-					Principal.painelNotification.setLocation(Principal.painelNotification.getX(),y);
-					System.out.println(y);
-					y++;
-					Thread.sleep(2*20);
-				}
-				
-			}
-			
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		}).start();
+	public static void showNotication() {
+		tNotification.start();
 	}
-	
-	
-	
-	
-	
+
 	//
 	public void definirEventos() {
 
-		
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				
-				if(e.getButton() == java.awt.event.MouseEvent.BUTTON3){
+
+				if (e.getButton() == java.awt.event.MouseEvent.BUTTON3) {
 					popup.show(minhaFrame, e.getX(), e.getY());
 					xMouse = e.getX();
 					yMouse = e.getY();
 				}
 			};
 		});
-		
-		itMnAdicionar.addActionListener(e->{
+
+		itMnAdicionar.addActionListener(e -> {
 			PainelIcon icon = new PainelIcon(null);
 			icon.setLocation(this.xMouse, this.yMouse);
 
 			add(icon);
 		});
-		
-		
-		
+
 		btAbrirMenuLateral.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				long time = (1 / 2) + (1 / 3);
+				long time = (1 / 2) + (2 / 5);
 
 				if (!painelMostrando) { // ABRINDO O PAINEL
 
@@ -412,9 +345,6 @@ public class Principal extends JFrame {
 											.log(Level.SEVERE, null, ex);
 								}
 							}
-//							if (isPainelEmailShow) {
-//								barraLateral.add(painelEmail);
-//							}
 
 							btAbrirMenuLateral.setText("<<");
 						}
@@ -423,8 +353,7 @@ public class Principal extends JFrame {
 
 				} else { // FECHANDO
 
-//					barraLateral.remove(painelEmail);
-					barraLateral.revalidate();
+					// barraLateral.revalidate();
 
 					painelMostrando = false;
 					Thread t = new Thread(new Runnable() {
@@ -490,10 +419,10 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (!isFrameClienteOpen) {
 					try {
-					isFrameClienteOpen = true;
-					JInternalFrame internalFrame = new FormCadastroCliente();
-					getContentPane().add(internalFrame);
-					internalFrame.setSelected(true);
+						isFrameClienteOpen = true;
+						JInternalFrame internalFrame = new FormCadastroCliente();
+						getContentPane().add(internalFrame);
+						internalFrame.setSelected(true);
 					} catch (PropertyVetoException e1) {
 						e1.printStackTrace();
 					}
@@ -505,11 +434,12 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (!Principal.isFrameInstrutorOpen) {
 					try {
-						Principal.isFrameInstrutorOpen = true; // difinindo que ja tem uma
-													// janela aberta
-					JInternalFrame internalFrame = new FormCadastroInstrutor();
-					getContentPane().add(internalFrame);
-					internalFrame.setSelected(true);
+						Principal.isFrameInstrutorOpen = true; // difinindo que
+																// ja tem uma
+						// janela aberta
+						JInternalFrame internalFrame = new FormCadastroInstrutor();
+						getContentPane().add(internalFrame);
+						internalFrame.setSelected(true);
 					} catch (PropertyVetoException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -522,8 +452,7 @@ public class Principal extends JFrame {
 		itAgendamento.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				
+
 			}
 		});
 
@@ -532,10 +461,10 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (!isFrameCarro) {
 					try {
-					isFrameCarro = true;
-					JInternalFrame internalFrame = new FormCadastroCarro();
-					getContentPane().add(internalFrame);
-					internalFrame.setSelected(true);
+						isFrameCarro = true;
+						JInternalFrame internalFrame = new FormCadastroCarro();
+						getContentPane().add(internalFrame);
+						internalFrame.setSelected(true);
 					} catch (PropertyVetoException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -549,17 +478,18 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				if (!isFrameCadastroPacote) { // defino se nÃ£o houver uma
 												// instancia jÃ¡ criada, eu
-					
+
 					try {
-					isFrameCadastroPacote = true; // difinindo que ja tem uma janela aberta
-					JInternalFrame internalFrame = new FormCadastroServico();
-					getContentPane().add(internalFrame);
-					internalFrame.setSelected(true);
+						isFrameCadastroPacote = true; // difinindo que ja tem
+														// uma janela aberta
+						JInternalFrame internalFrame = new FormCadastroServico();
+						getContentPane().add(internalFrame);
+						internalFrame.setSelected(true);
 					} catch (PropertyVetoException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
+
 				}
 			}
 		});
@@ -567,16 +497,17 @@ public class Principal extends JFrame {
 		itConfiguraEmail.addActionListener(e -> {
 			if (!isViewConfiguraEmail) {
 				try {
-				isViewConfiguraEmail = true;
-				JInternalFrame internalFrame = new ViewConfigEmail(loginUser);
-				getContentPane().add(internalFrame);
-				internalFrame.setSelected(true);
+					isViewConfiguraEmail = true;
+					JInternalFrame internalFrame = new FormConfigEmail(
+							loginUser);
+					getContentPane().add(internalFrame);
+					internalFrame.setSelected(true);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				e1.printStackTrace();
 			}
-		});
+		}
+	})	;
 
 		itFazerLogoff.addActionListener(e -> {
 			this.dispose();
@@ -586,54 +517,7 @@ public class Principal extends JFrame {
 				minhaFrame = null;
 
 			});
-		
 
-//		btAbrirMenuSuperior.addActionListener(evt->{
-//			new Thread(()->{
-//				try {
-//				int yPanel = Principal.pnMenuSuperior.getY();
-//				int yButton = Principal.btAbrirMenuSuperior.getY();
-//				final int xPanel = Principal.pnMenuSuperior.getX();
-//				final int xButon = Principal.btAbrirMenuSuperior.getX();
-//				if(Principal.isMenuSuperiorShow){ //Se o menu estiver visivel
-//					int yPanelFinal = -Principal.pnMenuSuperior.getHeight();
-//					Principal.isMenuSuperiorShow= false;
-//					while(yPanel >= yPanelFinal){
-//						Principal.pnMenuSuperior.setLocation(xPanel,yPanel);
-//						Principal.btAbrirMenuSuperior.setLocation(xButon,yButton);
-//						yPanel -=2;
-//						yButton -=2;
-//						yPanel--;
-//						yButton--;
-//							Thread.sleep(1/2);
-//				
-//					}
-//					
-//				}else{
-//					Principal.isMenuSuperiorShow= true;
-//						int yPanelFinal =  0;
-//						
-//						while(yPanel <= yPanelFinal){
-//							Principal.pnMenuSuperior.setLocation(xPanel,yPanel);
-//							Principal.btAbrirMenuSuperior.setLocation(xButon,yButton);
-//							yPanel -=2;
-//							yButton -=2;
-//							yPanel++;
-//							yButton++;
-//								Thread.sleep(1/2);
-//					
-//						}
-//						
-//					
-//				}
-//				} catch (Exception e1) {
-//					// TODO Auto-generated catch block
-//					e1.printStackTrace();
-//				}
-//			}).start();
-//		});
-//		
-		
 	}
 
 }
@@ -695,193 +579,125 @@ class MeuModeloTree extends DefaultTreeCellRenderer {
 }
 
 // Thread Para Configurar e baixar os E-mails
-class ConfiguraEmail implements Runnable {
-	private JButton btAbrirNav;
-	private static JButton btRefresh;
-	private File arquivoEmailMap;
-	private List<File> lsArquivoTemp;
-	private EmailControllerV3 emailC;
-	private Login user;
+/*
+ * class ConfiguraEmail implements Runnable { private EmailControllerV3 emailC;
+ * private Login user;
+ * 
+ * 
+ * 
+ * 
+ * 
+ * protected static boolean isShowing; private UsuarioEmail confEmail;
+ * 
+ * public ConfiguraEmail(Login u) {
+ * 
+ * isShowing = false; this.user = u;
+ * 
+ * 
+ * 
+ * String diretorio = System.getProperty("user.home"); String sep =
+ * System.getProperty("file.separator");
+ * 
+ * String nameFolder = user.getUsuario() + "@emailConfig"; // e digo o nome //
+ * padrï¿½o dos // arquivos de // e-mail's
+ * 
+ * File fileConfigEmail = new File(diretorio+sep+nameFolder); // Pego o //
+ * diretorio // que se // encontra // o arquivo
+ * 
+ * confEmail = new CriptografiaConfigEmail().unCrypt(// e tento localizo-lo // e
+ * // descriptografa-lo nameFolder);
+ * 
+ * }
+ * 
+ * public void run() { if (confEmail != null) { // Se no construtor conseguiu
+ * localizar o // arquivo entï¿½o eu tento autentica-lo
+ * System.out.println("Tem config");
+ * 
+ * emailC = new EmailControllerV3(confEmail); Thread threadUpdateEmail = new
+ * Thread(new CheckNewMessages(emailC)); threadUpdateEmail.start(); } else {
+ * System.out.println("N Tem config  - PARTIU"); }
+ * 
+ * } }
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * class CheckNewMessages implements Runnable {
+ * 
+ * 
+ * private EmailControllerV3 email;
+ * 
+ * 
+ * 
+ * public CheckNewMessages(EmailControllerV3 emailC) { this.email = emailC; }
+ * 
+ * //
+ * 
+ * @Override public void run() { try { while (true) { int atual =
+ * email.countMessage(); System.out.println(atual+"    has email?"); if
+ * (email.hasNewEmail(atual)) { System.out.println("Chegou nova msg!");
+ * Principal.showNotication(); }
+ * 
+ * Thread.sleep(60 * 1000); }
+ * 
+ * } catch (Exception e) { // TODO Auto-generated catch block
+ * e.printStackTrace(); } // } //
+ * 
+ * 
+ * }
+ */
 
+// ----------
 
-
-	private int WIDTH_TAMANHO;
-
-	private JFrame frame;
-
-	protected static boolean isShowing;
-	private int totalEmails;
-	private UsuarioEmail confEmail;
-	private List<String> lstItens;
-	protected String nameFolder;
-
-	public ConfiguraEmail(Login u) {
-
-		isShowing = false;
-		this.lstItens = new ArrayList<String>();
-		this.user = u;
-		
-		
-
-		String diretorio = System.getProperty("user.home");
-		String sep = System.getProperty("file.separator");
-		
-		
-
-		String nameFolder = user.getUsuario() + "@emailConfig"; // e digo o nome
-																// padrï¿½o dos
-																// arquivos de
-																// e-mail's
-		
-		File fileConfigEmail = new File(diretorio+sep+nameFolder); // Pego o
-																   // diretorio
-																   // que se
-																   // encontra
-																   // o arquivo
-		
-		confEmail = new CriptografiaConfigEmail().unCrypt(// e tento localizo-lo
-															// e
-															// descriptografa-lo
-				nameFolder);
-
-	}
-
-	public void run() {
-			if (confEmail != null) { // Se no construtor conseguiu localizar o
-										// arquivo entï¿½o eu tento autentica-lo
-				System.out.println("Tem config");
-
-				emailC = new EmailControllerV3(confEmail);
-				Thread threadUpdateEmail = new Thread(new CheckNewMessages(emailC));
-				threadUpdateEmail.start();
-			} else {
-				System.out.println("N Tem config  - PARTIU");
-			}
-		
-	}
-}
-
-
-
-
-
-
-
-class CheckNewMessages implements Runnable {
-
-	
-	private EmailControllerV3 email;
-	
-	
-	private Map<String, List<MensagemEmail>> arquivosEmail;
-
-	public CheckNewMessages(EmailControllerV3 emailC) {
-		this.email = emailC;
-	}
-
-	//
-	@Override
-	public void run() {
-		try {
-			while (true) {
-				int atual = email.countMessage();
-				System.out.println(atual+"    has email?");
-				if (email.hasNewEmail(atual)) {
-					System.out.println("Chegou nova msg!");
-					Principal.showNotication();
-				}
-
-				Thread.sleep(60 * 1000);
-			}
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//
-	}
-	//
-	
-	
-}
-
-
-	
-	//----------
-	
-	
-	
-	
-	
-	
-
-
-class DesktopPaneCustom extends JDesktopPane implements MouseListener{
+class DesktopPaneCustom extends JDesktopPane {
 	private javax.swing.JPopupMenu pop;
 	private JMenuItem itMnAdicionar;
-	public DesktopPaneCustom(){
+	private JDesktopPane myDesk;
+
+	public DesktopPaneCustom() {
+		myDesk = this;
 		pop = new javax.swing.JPopupMenu();
-		 itMnAdicionar = new JMenuItem("Adicionar");
-		 itMnAdicionar.addActionListener(new ActionListener() {
-			
+		itMnAdicionar = new JMenuItem("Adicionar");
+
+		itMnAdicionar.addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Clique");
-				
+
 			}
 		});
-		 pop.add(itMnAdicionar);
-		 pop.addMouseListener(this);
+		pop.add(itMnAdicionar);
+		pop.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+				if (e.getButton() == java.awt.event.MouseEvent.BUTTON3) {
+					pop.show(myDesk, e.getX(), e.getY());
+				}
+			}
+		});
 	}
-	
-	public void paintComponent(Graphics g) {  
-        super.paintComponent(g);
-        try {
-        BufferedImage imagem;
-		
-			imagem = ImageIO.read(getClass().getClassLoader().getResourceAsStream("Resources/imgs/logo fundo.png"));
-		
-        if(imagem != null)  {  
-            g.drawImage(imagem, 0, 0, this.getWidth(), this.getHeight(), this);   
-        }  
-        } catch (IOException e) {
+
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		try {
+			BufferedImage imagem;
+
+			imagem = ImageIO.read(getClass().getClassLoader()
+					.getResourceAsStream("Resources/imgs/logo fundo.png"));
+
+			if (imagem != null) {
+				g.drawImage(imagem, 0, 0, this.getWidth(), this.getHeight(),
+						this);
+			}
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    }
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		System.out.println("clique");
-		if(e.getButton() == java.awt.event.MouseEvent.BUTTON3){
-			pop.show(this, e.getX(), e.getY());
-		}
-		
 	}
 
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	} 
 }
-
-

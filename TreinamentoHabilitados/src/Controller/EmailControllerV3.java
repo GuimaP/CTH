@@ -86,7 +86,7 @@ public class EmailControllerV3 {
 			this.configEmail = em;
 			System.out.println(arqFilesMail);
 			autentica(configEmail);
-			preparaArquivos();
+//			preparaArquivos();
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
@@ -123,7 +123,7 @@ public class EmailControllerV3 {
 	}
 
 	
-	private void preparaArquivos() throws MessagingException {
+/*	private void preparaArquivos() throws MessagingException {
 		try {
 			
 			List<String>lsFolders = getFolders();   //Pego todas pastas existentes
@@ -257,7 +257,6 @@ public class EmailControllerV3 {
 				}
 			System.out.println(ms);
 
-//			lerBodyEmail(msg); //Leio o corpo de e-mail
 			
 
 			
@@ -277,7 +276,7 @@ public class EmailControllerV3 {
 		}
 		return msEmail;
 		
-	}
+	}*/
 
 	public synchronized boolean hasNewEmail(int contAtual){
 		try{
@@ -301,7 +300,7 @@ public class EmailControllerV3 {
 		return false;
 	}
 	
-	public List<String> getNewEmails(){
+	/*public List<String> getNewEmails(){
 		try{
 			Folder folder = store.getFolder("INBOX");
 			folder.open(Folder.READ_ONLY);
@@ -330,9 +329,9 @@ public class EmailControllerV3 {
 			e.printStackTrace(); //HANDLE EXCEPTION
 		}
 		return lstItensEmails;
-	}
+	}*/
 	
-	private String renderMultiPart(Message msg) throws Exception {
+/*	private String renderMultiPart(Message msg) throws Exception {
 
 				String body = "";
 				Multipart multipart = (Multipart) msg.getContent();
@@ -359,7 +358,7 @@ public class EmailControllerV3 {
 				}
 				return body;
 
-	}
+	}*/
 	
 public int countMessage() throws MessagingException{
 	
@@ -376,14 +375,8 @@ public int countMessage() throws MessagingException{
 		
 	
 }
-/**
- * 
- * @param pesquisa
- * @param folderName
- * @return Retorna uma lista de View de itens do e-mail procurado
- * @throws Exception
- */
-	public synchronized MenssagemResultQuery findEmail(String pesquisa,String folderName) throws Exception{
+
+/*	public synchronized MenssagemResultQuery findEmail(String pesquisa,String folderName) throws Exception{
 		try{
 			MenssagemResultQuery query = new MenssagemResultQuery(); //Classe para guardar na consulta o item do e-mail e o objeto do mesmo
 			Folder folder = store.getFolder(folderName);
@@ -436,9 +429,9 @@ public int countMessage() throws MessagingException{
 		}catch(MessagingException | IOException e){
 			throw new Exception(e);
 		}
-	}
+	}*/
 	
-	private void saveArquivo(File arg,Object obj){
+	/*private void saveArquivo(File arg,Object obj){
 		try{
 			 FileOutputStream ou = new FileOutputStream(arg);
 			 ObjectOutputStream os = new ObjectOutputStream(ou);
@@ -447,9 +440,9 @@ public int countMessage() throws MessagingException{
 			e.printStackTrace();
 		}
 	}
-
+*/
 	
-	private List<String> getItens(String name){
+/*	private List<String> getItens(String name){
 		if(mapItensViews.containsKey(name))
 			return mapItensViews.get(name);
 		
@@ -469,9 +462,9 @@ public int countMessage() throws MessagingException{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
-	private List<String> transformaForViewItem(Message[] vtrM, int inicio,int limite) throws MessagingException, IOException{
+	/*private List<String> transformaForViewItem(Message[] vtrM, int inicio,int limite) throws MessagingException, IOException{
 		List<String>lsItens = new ArrayList<String>();
 		if(inicio> vtrM.length){
 			inicio = vtrM.length;
@@ -496,10 +489,9 @@ public int countMessage() throws MessagingException{
 		}
 		}
 			return lsItens;
-		}
-//	});
+		}*/
 		
-	
+/*	
 	public List<String> pegaItens(String folder){
 		List<String> itens = new ArrayList<String>();
 		try{
@@ -569,7 +561,7 @@ public int countMessage() throws MessagingException{
 
 		return lsFolders;
 	
-	}
+	}*/
 
 	public boolean autentica(UsuarioEmail e) throws MessagingException {
 		

@@ -6,7 +6,6 @@
 package View;
 
 import model.Carro;
-
 import model.Servico;
 import model.repository.Repository;
 import model.repository.RepositoryServico;
@@ -29,6 +28,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 /**
  *
@@ -205,12 +206,12 @@ public class FormCadastroServico extends JInternalFrame {
 					lbAulas.setForeground(Color.red);
 				} else if (tfPrecoAula.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null,
-							"Informar o preï¿½o da aula");
+							"Informar o preço da aula");
 					tfPrecoAula.requestFocus();
 					lbPrecoAula.setForeground(Color.red);
 				} else if (tfPrecoPacote.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null,
-							"Informar o preï¿½o do servico");
+							"Informar o preço do servico");
 					tfPrecoPacote.requestFocus();
 					lbPrecoPacote.setForeground(Color.red);
 				} else {
@@ -226,10 +227,12 @@ public class FormCadastroServico extends JInternalFrame {
 						servico.setPrecoPacote(tfPrecoPacote.getText());
 						servico.setPrecoAula(tfPrecoAula.getText());
 						repo.adicionar(servico);
-						listPacote = new RepositoryServico().buscarServico();
+						listPacote = repo.buscarServico();
 						populaTable();
+						limparCampos();
 					} catch (Exception e2) {
 						JOptionPane.showMessageDialog(null, e2.getMessage());
+						e2.printStackTrace();
 					}
 
 				}
@@ -289,6 +292,14 @@ public class FormCadastroServico extends JInternalFrame {
 				// TODO Auto-generated method stub
 				limparCampos();
 
+			}
+		});
+		
+		this.addInternalFrameListener(new InternalFrameAdapter() {
+			@Override
+			public void internalFrameClosing(InternalFrameEvent e) {
+				super.internalFrameClosing(e);
+				Principal.isFrameServico = false;
 			}
 		});
 	}

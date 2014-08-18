@@ -21,7 +21,7 @@ public class Aula {
 	@GeneratedValue
 	private long idAula;
 	private String descAulas;
-	private Date data;
+	private java.util.Date data;
 	
 
 	
@@ -50,6 +50,7 @@ public class Aula {
 		this.instrutor = instrutor;
 	}
 
+<<<<<<< HEAD
 
 	public long getIdAula() {
 		return idAula;
@@ -58,10 +59,13 @@ public class Aula {
 		this.idAula = idAula;
 	}
 	public Date getData() {
+=======
+	public java.util.Date getData() {
+>>>>>>> cefb0ed265212f4bbbf966bc6d5a651312ca71e0
 		return data;
 	}
-	public void setData(Date data) {
-		this.data = data;
+	public void setData(java.util.Date dataSelecionada) {
+		this.data = dataSelecionada;
 	}
 	public Pacote getPacote() {
 		return pacote;

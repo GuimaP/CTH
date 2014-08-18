@@ -22,46 +22,59 @@ import org.hibernate.criterion.Restrictions;
 public class Repository<T> {
 
 	public void adicionar(T obj) throws Exception {
+		EntityManager em = null;
 		try {
-			EntityManager em = null;
-			Session session = ConnectionFactoryConfig.openManger()
-					.openSession();
-			session.getTransaction().begin();
-			session.persist(obj);
-			session.getTransaction().commit();
-			session.close();
+			
+//			Session session = ConnectionFactoryConfig.openManger()
+//					.openSession();
+			em = ConnectionFactoryRepository.getManager();
+			em.getTransaction().begin();
+			em.persist(obj);
+			em.getTransaction().commit();
+			em.close();
 		} catch (Exception e) {
+			if(em != null){
+				em.getTransaction().rollback();
+				
+			}
 			throw new Exception(e);
 		}
 	}
 
-	public List<T> buscarTodos() throws Exception {
-
-		try {
-			List<T> lista = null;
-			Session session = ConnectionFactoryConfig.getSession();// getCurrentSession();
-			if (!session.isConnected()) {
-				ConnectionFactoryConfig.generateSession();
-			}
-			session.beginTransaction();
-			session.createCriteria(this.getClass());
-			Criteria c = session.createCriteria(this.getClass());
-			lista = c.list();
-			session.getTransaction().commit();
-
-			session.close();
-			return lista;
-		} catch (Exception e) {
-			throw new Exception();
-		}
-
-	}
+//	public List<T> buscarTodos() throws Exception {
+//
+//		try {
+//			List<T> lista = null;
+////			Session em = ConnectionFactoryConfig.getSession();// getCurrentSession();
+//			EntityManager em = ConnectionFactoryRepository.getManager();
+//			em.getTransaction().begin();
+//			em.createQuery();
+//			lista = c.list();
+//			em.getTransaction().commit();
+//
+//			em.close();
+//			return lista;
+//		} catch (Exception e) {
+//			throw new Exception();
+//		}
+//
+//	}
 
 	public void atualizar(T obj) {
-		Session s = ConnectionFactoryConfig.getSession();// .getCurrentSession();
-		s.beginTransaction();
-		s.merge(obj);
-		s.getTransaction().commit();
+//		Session em = ConnectionFactoryConfig.getSession();// .getCurrentSession();
+		EntityManager em = null;
+		try {
+			em = ConnectionFactoryRepository.getManager();
+			em.getTransaction().begin();
+			em.merge(obj);
+			em.getTransaction().commit();
+
+		} catch (SQLException e) {
+			if(em != null){
+				em.getTransaction().rollback();
+			}
+			e.printStackTrace();
+		}
 
 	}
 

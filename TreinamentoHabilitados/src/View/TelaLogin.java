@@ -48,15 +48,16 @@ public class TelaLogin extends JFrame {
     private JTextField tfUsuario;
     private Font fonte;
     private JPasswordField jpSenha;
-    private Point point;
+    private Point point;//Para mover a frame de login
     private JFrame minhaFrame; //Variavel da minha frame, necessaria para o efeito de arrastar a tela
+    private JLabel lbVerificacao;
     
-    
+    private Principal formMain;
     
 
     public TelaLogin() {
         try {
-
+        	
             inicializaComponentes();
             eventos();
             tfUsuario.setText("guima");
@@ -73,7 +74,7 @@ public class TelaLogin extends JFrame {
         // depois
 
         minhaFrame = this;
-        point = new Point();
+//        point = new Point();
 
 		//JOptionPane.showConfirmDialog(null, ));
         getContentPane().setLayout(null);
@@ -84,6 +85,8 @@ public class TelaLogin extends JFrame {
         setResizable(false);
         setUndecorated(true);
         
+        point = new Point();
+     
         
         setIconImage(ConfigController.defineIcon());
 
@@ -119,12 +122,18 @@ public class TelaLogin extends JFrame {
         tfUsuario.setLocation(100, 22);
         tfUsuario.setFont(ConfigController.definePrincipalFont(14f, Font.PLAIN));
         add(tfUsuario);
+        
+        lbVerificacao = new JLabel("*");
+        lbVerificacao.setForeground(Color.RED);
+        lbVerificacao.setLocation(-2, tfUsuario.getY());
 
         jpSenha = new JPasswordField();
         jpSenha.setSize(160, 30);
         jpSenha.setLocation(100, 52);
         add(jpSenha);
-
+        
+       
+        
 		//
         setVisible(true);
 
@@ -132,11 +141,13 @@ public class TelaLogin extends JFrame {
 
     public void eventos() {
         btOk.addActionListener(new ActionListener() {
-            @Override
+//            private Principal telaPrincipal;
+			private Login login;
+			private LoginRepository loginRepository;
+
+			@Override
             public void actionPerformed(ActionEvent e) {
-                JLabel lbVerificacao = new JLabel("*");
-                lbVerificacao.setForeground(Color.RED);
-                lbVerificacao.setLocation(-2, tfUsuario.getY());
+                
                 lbVerificacao.setVisible(false);
                 if (tfUsuario.getText().trim().equals("")) {
                     lbVerificacao.setVisible(true);
@@ -147,16 +158,18 @@ public class TelaLogin extends JFrame {
 
                 } else {
                     try {
-                        Login l = new Login();
-                        l.setUsuario(tfUsuario.getText().trim());
-                        l.setSenha(String.valueOf(jpSenha.getPassword()));
-                        LoginRepository loginRepository = new LoginRepository();
+                    	
+                        login = new Login();
+                        login.setUsuario(tfUsuario.getText().trim());
+                        login.setSenha(String.valueOf(jpSenha.getPassword()));
+                        loginRepository = new LoginRepository();
  
-//                       minhaFrame.setGlassPane(new MyPainelInvisible());
-                        if (loginRepository.isAutentica(l)) {
+                        if (loginRepository.isAutentica(login)) {
                           
                            minhaFrame.setVisible(false);
-                           new Principal(l);
+//                           telaPrincipal.setVisible(true);
+                           formMain = new Principal();
+                           formMain.setVisible(true);
                           
                             minhaFrame.dispose();
                         } else {

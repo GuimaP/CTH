@@ -25,22 +25,19 @@ public class LoginRepository {
 	}
 
 	public boolean isAutentica(Login Usuario) throws SQLException, Exception {
-		Session session = ConnectionFactoryConfig.getSession();
+//		Session session = ConnectionFactoryConfig.openManger().openSession();
+		EntityManager session = ConnectionFactoryRepository.getManager();
 				//.getCurrentSession();
-		Login ls = null;
-		session.beginTransaction();
+
 		try {
-//			Criteria filtro = session.createCriteria(Login.class);
-//			filtro.add(Restrictions.eq("usuario", Usuario.getUsuario()));
-//			filtro.add(Restrictions.eq("senha", Usuario.getSenha()));
-//			ls = (Login) filtro.uniqueResult();
-//
-			org.hibernate.Query q = session.createQuery("from Login as l where l.usuario = :user and l.senha = :pass");
-			q.setString("user",Usuario.getUsuario());
-			q.setString("pass", Usuario.getSenha());
-			Login f = (Login) q.uniqueResult();
+			session.getTransaction().begin();
+//			Query q = session.createQuery("from Login as l where l.usuario = :user and l.senha = :pass");
+			Query query = session.createQuery("from Login  where usuario = :user and senha = :pass");
+			query.setParameter("user",Usuario.getUsuario());
+			query.setParameter("pass", Usuario.getSenha());
+			Login f = (Login) query.getSingleResult();
 			
-			System.out.println(session.isConnected());
+//			System.out.println(session.isConnected());
 			System.out.println(session.isOpen());
 			session.getTransaction().commit();		
 			return f != null;

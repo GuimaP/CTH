@@ -21,20 +21,22 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
 import javax.swing.text.MaskFormatter;
 
 
-import controller.ControllerFormCarro;
 
+
+
+import controller.ControllerFormCarro;
 import model.*;
 import model.repository.*;
 import model.table.ModelTableCarro;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class FormCadastroCarro extends JInternalFrame {
 
@@ -214,8 +216,10 @@ public class FormCadastroCarro extends JInternalFrame {
 						carro.setMarca(tfMarca.getText());
 						carro.setModelo(tfModelo.getText());
 						carro.setPlaca(tfPlaca.getValue().toString());
-						Repository<model.Carro> repo = new Repository<Carro>();
-						repo.adicionar(carro);
+						if(repoCarro == null){
+							repoCarro = new RepositoryCarro();
+						}
+						repoCarro.adicionar(carro);
 						listCarro = new ControllerFormCarro().buscarCarro();
 						populaTable();
 					} catch (Exception e2) {
@@ -324,6 +328,16 @@ public class FormCadastroCarro extends JInternalFrame {
 			public void actionPerformed(ActionEvent e) {
 			limparCampos();
 				
+			}
+		});
+		
+		this.addInternalFrameListener(new InternalFrameAdapter() {
+			@Override
+			public void internalFrameClosing(InternalFrameEvent e) {
+				super.internalFrameClosing(e);
+				Principal.isFrameCarro = false;
+				setVisible(false);
+				limparCampos();
 			}
 		});
 	}

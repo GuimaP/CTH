@@ -3,6 +3,9 @@ package model.repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -36,27 +39,36 @@ public class RepositoryInstrutor extends Repository<model.Funcionario> {
 
 	@Override
 	public void adicionar(Funcionario obj) throws Exception {
+		EntityManager em = ConnectionFactoryRepository.getManager();
+		em.getTransaction().begin();
 		try {
-			super.adicionar(obj);
-			Carro c = obj.getTbCarroPlacaCarro();
-			c.setOcupado(true);
-			new RepositoryCarro().atualizar(c);
+
+			em.persist(obj);
+			obj.getTbCarroPlacaCarro().setOcupado(true);
+			em.merge(obj.getTbCarroPlacaCarro());
+			// Carro c = obj.getTbCarroPlacaCarro();
+			// c.setOcupado(true);
+			em.getTransaction().commit();
+
 		} catch (Exception e) {
+			em.getTransaction().rollback();
 			throw new Exception(e);
 		}
 	}
 
 	public List<Funcionario> getAllInstrutor() throws Exception {
 		try {
-			Session session = ConnectionFactoryConfig.openManger()
-					.openSession();
-			List<Funcionario> ls = new ArrayList<Funcionario>();
-			if (session != null || !session.isConnected()) {
-				Criteria c = session.createCriteria(Funcionario.class);
-				ls = c.list();
-			}
+			// Session session = ConnectionFactoryConfig.openManger()
+			// .openSession();
 
-			return ls;
+			/*
+			 * if (session != null || !session.isConnected()) { Criteria c =
+			 * session.createCriteria(Funcionario.class); ls = c.list(); }
+			 */
+
+			EntityManager em = ConnectionFactoryRepository.getManager();
+
+			return em.createQuery("from Funcionario ").getResultList();
 		} catch (Exception e) {
 			throw new Exception(e);
 		}
