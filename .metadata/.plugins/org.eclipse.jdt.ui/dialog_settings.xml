@@ -39,6 +39,19 @@
 		<item value="570" key="width"/>
 		<item value="375" key="height"/>
 	</section>
+	<section name="FatJarPackageWizard">
+		<item value="F:\vitor.senai\quartoSemestre\TCC" key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION"/>
+		<item value="Start - TreinamentoHabilitados" key="FatJarPackageWizardPage.LAUNCH_CONFIGURATION_SELECTION_NAME"/>
+		<item value="C:\Users\Vitor\Desktop\TreinamentoHabilitados.prototipo.jar" key="FatJarPackageWizardPage.DESTINATION_PATH_SELECTION"/>
+		<item value="false" key="FatJarPackageWizardPage.ANTSCRIPT_SAVE"/>
+		<item value="1" key="FatJarPackageWizardPage.LIBRARY_HANDLING"/>
+		<list key="FatJarPackageWizardPage.DESTINATION_NAMES_ID">
+			<item value="C:\Users\Vitor\Desktop\TreinamentoHabilitados.prototipo.jar"/>
+		</list>
+		<list key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION_HISTORY">
+			<item value=".xml"/>
+		</list>
+	</section>
 	<section name="SourceActionDialog.methods">
 		<item value="false" key="SynchronizedModifier"/>
 		<item value="false" key="Comments"/>

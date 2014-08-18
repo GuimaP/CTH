@@ -1,6 +1,6 @@
 package model;
 
-import java.sql.Date;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.xml.crypto.Data;
+import java.util.Date;
 
 @Entity
 @Table(name = "tb_aula")
@@ -22,6 +22,8 @@ public class Aula {
 	private long idAula;
 	private String descAulas;
 	private Date data;
+	
+
 	
 	@ManyToOne
 	@JoinColumn(name = "cpf")
@@ -48,11 +50,24 @@ public class Aula {
 		this.instrutor = instrutor;
 	}
 
+
+	public long getIdAula() {
+		return idAula;
+	}
+	public void setIdAula(long idAula) {
+		this.idAula = idAula;
+	}
 	public Date getData() {
 		return data;
 	}
 	public void setData(Date data) {
 		this.data = data;
+	}
+	public Pacote getPacote() {
+		return pacote;
+	}
+	public void setPacote(Pacote pacote) {
+		this.pacote = pacote;
 	}
 	public long getId() {
 		return idAula;
