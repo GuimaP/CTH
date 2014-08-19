@@ -1,5 +1,6 @@
 package model.repository;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,22 +20,15 @@ import model.Funcionario;
 
 public class RepositoryInstrutor extends Repository<model.Funcionario> {
 
-	public Funcionario findInstrutorSingle(String cpf) {
+	public Funcionario findInstrutorSingle(String cpf) throws SQLException {
 		// Session session =
 		// ConnectionFactoryConfig.getSession();//.getCurrentSession();
-		Session session = ConnectionFactoryConfig.openManger().openSession();
+		EntityManager em = ConnectionFactoryRepository.getManager();
 		Funcionario f = null;
-		if (session != null) {
-			session.beginTransaction();
-			Criteria filtro = session.createCriteria(Funcionario.class);
-			filtro.add(Restrictions.eq("cpf", cpf));
-			f = (Funcionario) filtro.uniqueResult();
-			session.getTransaction().commit();
+			em.getTransaction().begin();
+			f = (Funcionario) em.createQuery("from Funcionario where cpf = :cpf").setParameter("cpf", cpf).getSingleResult();
+			em.getTransaction().commit();
 			return f;
-
-		}
-
-		return f;
 	}
 
 	@Override
@@ -55,17 +49,14 @@ public class RepositoryInstrutor extends Repository<model.Funcionario> {
 			throw new Exception(e);
 		}
 	}
+	
+	public void deletarInstrutor(Funcionario func) throws SQLException{
+		EntityManager em = ConnectionFactoryRepository.getManager();
+		em.remove(func);
+	}
 
 	public List<Funcionario> getAllInstrutor() throws Exception {
 		try {
-			// Session session = ConnectionFactoryConfig.openManger()
-			// .openSession();
-
-			/*
-			 * if (session != null || !session.isConnected()) { Criteria c =
-			 * session.createCriteria(Funcionario.class); ls = c.list(); }
-			 */
-
 			EntityManager em = ConnectionFactoryRepository.getManager();
 
 			return em.createQuery("from Funcionario ").getResultList();

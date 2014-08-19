@@ -27,7 +27,7 @@ import controller.ConfigController;
 //				img = ImageIO.read(getClass().getClassLoader().getResourceAsStream(
 //								"/Resources/icons/loading.gif"));
 				
-				img = new ImageIcon(getClass().getClassLoader().getResource("Resources/icons/loading.gif")).getImage();
+				img = new ImageIcon(getClass().getClassLoader().getResource("resources/icons/loading.gif")).getImage();
 				g.drawImage(img, 0, 0, this.getWidth(),
 						this.getHeight(), this);
 			} catch (Exception e) {

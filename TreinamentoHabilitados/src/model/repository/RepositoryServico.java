@@ -3,6 +3,8 @@ package model.repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 
@@ -28,10 +30,8 @@ public class RepositoryServico extends Repository<Servico> {
 
 	public List<Servico> buscarServico() throws Exception {
 		try {
-			Session sessio = ConnectionFactoryConfig.openManger().openSession();
-			List<Servico> listServico = new ArrayList<Servico>();
-			Criteria c = sessio.createCriteria(Servico.class);
-			listServico = c.list();
+			EntityManager em = ConnectionFactoryRepository.getManager();
+			List<Servico> listServico = em.createQuery("from Servico").getResultList();
 			return listServico;
 		} catch (Exception e) {
 			throw new Exception(e);

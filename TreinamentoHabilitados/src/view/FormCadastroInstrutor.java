@@ -286,7 +286,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
 			btRefresh = new JButton();
 			btRefresh.setIcon(new ImageIcon(getClass().getClassLoader()
-					.getResource("Resources/icons/btRefresh.png")));
+					.getResource("resources/icons/btRefresh.png")));
 			btRefresh.setContentAreaFilled(true);
 			btRefresh.setSize(35, 35);
 			btRefresh.setLocation(440, 140);
@@ -333,7 +333,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 			} else {
 				BufferedImage imageBf = ImageIO.read(getClass()
 						.getClassLoader().getResourceAsStream(
-								"Resources/imgs/noImage.png"));
+								"resources/imgs/noImage.png"));
 				painelFotoInstrutor = new JImagePanel(imageBf);
 			}
 			painelFotoInstrutor.setBounds(375, 10, 110, 130);
@@ -616,7 +616,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
 							imageBf = ImageIO.read(getClass().getClassLoader()
 									.getResourceAsStream(
-											"Resources/imgs/noImage.png"));
+											"resources/imgs/noImage.png"));
 						}
 						dirMyPicture = imgDir;
 						painelFotoInstrutor.setImage(imageBf);
@@ -918,7 +918,7 @@ public class FormCadastroInstrutor extends JInternalFrame {
 			 */
 			painelFotoInstrutor.setImage(ImageIO.read(getClass()
 					.getClassLoader().getResourceAsStream(
-							"Resources/imgs/noImage.png")));
+							"resources/imgs/noImage.png")));
 			btAlterar.setVisible(false);
 			btSalvar.setVisible(true);
 		} catch (Exception e) {

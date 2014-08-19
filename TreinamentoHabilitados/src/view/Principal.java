@@ -226,7 +226,7 @@ public class Principal extends JFrame {
 		add(painelCalendario);
 
 		btRefreshItens = new JButton(new ImageIcon(getClass().getResource(
-				"/Resources/icons").getPath()
+				"/resources/icons").getPath()
 				+ "/load.gif"));
 		btRefreshItens.setContentAreaFilled(false);
 		btRefreshItens.setSize(40, 40);
@@ -546,25 +546,25 @@ class MeuModeloTree extends DefaultTreeCellRenderer {
 		System.out.println();
 		if (texto.equals("Inicio")) {
 			ImageIcon img = new ImageIcon(getClass().getClassLoader()
-					.getResource("Resources/icons/inicio.png"));
+					.getResource("resources/icons/inicio.png"));
 			setIcon(img);
 			setToolTipText(texto);
 
 		} else if (texto.contains("E-mail")) {
 			ImageIcon img = new ImageIcon(getClass().getClassLoader()
-					.getResource("Resources/icons/email.png"));
+					.getResource("resources/icons/email.png"));
 			setIcon(img);
 			setToolTipText(texto);
 		}
 		if (texto.contains("Favoritos")) {
 			ImageIcon img = new ImageIcon(getClass().getClassLoader()
-					.getResource("Resources/icons/" + texto + ".png"));
+					.getResource("resources/icons/" + texto + ".png"));
 			setIcon(img);
 			setToolTipText(texto);
 		}
 		if (texto.contains("Tarefas")) {
 			ImageIcon img = new ImageIcon(getClass().getClassLoader()
-					.getResource("Resources/icons/" + texto + ".png"));
+					.getResource("resources/icons/" + texto + ".png"));
 			setIcon(img);
 			setToolTipText(texto);
 		} else {
@@ -688,7 +688,7 @@ class DesktopPaneCustom extends JDesktopPane {
 			BufferedImage imagem;
 
 			imagem = ImageIO.read(getClass().getClassLoader()
-					.getResourceAsStream("Resources/imgs/logo fundo.png"));
+					.getResourceAsStream("resources/imgs/logo fundo.png"));
 
 			if (imagem != null) {
 				g.drawImage(imagem, 0, 0, this.getWidth(), this.getHeight(),

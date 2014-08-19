@@ -24,7 +24,7 @@ public class ConfigController {
 	public static java.awt.Image defineIcon(){
 		BufferedImage bf = null;
 		try {
-			bf = ImageIO.read(ConfigController.class.getResourceAsStream("/Resources/icons/logo.png"));
+			bf = ImageIO.read(ConfigController.class.getResourceAsStream("/resources/icons/logo.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

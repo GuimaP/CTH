@@ -83,7 +83,7 @@ public class FormCadastroCliente extends JInternalFrame {
 	private JFormattedTextField tfCep, tfCpf, tfCelular, tfTelefone,
 			tfPagamentoInicial, tfPagamentoPendente, tfBuscaAluno, tfNumero,
 			tfBuscaAlunoCpf;
-	private JButton btSalvar, btBuscarPacote, btTarefa;
+	private JButton btSalvar, btBuscarPacote, btTarefa,btExcluir;
 	private JTabbedPane abas;
 	private JDateChooser dtPagamento, dtProximoPagamento, dtCadastroCliente,
 			dtDataNascimento, dtValidadeCnh, dtPermissao;
@@ -233,7 +233,7 @@ public class FormCadastroCliente extends JInternalFrame {
 			} else {
 				BufferedImage imageBf = ImageIO.read(getClass()
 						.getClassLoader().getResourceAsStream(
-								"Resources/imgs/noImage.png"));
+								"resources/imgs/noImage.png"));
 				painelFotoInstrutor = new JImagePanel(imageBf);
 			}
 			painelFotoInstrutor.setBounds(405, 10, 110, 130);

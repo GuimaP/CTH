@@ -23,15 +23,11 @@ public class ConnectionFactoryRepository {
     	EntityManager entityManager = null;
     	try{
     	Map<String, String> map = new HashMap<String, String>();
-        map.put("javax.persistence.jdbc.url", "jdbc:mysql://localhost:3306/tcc");
+        map.put("javax.persistence.jdbc.url", "jdbc:mysql://localhost:3306/db");
     	map.put("javax.persistence.jdbc.user", "root");
-    	map.put("javax.persistence.jdbc.password", "vitor");
-    	String dbName = "tcc";
-    	String dbUserName = "root";
-    	String dbPassword = "vitor";
+    	map.put("javax.persistence.jdbc.password", "1q2w3e");
     	
     	
-//        map.put("javax.persistence.jdbc.url", "jdbc:mysql://localhost:3306/" + dbName + "?user=" + dbUserName + "&password=" + dbPassword + "&useUnicode=true&characterEncoding=UTF-8");
 
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("autoEscolaNew",map);
         entityManager =  factory.createEntityManager();

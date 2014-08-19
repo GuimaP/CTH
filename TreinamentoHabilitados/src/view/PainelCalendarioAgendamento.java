@@ -109,7 +109,7 @@ public class PainelCalendarioAgendamento extends JPanel {
 	public PainelCalendarioAgendamento(Point l) {
 		isShowingList = false;
 		LOCALIZAO = l;
-		imgClose = new ImageIcon(getClass().getResource("/Resources/icons")
+		imgClose = new ImageIcon(getClass().getResource("/resources/icons")
 				.getPath() + "/closeDesc.png");
 		repoTarefa = new RepositoryTarefa(); // Inicio o repositorio da Classe
 		isShowingList = false; // por default ele n�o est� mostrando a lista de
@@ -149,7 +149,7 @@ public class PainelCalendarioAgendamento extends JPanel {
 			add(painelCalendario);
 
 			javax.swing.ImageIcon img = new javax.swing.ImageIcon(getClass()
-					.getResource("/Resources/icons").getPath() + "/Tarefas.png"); // Pegando
+					.getResource("/resources/icons").getPath() + "/Tarefas.png"); // Pegando
 																					// a
 																					// imagem
 																					// do
@@ -316,7 +316,7 @@ public class PainelCalendarioAgendamento extends JPanel {
 		painelNewTask.add(lbCloseTask);
 
 		ImageIcon imgSave = new ImageIcon(PainelCalendarioAgendamento.class
-				.getResource("/Resources/icons").getPath()
+				.getResource("/resources/icons").getPath()
 				+ "/iconSaveTask.png");
 
 		lbSaveTask = new JLabel(imgSave);
