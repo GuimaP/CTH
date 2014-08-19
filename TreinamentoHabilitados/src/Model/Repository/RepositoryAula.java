@@ -15,11 +15,11 @@ public class RepositoryAula extends Repository<Aula> {
 
 	public void adicionar(Aula aula) throws Exception{
 		try {
-//			Session sessiom = ConnectionFactoryConfig.openManger().openSession();
-			EntityManager session = ConnectionFactoryRepository.getManager();
-			session.getTransaction().begin();
-			session.persist(aula);
-			session.getTransaction().commit();
+			Session sessiom = ConnectionFactoryConfig.openManger().openSession();
+		//	EntityManager session = ConnectionFactoryRepository.getManager();
+			sessiom.getTransaction().begin();
+			sessiom.persist(aula);
+			sessiom.getTransaction().commit();
 		} catch (Exception e) {
 			throw new Exception(e);
 		}
@@ -27,11 +27,12 @@ public class RepositoryAula extends Repository<Aula> {
 		
 	}
 
+	/*
 	public List<Aula> buscarTodos() throws Exception{
 		try {
 //			Session session = ConnectionFactoryConfig.openManger().openSession();
-			EntityManager session = ConnectionFactoryRepository.getManager();
-			List<Aula> listAula = session.createQuery("from Aula").getResultList();
+			//EntityManager session = ConnectionFactoryRepository.getManager();
+			List<Aula> listAula = sessio.createQuery("from Aula").getResultList();
 
 			return listAula;
 		} catch (Exception e) {
@@ -41,4 +42,6 @@ public class RepositoryAula extends Repository<Aula> {
 	
 	
 	}
+
+*/
 }

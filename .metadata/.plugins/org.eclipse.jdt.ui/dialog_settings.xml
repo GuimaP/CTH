@@ -36,8 +36,8 @@
 		<item value="629" key="DIALOG_X_ORIGIN"/>
 	</section>
 	<section name="RefactoringWizard.preview">
-		<item value="570" key="width"/>
-		<item value="375" key="height"/>
+		<item value="550" key="width"/>
+		<item value="355" key="height"/>
 	</section>
 	<section name="FatJarPackageWizard">
 		<item value="F:\vitor.senai\quartoSemestre\TCC" key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION"/>

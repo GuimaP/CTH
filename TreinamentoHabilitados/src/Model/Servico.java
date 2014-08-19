@@ -17,7 +17,7 @@ import org.hibernate.annotations.GeneratorType;
 public class Servico {
 	@Id//Digo que � uma ID
 	@GeneratedValue //E que vai ser gerado automaticamente
-	private long idPacote;
+	private long idServico;
 	
 	@Column(nullable=false) //N�o pode ser nula o valor
     private String descricao;
@@ -34,11 +34,11 @@ public class Servico {
 	
 	
 	public long getIdPacote() {
-		return idPacote;
+		return idServico;
 	}
 
 	public void setIdPacote(long idPacote) {
-		this.idPacote = idPacote;
+		this.idServico = idPacote;
 	}
 
 	public String getDescAulas() {

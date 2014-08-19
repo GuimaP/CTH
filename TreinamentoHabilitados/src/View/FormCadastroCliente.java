@@ -145,6 +145,8 @@ public class FormCadastroCliente extends JInternalFrame {
 	}
 
 	
+	
+	
 	public void jcInstrutor(){
 		try {
 			listFuncionario = new RepositoryInstrutor().getAllInstrutor(); 
@@ -756,11 +758,8 @@ public class FormCadastroCliente extends JInternalFrame {
 		btTarefa.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int aulasPorServico = Integer.parseInt(pacote.getServico()
-						.getAulas());
-				
-				
-				
+			//	int aulasPorServico = Integer.parseInt(pacote.getServico()
+				//		.getAulas());
 				try {
 					if (aula == null) {
 						aula = new Aula();
@@ -771,20 +770,21 @@ public class FormCadastroCliente extends JInternalFrame {
 					aula.setData(dataSelecionada);
 					aula.setDescAulas(jTextAreaObs.getText());
 					aula.setInstrutor((Funcionario)jcFuncionrio.getSelectedItem());
-					//aula.setPacote((Pacote)tfBuscaAlunoCpf.getValue());
+					aula.setIdPacote(pacote.getId());
 					
 					controllerCli.adicionarAula(aula);
 					
 					//listAulas.add(aula);
 					
 					
-				//	pacote.setAulas(listAulas);
+				//pacote.setAulas(listAulas);
 					
 					
 					//controllerCli.adicionarPacote(pacote);
 
 				} catch (Exception e2) {
-					JOptionPane.showMessageDialog(null, e2.getMessage());
+					//JOptionPane.showMessageDialog(null, e2.getMessage());
+					e2.getStackTrace();
 				}
 
 			}
@@ -792,9 +792,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		});
 
 		calendario.getDayChooser().addPropertyChangeListener("day", evt -> {
-			if (aula == null) {
-				aula = new Aula();
-			}
+			
 			dataSelecionada = calendario.getDate();
 
 		});
@@ -824,7 +822,7 @@ public class FormCadastroCliente extends JInternalFrame {
 
 						try {
 
-							pacote = null;
+							
 
 							List<Pacote> listPacote = new ArrayList<Pacote>();
 							RepositoryPacote repoPacote = new RepositoryPacote();

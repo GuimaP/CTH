@@ -21,7 +21,7 @@ public class Pacote {
 
 	@Id
 	@GeneratedValue
-	private long id;
+	private long idPacote;
 
 	private Date data;
 
@@ -30,7 +30,7 @@ public class Pacote {
 	private Cliente cliente;
 
 	@OneToOne(targetEntity = Servico.class)
-	@JoinColumn(name = "idPacote")
+	@JoinColumn(name = "idServico")
 	private Servico servico;
 
 	@OneToMany(mappedBy = "pacote", targetEntity = Aula.class)
@@ -103,11 +103,11 @@ public class Pacote {
 	}
 
 	public long getId() {
-		return id;
+		return idPacote;
 	}
 
 	public void setId(long id) {
-		this.id = id;
+		this.idPacote = id;
 	}
 
 	public Cliente getCliente() {
