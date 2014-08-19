@@ -1,4 +1,4 @@
-package View.Components;
+package view.components;
 
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;

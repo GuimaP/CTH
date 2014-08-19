@@ -28,7 +28,7 @@ import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.layout.GridLayout;
 import org.w3c.dom.events.MouseEvent;
 
-import View.Components.MenuSuperior;
+import view.components.MenuSuperior;
 
 public class PainelIcon extends JPanel implements MouseListener,MouseMotionListener {
 	private Point point;

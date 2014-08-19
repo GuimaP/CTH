@@ -8,7 +8,6 @@ import model.repository.Repository;
 import model.repository.RepositoryCarro;
 import model.repository.RepositoryInstrutor;
 import model.table.ModeloTableFuncionario;
-import View.Components.UpperCaseDocument;
 
 import com.toedter.calendar.JDateChooser;
 import com.towel.swing.img.JImagePanel;
@@ -73,6 +72,8 @@ import javax.swing.text.MaskFormatter;
 import org.eclipse.swt.custom.CBanner;
 import org.hibernate.ejb.criteria.expression.function.UpperFunction;
 import org.hibernate.internal.util.BytesHelper;
+
+import view.components.UpperCaseDocument;
 
 public class FormCadastroInstrutor extends JInternalFrame {
 
