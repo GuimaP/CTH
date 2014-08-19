@@ -133,8 +133,9 @@ public class Principal extends JFrame {
 
 	}
 
-	public void inicializaComponentes() throws IOException {
+	public void inicializaComponentes() throws Exception {
 		// Definindo o layout e a imagem de fundo
+		try{
 		java.awt.Font fonteP = ConfigController.definePrincipalFont(15f,
 				Font.PLAIN);
 		setLayout(null);
@@ -279,6 +280,9 @@ public class Principal extends JFrame {
 		setJMenuBar(menuBarra);
 		setLocationRelativeTo(null);
 		setTitle("Karol Habilitados v 1.3.1");
+		}catch(Exception e){
+			throw new Exception(e);
+		}
 
 	}
 
@@ -441,8 +445,8 @@ public class Principal extends JFrame {
 						getContentPane().add(internalFrame);
 						internalFrame.setSelected(true);
 					} catch (PropertyVetoException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, e1.getCause());
 					}
 				}
 
@@ -468,6 +472,7 @@ public class Principal extends JFrame {
 					} catch (PropertyVetoException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, e1.getCause());
 					}
 				}
 			}
@@ -488,6 +493,7 @@ public class Principal extends JFrame {
 					} catch (PropertyVetoException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+						JOptionPane.showMessageDialog(null, e.getCause());
 					}
 
 				}
@@ -505,6 +511,7 @@ public class Principal extends JFrame {
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null, e1.getCause());
 			}
 		}
 	})	;
@@ -578,79 +585,6 @@ class MeuModeloTree extends DefaultTreeCellRenderer {
 
 }
 
-// Thread Para Configurar e baixar os E-mails
-/*
- * class ConfiguraEmail implements Runnable { private EmailControllerV3 emailC;
- * private Login user;
- * 
- * 
- * 
- * 
- * 
- * protected static boolean isShowing; private UsuarioEmail confEmail;
- * 
- * public ConfiguraEmail(Login u) {
- * 
- * isShowing = false; this.user = u;
- * 
- * 
- * 
- * String diretorio = System.getProperty("user.home"); String sep =
- * System.getProperty("file.separator");
- * 
- * String nameFolder = user.getUsuario() + "@emailConfig"; // e digo o nome //
- * padr�o dos // arquivos de // e-mail's
- * 
- * File fileConfigEmail = new File(diretorio+sep+nameFolder); // Pego o //
- * diretorio // que se // encontra // o arquivo
- * 
- * confEmail = new CriptografiaConfigEmail().unCrypt(// e tento localizo-lo // e
- * // descriptografa-lo nameFolder);
- * 
- * }
- * 
- * public void run() { if (confEmail != null) { // Se no construtor conseguiu
- * localizar o // arquivo ent�o eu tento autentica-lo
- * System.out.println("Tem config");
- * 
- * emailC = new EmailControllerV3(confEmail); Thread threadUpdateEmail = new
- * Thread(new CheckNewMessages(emailC)); threadUpdateEmail.start(); } else {
- * System.out.println("N Tem config  - PARTIU"); }
- * 
- * } }
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * class CheckNewMessages implements Runnable {
- * 
- * 
- * private EmailControllerV3 email;
- * 
- * 
- * 
- * public CheckNewMessages(EmailControllerV3 emailC) { this.email = emailC; }
- * 
- * //
- * 
- * @Override public void run() { try { while (true) { int atual =
- * email.countMessage(); System.out.println(atual+"    has email?"); if
- * (email.hasNewEmail(atual)) { System.out.println("Chegou nova msg!");
- * Principal.showNotication(); }
- * 
- * Thread.sleep(60 * 1000); }
- * 
- * } catch (Exception e) { // TODO Auto-generated catch block
- * e.printStackTrace(); } // } //
- * 
- * 
- * }
- */
-
-// ----------
 
 class DesktopPaneCustom extends JDesktopPane {
 	private javax.swing.JPopupMenu pop;
