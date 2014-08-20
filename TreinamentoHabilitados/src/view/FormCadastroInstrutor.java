@@ -67,6 +67,8 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.text.MaskFormatter;
 
 import org.eclipse.swt.custom.CBanner;
@@ -176,7 +178,11 @@ public class FormCadastroInstrutor extends JInternalFrame {
 
 			pnGeral.add(dcDataNascimento);
 
-			lbRegistroCnh = new JLabel("N� Cnh");
+			//Fonte Pequena
+			Font fontP = new Font("Arial", Font.PLAIN, 11);
+			
+			lbRegistroCnh = new JLabel("NºCnh");
+			lbRegistroCnh.setFont(fontP);
 			lbRegistroCnh.setBounds(213, 40, 40, 20);
 			pnGeral.add(lbRegistroCnh);
 
@@ -198,8 +204,8 @@ public class FormCadastroInstrutor extends JInternalFrame {
 			dcDataValidadeCnh.setBounds(60, 70, 120, 25);
 			pnGeral.add(dcDataValidadeCnh);
 
-			lbPrimeiraCnh = new JLabel("1� Habilita��o");
-
+			lbPrimeiraCnh = new JLabel("1ºHabilitação");
+			lbPrimeiraCnh.setFont(fontP);
 			lbPrimeiraCnh.setBounds(185, 70, 90, 20);
 
 			pnGeral.add(lbPrimeiraCnh);
@@ -283,7 +289,8 @@ public class FormCadastroInstrutor extends JInternalFrame {
 			btNovo.setBounds(180, 220, 100, 30);
 			btNovo.setVisible(true);
 			pnGeral.add(btNovo);
-
+			
+			
 			btRefresh = new JButton();
 			btRefresh.setIcon(new ImageIcon(getClass().getClassLoader()
 					.getResource("resources/icons/btRefresh.png")));
@@ -291,9 +298,9 @@ public class FormCadastroInstrutor extends JInternalFrame {
 			btRefresh.setSize(35, 35);
 			btRefresh.setLocation(440, 140);
 			btRefresh.setContentAreaFilled(false);
-			btRefresh.setToolTipText("Atualizar as informa��es");
-			btRefresh.setCursor(getCursor().getPredefinedCursor(
-					Cursor.HAND_CURSOR));
+			btRefresh.setToolTipText("Atualizar as informações");
+			btRefresh.setCursor(Cursor
+					.getPredefinedCursor(Cursor.HAND_CURSOR));
 			pnGeral.add(btRefresh);
 
 			btAlterar = new JButton("Alterar");
@@ -369,8 +376,6 @@ public class FormCadastroInstrutor extends JInternalFrame {
 			setLocation(60, 10);
 			//
 
-			getContentPane().setBackground(new Color(0, 0, 0, 40));
-			setBackground(new Color(0, 0, 0, 40));
 
 			setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			setClosable(true);
@@ -534,27 +539,6 @@ public class FormCadastroInstrutor extends JInternalFrame {
 			}
 		});
 
-		/*tfNome.addKeyListener(new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				String texto = tfNome.getText().toUpperCase();
-				tfNome.setText(texto);
-
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				String texto = tfNome.getText().toUpperCase();
-				tfNome.setText(texto);
-			}
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-*/
 		this.addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent arg0) {
 				Principal.isFrameInstrutorOpen = false;
@@ -583,20 +567,47 @@ public class FormCadastroInstrutor extends JInternalFrame {
 			}
 
 		});
+		
+		btExcluir.addActionListener(e->{
+			try{
+				if(instrutor != null){
+					repo.deletarInstrutor(instrutor);
+					limparCampos();
+					atualiza();
+					
+				}else {
+					JOptionPane.showMessageDialog(this, "Por favor, Selecione um instrutor para ser deletado");
+				}
+			}catch(Exception e1){
+				JOptionPane.showMessageDialog(null, e1.getMessage());
+				e1.printStackTrace();
+			}
+		});
+		
+		tabela.getModel().addTableModelListener(new TableModelListener() {
+			
+			@Override
+			public void tableChanged(TableModelEvent e) {
+				int index = tabela.getSelectedRow();
+				instrutor = ((ModeloTableFuncionario) tabela
+						.getModel()).getFuncionario(index);
+				System.out.println(index);
+			}
+		});
 
 		tabela.addMouseListener(new MouseAdapter() {
-			@Override
+			@Override// TODO Auto-generated method stub
+			
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					int index = tabela.getSelectedRow();
-					Funcionario funcionario = ((ModeloTableFuncionario) tabela
+					instrutor = ((ModeloTableFuncionario) tabela
 							.getModel()).getFuncionario(index);
 
-					instrutor = funcionario;
 
 					// new DialogDadosFuncionario(funcionario);
 					try {
-						String imgDir = funcionario.getImage(); // Recupero o
+						String imgDir = instrutor.getImage(); // Recupero o
 																// diretorio da
 																// imagem
 						BufferedImage imageBf;
@@ -631,22 +642,22 @@ public class FormCadastroInstrutor extends JInternalFrame {
 						aba.setSelectedIndex(0);
 						btAlterar.setVisible(true);
 						btSalvar.setVisible(false);
-						tfNome.setText(funcionario.getNome());
-						tfCelular.setText(funcionario.getCelular());
+						tfNome.setText(instrutor.getNome());
+						tfCelular.setText(instrutor.getCelular());
 
-						tfPrimeiraCnh.setDate(funcionario.getPrimeiraCnh());
+						tfPrimeiraCnh.setDate(instrutor.getPrimeiraCnh());
 
-						System.out.println(funcionario.getCnh());
+						System.out.println(instrutor.getCnh());
 
-						tfCpf.setText(funcionario.getCpf());
-						tfCpf.setValue(funcionario.getCpf());
-						dcDataNascimento.setDate(funcionario.getData());
-						dcDataValidadeCnh.setDate(funcionario.getValidadeCnh());
-						tfRg.setText(funcionario.getRg());
-						tfTelefone.setText(funcionario.getTelefone());
-						tfRegistroCnh.setText(funcionario.getCnh());
+						tfCpf.setText(instrutor.getCpf());
+						tfCpf.setValue(instrutor.getCpf());
+						dcDataNascimento.setDate(instrutor.getData());
+						dcDataValidadeCnh.setDate(instrutor.getValidadeCnh());
+						tfRg.setText(instrutor.getRg());
+						tfTelefone.setText(instrutor.getTelefone());
+						tfRegistroCnh.setText(instrutor.getCnh());
 
-						jcCarro.setSelectedItem(funcionario
+						jcCarro.setSelectedItem(instrutor
 								.getTbCarroPlacaCarro());
 
 						if (jcCarro.getItemCount() == 0) {/*
@@ -655,16 +666,16 @@ public class FormCadastroInstrutor extends JInternalFrame {
 														 * então eu seto apenas
 														 * o carro do instrutor
 														 */
-							jcCarro.addItem(funcionario.getTbCarroPlacaCarro());
+							jcCarro.addItem(instrutor.getTbCarroPlacaCarro());
 						} else { /*
 								 * Caso contario, eu seleciono o carro do
 								 * instrutor na list
 								 */
-							jcCarro.setSelectedItem(funcionario
+							jcCarro.setSelectedItem(instrutor
 									.getTbCarroPlacaCarro());
 						}
 
-						jcStatus.setSelectedItem(funcionario.getStatus());
+						jcStatus.setSelectedItem(instrutor.getStatus());
 
 					} catch (Exception er) {
 						er.printStackTrace();

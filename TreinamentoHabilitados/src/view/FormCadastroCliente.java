@@ -58,6 +58,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.text.MaskFormatter;
+import javax.swing.text.TabExpander;
 
 import org.eclipse.swt.custom.PopupList;
 
@@ -83,7 +84,7 @@ public class FormCadastroCliente extends JInternalFrame {
 	private JFormattedTextField tfCep, tfCpf, tfCelular, tfTelefone,
 			tfPagamentoInicial, tfPagamentoPendente, tfBuscaAluno, tfNumero,
 			tfBuscaAlunoCpf;
-	private JButton btSalvar, btBuscarPacote, btTarefa,btExcluir;
+	private JButton btSalvar, btBuscarPacote, btTarefa, btExcluir;
 	private JTabbedPane abas;
 	private JDateChooser dtPagamento, dtProximoPagamento, dtCadastroCliente,
 			dtDataNascimento, dtValidadeCnh, dtPermissao;
@@ -107,6 +108,7 @@ public class FormCadastroCliente extends JInternalFrame {
 	private Pacote pacote;
 	private Servico servico;
 	private Aula aula;
+	private Funcionario instrutor;
 	private ControllerFormCliente controllerCli;
 	private JPanel panelCliente, painelGeral, abaTodos, abaAgendamento,
 			painelPagamento, painelAgendamento, painelFoto, painelCalendario;
@@ -118,23 +120,30 @@ public class FormCadastroCliente extends JInternalFrame {
 	private JComponent minhaInternal;
 	private JCalendar calendario;
 	private Date dataSelecionada;
+	private RepositoryAula repoAula;
 
 	public FormCadastroCliente() {
 		//
 		try {
+			controllerCli = new ControllerFormCliente();
+			repoAula = new RepositoryAula();
+			
 			aula = null;
 			cliente = null;
 			pesquisa = null;
 			pacote = null;
+			instrutor = null;
 			dirMyPicture = "";
 			minhaInternal = this;
 			inicializaComponentes();
 			definirEventos();
+			
 			listPacote = new RepositoryServico().buscarServico();
+			
 			jcInstrutor();
-			
-			
+
 			popuTable();
+			
 		} catch (ParseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 
@@ -144,21 +153,18 @@ public class FormCadastroCliente extends JInternalFrame {
 
 	}
 
-	
-	
-	
-	public void jcInstrutor(){
+	public void jcInstrutor() {
 		try {
-			listFuncionario = new RepositoryInstrutor().getAllInstrutor(); 
-			for(Funcionario f : listFuncionario){
-				 jcFuncionrio.addItem(f);
-			 }
+			listFuncionario = new RepositoryInstrutor().getAllInstrutor();
+			for (Funcionario f : listFuncionario) {
+				jcFuncionrio.addItem(f);
+			}
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-	
+
 	}
-	
+
 	public void limparCampos() {
 		tfNome.setText("");
 		tfLogradouro.setText("");
@@ -194,6 +200,23 @@ public class FormCadastroCliente extends JInternalFrame {
 			JOptionPane.showConfirmDialog(null, e.getMessage());
 		}
 
+	}
+	
+	public void populaTableAulas(){
+		try {
+			
+			for(Aula a : listAulas){
+				listAulas = new RepositoryAula().buscarTodos();
+				tableAulas.setModel(new ModeloTableAgendamento(listAulas));
+				scrollAulas.revalidate();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		
 	}
 
 	public void inicializaComponentes() throws ParseException {
@@ -758,8 +781,8 @@ public class FormCadastroCliente extends JInternalFrame {
 		btTarefa.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			//	int aulasPorServico = Integer.parseInt(pacote.getServico()
-				//		.getAulas());
+				// int aulasPorServico = Integer.parseInt(pacote.getServico()
+				// .getAulas());
 				try {
 					if (aula == null) {
 						aula = new Aula();
@@ -769,22 +792,18 @@ public class FormCadastroCliente extends JInternalFrame {
 					}
 					aula.setData(dataSelecionada);
 					aula.setDescAulas(jTextAreaObs.getText());
-					aula.setInstrutor((Funcionario)jcFuncionrio.getSelectedItem());
-					aula.setIdPacote(pacote.getId());
 					
+					aula.setInstrutor((Funcionario) jcFuncionrio
+							.getSelectedItem());
+		
+					aula.setPacote(pacote);
 					controllerCli.adicionarAula(aula);
+					populaTableAulas();
 					
-					//listAulas.add(aula);
-					
-					
-				//pacote.setAulas(listAulas);
-					
-					
-					//controllerCli.adicionarPacote(pacote);
-
 				} catch (Exception e2) {
-					//JOptionPane.showMessageDialog(null, e2.getMessage());
-					e2.getStackTrace();
+					System.out.println(e2.getMessage());
+					e2.printStackTrace();
+					
 				}
 
 			}
@@ -792,7 +811,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		});
 
 		calendario.getDayChooser().addPropertyChangeListener("day", evt -> {
-			
+
 			dataSelecionada = calendario.getDate();
 
 		});
@@ -821,8 +840,6 @@ public class FormCadastroCliente extends JInternalFrame {
 					if (e.getKeyCode() == 10) {
 
 						try {
-
-							
 
 							List<Pacote> listPacote = new ArrayList<Pacote>();
 							RepositoryPacote repoPacote = new RepositoryPacote();
@@ -1125,18 +1142,27 @@ public class FormCadastroCliente extends JInternalFrame {
 													.getNome();
 
 											pacote = p;
+											listAulas = new RepositoryAula().buscarTodos();
+											populaTableAulas();
+											cliente = p.getCliente();
+											//repoAula.buscaAulaPorCliente(cliente);
 										}
 									}
 
 									if (cpfAluno.equals("")) {
+										
 										JOptionPane
 												.showMessageDialog(null,
 														"Aluno não encontrado, ou Cpf invalido");
 										lbNomeAluno.setText(null);
 										lbCpfAluno.setText(null);
+										listAulas.clear();
+										tableAulas.setModel(new ModeloTableAgendamento(listAulas));
+										
 									} else {
 										lbNomeAluno.setText(nomeAluno);
 										lbCpfAluno.setText(cpfAluno);
+										populaTableAulas();
 									}
 
 								} catch (Exception e2) {

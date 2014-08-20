@@ -102,12 +102,14 @@ public class Pacote {
 		this.dtPagamento = dtPagamento;
 	}
 
-	public long getId() {
+	
+
+	public long getIdPacote() {
 		return idPacote;
 	}
 
-	public void setId(long id) {
-		this.idPacote = id;
+	public void setIdPacote(long idPacote) {
+		this.idPacote = idPacote;
 	}
 
 	public Cliente getCliente() {
