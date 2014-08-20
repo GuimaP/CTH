@@ -42,15 +42,15 @@ public List<Aula> buscaAulaPorCliente(Cliente c) throws Exception {
 			if (c.getCpf() != null) {
 				EntityManager session = ConnectionFactoryRepository
 						.getManager();
-				list = session.createQuery("from Aula").getResultList();
+				listAula = session.createQuery("from Aula").getResultList();
 				for (Aula a : listAula) {
 					if (c.getCpf().equals(a.getPacote().getCliente().getCpf())) {
-						listAula = list;
+						list.add(a);
 					}
 				}
-
+				
 			}
-			return listAula;
+			return list;
 		} catch (Exception e) {
 			throw new Exception(e);
 		}

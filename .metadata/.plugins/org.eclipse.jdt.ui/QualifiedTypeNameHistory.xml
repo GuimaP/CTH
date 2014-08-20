@@ -26,14 +26,14 @@
 <fullyQualifiedTypeName name="model.Funcionario"/>
 <fullyQualifiedTypeName name="controller.ControllerFormCliente"/>
 <fullyQualifiedTypeName name="javax.swing.text.TabExpander"/>
-<fullyQualifiedTypeName name="model.table.ModeloTableAgendamento"/>
 <fullyQualifiedTypeName name="model.Cliente"/>
-<fullyQualifiedTypeName name="javax.persistence.EntityManager"/>
-<fullyQualifiedTypeName name="model.repository.ConnectionFactoryRepository"/>
 <fullyQualifiedTypeName name="com.itextpdf.text.pdf.PdfStructTreeController.returnType"/>
 <fullyQualifiedTypeName name="java.lang.Exception"/>
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="model.Aula"/>
 <fullyQualifiedTypeName name="model.repository.RepositoryAula"/>
+<fullyQualifiedTypeName name="javax.persistence.EntityManager"/>
+<fullyQualifiedTypeName name="model.repository.ConnectionFactoryRepository"/>
+<fullyQualifiedTypeName name="model.table.ModeloTableAgendamento"/>
 </qualifiedTypeNameHistroy>

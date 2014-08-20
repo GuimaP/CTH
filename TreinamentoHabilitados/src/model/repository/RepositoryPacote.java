@@ -31,13 +31,9 @@ public class RepositoryPacote extends Repository<Pacote> {
 
 		try {
 
-			Session session = ConnectionFactoryConfig.openManger()
-					.openSession();
-			List<Pacote> listPacote = new ArrayList<Pacote>();
-			Criteria c = session.createCriteria(Pacote.class);
-			listPacote = c.list();
-
-			return listPacote;
+			EntityManager sessiom = ConnectionFactoryRepository.getManager();
+			
+			return sessiom.createQuery("from Pacote").getResultList();
 		} catch (Exception e) {
 			throw new Exception(e);
 		}

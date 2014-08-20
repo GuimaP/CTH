@@ -798,7 +798,9 @@ public class FormCadastroCliente extends JInternalFrame {
 		
 					aula.setPacote(pacote);
 					controllerCli.adicionarAula(aula);
-					populaTableAulas();
+					cliente = aula.getPacote().getCliente();
+					listAulas = repoAula.buscaAulaPorCliente(cliente);
+					tableAulas.setModel(new ModeloTableAgendamento(listAulas));
 					
 				} catch (Exception e2) {
 					System.out.println(e2.getMessage());
@@ -1142,10 +1144,10 @@ public class FormCadastroCliente extends JInternalFrame {
 													.getNome();
 
 											pacote = p;
-											listAulas = new RepositoryAula().buscarTodos();
-											populaTableAulas();
+											
 											cliente = p.getCliente();
-											//repoAula.buscaAulaPorCliente(cliente);
+											listAulas = repoAula.buscaAulaPorCliente(cliente);
+											tableAulas.setModel(new ModeloTableAgendamento(listAulas));
 										}
 									}
 
