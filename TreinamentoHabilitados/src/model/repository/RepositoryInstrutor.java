@@ -50,9 +50,16 @@ public class RepositoryInstrutor extends Repository<model.Funcionario> {
 		}
 	}
 	
-	public void deletarInstrutor(Funcionario func) throws SQLException{
+	public void deletarInstrutor(Funcionario func) throws Exception{
 		EntityManager em = ConnectionFactoryRepository.getManager();
+		try{
+		em.getTransaction().begin();
 		em.remove(func);
+		em.getTransaction().commit();
+		}catch(Exception e){
+			em.getTransaction().rollback();
+			throw new Exception(e);
+		}
 	}
 
 	public List<Funcionario> getAllInstrutor() throws Exception {

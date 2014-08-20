@@ -99,9 +99,11 @@ public class Start {
 					try {
 						ConnectionFactoryRepository.getManager();
 					} catch (SQLException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
-					}
+						JOptionPane.showMessageDialog(null, "Houve um falha ao conectar com o banco! Descri��o do erro "
+                    			+ "\n''"+e.getMessage()+"''");
+						System.exit(0);
+						}
 					isLoading = false;
 				}
 				/*
