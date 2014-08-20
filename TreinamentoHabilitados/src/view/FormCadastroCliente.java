@@ -1164,7 +1164,9 @@ public class FormCadastroCliente extends JInternalFrame {
 									} else {
 										lbNomeAluno.setText(nomeAluno);
 										lbCpfAluno.setText(cpfAluno);
-										populaTableAulas();
+										listAulas = repoAula.buscaAulaPorCliente(cliente);
+										tableAulas.setModel(new ModeloTableAgendamento(listAulas));
+										
 									}
 
 								} catch (Exception e2) {
