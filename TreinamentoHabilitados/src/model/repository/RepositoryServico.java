@@ -13,15 +13,15 @@ import model.Servico;
 public class RepositoryServico extends Repository<Servico> {
 
 	public void adicionar(Servico servico) throws Exception {
-
+		EntityManager session = ConnectionFactoryRepository.getManager();
 		try {
-			Session session = ConnectionFactoryConfig.openManger()
-					.openSession();
-			session.beginTransaction();
+
+			session.getTransaction().begin();
 			session.persist(servico);
 			session.getTransaction().commit();
 		} catch (Exception e) {
 
+			session.getTransaction().rollback();
 			throw new Exception(e);
 
 		}
@@ -31,7 +31,8 @@ public class RepositoryServico extends Repository<Servico> {
 	public List<Servico> buscarServico() throws Exception {
 		try {
 			EntityManager em = ConnectionFactoryRepository.getManager();
-			List<Servico> listServico = em.createQuery("from Servico").getResultList();
+			List<Servico> listServico = em.createQuery("from Servico")
+					.getResultList();
 			return listServico;
 		} catch (Exception e) {
 			throw new Exception(e);

@@ -31,9 +31,9 @@
 <fullyQualifiedTypeName name="java.lang.Exception"/>
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
-<fullyQualifiedTypeName name="model.Aula"/>
 <fullyQualifiedTypeName name="model.repository.RepositoryAula"/>
+<fullyQualifiedTypeName name="model.table.ModeloTableAgendamento"/>
+<fullyQualifiedTypeName name="model.Aula"/>
 <fullyQualifiedTypeName name="javax.persistence.EntityManager"/>
 <fullyQualifiedTypeName name="model.repository.ConnectionFactoryRepository"/>
-<fullyQualifiedTypeName name="model.table.ModeloTableAgendamento"/>
 </qualifiedTypeNameHistroy>

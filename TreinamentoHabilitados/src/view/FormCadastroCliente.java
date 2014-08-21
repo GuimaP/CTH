@@ -186,6 +186,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		cliente = null;
 		pacote = null;
 		pesquisa = null;
+		aula = null;
 	}
 
 	public void popuTable() {
@@ -786,22 +787,23 @@ public class FormCadastroCliente extends JInternalFrame {
 				try {
 					if (aula == null) {
 						aula = new Aula();
-					} else if (dataSelecionada == null) {
+					} 
+					if (dataSelecionada == null) {
 						JOptionPane.showMessageDialog(null,
 								"Selecione uma data para agendar a aula");
-					}
+					}else {
 					aula.setData(dataSelecionada);
 					aula.setDescAulas(jTextAreaObs.getText());
 					
 					aula.setInstrutor((Funcionario) jcFuncionrio
 							.getSelectedItem());
-		
+					
 					aula.setPacote(pacote);
 					controllerCli.adicionarAula(aula);
 					cliente = aula.getPacote().getCliente();
 					listAulas = repoAula.buscaAulaPorCliente(cliente);
 					tableAulas.setModel(new ModeloTableAgendamento(listAulas));
-					
+					}
 				} catch (Exception e2) {
 					System.out.println(e2.getMessage());
 					e2.printStackTrace();

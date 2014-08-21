@@ -25,7 +25,7 @@ public class ConnectionFactoryRepository {
     	Map<String, String> map = new HashMap<String, String>();
         map.put("javax.persistence.jdbc.url", "jdbc:mysql://localhost:3306/tcc");
     	map.put("javax.persistence.jdbc.user", "root");
-    	map.put("javax.persistence.jdbc.password", "vitor");
+    	map.put("javax.persistence.jdbc.password", "root");
     	
     	
 

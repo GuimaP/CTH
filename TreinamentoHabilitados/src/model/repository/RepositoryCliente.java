@@ -3,6 +3,8 @@ package model.repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import org.bridj.cpp.std.list;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -13,11 +15,10 @@ public class RepositoryCliente extends Repository<Cliente> {
 
 	public void adicionar(Cliente cliente) throws Exception {
 		try {
-			Session sessiom = ConnectionFactoryConfig.openManger().openSession();
-			sessiom.beginTransaction();
+			EntityManager sessiom = ConnectionFactoryRepository.getManager();
+			sessiom.getTransaction().begin();
 			sessiom.persist(cliente);
 			sessiom.getTransaction().commit();
-			sessiom.close();
 		} catch (Exception e) {
 			throw new Exception(e);
 		}
@@ -25,13 +26,9 @@ public class RepositoryCliente extends Repository<Cliente> {
 
 	public List<Cliente> buscarTodos() throws Exception {
 		try {
-			Session session = ConnectionFactoryConfig.openManger()
-					.openSession();
-			List<Cliente> listCliente = new ArrayList<Cliente>();
-			Criteria c = session.createCriteria(Cliente.class);
-			listCliente = c.list();
+			EntityManager session = ConnectionFactoryRepository.getManager();
 
-			return listCliente;
+			return session.createQuery("from Cliente").getResultList();
 		} catch (Exception e) {
 			throw new Exception(e);
 		}
