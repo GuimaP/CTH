@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="paneAnchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="1110.0" style="-fx-background-color: #bdbdbd;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerTelaCliente">
+   <children>
+      <Pane fx:id="pnNavBar" prefHeight="52.0" prefWidth="800.0" style="-fx-background-color: #5677fc; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label fx:id="lbNavCliente" layoutX="513.0" layoutY="5.0" style="-fx-font-family: Lobster;" text="Cliente" textFill="WHITE">
+               <font>
+                  <Font size="33.0" />
+               </font>
+            </Label>
+         </children></Pane>
+      <TabPane fx:id="tablePane" layoutX="26.0" layoutY="66.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0" />
+      <TabPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #FFFF;" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
+        <tabs>
+          <Tab id="1" fx:id="tableCadastro" text="Cadastro e Contrataçao de Serviço">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #bdbdbd;">
+                     <children>
+                        <Pane fx:id="paneCliente" layoutX="28.0" layoutY="21.0" prefHeight="192.0" prefWidth="460.0" style="-fx-background-color: #5677fc; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="50.0">
+                           <children>
+                              <TextField fx:id="tfNome" layoutX="85.0" layoutY="8.0" prefHeight="25.0" prefWidth="125.0" />
+                              <TextField fx:id="tfRua" layoutX="85.0" layoutY="33.0" prefHeight="25.0" prefWidth="125.0" />
+                              <TextField fx:id="tfBairro" layoutX="85.0" layoutY="58.0" prefHeight="25.0" prefWidth="125.0" />
+                              <DatePicker fx:id="dtDataNascimento" layoutX="85.0" layoutY="83.0" prefHeight="25.0" prefWidth="125.0" />
+                              <TextField fx:id="tfCpf" layoutX="85.0" layoutY="108.0" prefHeight="25.0" prefWidth="125.0" />
+                              <TextField fx:id="tfTel" layoutX="85.0" layoutY="133.0" prefHeight="25.0" prefWidth="125.0" />
+                              <TextField fx:id="tfEmail" layoutX="85.0" layoutY="158.0" prefHeight="25.0" prefWidth="125.0" />
+                              <DatePicker fx:id="dtData" layoutX="322.0" layoutY="8.0" prefHeight="25.0" prefWidth="125.0" />
+                              <TextField fx:id="tfNumero" layoutX="322.0" layoutY="33.0" prefHeight="25.0" prefWidth="125.0" />
+                              <TextField fx:id="tfCep" layoutX="322.0" layoutY="58.0" prefHeight="25.0" prefWidth="125.0" />
+                              <ComboBox fx:id="cbSexo" layoutX="322.0" layoutY="83.0" prefWidth="125.0" />
+                              <TextField fx:id="tfRg" layoutX="322.0" layoutY="108.0" prefHeight="25.0" prefWidth="125.0" />
+                              <TextField fx:id="tfCel" layoutX="322.0" layoutY="133.0" prefHeight="25.0" prefWidth="125.0" />
+                              <ComboBox fx:id="cbFormacao" layoutX="322.0" layoutY="158.0" prefWidth="125.0" />
+                           </children>
+                        </Pane>
+                        <Label fx:id="lbCliente" text="Cliente" textFill="WHITE" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="15.0">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbNome" text="Nome:" textFill="WHITE" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="60.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbEmail" layoutX="10.0" layoutY="10.0" text="E-mail:" textFill="WHITE" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="210.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbTelefone" layoutX="30.0" layoutY="30.0" text="Tel:" textFill="WHITE" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="185.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbCpf" layoutX="40.0" layoutY="40.0" text="Cpf:" textFill="WHITE" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="160.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbDataNascimento" layoutX="50.0" layoutY="50.0" text="Nasc:" textFill="WHITE" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="135.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbBairro" layoutX="60.0" layoutY="60.0" text="Bairro:" textFill="WHITE" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="110.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbRua" layoutX="70.0" layoutY="70.0" text="Rua:" textFill="WHITE" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="85.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Pane fx:id="paneDadosGerais" layoutX="10.0" layoutY="283.0" prefHeight="197.0" prefWidth="460.0" style="-fx-background-color: #5677fc; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="300.0">
+                           <children>
+                              <TextField fx:id="tfNumeroCnh" layoutX="85.0" layoutY="8.0" prefHeight="25.0" prefWidth="125.0" />
+                              <DatePicker fx:id="dtDataValidadeCnh" layoutX="321.0" layoutY="8.0" prefHeight="25.0" prefWidth="125.0" />
+                              <DatePicker fx:id="dtDataPermissao" layoutX="85.0" layoutY="33.0" prefHeight="25.0" prefWidth="125.0" />
+                              <TextField fx:id="tfAtuacao" layoutX="321.0" layoutY="33.0" prefHeight="25.0" prefWidth="125.0" />
+                              <TextField fx:id="tfQuantoTempo" layoutX="321.0" layoutY="58.0" prefHeight="25.0" prefWidth="125.0" />
+                              <RadioButton fx:id="rbTemVeiculoSim" layoutX="321.0" layoutY="90.0" mnemonicParsing="false" selected="true" text="Sim" textFill="WHITE">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="veiculo" />
+                                 </toggleGroup>
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </RadioButton>
+                              <RadioButton fx:id="rbTemVeiculoNao" layoutX="389.0" layoutY="90.0" mnemonicParsing="false" text="Não" textFill="WHITE" toggleGroup="$veiculo">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </RadioButton>
+                              <RadioButton fx:id="rbTreinarNeleSim" layoutX="321.0" layoutY="110.0" mnemonicParsing="false" selected="true" text="Sim" textFill="WHITE">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="treinar" />
+                                 </toggleGroup>
+                              </RadioButton>
+                              <RadioButton fx:id="rbTreinarNeleNao" layoutX="389.0" layoutY="110.0" mnemonicParsing="false" text="Não" textFill="WHITE" toggleGroup="$treinar">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </RadioButton>
+                              <ComboBox fx:id="cbComoSoube" layoutX="321.0" layoutY="137.0" prefWidth="125.0" />
+                              <TextField fx:id="tfObs" layoutX="85.0" layoutY="162.0" prefHeight="25.0" prefWidth="361.0" />
+                           </children></Pane>
+                        <Label fx:id="lbDadosGerais" text="Dados Gerais" textFill="WHITE" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="265.0">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbNumero" layoutX="10.0" layoutY="10.0" text="Numero:" textFill="WHITE" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="85.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbData" layoutX="20.0" layoutY="20.0" text="Data:" textFill="WHITE" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="60.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbCep" layoutX="80.0" layoutY="80.0" text="Cep:" textFill="WHITE" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="110.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbSexo" layoutX="80.0" layoutY="80.0" text="Sexo:" textFill="WHITE" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="135.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbFormacao" layoutX="60.0" layoutY="60.0" text="Formação:" textFill="WHITE" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="210.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbCel" layoutX="70.0" layoutY="70.0" text="Cel:" textFill="WHITE" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="185.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbRg" layoutX="80.0" layoutY="80.0" text="Rg:" textFill="WHITE" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="160.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbNumCnh" text="Nº Cnh:" textFill="WHITE" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="310.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbValidadeCnh" layoutX="10.0" layoutY="10.0" text="Validade:" textFill="WHITE" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="310.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbAtuacao" layoutX="10.0" layoutY="10.0" text="Atuação:" textFill="WHITE" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="335.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbDataPermissao" layoutX="20.0" layoutY="20.0" text="Data Per:" textFill="WHITE" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="335.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbQuantoTempo" text="A quanto tempo não dirige?" textFill="WHITE" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="360.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbTemVeiculo" text="Tem veículo próprio?" textFill="WHITE" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="385.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbPossivelTreinar" text="É possível treinar nele?" textFill="WHITE" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="410.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbComoSoube" text="Como soube da Karol Treinamento?" textFill="WHITE" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="435.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbObs" text="Obs:" textFill="WHITE" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="460.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Pane fx:id="paneFotoCadastro" layoutX="500.0" layoutY="54.0" prefHeight="150.0" prefWidth="150.0" style="-fx-background-color: #FFFF; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.leftAnchor="480.0" AnchorPane.topAnchor="50.0" />
+                        <Pane fx:id="paneServicos" layoutX="530.0" layoutY="260.0" prefHeight="192.0" prefWidth="460.0" style="-fx-background-color: #5677fc; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.leftAnchor="640.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
+                           <children>
+                              <TextField fx:id="tfBuscaServico" layoutX="7.0" layoutY="8.0" prefHeight="25.0" prefWidth="316.0" />
+                              <Button fx:id="btBuscarServico" layoutX="332.0" layoutY="8.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: #f86f09;" text="Buscar" textFill="WHITE" />
+                              <TableView fx:id="tableServico" layoutX="7.0" layoutY="40.0" prefHeight="142.0" prefWidth="447.0">
+                                <columns>
+                                  <TableColumn fx:id="campoDescricaoServico" prefWidth="235.0" text="Descrição" />
+                                  <TableColumn fx:id="campoAulas" prefWidth="63.0" text="Aulas" />
+                                    <TableColumn fx:id="campoPreco" prefWidth="144.0" text="Preço" />
+                                </columns>
+                              </TableView>
+                           </children></Pane>
+                        <Label fx:id="lbServico" text="Pacotes" textFill="WHITE" AnchorPane.leftAnchor="645.0" AnchorPane.topAnchor="15.0">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Pane fx:id="paneDadosPaga" layoutX="645.0" layoutY="295.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #5677fc; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.leftAnchor="640.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="300.0">
+                           <children>
+                              <TextField fx:id="tfValorPagar" layoutX="220.0" layoutY="8.0" prefHeight="25.0" prefWidth="234.0" />
+                              <ComboBox fx:id="cbTipoPagamento" layoutX="220.0" layoutY="33.0" prefHeight="25.0" prefWidth="234.0" />
+                              <TextField fx:id="tfValorPago" layoutX="220.0" layoutY="58.0" prefHeight="25.0" prefWidth="234.0" />
+                              <TableView fx:id="tbStatusServicos" layoutX="6.0" layoutY="87.0" prefHeight="103.0" prefWidth="448.0">
+                                <columns>
+                                  <TableColumn fx:id="campoServico" prefWidth="172.0" text="Pacote" />
+                                  <TableColumn fx:id="campoPrecoDadosPaga" prefWidth="85.0" text="Valor" />
+                                    <TableColumn fx:id="camposValorPagoDadosPaga" prefWidth="91.0" text="Valor Pago" />
+                                    <TableColumn fx:id="statusDadosPaga" prefWidth="95.0" text="Status" />
+                                </columns>
+                              </TableView>
+                           </children></Pane>
+                        <Label fx:id="lbDadosPagamento" text="Dados do Pagamento" textFill="WHITE" AnchorPane.leftAnchor="645.0" AnchorPane.topAnchor="265.0">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbValorPagar" text="Valor a pagar:" textFill="WHITE" AnchorPane.leftAnchor="645.0" AnchorPane.topAnchor="310.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbTipoPagamento" text="Tipo do pagamento:" textFill="WHITE" AnchorPane.leftAnchor="645.0" AnchorPane.topAnchor="335.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbValorPago" text="Valor pago:" textFill="WHITE" AnchorPane.leftAnchor="645.0" AnchorPane.topAnchor="360.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="btSalvar" layoutX="495.0" layoutY="357.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: #f86f09; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" text="Salvar" textFill="WHITE">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="btNovo" layoutX="495.0" layoutY="435.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: #f86f09; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" text="Novo" textFill="WHITE">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="btFoto" layoutX="480.0" layoutY="213.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="150.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0); -fx-background-color: #f86f09;" text="Foto" textFill="WHITE" AnchorPane.topAnchor="210.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab fx:id="tableAgendamento" text="Agendamento de Aulas">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #bdbdbd;">
+                     <children>
+                        <Pane fx:id="paneAulasAgendadas" layoutX="700.0" layoutY="45.0" prefHeight="467.0" prefWidth="362.0" style="-fx-background-color: #5677fc; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="700.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
+                           <children>
+                              <TableView fx:id="tableAulasAgendadas" layoutX="9.0" layoutY="14.0" prefHeight="442.0" prefWidth="343.0">
+                                <columns>
+                                  <TableColumn fx:id="campoAula" prefWidth="48.0" text="Aula" />
+                                  <TableColumn fx:id="campoData" prefWidth="71.0" text="Data" />
+                                    <TableColumn fx:id="campoHora" prefWidth="58.0" text="Hora" />
+                                    <TableColumn fx:id="campoDescricao" prefWidth="161.0" text="Descrição" />
+                                </columns>
+                              </TableView>
+                           </children>
+                        </Pane>
+                        <Pane fx:id="paneFotoBusca" layoutX="480.0" layoutY="45.0" prefHeight="150.0" prefWidth="150.0" style="-fx-background-color: #FFFF; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.leftAnchor="480.0" AnchorPane.topAnchor="50.0" />
+                        <Pane fx:id="paneBuscaCliente" layoutX="26.0" layoutY="112.0" prefHeight="147.0" prefWidth="362.0" style="-fx-background-color: #5677fc; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0">
+                           <children>
+                              <TextField fx:id="tfBuscaCliente" layoutX="8.0" layoutY="8.0" prefHeight="25.0" prefWidth="220.0" />
+                              <Button fx:id="btBuscaCliente" layoutX="242.0" layoutY="8.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="113.0" style="-fx-background-color: #f86f09;" text="Buscar" textFill="WHITE" />
+                              <Label fx:id="lbNomeAluno" layoutX="16.0" layoutY="61.0" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lbCpfAluno" layoutX="16.0" layoutY="96.0" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                        <Pane fx:id="paneDadosAgendamento" layoutX="50.0" layoutY="264.0" prefHeight="252.0" prefWidth="362.0" style="-fx-background-color: #5677fc; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.bottomAnchor="15.0">
+                           <children>
+                              <DatePicker fx:id="dtDataAgendamento" layoutX="157.0" layoutY="13.0" />
+                              <TableView fx:id="tableInstrutores" layoutX="9.0" layoutY="89.0" prefHeight="155.0" prefWidth="344.0">
+                                <columns>
+                                  <TableColumn fx:id="campoNome" prefWidth="75.0" text="Nome" />
+                                  <TableColumn fx:id="campoStatus" prefWidth="75.0" text="Status" />
+                                </columns>
+                              </TableView>
+                              <Label fx:id="lbDataAgendamento" layoutX="9.0" layoutY="16.0" text="Data:" textFill="WHITE">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lbHorarioAgendamento" layoutX="9.0" layoutY="43.0" text="Horario:" textFill="WHITE">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <ComboBox fx:id="cbHorarioAgendamento" layoutX="157.0" layoutY="40.0" prefHeight="25.0" prefWidth="197.0" />
+                              <Label fx:id="lbInstrutores" layoutX="9.0" layoutY="65.0" text="Instrutores:" textFill="WHITE">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                        <Label fx:id="lbSelecionaCliente" layoutX="50.0" layoutY="14.0" text="Selecionar Cliente" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbDadosAgendamento" layoutX="50.0" layoutY="221.0" text="Dados do agendamento" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbAulasAgendadas" layoutX="700.0" layoutY="14.0" text="Aulas Agendadas" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="btAgendar" layoutX="488.0" layoutY="349.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="134.0" style="-fx-background-color: #f86f09; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" text="Agendar" textFill="WHITE" />
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>

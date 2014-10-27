@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1024.0" style="-fx-background-color: #FFFF;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControllerTelaPrincipal">
+   <children>
+      <Pane layoutY="94.0" prefHeight="453.0" prefWidth="200.0" style="-fx-background-color: #FFFF; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.leftAnchor="0.0" />
+      <Pane layoutX="64.0" layoutY="90.0" prefHeight="115.0" prefWidth="1024.0" style="-fx-background-color: #0084ab; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.bottomAnchor="525.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Button fx:id="btCarro" layoutX="772.0" layoutY="45.0" mnemonicParsing="false" onAction="#abreCarro" text="Carro" />
+            <Button fx:id="brInstrutor" layoutX="595.0" layoutY="45.0" mnemonicParsing="false" onAction="#abreInstrutor" text="Instrutor" />
+            <Button fx:id="btFuncionario" layoutX="225.0" layoutY="41.0" mnemonicParsing="false" onAction="#abreFuncionario" text="Funcionario" />
+            <Button fx:id="btCliente" layoutX="66.0" layoutY="41.0" mnemonicParsing="false" onAction="#abreCliente" text="Cliente" />
+            <Button fx:id="btPacote" layoutX="435.0" layoutY="45.0" mnemonicParsing="false" onAction="#abrePacote" text="Pacote" />
+         </children></Pane>
+   </children>
+</AnchorPane>

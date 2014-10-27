@@ -12,3 +12,4 @@ public class UpperCaseDocument extends PlainDocument {
         super.insertString(offs, str.toUpperCase(), a);  
     }  
 }  
+

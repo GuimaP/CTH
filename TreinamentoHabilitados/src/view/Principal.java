@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.stage.Stage;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -43,6 +45,7 @@ import model.threads.ThreadConfigEmail;
 import model.threads.ThreadNotificationEmail;
 import controller.ConfigController;
 import controller.EmailControllerV3;
+import controller.SceneBuilderTelaCliente;
 
 public class Principal extends JFrame {
 
@@ -84,6 +87,8 @@ public class Principal extends JFrame {
 	private FormCadastroInstrutor formInstrutor;
 	private FormCadastroServico formServico;
 	private static FormConfigEmail formEmail;
+	
+	private SceneBuilderTelaCliente telaCliente;
 
 	private int xMouse, yMouse;
 
@@ -111,7 +116,7 @@ public class Principal extends JFrame {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(
 							null,
-							"Houve um problema na constru��o da tela,a aplica��o ser� finalizada...\n "
+							"Houve um problema na constru������o da tela,a aplica������o ser��� finalizada...\n "
 							+ "caso o erro persista favor entrar em contato com o administrador do sitema");
 
 			e.printStackTrace();
@@ -244,7 +249,7 @@ public class Principal extends JFrame {
 		painelNotification.setLocation(
 				this.getWidth() - painelNotification.getWidth(), y);
 		painelNotification.setBackground(new Color(201, 229, 0, 160));
-		JLabel lb = new JLabel("Voc� recebeu uma nova mensagem!");
+		JLabel lb = new JLabel("Voc��� recebeu uma nova mensagem!");
 		painelNotification.add(lb);
 		add(painelNotification);
 
@@ -421,6 +426,15 @@ public class Principal extends JFrame {
 		itCadastroCliente.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
+				try {
+					
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				/*
 				if (!isFrameClienteOpen) {
 					try {
 						isFrameClienteOpen = true;
@@ -430,7 +444,9 @@ public class Principal extends JFrame {
 					} catch (PropertyVetoException e1) {
 						e1.printStackTrace();
 					}
+			
 				}
+			*/
 			}
 		});
 		itCadastroFuncionario.addActionListener(new ActionListener() {
@@ -481,8 +497,8 @@ public class Principal extends JFrame {
 		itCadastroPacote.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (!isFrameCadastroPacote) { // defino se não houver uma
-												// instancia já criada, eu
+				if (!isFrameCadastroPacote) { // defino se n��o houver uma
+												// instancia j�� criada, eu
 
 					try {
 						isFrameCadastroPacote = true; // difinindo que ja tem
@@ -614,8 +630,10 @@ class DesktopPaneCustom extends JDesktopPane {
 				}
 			}
 		});
+	
 	}
 
+	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		try {

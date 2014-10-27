@@ -31,6 +31,12 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
 import javax.imageio.ImageIO;
 import javax.management.RuntimeErrorException;
 import javax.persistence.EntityManager;
@@ -49,6 +55,7 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import org.bridj.jawt.JAWT.GetComponent_callback;
 import org.hibernate.Session;
 import org.hibernate.exception.GenericJDBCException;
 
@@ -58,7 +65,7 @@ import view.TelaLogin;
 import controller.ConfigController;
 import controller.LogController;
 
-public class Start {
+public class Start extends Application{
 
 	protected static boolean isLoading = true;
 	public static Session session;
@@ -71,8 +78,12 @@ public class Start {
 			
 			
 					
-			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-					
+		
+			//UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+			
+		//	UIManager.setLookAndFeel("com.jtattoo.plaf.mcwin.McWinLookAndFeel");
+				
+			
 			String[] mensagens = { ".              Carregando...",
 			". Mais Alguns Instantes..." };
 			JFrame janela = new JFrame("Carregando");
@@ -100,7 +111,7 @@ public class Start {
 						ConnectionFactoryRepository.getManager();
 					} catch (SQLException e) {
 						e.printStackTrace();
-						JOptionPane.showMessageDialog(null, "Houve um falha ao conectar com o banco! Descri��o do erro "
+						JOptionPane.showMessageDialog(null, "Houve um falha ao conectar com o banco! Descri������o do erro "
                     			+ "\n''"+e.getMessage()+"''");
 						System.exit(0);
 						}
@@ -135,12 +146,17 @@ public class Start {
 					
 					
 					
+			launch(args);
+			
+			
+			
+			
+			
 
-					
-					TelaLogin tela = new TelaLogin();
 
-		} catch (IllegalAccessException | UnsupportedLookAndFeelException e) {
-			e.printStackTrace();
+
+		//} catch (IllegalAccessException | UnsupportedLookAndFeelException e) {
+	//		e.printStackTrace();
 		}catch (GenericJDBCException e) {
 			JOptionPane.showMessageDialog(null, "Falha ao conectar no banco");
 			throw new ExceptionInInitializerError(e);
@@ -153,8 +169,17 @@ public class Start {
 		String nameFile = System.getProperty("file.separator") + "Treinamento";//e o nome da pasta 
 		File diretorioProgram = new File(local+nameFile); 
 		if(!diretorioProgram.exists()){ //Verifico se existe a pasta
-			diretorioProgram.mkdir(); //Se n�o houve, eu crio uma
+			diretorioProgram.mkdir(); //Se n���o houve, eu crio uma
 		}		
+	}
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		Parent root = FXMLLoader.load(getClass().getResource("/fxml/telaLogin.fxml"));
+		primaryStage.setTitle("Login");
+		primaryStage.setScene(new Scene(root, 465,223));
+		primaryStage.show();
+		
 	}
 
 }

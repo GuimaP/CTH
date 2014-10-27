@@ -189,6 +189,13 @@ public class FormCadastroCliente extends JInternalFrame {
 		aula = null;
 	}
 
+	public void limpaObjAula(){
+		aula = null;
+		observa.setText("");
+		jcFuncionrio.setSelectedIndex(-1);
+	}
+	
+	
 	public void popuTable() {
 		try {
 
@@ -222,12 +229,12 @@ public class FormCadastroCliente extends JInternalFrame {
 
 	public void inicializaComponentes() throws ParseException {
 
-		// Font que ser� usada para o nome do aluno e cpf
+		// Font que ser��� usada para o nome do aluno e cpf
 
 		abaTodos = new JPanel();
 		abaTodos.setLayout(null);
 
-		// Declaração do painel cliente
+		// Declara����o do painel cliente
 		panelCliente = new JPanel();
 		Border border = BorderFactory.createTitledBorder("Cliente");
 		panelCliente.setBorder(border);
@@ -405,7 +412,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		tfEmail.setBounds(60, 170, 120, 25);
 		panelCliente.add(tfEmail);
 
-		lbEscolaridade = new JLabel("Formação");
+		lbEscolaridade = new JLabel("Forma����o");
 		lbEscolaridade.setBounds(190, 170, 100, 20);
 		panelCliente.add(lbEscolaridade);
 
@@ -437,7 +444,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		tfProfissao.setBounds(60, 20, 120, 25);
 		painelGeral.add(tfProfissao);
 
-		lbRegistroCnh = new JLabel("Nº Cnh");
+		lbRegistroCnh = new JLabel("N�� Cnh");
 		lbRegistroCnh.setBounds(190, 20, 100, 20);
 		painelGeral.add(lbRegistroCnh);
 
@@ -460,7 +467,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		dtDataNascimento.setMaxSelectableDate(dataValiCnh);
 		painelGeral.add(dtValidadeCnh);
 
-		lbPrimeiraHabilitacao = new JLabel("Permissão");
+		lbPrimeiraHabilitacao = new JLabel("Permiss��o");
 		lbPrimeiraHabilitacao.setBounds(190, 45, 100, 20);
 		painelGeral.add(lbPrimeiraHabilitacao);
 
@@ -493,7 +500,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		jrQ2Yes = new JRadioButton("Sim", true);
 		jrQ2Yes.setBounds(250, 95, 200, 25);
 
-		jrQ2No = new JRadioButton("Não", false);
+		jrQ2No = new JRadioButton("N��o", false);
 		jrQ2No.setBounds(300, 95, 200, 25);
 
 		gQ2 = new ButtonGroup();
@@ -506,14 +513,14 @@ public class FormCadastroCliente extends JInternalFrame {
 
 		JPanel painelQ3 = new JPanel();
 		painelQ3.setBounds(240, 120, 120, 25);
-		lbQ3 = new JLabel("É possivel treinar nele?");
+		lbQ3 = new JLabel("�� possivel treinar nele?");
 		lbQ3.setBounds(10, 120, 160, 20);
 		painelGeral.add(lbQ3);
 
 		jrQ3Yes = new JRadioButton("Sim", true);
 		jrQ3Yes.setBounds(1, 120, 60, 20);
 
-		jrQ3No = new JRadioButton("Não", false);
+		jrQ3No = new JRadioButton("N��o", false);
 		jrQ3No.setBounds(300, 120, 60, 20);
 
 		gQ3 = new ButtonGroup();
@@ -524,7 +531,7 @@ public class FormCadastroCliente extends JInternalFrame {
 
 		painelGeral.add(painelQ3);
 
-		lbQ4 = new JLabel("Como você soube da Karol Treinamentos?");
+		lbQ4 = new JLabel("Como voc�� soube da Karol Treinamentos?");
 		lbQ4.setBounds(10, 145, 300, 20);
 		painelGeral.add(lbQ4);
 
@@ -533,7 +540,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		jcPesquisa.setSelectedIndex(-1);
 		painelGeral.add(jcPesquisa);
 
-		lbObserva = new JLabel("Observações:");
+		lbObserva = new JLabel("Observa����es:");
 		lbObserva.setBounds(10, 170, 120, 20);
 		painelGeral.add(lbObserva);
 
@@ -546,7 +553,7 @@ public class FormCadastroCliente extends JInternalFrame {
 
 		abaTodos.add(painelGeral);
 
-		// Bot�o
+		// Bot���o
 		btSalvar = new JButton("Salvar");
 		btSalvar.setBounds(610, 415, 180, 35);
 		abaTodos.add(btSalvar);
@@ -606,7 +613,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		jsParcelas.setBounds(170, 45, 170, 25);
 		painelPagamento.add(jsParcelas);
 
-		lbDtProximoPagamento = new JLabel("Próxima Parcela");
+		lbDtProximoPagamento = new JLabel("Pr��xima Parcela");
 		lbDtProximoPagamento.setBounds(10, 70, 120, 20);
 		painelPagamento.add(lbDtProximoPagamento);
 
@@ -672,7 +679,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		painelAgendamento.add(checkCpf);
 
 		checkObs = new JCheckBox();
-		checkObs.setText("Descrição");
+		checkObs.setText("Descri����o");
 		checkObs.setBounds(310, 330, 100, 20);
 		checkObs.setSelected(false);
 		painelAgendamento.add(checkObs);
@@ -714,7 +721,7 @@ public class FormCadastroCliente extends JInternalFrame {
 		jcFuncionrio.setBounds(240, 120, 170, 25);
 		painelAgendamento.add(jcFuncionrio);
 
-		lbDescricao = new JLabel("Descrição Aula:");
+		lbDescricao = new JLabel("Descri����o Aula:");
 		lbDescricao.setBounds(10, 330, 100, 20);
 		lbDescricao.setVisible(false);
 		painelAgendamento.add(lbDescricao);
@@ -803,6 +810,8 @@ public class FormCadastroCliente extends JInternalFrame {
 					cliente = aula.getPacote().getCliente();
 					listAulas = repoAula.buscaAulaPorCliente(cliente);
 					tableAulas.setModel(new ModeloTableAgendamento(listAulas));
+					limpaObjAula();
+					
 					}
 				} catch (Exception e2) {
 					System.out.println(e2.getMessage());
@@ -862,7 +871,7 @@ public class FormCadastroCliente extends JInternalFrame {
 							if (nomeAluno.equals("")) {
 								JOptionPane
 										.showMessageDialog(null,
-												"Aluno não encontrado,ou nome incorreto, efetue a busca pelo CPF");
+												"Aluno n��o encontrado,ou nome incorreto, efetue a busca pelo CPF");
 								lbNomeAluno.setText(null);
 								lbCpfAluno.setText(null);
 							} else {
@@ -981,7 +990,7 @@ public class FormCadastroCliente extends JInternalFrame {
 							+ "Fotos-Consumidor" + separador;
 
 					String strNameFile = tfNome.getText(); // Pego o nome que
-															// serÃ¡ a imagem
+															// ser���� a imagem
 
 					// Instancio a janela de Cam
 					WebCamPhotoAutoEscola dialog = new WebCamPhotoAutoEscola(
@@ -1003,10 +1012,10 @@ public class FormCadastroCliente extends JInternalFrame {
 					cliente.setImage(new byte[(int) fotoTirada.length()]);
 
 					// Verifica se existe uma foto, pois pode muito bem o fulano
-					// não ter tirado uma foto.
+					// n��o ter tirado uma foto.
 
 					// Verifica se existe uma foto, pois pode muito bem o fulano
-					// nÃ£o ter tirado uma foto.
+					// n����o ter tirado uma foto.
 
 					if (!caminhoDaImagem.isEmpty() & fotoTirada.exists()) {
 						System.out.println("Imagem tirada:" + caminhoDaImagem); // Log...
@@ -1021,9 +1030,9 @@ public class FormCadastroCliente extends JInternalFrame {
 							painelFotoInstrutor.revalidate();
 
 							minhaInternal.revalidate(); // revalido as
-														// alterações
+														// altera����es
 							minhaInternal.revalidate(); // revalido as
-														// alteraÃ§Ãµes
+														// altera��������es
 
 							minhaInternal.repaint(); // e "Atualizo"
 							Principal.minhaFrame.revalidate();
@@ -1157,7 +1166,7 @@ public class FormCadastroCliente extends JInternalFrame {
 										
 										JOptionPane
 												.showMessageDialog(null,
-														"Aluno não encontrado, ou Cpf invalido");
+														"Aluno n��o encontrado, ou Cpf invalido");
 										lbNomeAluno.setText(null);
 										lbCpfAluno.setText(null);
 										listAulas.clear();
@@ -1194,7 +1203,7 @@ public class FormCadastroCliente extends JInternalFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				// valida��es
+				// valida������es
 				tfNome.setText(tfNome.getText().trim());
 
 				tfLogradouro.setText(tfLogradouro.getText().trim());
@@ -1249,7 +1258,7 @@ public class FormCadastroCliente extends JInternalFrame {
 
 				} else if (jcPesquisa.getSelectedIndex() == -1) {
 					JOptionPane.showMessageDialog(null,
-							"Selecionar uma das opções");
+							"Selecionar uma das op����es");
 					jcPesquisa.requestFocus(true);
 				} else {
 
@@ -1283,13 +1292,13 @@ public class FormCadastroCliente extends JInternalFrame {
 					if (jrQ2Yes.isSelected()) {
 						pesquisa.setTemVeiculo("sim");
 					} else {
-						pesquisa.setTemVeiculo("Não");
+						pesquisa.setTemVeiculo("N��o");
 					}
 
 					if (jrQ3Yes.isSelected()) {
 						pesquisa.setPossivelDirigirNele("Sim");
 					} else {
-						pesquisa.setPossivelDirigirNele("Não");
+						pesquisa.setPossivelDirigirNele("N��o");
 					}
 
 					pesquisa.setPesquisa4((EnumQuestionario) jcPesquisa
@@ -1327,9 +1336,9 @@ public class FormCadastroCliente extends JInternalFrame {
 						erro.printStackTrace();
 					}
 
-					// TODO n�o esquecer de aplicar o ternario para os
+					// TODO n���o esquecer de aplicar o ternario para os
 					// FORMATEDTEXTFIELD
-					// limpar os campos ap�s o pesquisa.
+					// limpar os campos ap���s o pesquisa.
 				}
 
 			}

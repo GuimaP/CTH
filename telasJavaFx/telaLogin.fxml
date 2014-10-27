@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="223.0" prefWidth="465.0" style="-fx-background-color: #bdbdbd;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane layoutY="-6.0" prefHeight="57.0" prefWidth="465.0" style="-fx-background-color: #5677fc; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label fx:id="lbLogin" layoutX="199.0" layoutY="7.0" prefHeight="43.0" prefWidth="79.0" style="-fx-font-family: Lobster;" text="Login" textFill="WHITE">
+               <font>
+                  <Font size="33.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Label fx:id="lbUsuario" layoutX="29.0" layoutY="78.0" text="Usuario:" textFill="WHITE" />
+      <Label fx:id="lbSenha" layoutX="37.0" layoutY="124.0" text="Senha:" textFill="WHITE" />
+      <TextField fx:id="tfUsuario" layoutX="111.0" layoutY="73.0" prefHeight="25.0" prefWidth="244.0" AnchorPane.leftAnchor="111.0" AnchorPane.rightAnchor="110.0" AnchorPane.topAnchor="73.0" />
+      <TextField fx:id="tfSenha" layoutX="111.0" layoutY="119.0" prefHeight="25.0" prefWidth="244.0" AnchorPane.leftAnchor="111.0" AnchorPane.rightAnchor="110.0" AnchorPane.topAnchor="119.0" />
+      <Button fx:id="btLogin" layoutX="174.0" layoutY="157.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="118.0" style="-fx-background-color: #f86f09; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" text="Login" textFill="WHITE" />
+   </children>
+</AnchorPane>

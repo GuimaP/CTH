@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="paneAnchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="500.0" style="-fx-background-color: #bdbdbd; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControllerTelaCarro">
+   <children>
+      <Pane fx:id="paneNaveBar" layoutX="87.0" layoutY="50.0" prefHeight="52.0" prefWidth="200.0" style="-fx-background-color: #5677fc; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.bottomAnchor="268.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label fx:id="lbCarroNavBar" layoutX="213.0" layoutY="5.0" style="-fx-font-family: Lobster;" text="Carro" textFill="WHITE">
+               <font>
+                  <Font size="33.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <TabPane fx:id="tablePane" layoutX="41.0" layoutY="86.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
+        <tabs>
+          <Tab fx:id="abaCadastroCarros" text="Cadastro de Carros">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Pane fx:id="paneCadastroCarro" layoutX="50.0" layoutY="40.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #5677fc; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.bottomAnchor="58.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="40.0">
+                           <children>
+                              <TextField fx:id="tfMarca" layoutX="115.0" layoutY="8.0" />
+                              <TextField fx:id="tfModelo" layoutX="115.0" layoutY="33.0" />
+                              <TextField fx:id="tfAno" layoutX="115.0" layoutY="58.0" />
+                              <TextField fx:id="tfPlaca" layoutX="115.0" layoutY="83.0" />
+                              <Label fx:id="lbMarca" layoutX="6.0" layoutY="11.0" text="Marca:" textFill="WHITE">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lbModelo" layoutX="7.0" layoutY="37.0" text="Modelo:" textFill="WHITE">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lbAno" layoutX="8.0" layoutY="61.0" text="Ano:" textFill="WHITE">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lbPlaca" layoutX="9.0" layoutY="86.0" text="Placa:" textFill="WHITE">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                        <Label fx:id="lbDadosCarro" layoutX="59.0" layoutY="8.0" text="Dados do Carro" textFill="WHITE" AnchorPane.leftAnchor="52.0" AnchorPane.topAnchor="8.0">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="btSalvar" layoutX="106.0" layoutY="173.0" mnemonicParsing="false" onAction="#salvar" prefHeight="32.0" prefWidth="80.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0); -fx-background-color: #f86f09;" text="Salvar" textFill="WHITE" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="106.0" AnchorPane.rightAnchor="314.0" AnchorPane.topAnchor="173.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="btNovo" layoutX="116.0" layoutY="183.0" mnemonicParsing="false" onAction="#novo" prefHeight="32.0" prefWidth="80.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0); -fx-background-color: #f86f09;" text="Novo" textFill="WHITE" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="314.0" AnchorPane.rightAnchor="106.0" AnchorPane.topAnchor="173.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab fx:id="abaConsultaCarro" text="Consulta de Carros">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Pane fx:id="paneConsultaCarro" layoutX="121.0" layoutY="9.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #5677fc; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.bottomAnchor="58.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="40.0">
+                           <children>
+                              <TableView fx:id="tableCarro" layoutX="8.0" layoutY="5.0" prefHeight="108.0" prefWidth="384.0">
+                                <columns>
+                                  <TableColumn fx:id="campoModelo" prefWidth="149.0" text="Modelo" />
+                                  <TableColumn fx:id="campoAno" prefWidth="105.0" text="Ano" />
+                                    <TableColumn fx:id="campoPlaca" prefWidth="125.0" text="Placa" />
+                                </columns>
+                              </TableView>
+                           </children>
+                        </Pane>
+                        <Label fx:id="lbListaCarro" text="Lista de Carros" textFill="WHITE" AnchorPane.leftAnchor="52.0" AnchorPane.topAnchor="8.0">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="btExcluir" layoutX="210.0" layoutY="171.0" mnemonicParsing="false" onAction="#excluir" prefHeight="32.0" prefWidth="80.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0); -fx-background-color: #f86f09;" text="Excluir" textFill="WHITE">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>

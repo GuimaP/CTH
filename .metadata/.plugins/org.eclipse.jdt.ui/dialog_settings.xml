@@ -4,7 +4,7 @@
 	<item value="3" key="TypeHierarchyViewPart.orientation"/>
 	<item value="false" key="ProjectSelectionDialog.show_all"/>
 	<item value="false" key="TypeHierarchyViewPart.linkeditors"/>
-	<item value="F:\vitor.senai\4º Semestre\TCC\TreinamentoHabilitados\Jars" key="org.eclipse.jdt.ui.lastextjar"/>
+	<item value="G:\vitor.senai\quartoSemestre\TCC\TreinamentoHabilitados\Jars" key="org.eclipse.jdt.ui.lastextjar"/>
 	<item value="2" key="TypeHierarchyViewPart.hierarchyview"/>
 	<section name="org.eclipse.ltk.ui.refactoring.settings">
 		<item value="false" key="renameSubpackages"/>
@@ -36,8 +36,8 @@
 		<item value="629" key="DIALOG_X_ORIGIN"/>
 	</section>
 	<section name="RefactoringWizard.preview">
-		<item value="550" key="width"/>
-		<item value="355" key="height"/>
+		<item value="540" key="width"/>
+		<item value="345" key="height"/>
 	</section>
 	<section name="FatJarPackageWizard">
 		<item value="F:\vitor.senai\quartoSemestre\TCC" key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION"/>

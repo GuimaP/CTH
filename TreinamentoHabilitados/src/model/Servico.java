@@ -15,20 +15,19 @@ import org.hibernate.annotations.GeneratorType;
 @Entity
 @Table (name = "tb_servico")
 public class Servico {
-	@Id//Digo que � uma ID
+	@Id//Digo que ��� uma ID
 	@GeneratedValue //E que vai ser gerado automaticamente
 	private long idServico;
 	
-	@Column(nullable=false) //N�o pode ser nula o valor
+	@Column(nullable=false) //N���o pode ser nula o valor
     private String descricao;
 	@Column(nullable=false)
-    private String aulas;
+    private int aulas;
 	@Column(nullable=false)
-    private String precoAula;
+    private double precoAula;
 	@Column(nullable=false)
-    private String precoPacote;
-	@Column(nullable=false)
-	private String descAulas;
+    private double precoPacote;
+	
 	
 	
 	
@@ -41,27 +40,19 @@ public class Servico {
 		this.idServico = idPacote;
 	}
 
-	public String getDescAulas() {
-		return descAulas;
-	}
-
-	public void setDescAulas(String descAulas) {
-		this.descAulas = descAulas;
-	}
-
-	public String getPrecoAula() {
+	public Double getPrecoAula() {
         return precoAula;
     }
 
-    public void setPrecoAula(String precoAula) {
+    public void setPrecoAula(Double precoAula) {
         this.precoAula = precoAula;
     }
 
-    public String getPrecoPacote() {
+    public Double getPrecoPacote() {
         return precoPacote;
     }
 
-    public void setPrecoPacote(String precoPacote) {
+    public void setPrecoPacote(Double precoPacote) {
         this.precoPacote = precoPacote;
     }
 
@@ -73,11 +64,11 @@ public class Servico {
         this.descricao = Descricao;
     }
 
-    public String getAulas() {
+    public int getAulas() {
         return aulas;
     }
 
-    public void setAulas(String aulas) {
+    public void setAulas(int aulas) {
         this.aulas = aulas;
     }
 

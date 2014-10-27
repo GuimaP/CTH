@@ -7,12 +7,18 @@
 package model.repository;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import javax.persistence.EntityManager;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 
 import model.Carro;
 
@@ -52,6 +58,27 @@ public class RepositoryCarro extends Repository<Carro> {
 			throw new Exception(e);
 		}
 
+	}
+	
+	public ObservableList<Carro> buscaCarroTeste() throws Exception{
+		try {
+			ObservableList<Carro> listCarro = FXCollections.observableArrayList();
+		
+			List<Carro> list = new ArrayList<Carro>();
+			EntityManager session = ConnectionFactoryRepository.getManager();
+			list =  session.createQuery("from Carro").getResultList();
+			for(Carro c : list){
+				listCarro.add(c);
+			}
+			return listCarro;
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
+		
+		
+		
+		
+		
 	}
 
 }

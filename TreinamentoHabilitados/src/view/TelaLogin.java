@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.stage.Stage;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -30,6 +32,7 @@ import javax.swing.border.Border;
 
 import main.Start;
 import controller.ConfigController;
+import controller.SceneBuilderTelaPrincipal;
 import model.Login;
 import model.repository.LoginRepository;
 
@@ -166,18 +169,19 @@ public class TelaLogin extends JFrame {
  
                         if (loginRepository.isAutentica(login)) {
                           
-                           minhaFrame.setVisible(false);
-//                           telaPrincipal.setVisible(true);
-                           formMain = new Principal();
-                           formMain.setVisible(true);
+//                           minhaFrame.setVisible(false);
+                        	System.out.println("aqui");
+                         new SceneBuilderTelaPrincipal().start(new Stage());
+
+
                           
-                            minhaFrame.dispose();
+//                            minhaFrame.dispose();
                         } else {
                             JOptionPane.showMessageDialog(null, "Usuario ou senha incorretos");
                         }
 
                     } catch (Exception e1) {
-                    	JOptionPane.showMessageDialog(null, "Houve um falha ao conectar com o banco! Descri��o do erro "
+                    	JOptionPane.showMessageDialog(null, "Houve um falha ao conectar com o banco! Descri������o do erro "
                     			+ "\n''"+e1.getMessage()+"''");
                     	e1.printStackTrace();
 
@@ -195,15 +199,15 @@ public class TelaLogin extends JFrame {
 
         this.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
-                point.x = e.getX();//Pego a posi��o a localiza��o da frame quando clicado
+                point.x = e.getX();//Pego a posi������o a localiza������o da frame quando clicado
                 point.y = e.getY();
             }
         });
 
         this.addMouseMotionListener(new MouseMotionAdapter() {
             public void mouseDragged(MouseEvent e) {
-                Point p = minhaFrame.getLocation();//pego a localiza��o da frame no ato de arrastar
-                minhaFrame.setLocation(p.x + e.getX() - point.x, p.y + e.getY() - point.y); // e ent�o eu subtraio a localiza��o dela, mais a onde eu cliquei 
+                Point p = minhaFrame.getLocation();//pego a localiza������o da frame no ato de arrastar
+                minhaFrame.setLocation(p.x + e.getX() - point.x, p.y + e.getY() - point.y); // e ent���o eu subtraio a localiza������o dela, mais a onde eu cliquei 
             }
         });
 
