@@ -621,9 +621,11 @@ public class ControllerTelaInstrutor implements ITableInScreens {
 		tfTel.setText("");
 		dtDataPermissao.setValue(null);
 		dtDataValidadeCnh.setValue(null);
-		instrutor = null;
-		cbCarro.setValue(null);
+		
+		cbCarro.getSelectionModel().select(-1);
+		cbCarro.getItems().remove(instrutor.getTbCarroPlacaCarro());
 		cbStatus.setValue(null);
+		instrutor = null;
 		for(int i = 0; i < paneFoto.getChildren().size();i++){
 			paneFoto.getChildren().remove(i);
 		}

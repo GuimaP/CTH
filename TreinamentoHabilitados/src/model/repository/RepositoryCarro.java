@@ -83,11 +83,12 @@ public class RepositoryCarro extends Repository<Carro> {
 		
 			List<Carro> list = new ArrayList<Carro>();
 			EntityManager session = ConnectionFactoryRepository.getManager();
-			  Query query = session.createQuery("from Carro where ocupado = :ocup");
-			  query.setParameter("ocup", 0);
+			  Query query = session.createQuery("from Carro");
 			  list = query.getResultList();
 			for(Carro c : list){
-				listCarro.add(c);
+				if(!c.isOcupado()){
+					listCarro.add(c);
+				}
 			}
 			return listCarro;
 		} catch (Exception e) {
