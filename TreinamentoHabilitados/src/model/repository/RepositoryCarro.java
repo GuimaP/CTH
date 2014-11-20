@@ -14,6 +14,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -60,7 +61,7 @@ public class RepositoryCarro extends Repository<Carro> {
 
 	}
 	
-	public ObservableList<Carro> buscaCarroTeste() throws Exception{
+	public ObservableList<Carro> buscaCarroObservable() throws Exception{
 		try {
 			ObservableList<Carro> listCarro = FXCollections.observableArrayList();
 		
@@ -74,11 +75,24 @@ public class RepositoryCarro extends Repository<Carro> {
 		} catch (Exception e) {
 			throw new Exception(e);
 		}
+	}
+	
+	public ObservableList<Carro> buscaCarrosDisponiveis() throws Exception{
+		try {
+			ObservableList<Carro> listCarro = FXCollections.observableArrayList();
 		
-		
-		
-		
-		
+			List<Carro> list = new ArrayList<Carro>();
+			EntityManager session = ConnectionFactoryRepository.getManager();
+			  Query query = session.createQuery("from Carro where ocupado = :ocup");
+			  query.setParameter("ocup", 0);
+			  list = query.getResultList();
+			for(Carro c : list){
+				listCarro.add(c);
+			}
+			return listCarro;
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
 	}
 
 	public void deleteCarro(Carro carro) throws Exception {

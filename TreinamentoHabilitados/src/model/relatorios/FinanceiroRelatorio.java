@@ -11,7 +11,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Generated;
-import javax.mail.Session;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;

@@ -579,7 +579,7 @@ public class ControllerTelaInstrutor implements ITableInScreens {
 			repoCarro = new RepositoryCarro();
 			ObservableList<Carro> listCarro = FXCollections
 					.observableArrayList();
-			listCarro = repoCarro.buscaCarroTeste();
+			listCarro = repoCarro.buscaCarrosDisponiveis();
 			cbCarro.setItems(listCarro);
 		} catch (Exception e) {
 			e.printStackTrace();

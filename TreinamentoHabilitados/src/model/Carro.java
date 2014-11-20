@@ -20,7 +20,8 @@ public class Carro implements Serializable{
 	@Id
 	@Column(name="placa")
 	private String placa;
-
+	
+	@Column(columnDefinition="int")
 	private boolean ocupado = false;
 	
 	public boolean isOcupado() {

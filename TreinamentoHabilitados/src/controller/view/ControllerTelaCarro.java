@@ -373,7 +373,7 @@ public class ControllerTelaCarro {
 		campoPlaca.setCellValueFactory(new PropertyValueFactory<ItensProperty, String>("Placa"));
 		
 		try {
-			listCarro = repoCarro.buscaCarroTeste();
+			listCarro = repoCarro.buscaCarroObservable();
 			for(Carro c : listCarro){
 				itens.add(new ItensProperty(c));
 			}

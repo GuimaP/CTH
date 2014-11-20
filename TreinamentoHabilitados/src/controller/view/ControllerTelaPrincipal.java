@@ -13,6 +13,7 @@ import javax.swing.plaf.basic.BasicInternalFrameTitlePane.CloseAction;
 
 
 
+
 import org.controlsfx.dialog.Dialogs;
 
 import controller.launcher.LauncherPrincipal;
@@ -101,6 +102,7 @@ protected double yOffset;
 
 	   
 
+@SuppressWarnings("deprecation")
 @FXML
 void brInstrutor(MouseEvent event) {
    	try {
