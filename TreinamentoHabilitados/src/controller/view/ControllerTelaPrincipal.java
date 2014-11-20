@@ -10,10 +10,10 @@ import java.util.ResourceBundle;
 
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.CloseAction;
 
-import org.controlsfx.dialog.Dialogs;
-import org.eclipse.swt.events.DisposeEvent;
 
-import com.sun.media.controls.ActionControl;
+
+
+import org.controlsfx.dialog.Dialogs;
 
 import controller.launcher.LauncherPrincipal;
 import controller.launcher.LauncherTelaGeraRelatorio;
@@ -23,10 +23,8 @@ import controller.launcher.LauncherTelaFinanceiro;
 import controller.launcher.LauncherTelaFuncionario;
 import controller.launcher.LauncherTelaInstrutor;
 import controller.launcher.LauncherTelaServico;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
