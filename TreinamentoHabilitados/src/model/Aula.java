@@ -22,7 +22,7 @@ public class Aula {
 
 	@ManyToOne
 	@JoinColumn(name = "cpf")
-	private Funcionario instrutor;
+	private Instrutor instrutor;
 	//private long idPacote;
 
 	@ManyToOne
@@ -31,11 +31,11 @@ public class Aula {
 
 
 
-	public Funcionario getInstrutor() {
+	public Instrutor getInstrutor() {
 		return instrutor;
 	}
 
-	public void setInstrutor(Funcionario instrutor) {
+	public void setInstrutor(Instrutor instrutor) {
 		this.instrutor = instrutor;
 	}
 

@@ -17,9 +17,23 @@ public class VerificadorDeCpf {
         int somaDig;
         this.cpf = cpf;
         
-        String [] vet = this.cpf.split("\\.");   // Instruções para 
+        String [] vet = this.cpf.split("\\."); 
+        
+        System.err.println(vet.length);
+        
+        if (vet.length < 3 || vet.length > 3){
+        	return validado = false;
+        }
+        
+        										// Instruções para 
         this.cpf =  vet[0]+vet[1]+vet[2];       // Tirar os pontos e o tra~o da String do cpf
-        vet = this.cpf.split("\\-");            // que foi inserido na txtCpf dos forms
+        vet = this.cpf.split("\\-");    
+        
+        if (vet.length > 2) {
+			return validado = false;
+		}
+        
+        											// que foi inserido na txtCpf dos forms
         this.cpf = vet[0]+vet[1];
        
        sub1 = this.cpf.substring(0, 1);  // Instruções para quebrar  

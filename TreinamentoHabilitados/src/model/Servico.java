@@ -1,5 +1,7 @@
 package model;
 
+import java.text.NumberFormat;
+
 import javax.annotation.Generated;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -50,6 +52,12 @@ public class Servico {
 
     public Double getPrecoPacote() {
         return precoPacote;
+    }
+    
+    public String getMonetaryMoney(){
+    	NumberFormat formatter = NumberFormat.getCurrencyInstance();
+		String moneyString = formatter.format(precoPacote);
+		return moneyString;
     }
 
     public void setPrecoPacote(Double precoPacote) {

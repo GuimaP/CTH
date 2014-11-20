@@ -1,151 +1,178 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="paneAnchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #bdbdbd; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControllerTelaInstrutor">
+<AnchorPane fx:id="paneAnchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="536.0" prefWidth="693.0" style="-fx-background-color: none;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.view.ControllerTelaInstrutor">
    <children>
-      <Pane fx:id="paneNavBar" layoutX="49.0" layoutY="14.0" prefHeight="52.0" prefWidth="200.0" style="-fx-background-color: #5677fc; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.bottomAnchor="348.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Pane fx:id="pnFundo" layoutX="17.0" layoutY="35.0" prefHeight="413.0" prefWidth="610.0" style="-fx-background-color: #F1F1F1; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 5, 0, 0, 0);">
          <children>
-            <Label fx:id="lbInstrutorNavBar" layoutX="242.0" layoutY="5.0" style="-fx-font-family: Lobster;" text="Instrutor" textFill="WHITE">
-               <font>
-                  <Font size="33.0" />
-               </font>
-            </Label>
-         </children></Pane>
-      <TabPane fx:id="tabePane" layoutX="122.0" layoutY="160.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
-        <tabs>
-          <Tab fx:id="abaCadastro" text="Cadastro de Instrutores">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <AnchorPane prefHeight="400.0" prefWidth="600.0">
+               <children>
+                  <Pane fx:id="paneNavBar" prefHeight="52.0" prefWidth="610.0" style="-fx-background-color: #0084ab; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 10, 0, 0, 0);" AnchorPane.bottomAnchor="348.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-10.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Pane fx:id="paneFoto" layoutX="442.0" layoutY="7.0" prefHeight="150.0" prefWidth="150.0" style="-fx-background-color: #FFFF; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.bottomAnchor="87.0" AnchorPane.leftAnchor="442.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0" />
-                        <Button fx:id="btFoto" layoutX="441.0" layoutY="219.0" mnemonicParsing="false" onAction="#foto" prefHeight="32.0" prefWidth="150.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0); -fx-background-color: #f86f09;" text="Foto" textFill="WHITE" AnchorPane.bottomAnchor="46.0" AnchorPane.leftAnchor="441.0" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="219.0">
+                        <Label fx:id="lbInstrutorNavBar" layoutX="242.0" layoutY="5.0" style="-fx-font-family: Lobster;" text="Instrutor" textFill="WHITE">
                            <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Button>
-                        <Pane fx:id="paneDadosInstrutor" layoutX="27.0" layoutY="10.0" prefHeight="178.0" prefWidth="420.0" style="-fx-background-color: #5677fc; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.bottomAnchor="69.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="170.0" AnchorPane.topAnchor="50.0">
-                           <children>
-                              <Label fx:id="lbNome" layoutX="7.0" layoutY="6.0" text="Nome:" textFill="WHITE">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="lbData" layoutX="7.0" layoutY="49.0" text="Data:" textFill="WHITE">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="lbNumCnh" layoutX="214.0" layoutY="50.0" text="Nº Cnh:" textFill="WHITE">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                              <TextField fx:id="tfNome" layoutX="85.0" layoutY="6.0" prefHeight="25.0" prefWidth="326.0" />
-                              <DatePicker fx:id="dtData" layoutX="85.0" layoutY="46.0" prefHeight="25.0" prefWidth="120.0" />
-                              <TextField fx:id="tfNumeroCnh" layoutX="291.0" layoutY="46.0" prefHeight="25.0" prefWidth="120.0" />
-                              <DatePicker fx:id="dtDataValidadeCnh" layoutX="85.0" layoutY="71.0" prefHeight="25.0" prefWidth="120.0" />
-                              <DatePicker fx:id="dtDataPermissao" layoutX="291.0" layoutY="71.0" prefHeight="25.0" prefWidth="120.0" />
-                              <TextField fx:id="tfRg" layoutX="85.0" layoutY="96.0" prefHeight="25.0" prefWidth="120.0" />
-                              <TextField fx:id="tfCpf" layoutX="291.0" layoutY="96.0" prefHeight="25.0" prefWidth="120.0" />
-                              <TextField fx:id="tfTel" layoutX="85.0" layoutY="121.0" prefHeight="25.0" prefWidth="120.0" />
-                              <TextField fx:id="tfCel" layoutX="291.0" layoutY="121.0" prefHeight="25.0" prefWidth="120.0" />
-                              <Label fx:id="lbDataPermissao" layoutX="214.0" layoutY="74.0" text="Data Per:" textFill="WHITE">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                              <ComboBox fx:id="cbCarro" layoutX="85.0" layoutY="146.0" prefHeight="25.0" prefWidth="120.0" />
-                              <ComboBox fx:id="cbStatus" layoutX="291.0" layoutY="146.0" prefHeight="25.0" prefWidth="120.0" />
-                              <Label fx:id="lbCpf" layoutX="213.0" layoutY="99.0" text="Cpf:" textFill="WHITE">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="lbCel" layoutX="214.0" layoutY="124.0" text="Cel:" textFill="WHITE">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="lbStatus" layoutX="214.0" layoutY="149.0" text="Status:" textFill="WHITE">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="lbCarro" layoutX="7.0" layoutY="149.0" text="Carro:" textFill="WHITE">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="lbTel" layoutX="7.0" layoutY="124.0" text="Tel:" textFill="WHITE">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="lbRg" layoutX="7.0" layoutY="99.0" text="Rg:" textFill="WHITE">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </Pane>
-                        <Label fx:id="lbDadosIstrutor" text="Dados do Instrutor" textFill="WHITE" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="15.0">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
+                              <Font size="33.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lbValidade" layoutX="17.0" layoutY="126.0" text="Validade:" textFill="WHITE">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Label>
-                        <Button fx:id="btNovo" layoutX="323.0" layoutY="247.0" mnemonicParsing="false" onAction="#novo" prefHeight="32.0" prefWidth="80.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0); -fx-background-color: #f86f09;" text="Novo" textFill="WHITE" AnchorPane.bottomAnchor="18.0" AnchorPane.rightAnchor="198.0" AnchorPane.topAnchor="247.0">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="btSalvar" layoutX="322.0" layoutY="247.0" mnemonicParsing="false" onAction="#salvar" prefHeight="32.0" prefWidth="80.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0); -fx-background-color: #f86f09;" text="Salvar" textFill="WHITE" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="114.0" AnchorPane.topAnchor="247.0">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Button>
+                        <ImageView fx:id="close" fitHeight="10.0" fitWidth="11.0" layoutX="585.0" layoutY="7.0" onMouseClicked="#close" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                           <image>
+                              <Image url="@../resources/icons/close.png" />
+                           </image>
+                        </ImageView>
                      </children>
-                  </AnchorPane>
-            </content>
-          </Tab>
-          <Tab fx:id="abaConsulta" text="Consulta de Instrutores">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <Pane fx:id="paneTableBusca" layoutX="100.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #5677fc; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.bottomAnchor="69.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
-                           <children>
-                              <TableView fx:id="tableBuscaInstrutores" layoutX="9.0" layoutY="8.0" prefHeight="161.0" prefWidth="481.0">
-                                <columns>
-                                  <TableColumn fx:id="campoNome" prefWidth="169.0" text="Nome" />
-                                  <TableColumn fx:id="campoCpf" prefWidth="102.0" text="Cpf" />
-                                    <TableColumn fx:id="campoTel" prefWidth="97.0" text="Telefone" />
-                                    <TableColumn fx:id="campoCel" prefWidth="107.0" text="Celular" />
-                                </columns>
-                              </TableView>
-                           </children>
-                        </Pane>
-                        <Label fx:id="lbListaInstrutores" text="Lista de Instrutores" textFill="WHITE" AnchorPane.leftAnchor="52.0" AnchorPane.topAnchor="10.0">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Label>
-                        <Button fx:id="btExcluir" layoutX="225.0" layoutY="243.0" mnemonicParsing="false" onAction="#excluir" prefHeight="32.0" prefWidth="150.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0); -fx-background-color: #f86f09;" text="Excluir" textFill="WHITE">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Button>
-                     </children></AnchorPane>
-            </content>
-          </Tab>
-        </tabs>
-      </TabPane>
+                  </Pane>
+                  <TabPane fx:id="tabePane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
+                    <tabs>
+                      <Tab fx:id="abaCadastro" text="Cadastro de Instrutores">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="301.0" prefWidth="590.0">
+                                 <children>
+                                    <Pane fx:id="paneFoto" layoutX="442.0" layoutY="7.0" prefHeight="164.0" prefWidth="148.0" style="-fx-background-color: #FFFF; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.bottomAnchor="87.0" AnchorPane.leftAnchor="442.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="50.0">
+                                       <children>
+                                          <ImageView fx:id="pnFoto" fitHeight="160.0" fitWidth="145.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true" />
+                                       </children>
+                                    </Pane>
+                                    <Button fx:id="btFoto" layoutX="441.0" layoutY="219.0" mnemonicParsing="false" onAction="#foto" prefHeight="36.0" prefWidth="155.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0); -fx-background-color: #f86f09;" text="FOTO" textFill="WHITE" AnchorPane.bottomAnchor="46.0" AnchorPane.leftAnchor="441.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="219.0">
+                                       <font>
+                                          <Font name="Roboto Light" size="15.0" />
+                                       </font>
+                                    </Button>
+                                    <Label fx:id="lbDadosIstrutor" text="DADOS DO INSTRUTOR" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="15.0">
+                                       <font>
+                                          <Font name="Roboto Light" size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="lbValidade" layoutX="17.0" layoutY="126.0" text="VALIDADE:" textFill="WHITE">
+                                       <font>
+                                          <Font name="Roboto Light" size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <Button fx:id="btNovo" layoutX="323.0" layoutY="247.0" mnemonicParsing="false" onAction="#novo" prefHeight="32.0" prefWidth="80.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0); -fx-background-color: #f86f09;" text="NOVO" textFill="WHITE" AnchorPane.bottomAnchor="18.0" AnchorPane.rightAnchor="198.0" AnchorPane.topAnchor="247.0">
+                                       <font>
+                                          <Font name="Roboto Light" size="15.0" />
+                                       </font>
+                                    </Button>
+                                    <Button fx:id="btSalvar" layoutX="322.0" layoutY="247.0" mnemonicParsing="false" onAction="#salvar" prefHeight="32.0" prefWidth="80.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0); -fx-background-color: #f86f09;" text="SALVAR" textFill="WHITE" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="114.0" AnchorPane.topAnchor="247.0">
+                                       <font>
+                                          <Font name="Roboto Light" size="15.0" />
+                                       </font>
+                                    </Button>
+                                    <Pane fx:id="paneDadosInstrutor" layoutX="27.0" layoutY="10.0" prefHeight="178.0" prefWidth="420.0" style="-fx-background-color: #0084ab; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.bottomAnchor="69.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="170.0" AnchorPane.topAnchor="50.0">
+                                       <children>
+                                          <Label fx:id="lbNome" layoutX="7.0" layoutY="6.0" text="NOME:" textFill="WHITE">
+                                             <font>
+                                                <Font name="Roboto Light" size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="lbData" layoutX="7.0" layoutY="49.0" text="DATA:" textFill="WHITE">
+                                             <font>
+                                                <Font name="Roboto Light" size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="lbNumCnh" layoutX="214.0" layoutY="50.0" text="Nº CNH" textFill="WHITE">
+                                             <font>
+                                                <Font name="Roboto Light" size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="tfNome" layoutX="85.0" layoutY="6.0" prefHeight="25.0" prefWidth="326.0" />
+                                          <DatePicker fx:id="dtData" layoutX="85.0" layoutY="46.0" prefHeight="25.0" prefWidth="120.0" />
+                                          <TextField fx:id="tfNumeroCnh" layoutX="291.0" layoutY="46.0" prefHeight="25.0" prefWidth="120.0" />
+                                          <DatePicker fx:id="dtDataValidadeCnh" layoutX="85.0" layoutY="71.0" prefHeight="25.0" prefWidth="120.0" />
+                                          <DatePicker fx:id="dtDataPermissao" layoutX="291.0" layoutY="71.0" prefHeight="25.0" prefWidth="120.0" />
+                                          <TextField fx:id="tfRg" layoutX="85.0" layoutY="96.0" prefHeight="25.0" prefWidth="120.0" />
+                                          <TextField fx:id="tfCpf" layoutX="291.0" layoutY="96.0" prefHeight="25.0" prefWidth="120.0" />
+                                          <TextField fx:id="tfTel" layoutX="85.0" layoutY="121.0" prefHeight="25.0" prefWidth="120.0" />
+                                          <TextField fx:id="tfCel" layoutX="291.0" layoutY="121.0" prefHeight="25.0" prefWidth="120.0" />
+                                          <Label fx:id="lbDataPermissao" layoutX="214.0" layoutY="74.0" text="DATA PER." textFill="WHITE">
+                                             <font>
+                                                <Font name="Roboto Light" size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <ComboBox fx:id="cbCarro" layoutX="85.0" layoutY="146.0" prefHeight="25.0" prefWidth="120.0" />
+                                          <ComboBox fx:id="cbStatus" layoutX="291.0" layoutY="146.0" prefHeight="25.0" prefWidth="120.0" />
+                                          <Label fx:id="lbCpf" layoutX="213.0" layoutY="99.0" text="CPF" textFill="WHITE">
+                                             <font>
+                                                <Font name="Roboto Light" size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="lbCel" layoutX="214.0" layoutY="124.0" text="CEL:" textFill="WHITE">
+                                             <font>
+                                                <Font name="Roboto Light" size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="lbStatus" layoutX="214.0" layoutY="149.0" text="STATUS" textFill="WHITE">
+                                             <font>
+                                                <Font name="Roboto Light" size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="lbCarro" layoutX="7.0" layoutY="149.0" text="CARRO:" textFill="WHITE">
+                                             <font>
+                                                <Font name="Roboto Light" size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="lbTel" layoutX="7.0" layoutY="124.0" text="TEL:" textFill="WHITE">
+                                             <font>
+                                                <Font name="Roboto Light" size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="lbRg" layoutX="7.0" layoutY="99.0" text="RG:" textFill="WHITE">
+                                             <font>
+                                                <Font name="Roboto Light" size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="lbValidade" layoutX="5.0" layoutY="74.0" text="VALIDADE:" textFill="WHITE">
+                                             <font>
+                                                <Font name="Roboto Light" size="15.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </Pane>
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                      <Tab fx:id="abaConsulta" text="Consulta de Instrutores">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <TextField fx:id="tfBusca" layoutX="44.0" layoutY="46.0" onKeyPressed="#buscaCPF" prefHeight="25.0" prefWidth="501.0" promptText="Insira o CPF para realizar a busca" />
+                                    <Pane fx:id="paneTableBusca" layoutX="50.0" layoutY="79.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #0084ab; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="79.0">
+                                       <children>
+                                          <TableView fx:id="tableBuscaInstrutores" layoutX="9.0" layoutY="8.0" prefHeight="161.0" prefWidth="481.0">
+                                            <columns>
+                                              <TableColumn fx:id="campoNome" prefWidth="169.0" text="Nome" />
+                                              <TableColumn fx:id="campoCpf" prefWidth="102.0" text="Cpf" />
+                                                <TableColumn fx:id="campoTel" prefWidth="97.0" text="Telefone" />
+                                                <TableColumn fx:id="campoCel" prefWidth="107.0" text="Celular" />
+                                            </columns>
+                                          </TableView>
+                                       </children>
+                                    </Pane>
+                                    <Label fx:id="lbListaInstrutores" text="LISTA DE INSTRUTORES" AnchorPane.leftAnchor="52.0" AnchorPane.topAnchor="10.0">
+                                       <font>
+                                          <Font name="Roboto Light" size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <ImageView fx:id="icLupa" fitHeight="18.0" fitWidth="23.0" layoutX="517.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../resources/icons/lupa-icon.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                    </tabs>
+                  </TabPane>
+               </children>
+            </AnchorPane>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

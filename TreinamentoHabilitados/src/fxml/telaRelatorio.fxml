@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="panceAnchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="358.0" prefWidth="577.0" style="-fx-background-color: null;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.view.ControllerTelaGeraRelatorio">
+   <children>
+      <Pane fx:id="pnFundo" layoutX="21.0" layoutY="16.0" prefHeight="302.0" prefWidth="417.0" style="-fx-effect: dropshadow(three-pass-box, rgba(60,60,60,10), 10, -5, 0, 5); -fx-background-color: #fff;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="16.0">
+         <children>
+            <DatePicker fx:id="dtInicio" layoutX="29.0" layoutY="103.0" prefHeight="25.0" prefWidth="204.0" promptText="Data de Inicio" />
+            <DatePicker fx:id="dtFinal" layoutX="307.0" layoutY="103.0" prefHeight="25.0" prefWidth="194.0" promptText="Data Final" />
+            <ComboBox fx:id="cbTipoRelatorio" layoutX="29.0" layoutY="172.0" prefHeight="25.0" prefWidth="470.0" promptText="ESCOLHA O TIPO DE RELATORIO" style="-fx-background-radius: 0;" />
+            <Label fx:id="lbTipoDeRelatorio" layoutX="29.0" layoutY="144.0" prefHeight="23.0" prefWidth="180.0" text="TIPO DE RELATORIO:">
+               <font>
+                  <Font name="Roboto Light" size="18.0" />
+               </font>
+            </Label>
+            <CheckBox fx:id="checkTodos" layoutX="380.0" layoutY="143.0" mnemonicParsing="false" text="Todos os registros" />
+            <RadioButton fx:id="radioPDF" layoutX="29.0" layoutY="230.0" mnemonicParsing="false" />
+            <RadioButton fx:id="radioExcel" layoutX="209.0" layoutY="230.0" mnemonicParsing="false" />
+            <RadioButton fx:id="radioHtml" layoutX="418.0" layoutY="230.0" mnemonicParsing="false" />
+            <ImageView fx:id="icPDF" fitHeight="39.0" fitWidth="49.0" layoutX="50.0" layoutY="219.0" onMouseClicked="#selectPDF" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+               <image>
+                  <Image url="@../resources/icons/pdf-icon.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="btGerar" layoutX="29.0" layoutY="276.0" mnemonicParsing="false" onAction="#GerarRelatorio" prefHeight="32.0" prefWidth="470.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 5, 0, 0, 0); -fx-background-color: #f86f09;" text="GERAR RELATORIO" textFill="WHITE">
+               <font>
+                  <Font name="Roboto Light" size="15.0" />
+               </font>
+            </Button>
+            <ImageView fx:id="icExcel" fitHeight="39.0" fitWidth="49.0" layoutX="230.0" layoutY="219.0" onMouseClicked="#selectExcel" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+               <image>
+                  <Image url="@../resources/icons/excel-icon.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="icHtml" fitHeight="39.0" fitWidth="49.0" layoutX="439.0" layoutY="219.0" onMouseClicked="#selectHtml" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+               <image>
+                  <Image url="@../resources/icons/html-icon.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Pane fx:id="paneNavBar" prefHeight="88.0" prefWidth="417.0" style="-fx-background-color: #0084ab; -fx-effect: dropshadow(three-pass-box, rgba(60,60,60,10), 10, -5, 0, 5);" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="16.0" />
+      <Label fx:id="lbFinanceiro" prefHeight="60.0" prefWidth="194.0" text="Relatorio" textFill="WHITE" AnchorPane.leftAnchor="187.0" AnchorPane.rightAnchor="206.0" AnchorPane.topAnchor="24.0">
+         <font>
+            <Font name="Lobster" size="48.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="icClose" fitHeight="20.0" fitWidth="13.0" layoutX="455.0" layoutY="29.0" onMouseClicked="#close" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" AnchorPane.rightAnchor="36.0" AnchorPane.topAnchor="23.0">
+         <image>
+            <Image url="@../resources/icons/close.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

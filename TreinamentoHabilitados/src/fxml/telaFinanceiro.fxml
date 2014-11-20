@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="panceAnchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="347.0" prefWidth="466.0" style="-fx-background-color: null;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.view.ControllerTelaFinanceiro">
+   <children>
+      <Pane fx:id="pnFundo" layoutX="21.0" layoutY="16.0" prefHeight="302.0" prefWidth="417.0" style="-fx-effect: dropshadow(three-pass-box, rgba(60,60,60,10), 10, -5, 0, 5); -fx-background-color: #fff;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="16.0" />
+      <Pane fx:id="paneNavBar" prefHeight="88.0" prefWidth="417.0" style="-fx-background-color: #0084ab; -fx-effect: dropshadow(three-pass-box, rgba(60,60,60,10), 10, -5, 0, 5);" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="16.0" />
+      <Label fx:id="lbFinanceiro" text="Financeiro" textFill="WHITE" AnchorPane.leftAnchor="127.0" AnchorPane.rightAnchor="141.0" AnchorPane.topAnchor="24.0">
+         <font>
+            <Font name="Lobster" size="48.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbDescricao" prefHeight="23.0" prefWidth="109.0" text="DESCRIÇÃO:" AnchorPane.leftAnchor="53.0" AnchorPane.rightAnchor="304.0" AnchorPane.topAnchor="130.0">
+         <font>
+            <Font name="Roboto Light" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfDescricao" prefHeight="25.0" prefWidth="335.0" promptText="Descrição" AnchorPane.leftAnchor="52.0" AnchorPane.topAnchor="156.0" />
+      <TextField fx:id="tfValor" layoutX="10.0" layoutY="10.0" prefHeight="25.0" prefWidth="109.0" promptText="Valor" AnchorPane.leftAnchor="52.0" AnchorPane.topAnchor="210.0" />
+      <Label fx:id="lbValor" layoutX="10.0" layoutY="10.0" prefHeight="23.0" prefWidth="109.0" text="VALOR:" AnchorPane.leftAnchor="52.0" AnchorPane.topAnchor="185.0">
+         <font>
+            <Font name="Roboto Light" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbTipoDeDespesa" layoutX="20.0" layoutY="20.0" prefHeight="23.0" prefWidth="166.0" text="TIPO DE DESPESA:" AnchorPane.leftAnchor="180.0" AnchorPane.topAnchor="185.0">
+         <font>
+            <Font name="Roboto Light" size="18.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="cbTipoDespesa" prefHeight="25.0" prefWidth="205.0" promptText="ESCOLHA O TIPO DE DESPESA" style="-fx-background-radius: 0;" AnchorPane.leftAnchor="180.0" AnchorPane.topAnchor="210.0" />
+      <Button fx:id="btLocalizar" mnemonicParsing="false" onAction="#localizar" style="-fx-background-radius: 0; -fx-background-color: #f86f09; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 5, 0, 0, 0); -fx-background-radius: 0; -fx-cursor: hand;" text="LOCALIZAR" textFill="WHITE" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="250.0">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Button>
+      <Button fx:id="btNovo" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#novo" style="-fx-background-radius: 0; -fx-background-color: #f86f09; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 5, 0, 0, 0); -fx-background-radius: 0; -fx-cursor: hand;" text="NOVO" textFill="WHITE" AnchorPane.rightAnchor="212.0" AnchorPane.topAnchor="250.0">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Button>
+      <Button fx:id="btSalvar" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#salvar" style="-fx-background-radius: 0; -fx-background-color: #f86f09; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 5, 0, 0, 0); -fx-background-radius: 0; -fx-cursor: hand;" text="SALVAR" textFill="WHITE" AnchorPane.rightAnchor="81.0" AnchorPane.topAnchor="250.0">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Button>
+      <ImageView fx:id="icClose" fitHeight="20.0" fitWidth="13.0" layoutX="455.0" layoutY="29.0" onMouseClicked="#close" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" AnchorPane.rightAnchor="36.0" AnchorPane.topAnchor="23.0">
+         <image>
+            <Image url="@../resources/icons/close.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

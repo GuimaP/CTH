@@ -1,157 +1,46 @@
-    package model;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+package model;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.OneToOne;
-import javax.persistence.Transient;
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
+import javax.persistence.Table;
 
-import model.enums.EnumStatus;
+import org.hibernate.annotations.Cascade;
 
-import java.awt.Image;
-
+import model.enums.EnumPermissaoAcessoSistema;
 
 @Entity
-public class Funcionario implements Serializable{
+@Table(name = "tb_funcionario")
+public class Funcionario {
 	
-	private String nome="";
-	private Date data;
-	private String cnh="";
-	@Column(columnDefinition="date")
-	private Date validadeCnh= null;
-
-
-
-	private Date primeiraCnh= null;
-
-	private String rg="";
 	@Id
-	private String cpf="";
-	private String telefone="";
-	private String celular="";
-	private EnumStatus status;
-	@Transient
-	private String dirFoto;
-        
-	@Lob
-    @Column(name="image", nullable = true,columnDefinition = "mediumblob")
-    private byte[] image;
-        
-	@OneToOne
-        @JoinColumn(name = "placa")//Digo que é uma chave estrangeira ...	
-	private Carro placa;
+	@GeneratedValue
+	private long id;
+	private String nome ="";
+	private String rg = "";
+	private String cpf = "";
+	private String telefone = ""; 
+	private String celular = "";
+	private EnumPermissaoAcessoSistema permissaoAcesso;
+	@OneToOne(cascade=CascadeType.REMOVE)
+	@JoinColumn(name="usuario")
+	private Login loginUsuario;
 	
-	public void setImage(byte[] image){
-            this.image = image;
-        }
-        
-        public String getImage(){
-        	String sep = System.getProperty("file.separator");
-            String dir = System.getProperty("user.home");
-            dir +=sep+"Treinamento";
-            String diretorioFoto = "noImage";
-        	try {
-                
-        		//Verifico se o diretorio de Resources existe...
-        		File diretorioRes = new File(dir+sep+"res");
-        		if(!diretorioRes.exists()){
-        			diretorioRes.mkdir();
-        		}
-        		//Verifico se o diretorio de imagem existe...
-            	File diretorioImagens = new File(dir+sep+"Fotos-Consumidor");
-            	if(!diretorioImagens.exists()){
-            		diretorioImagens.mkdir();
-            	}
-            	
-                //Especifico o diretorio que vai salvar a imagem
-                File dirPhoto = new File(dir+sep+"Fotos-Consumidor"+sep+nome+".jpg");
-                if(image != null){
-                
-                FileOutputStream ou = new FileOutputStream(dirPhoto);
-                
-                //Apontos o vetor de bytes da imagem
-                ou.write(image);
-                //Fecho o meninão aqui
-                ou.close();
-                diretorioFoto = dirPhoto.getPath();
-                
-                }
-                
-                
-                //Se encontrar o arquivo eu devolvo a imagem
-//                diretorioFoto = new ImageIcon(dirPhoto.getPath()).getImage();
-                
-//                }else {
-//                	imgFoto = new ImageIcon(getClass().getClassLoader().getResource("Resources/imgs/noImage.png")).getImage();
-//                }
-                
-              
-               
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(Funcionario.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(Funcionario.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            return diretorioFoto;
-        }
-        
-        
-        public Carro getTbCarroPlacaCarro() {
-		return placa;
+	public Login getLoginUsuario() {
+		return loginUsuario;
 	}
-	public void setTbCarroPlacaCarro(Carro tbCarroPlacaCarro) {
-		this.placa = tbCarroPlacaCarro;
+	public void setLoginUsuario(Login loginUsuario) {
+		this.loginUsuario = loginUsuario;
 	}
-	
-	public String getDiretorioFoto(){
-		return dirFoto;
-	}
-	
 	public String getNome() {
 		return nome;
 	}
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-	public Date getData() {
-		return data;
-	}
-	public void setData(Date data) {
-		this.data = data;
-	}
-	public String getCnh() {
-		return cnh;
-	}
-	public void setCnh(String cnh) {
-		this.cnh = cnh;
-	}
-	public Date getValidadeCnh() {
-		return validadeCnh;
-	}
-	public void setValidadeCnh(Date validadeCnh) {
-		this.validadeCnh = validadeCnh;
-	}
-	public Date getPrimeiraCnh() {
-		return primeiraCnh;
-	}
-	public void setPrimeiraCnh(Date primeiraCnh) {
-		this.primeiraCnh = primeiraCnh;
 	}
 	public String getRg() {
 		return rg;
@@ -177,17 +66,13 @@ public class Funcionario implements Serializable{
 	public void setCelular(String celular) {
 		this.celular = celular;
 	}
-	public EnumStatus getStatus() {
-		return status;
+	public EnumPermissaoAcessoSistema getPermissaoAcesso() {
+		return permissaoAcesso;
 	}
-	public void setStatus(EnumStatus status) {
-		this.status = status;
+	public void setPermissaoAcesso(EnumPermissaoAcessoSistema permissaoAcesso) {
+		this.permissaoAcesso = permissaoAcesso;
 	}
-	
-	@Override
-	public String toString() {
-		return (nome);
+	public long getId() {
+		return id;
 	}
-	
-
 }

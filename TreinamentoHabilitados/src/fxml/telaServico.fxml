@@ -1,104 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="paneAnchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="600.0" style="-fx-background-color: #bdbdbd;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControllerTelaServico">
+<AnchorPane fx:id="paneAnchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="389.0" prefWidth="645.0" style="-fx-background-color: none;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.view.ControllerTelaServico">
    <children>
-      <Pane fx:id="paneNavBar" layoutX="156.0" layoutY="40.0" prefHeight="52.0" prefWidth="200.0" style="-fx-background-color: #5677fc; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Pane fx:id="PnFundo" layoutX="23.0" layoutY="25.0" prefHeight="350.0" prefWidth="600.0" style="-fx-background-color: #F1F1F1; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);">
          <children>
-            <Label fx:id="lbPacoteNavBar" layoutX="258.0" layoutY="5.0" style="-fx-font-family: Lobster;" text="Pacote" textFill="WHITE">
-               <font>
-                  <Font size="33.0" />
-               </font>
-            </Label>
+            <AnchorPane prefHeight="350.0" prefWidth="600.0">
+               <children>
+                  <Pane fx:id="paneNavBar" prefHeight="52.0" prefWidth="200.0" style="-fx-background-color: #0084ab; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Label fx:id="lbPacoteNavBar" layoutX="258.0" layoutY="5.0" style="-fx-font-family: Lobster;" text="Pacote" textFill="WHITE">
+                           <font>
+                              <Font size="33.0" />
+                           </font>
+                        </Label>
+                        <ImageView fx:id="icClose" fitHeight="20.0" fitWidth="13.0" layoutX="578.0" layoutY="6.0" onMouseClicked="#close" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                           <image>
+                              <Image url="@../resources/icons/close.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Pane>
+                  <TabPane fx:id="tablePane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
+                    <tabs>
+                      <Tab fx:id="abaCadastroPacotes" text="Cadastro de Pacotes">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <Pane fx:id="paneCadastro" layoutX="80.0" layoutY="49.0" prefHeight="115.0" prefWidth="440.0" style="-fx-background-color: #0084ab; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.leftAnchor="80.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="49.0">
+                                       <children>
+                                          <TextField fx:id="tfAulas" layoutX="135.0" layoutY="7.0" />
+                                          <TextField fx:id="tfDescPacote" layoutX="135.0" layoutY="32.0" />
+                                          <TextField fx:id="tfPrecoAula" layoutX="135.0" layoutY="57.0" />
+                                          <TextField fx:id="tfPrecoPacote" layoutX="135.0" layoutY="82.0" />
+                                       </children>
+                                    </Pane>
+                                    <Label fx:id="lbAulas" text="Nº AULAS:" textFill="WHITE" AnchorPane.leftAnchor="85.0" AnchorPane.topAnchor="60.0">
+                                       <font>
+                                          <Font name="Roboto Thin" size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="lbDescPacote" layoutX="95.0" layoutY="70.0" text="DESC PACOTE:" textFill="WHITE" AnchorPane.leftAnchor="85.0" AnchorPane.topAnchor="85.0">
+                                       <font>
+                                          <Font name="Roboto Thin" size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="lbPrecoAula" layoutX="95.0" layoutY="95.0" text="PREÇO AULA:" textFill="WHITE" AnchorPane.leftAnchor="85.0" AnchorPane.topAnchor="110.0">
+                                       <font>
+                                          <Font name="Roboto Thin" size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="lbPrecoPacote" layoutX="95.0" layoutY="120.0" text="PREÇO PACOTE:" textFill="WHITE" AnchorPane.leftAnchor="85.0" AnchorPane.topAnchor="135.0">
+                                       <font>
+                                          <Font name="Roboto Thin" size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <Button fx:id="btSalvar" layoutX="115.0" layoutY="188.0" mnemonicParsing="false" onAction="#salvar" prefHeight="32.0" prefWidth="80.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0); -fx-background-color: #f86f09;" text="SALVAR" textFill="WHITE" AnchorPane.leftAnchor="115.0">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Button>
+                                    <Button fx:id="btNovo" layoutX="389.0" layoutY="188.0" mnemonicParsing="false" onAction="#novo" prefHeight="32.0" prefWidth="80.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0); -fx-background-color: #f86f09;" text="NOVO" textFill="WHITE" AnchorPane.rightAnchor="115.0">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Button>
+                                    <Label fx:id="lbDadosPacote" text="DADOS DO PACOTE" AnchorPane.leftAnchor="82.0" AnchorPane.topAnchor="10.0">
+                                       <font>
+                                          <Font name="Roboto Light" size="20.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                      <Tab fx:id="abaConsultaPacote" text="Consulta de Pacotes">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <TextField fx:id="tfBusca" layoutX="81.0" layoutY="34.0" onKeyPressed="#buscaCPF" prefHeight="25.0" prefWidth="438.0" promptText="Insira o CPF para realizar a busca" />
+                                    <Pane fx:id="paneConsulta" layoutX="80.0" layoutY="67.0" prefHeight="168.0" prefWidth="440.0" style="-fx-background-color: #0084ab; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.leftAnchor="80.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="67.0">
+                                       <children>
+                                          <TableView fx:id="tableConsulta" layoutX="8.0" layoutY="11.0" prefHeight="147.0" prefWidth="424.0">
+                                            <columns>
+                                              <TableColumn fx:id="campoAulas" prefWidth="75.0" text="Aulas" />
+                                              <TableColumn fx:id="campoDescPacotes" prefWidth="236.0" text="Descrição" />
+                                                <TableColumn fx:id="campoPreco" minWidth="0.0" prefWidth="107.0" text="Preço" />
+                                            </columns>
+                                          </TableView>
+                                       </children>
+                                    </Pane>
+                                    <Label fx:id="lbListaPacotes" text="LISTA DE PACOTES" AnchorPane.leftAnchor="82.0" AnchorPane.topAnchor="10.0">
+                                       <font>
+                                          <Font name="Roboto Light" size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <ImageView fx:id="icLupa" fitHeight="18.0" fitWidth="23.0" layoutX="494.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../resources/icons/lupa-icon.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                    </tabs>
+                  </TabPane>
+               </children>
+            </AnchorPane>
          </children>
       </Pane>
-      <TabPane fx:id="tablePane" layoutY="107.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
-        <tabs>
-          <Tab fx:id="abaCadastroPacotes" text="Cadastro de Pacotes">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <Pane fx:id="paneCadastro" layoutX="80.0" layoutY="49.0" prefHeight="115.0" prefWidth="440.0" style="-fx-background-color: #5677fc; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.leftAnchor="80.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="49.0">
-                           <children>
-                              <TextField fx:id="tfAulas" layoutX="135.0" layoutY="7.0" />
-                              <TextField fx:id="tfDescPacote" layoutX="135.0" layoutY="32.0" />
-                              <TextField fx:id="tfPrecoAula" layoutX="135.0" layoutY="57.0" />
-                              <TextField fx:id="tfPrecoPacote" layoutX="135.0" layoutY="82.0" />
-                           </children>
-                        </Pane>
-                        <Label fx:id="lbAulas" text="Nº Aulas:" textFill="WHITE" AnchorPane.leftAnchor="85.0" AnchorPane.topAnchor="60.0">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lbDescPacote" layoutX="95.0" layoutY="70.0" text="Desc Pacote:" textFill="WHITE" AnchorPane.leftAnchor="85.0" AnchorPane.topAnchor="85.0">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lbPrecoAula" layoutX="95.0" layoutY="95.0" text="Preço Aula:" textFill="WHITE" AnchorPane.leftAnchor="85.0" AnchorPane.topAnchor="110.0">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lbPrecoPacote" layoutX="95.0" layoutY="120.0" text="Preço Pacote:" textFill="WHITE" AnchorPane.leftAnchor="85.0" AnchorPane.topAnchor="135.0">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Label>
-                        <Button fx:id="btSalvar" layoutX="115.0" layoutY="188.0" mnemonicParsing="false" onAction="#salvar" prefHeight="32.0" prefWidth="80.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0); -fx-background-color: #f86f09;" text="Salvar" textFill="WHITE" AnchorPane.leftAnchor="115.0">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="btNovo" layoutX="389.0" layoutY="188.0" mnemonicParsing="false" onAction="#novo" prefHeight="32.0" prefWidth="80.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0); -fx-background-color: #f86f09;" text="Novo" textFill="WHITE" AnchorPane.rightAnchor="115.0">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Button>
-                        <Label fx:id="lbDadosPacote" text="Dados do Pacote" textFill="WHITE" AnchorPane.leftAnchor="82.0" AnchorPane.topAnchor="10.0">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </AnchorPane>
-            </content>
-          </Tab>
-          <Tab fx:id="abaConsultaPacote" text="Consulta de Pacotes">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <Pane fx:id="paneConsulta" layoutX="156.0" layoutY="14.0" prefHeight="144.0" prefWidth="440.0" style="-fx-background-color: #5677fc; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0);" AnchorPane.leftAnchor="80.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="49.0">
-                           <children>
-                              <TableView fx:id="tableConsulta" layoutX="8.0" layoutY="11.0" prefHeight="122.0" prefWidth="424.0">
-                                <columns>
-                                  <TableColumn fx:id="campoAulas" prefWidth="75.0" text="Aulas" />
-                                  <TableColumn fx:id="campoDescPacotes" prefWidth="236.0" text="Descrição" />
-                                    <TableColumn fx:id="campoPreco" minWidth="0.0" prefWidth="107.0" text="Preço" />
-                                </columns>
-                              </TableView>
-                           </children>
-                        </Pane>
-                        <Button fx:id="btExcluir" layoutX="260.0" layoutY="201.0" mnemonicParsing="false" onAction="#excluir" prefHeight="32.0" prefWidth="80.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,10), 20, 0, 0, 0); -fx-background-color: #f86f09;" text="Excluir" textFill="WHITE">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Button>
-                        <Label fx:id="lbListaPacotes" text="Lista de Pacotes" textFill="WHITE" AnchorPane.leftAnchor="82.0" AnchorPane.topAnchor="10.0">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </AnchorPane>
-            </content>
-          </Tab>
-        </tabs>
-      </TabPane>
    </children>
 </AnchorPane>

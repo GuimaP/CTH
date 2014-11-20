@@ -6,44 +6,50 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceException;
 import javax.swing.JOptionPane;
-
-import org.hibernate.JDBCException;
-import org.hibernate.Session;
-import org.hibernate.exception.GenericJDBCException;
-
-import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
 
 public class ConnectionFactoryRepository {
 
     private final static EntityManager manager = openEntity();
+    	
+    	
+   
 
-    private static EntityManager openEntity() {
+    private static EntityManager openEntity()  {
     	EntityManager entityManager = null;
     	try{
     	Map<String, String> map = new HashMap<String, String>();
-        map.put("javax.persistence.jdbc.url", "jdbc:mysql://localhost:3306/tcc");
+        map.put("javax.persistence.jdbc.url", "jdbc:mysql://localhost/db");
     	map.put("javax.persistence.jdbc.user", "root");
-    	map.put("javax.persistence.jdbc.password", "root");
+    	map.put("javax.persistence.jdbc.password", "1q2w3e");
     	
     	
 
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("autoEscolaNew",map);
+        
         entityManager =  factory.createEntityManager();
-        }catch(GenericJDBCException  erro){
-        	JOptionPane.showMessageDialog(null, "Falha na Comunica��o com o banco de dados");
-        	
-        }catch (Throwable e) {
+        
+        }catch (PersistenceException e) {
 			System.out.println(e.getMessage());
+			JOptionPane.showMessageDialog(null, e.getCause());
+			System.out.println(e.getCause());
+			throw new NoResultException("Erro ao conectar na base de dados");
+			
 		}
-    	
     	return entityManager;
+
 
         
     }
 
-    public static EntityManager getManager() throws SQLException {
+    public static EntityManager getManager() {
+    	System.out.println(manager.isOpen());
+   	if(manager == null ){
+    		openEntity();
+     }
         return manager;
     }
 }

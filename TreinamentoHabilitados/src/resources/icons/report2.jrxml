@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report2" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c9d9c474-2f93-42e0-83cf-0ae1999747c9">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<rectangle>
+				<reportElement x="-18" y="-20" width="596" height="99" forecolor="#0099CC" backcolor="#0099CC" uuid="26d979b1-2b59-4345-a42d-19c2f178d10e"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="42" width="272" height="32" forecolor="#FFFFFF" uuid="e8017e55-2e1e-4a0c-b8a8-ab61f0d6855f"/>
+				<textElement>
+					<font fontName="Arial" size="20"/>
+				</textElement>
+				<text><![CDATA[RELATORIO DE GASTOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="-22" width="206" height="64" forecolor="#FFFFFF" uuid="a0d51d68-6619-4846-b40a-f185c3856c61"/>
+				<textElement>
+					<font fontName="Arial" size="50"/>
+				</textElement>
+				<text><![CDATA[Relatorio]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="23" y="0" width="100" height="20" uuid="c12b1a89-27bb-4ec0-834e-e1b9521916b6"/>
+				<textFieldExpression><![CDATA[$F{DESCRICAO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="154" y="0" width="118" height="20" uuid="b3540fd4-2b38-4ec2-b1af-f349efb4331c"/>
+				<textFieldExpression><![CDATA[$F{TIPOPAGAMENTO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="285" y="0" width="100" height="20" uuid="0e47444e-a868-47ef-9ab9-f0c02e87ef53"/>
+				<textFieldExpression><![CDATA[$F{VALOR}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="407" y="0" width="100" height="20" uuid="aa5c6315-4a5e-490c-84d1-0ff1b071f374"/>
+				<textFieldExpression><![CDATA[$F{NOME}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

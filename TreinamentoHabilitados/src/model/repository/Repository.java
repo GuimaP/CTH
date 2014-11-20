@@ -63,18 +63,10 @@ public class Repository<T> {
 	public void atualizar(T obj) {
 //		Session em = ConnectionFactoryConfig.getSession();// .getCurrentSession();
 		EntityManager em = null;
-		try {
-			em = ConnectionFactoryRepository.getManager();
-			em.getTransaction().begin();
-			em.merge(obj);
-			em.getTransaction().commit();
-
-		} catch (SQLException e) {
-			if(em != null){
-				em.getTransaction().rollback();
-			}
-			e.printStackTrace();
-		}
+		em = ConnectionFactoryRepository.getManager();
+		em.getTransaction().begin();
+		em.merge(obj);
+		em.getTransaction().commit();
 
 	}
 

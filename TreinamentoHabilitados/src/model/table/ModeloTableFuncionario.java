@@ -8,13 +8,13 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.text.MaskFormatter;
 
-import model.Funcionario;
+import model.Instrutor;
 public class ModeloTableFuncionario extends AbstractTableModel{
 	
-	List<Funcionario> func;
+	List<Instrutor> func;
 	String [] colunas = {"Nome", "Cpf","Telefone","Celular"};
 	
-	public ModeloTableFuncionario(List<Funcionario> func){
+	public ModeloTableFuncionario(List<Instrutor> func){
 		this.func = func;
 		
 	}
@@ -54,7 +54,7 @@ public class ModeloTableFuncionario extends AbstractTableModel{
 		return colunas[column];
 	}
 	
-	public Funcionario getFuncionario(int index){
+	public Instrutor getFuncionario(int index){
 		return func.get(index);
 	}
 	

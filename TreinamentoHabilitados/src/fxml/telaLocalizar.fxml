@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="panceAnchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="479.0" prefWidth="577.0" style="-fx-background-color: null;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.view.ControllerTelaLocalizarDespesa">
+   <children>
+      <Pane fx:id="pnFundo" layoutX="21.0" layoutY="16.0" prefHeight="302.0" prefWidth="417.0" style="-fx-effect: dropshadow(three-pass-box, rgba(60,60,60,10), 10, -5, 0, 5); -fx-background-color: #fff;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="16.0">
+         <children>
+            <ImageView fx:id="icLupa" fitHeight="47.0" fitWidth="35.0" layoutX="466.0" layoutY="167.0" onMouseClicked="#localizaDespesa" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+               <image>
+                  <Image url="@../resources/icons/lupa-icon.png" />
+               </image>
+            </ImageView>
+            <DatePicker fx:id="dtInicio" layoutX="29.0" layoutY="103.0" prefHeight="25.0" prefWidth="204.0" promptText="Data de Inicio" />
+            <DatePicker fx:id="dtFinal" layoutX="307.0" layoutY="103.0" prefHeight="25.0" prefWidth="194.0" promptText="Data Final" />
+            <ComboBox fx:id="cbTipoDespesa" layoutX="29.0" layoutY="172.0" prefHeight="25.0" prefWidth="421.0" promptText="ESCOLHA O TIPO DE DESPESA" style="-fx-background-radius: 0;" />
+            <Label fx:id="lbTipoDeDespesa" layoutX="29.0" layoutY="144.0" prefHeight="23.0" prefWidth="166.0" text="TIPO DE DESPESA:">
+               <font>
+                  <Font name="Roboto Light" size="18.0" />
+               </font>
+            </Label>
+            <TableView fx:id="tbDespesas" layoutX="27.0" layoutY="222.0" prefHeight="200.0" prefWidth="487.0">
+              <columns>
+                <TableColumn fx:id="columnDesc" prefWidth="176.0" text="Descrição" />
+                <TableColumn fx:id="columnValor" prefWidth="94.0" text="Valor" />
+                  <TableColumn fx:id="columnTipo" prefWidth="94.0" text="Tipo" />
+                  <TableColumn fx:id="columnFunc" prefWidth="103.0" text="Funcionário" />
+              </columns>
+            </TableView>
+         </children></Pane>
+      <Pane fx:id="paneNavBar" prefHeight="88.0" prefWidth="417.0" style="-fx-background-color: #0084ab; -fx-effect: dropshadow(three-pass-box, rgba(60,60,60,10), 10, -5, 0, 5);" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="16.0" />
+      <Label fx:id="lbFinanceiro" text="Localizar" textFill="WHITE" AnchorPane.leftAnchor="127.0" AnchorPane.rightAnchor="141.0" AnchorPane.topAnchor="24.0">
+         <font>
+            <Font name="Lobster" size="48.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="icClose" fitHeight="20.0" fitWidth="13.0" layoutX="455.0" layoutY="29.0" onMouseClicked="#close" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" AnchorPane.rightAnchor="36.0" AnchorPane.topAnchor="23.0">
+         <image>
+            <Image url="@../resources/icons/close.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

@@ -81,4 +81,19 @@ public class RepositoryCarro extends Repository<Carro> {
 		
 	}
 
+	public void deleteCarro(Carro carro) throws Exception {
+		EntityManager em = ConnectionFactoryRepository.getManager();
+		try{
+			em.getTransaction().begin();
+			em.remove(carro);
+			em.getTransaction().commit();
+		}catch (Exception e){
+			if(em.getTransaction() != null && em.getTransaction().isActive()){
+				em.getTransaction().rollback();
+			}
+			throw new Exception(e);
+		}
+		
+	}
+
 }

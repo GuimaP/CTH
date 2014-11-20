@@ -1,0 +1,17 @@
+DELIMITER $$
+ 
+CREATE TRIGGER registraMovimento BEFORE INSERT
+ON tb_financeiro
+FOR EACH ROW
+BEGIN
+  # INSERT INTO tb_auditoria (modulo,nomeFuncionario,operacao,dtOperacao) values ('FINANCEIRO',OLD.funcionario,'NOVA ENTRADA',NOW());
+  INSERT INTO tb_auditoria SET 
+  modulo = 'Financeiro',
+  operacao = 'NOVA ENTRADA',
+  dtOperacao = NOW(),
+  nomeFuncionario = NEW.funcionario;
+  
+END$$
+ 
+ 
+DELIMITER ;
