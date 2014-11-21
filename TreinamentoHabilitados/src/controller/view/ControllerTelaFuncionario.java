@@ -6,10 +6,10 @@ import java.time.ZoneId;
 import java.util.ResourceBundle;
 
 import javax.swing.JOptionPane;
+
 import controller.*;
-import controller.ControllerRg;
-import controller.VerificadorDeCpf;
 import controller.events.EventsText;
+import controller.events.MaskFieldUtil;
 import model.Funcionario;
 import model.Instrutor;
 import model.Login;
@@ -225,10 +225,14 @@ public class ControllerTelaFuncionario {
 		
 		populaTableView();
 
-		tfCpf.focusedProperty().addListener(new CpfMask(tfCpf));
-		tfCpf.setOnKeyReleased(new CpfMask(tfCpf));
-		tfCpf.addEventFilter(KeyEvent.KEY_TYPED, new ControllerCpfMask());
-//		tfNome.focusedProperty().addListener(new EventsText(tfNome));
+//		tfCpf.focusedProperty().addListener(new CpfMask(tfCpf));
+//		tfCpf.setOnKeyReleased(new CpfMask(tfCpf));
+//		tfCpf.addEventFilter(KeyEvent.KEY_TYPED, new ControllerCpfMask());
+		
+		
+		MaskFieldUtil.rgField(tfRg);
+		MaskFieldUtil.cpfField(tfCpf);
+		
 		EventsText.focusUpperLost(tfNome);
 		EventsText.upperCase(tfNome);
 		tfRg.addEventFilter(KeyEvent.KEY_TYPED, new ControllerRg());

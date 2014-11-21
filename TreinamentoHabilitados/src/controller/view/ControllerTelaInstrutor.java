@@ -34,6 +34,7 @@ import controller.ControllerRg;
 import controller.VerificadorDeCpf;
 import controller.events.EventsDate;
 import controller.events.EventsText;
+import controller.events.MaskFieldUtil;
 import model.Carro;
 import model.Funcionario;
 import model.Instrutor;
@@ -333,10 +334,6 @@ public class ControllerTelaInstrutor implements ITableInScreens {
 		}
 	}
 
-	@FXML
-	void excluir(ActionEvent event) {
-
-	}
 
 	// Metodo responsável para popular todos os dados do campos
 	// para o objeto Instrutor
@@ -445,6 +442,8 @@ public class ControllerTelaInstrutor implements ITableInScreens {
 		Font.loadFont(
 				ControllerTelaLogin.class.getResource("/fonts/Roboto-Thin.ttf")
 						.toExternalForm(), 12);
+		
+		
 		
 		imgFoto = pnFoto;
 		pnStaticFoto = paneFoto;
@@ -584,16 +583,22 @@ public class ControllerTelaInstrutor implements ITableInScreens {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		// perda de foco (mask)
+/*		// perda de foco (mask)
 		tfCpf.focusedProperty().addListener(new CpfMask(tfCpf));
 		// coloca a mask
 		tfCpf.setOnKeyReleased(new CpfMask(tfCpf));
 		// somente numeros, (.) e (-)
-		tfCpf.addEventFilter(KeyEvent.KEY_TYPED, new ControllerCpfMask());
+		tfCpf.addEventFilter(KeyEvent.KEY_TYPED, new ControllerCpfMask());*/
+		
+		
 		// somente numeros
 		tfNumeroCnh.addEventFilter(KeyEvent.KEY_TYPED,
 				new ControllerOnlyNumbers());
-		tfRg.addEventFilter(KeyEvent.KEY_TYPED, new ControllerRg());
+//		tfRg.addEventFilter(KeyEvent.KEY_TYPED, new ControllerRg());
+		
+		MaskFieldUtil.cpfField(tfCpf);
+		MaskFieldUtil.rgField(tfRg);
+		
 		// telefone mask
 		// perda de foco (mask)
 		tfTel.focusedProperty().addListener(new TelMask(tfTel));

@@ -185,8 +185,70 @@ public abstract class MaskFieldUtil {
                 positionCaret(textField);
             }
         });
+        
+        
 
     }
+    
+    public static void rgField(final TextField textField) {
+    	maxField(textField, 12);
+
+        textField.lengthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number number2) {
+                String value = textField.getText();
+                
+                if(value.length() >= 10){//Se estiver nos ultimo digitos, irá permitir entrada de X
+                	value = value.replaceAll("[^0-9Xx]", "");
+                }else if(value.length() <10) {
+                	value = value.replaceAll("[^0-9]", ""); //se não só numeros
+                }
+                
+                value = value.replaceFirst("(\\d{2})(\\d)","$1.$2");
+                value = value.replaceFirst("(\\d{2})\\.(\\d{3})(\\d{1,3})","$1.$2.$3");
+                value = value.replaceFirst("(\\d{2})\\.(\\d{3})\\.(\\d{3})([0-9Xx])","$1.$2.$3-$4");
+                		
+                textField.setText(value);
+                positionCaret(textField);
+            }
+        });
+    }
+    
+    
+    public static void cpfField(final TextField textField) {
+    	maxField(textField, 14);
+
+        textField.lengthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number number2) {
+                String value = textField.getText();
+                
+                value = value.replaceAll("([A-Z]{3})-(\\d{4})", ""); //se não só numeros
+                
+                value = value.replaceFirst("(\\d{3})(\\d)","$1.$2");
+                value = value.replaceFirst("(\\d{3})\\.(\\d{3})(\\d{1,3})","$1.$2.$3");
+                value = value.replaceFirst("(\\d{3})\\.(\\d{3})\\.(\\d{3})(\\d)","$1.$2.$3-$4");
+                		
+                textField.setText(value);
+                positionCaret(textField);
+            }
+        });
+    }
+    
+    public static void placaField(final TextField textField) {
+    	maxField(textField, 14);
+
+    	 textField.textProperty().addListener(new ChangeListener<String>() {
+             @Override
+             public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
+                
+             }
+         });
+    }
+    
+    
+    
+    
 
     /**
      * Devido ao incremento dos caracteres das mascaras eh necessario que o cursor sempre se posicione no final da string.

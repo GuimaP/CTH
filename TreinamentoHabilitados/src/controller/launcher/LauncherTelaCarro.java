@@ -51,7 +51,9 @@ public class LauncherTelaCarro extends Application{
 	}
 	
 	
-	
+	public static void main(String[] args) {
+		launch(args);
+	}
 	
 
 }
