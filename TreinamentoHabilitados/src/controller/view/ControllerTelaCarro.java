@@ -156,9 +156,7 @@ public class ControllerTelaCarro {
 		tfModelo.setText(tfModelo.getText().trim());
 		tfPlaca.setText(tfPlaca.getText().trim());
 
-		if (carro == null) {
-			carro = new Carro();
-		}
+		
 		if (tfMarca.getText().isEmpty()) {
 			erros.erroMarca();
 			tfMarca.requestFocus();

@@ -26,8 +26,7 @@ public class Funcionario {
 	private String telefone = ""; 
 	private String celular = "";
 	private EnumPermissaoAcessoSistema permissaoAcesso;
-	@OneToOne(cascade=CascadeType.REMOVE)
-	@JoinColumn(name="usuario")
+	@OneToOne(cascade={CascadeType.REMOVE,CascadeType.ALL})
 	private Login loginUsuario;
 	
 	public Login getLoginUsuario() {

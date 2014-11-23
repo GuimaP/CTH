@@ -8,7 +8,9 @@ import java.io.Closeable;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.CloseAction;
+
 
 
 
@@ -208,6 +210,7 @@ void abrePacote(MouseEvent event)   {
 		Dialogs.create().owner(LauncherPrincipal.stage)
 		.title("Erro").masthead("Parece que ocorreu um erro ao abrir essa tela")
 		.message("Por favor, contate o administrador do sistema").showError();
+//		JOptionPane.showMessageDialog(null, "");
 	}
 
 }
@@ -267,6 +270,10 @@ void abreRelatorio(MouseEvent event) {
         Tooltip.install(icoCliente, new Tooltip("Gerenciar Cliente"));
         Tooltip.install(icoCarro, new Tooltip("Gerenciar Carro"));
         Tooltip.install(icoInstrutor, new Tooltip("Gerenciar Instrutor"));
+        Tooltip.install(icRelatorio, new Tooltip("Gerar Relatorio Financeiro"));
+        Tooltip.install(icoPacote,new Tooltip("Gerenciar Pacotes"));
+        Tooltip.install(icFinanceiro, new Tooltip("Gerenciar Despesas"));
+        
         
         Font.loadFont(
 				ControllerTelaLogin.class.getResource("/fonts/Lobster.ttf")

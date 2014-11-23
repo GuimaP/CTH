@@ -107,7 +107,7 @@
                                           </TableView>
                                        </children>
                                     </Pane>
-                                    <Label fx:id="lbConsultaFuncionario" text="DADOS DO FUNCIONÃ�RIO" AnchorPane.leftAnchor="82.0" AnchorPane.topAnchor="10.0">
+                                    <Label fx:id="lbConsultaFuncionario" text="DADOS DO FUNCIONARIO" AnchorPane.leftAnchor="82.0" AnchorPane.topAnchor="10.0">
                                        <font>
                                           <Font name="Roboto Light" size="20.0" />
                                        </font>

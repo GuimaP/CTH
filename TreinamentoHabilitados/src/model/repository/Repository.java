@@ -64,9 +64,20 @@ public class Repository<T> {
 //		Session em = ConnectionFactoryConfig.getSession();// .getCurrentSession();
 		EntityManager em = null;
 		em = ConnectionFactoryRepository.getManager();
-		em.getTransaction().begin();
-		em.merge(obj);
-		em.getTransaction().commit();
+		try{
+			em.getTransaction().begin();
+			em.merge(obj);
+			em.getTransaction().commit();
+		}catch(Exception er) {
+			try{
+				em.getTransaction().rollback();
+			}catch(Exception er1){
+				//Transação não está ativa
+				er1.printStackTrace();
+			}
+			er.printStackTrace();
+		}
+		
 
 	}
 

@@ -1,7 +1,7 @@
 package model.enums;
 
 public enum EnumPermissaoAcessoSistema {
-	Gerente("Gerente"), Administrador("Administrador"), Funcionario("Funcion√°rio");
+	Administrador("Administrador"), Funcionario("Funcion·rio");
 	String desc;
 	
 	private EnumPermissaoAcessoSistema(String desc){

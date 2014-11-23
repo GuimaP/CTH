@@ -62,16 +62,16 @@ public class ControllerErros extends JFrame{
 	
 	//cpf invalido
 	public static void cpfInvalido(){
-		JOptionPane.showMessageDialog(null, "CPF inv√°lido");
+		JOptionPane.showMessageDialog(null, "CPF inv·lido");
 	}	
 	//fim cpf invalido
 	
 	//Tela Instrutor
 	public static void erroTelefone(){
-		JOptionPane.showMessageDialog(null, "Telefone obrigat√≥rio");
+		JOptionPane.showMessageDialog(null, "Telefone obriatÛrio");
 	}
 	public static void erroCelular(){
-		JOptionPane.showMessageDialog(null, "Celular obrigat√≥rio");
+		JOptionPane.showMessageDialog(null, "Celular obrigatÛrio");
 	}
 	
 	//Fim tela instrutor

@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="tb_login")
-public class Login implements Serializable{
+public class Login{
 
 	@Id
 	private String usuario= "";

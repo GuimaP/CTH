@@ -444,6 +444,8 @@ public class ControllerTelaServico {
 		ObservableList<Servico> listServico = FXCollections.observableArrayList();
 		ObservableList<ItensProperty> itens = FXCollections.observableArrayList();
 		
+		tableConsulta.getItems().clear();
+		
 		campoAulas.setCellValueFactory(new PropertyValueFactory<ItensProperty, Integer>("aulas"));
 		campoDescPacotes.setCellValueFactory(new PropertyValueFactory<ItensProperty, String>("Descricao"));
 		campoPreco.setCellValueFactory(new PropertyValueFactory<ItensProperty, String>("PrecoPacote"));		

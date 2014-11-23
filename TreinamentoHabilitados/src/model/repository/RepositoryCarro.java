@@ -28,7 +28,7 @@ import model.Carro;
  * @author Guima
  */
 
-public class RepositoryCarro extends Repository<Carro> {
+public class RepositoryCarro {
 
 	public void adicionar(Carro carro) throws Exception {
 		try {
@@ -109,6 +109,27 @@ public class RepositoryCarro extends Repository<Carro> {
 			throw new Exception(e);
 		}
 		
+	}
+	
+	public void atualizar(Carro obj) {
+//		Session em = ConnectionFactoryConfig.getSession();// .getCurrentSession();
+		EntityManager em = null;
+		em = ConnectionFactoryRepository.getManager();
+		try{
+			em.getTransaction().begin();
+			em.merge(obj);
+			em.getTransaction().commit();
+		}catch(Exception er) {
+			try{
+				em.getTransaction().rollback();
+			}catch(Exception er1){
+				//Transação não está ativa
+				er1.printStackTrace();
+			}
+			er.printStackTrace();
+		}
+		
+
 	}
 
 }

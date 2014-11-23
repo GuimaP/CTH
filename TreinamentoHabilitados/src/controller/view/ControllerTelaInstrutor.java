@@ -457,7 +457,7 @@ public class ControllerTelaInstrutor implements ITableInScreens {
 					@Override
 					public void handle(MouseEvent t) {
 						if (t.getButton() == MouseButton.SECONDARY) {
-							limparCampos();
+							
 //							System.out.println(tableBuscaInstrutores);
 //							System.out.println(tableBuscaInstrutores.getSelectionModel());
 //							System.out.println(tableBuscaInstrutores.getSelectionModel().getSelectedItem());
@@ -513,7 +513,7 @@ public class ControllerTelaInstrutor implements ITableInScreens {
 									instrutor = i;
 									tableBuscaInstrutores.getSelectionModel()
 											.clearSelection();
-
+									
 								}
 							});
 
@@ -531,6 +531,7 @@ public class ControllerTelaInstrutor implements ITableInScreens {
 										repoCarro.atualizar(c);
 										repoInstrutor.deletarInstrutor(instru.getInstrutor());
 										populaTableView();
+										limparCampos();
 									}catch(Exception e){
 										e.printStackTrace();
 									}
@@ -618,6 +619,7 @@ public class ControllerTelaInstrutor implements ITableInScreens {
 	}
 
 	public void limparCampos() {
+		try {
 		tfCel.setText("");
 		tfCpf.setText("");
 		tfNome.setText("");
@@ -626,13 +628,25 @@ public class ControllerTelaInstrutor implements ITableInScreens {
 		tfTel.setText("");
 		dtDataPermissao.setValue(null);
 		dtDataValidadeCnh.setValue(null);
+		cbCarro.getItems().clear();
 		
-		cbCarro.getSelectionModel().select(-1);
-		cbCarro.getItems().remove(instrutor.getTbCarroPlacaCarro());
+			cbCarro.setItems(repoCarro.buscaCarrosDisponiveis());
+		
+		cbCarro.setValue(null);
+		if(instrutor != null & instrutor.getTbCarroPlacaCarro() != null){
+			cbCarro.getItems().remove(instrutor.getTbCarroPlacaCarro());
+		}
+		
 		cbStatus.setValue(null);
 		instrutor = null;
 		for(int i = 0; i < paneFoto.getChildren().size();i++){
 			paneFoto.getChildren().remove(i);
+		}
+		
+		instrutor = null;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

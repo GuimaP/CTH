@@ -223,11 +223,9 @@ public abstract class MaskFieldUtil {
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number number2) {
                 String value = textField.getText();
                 
-                value = value.replaceAll("([A-Z]{3})-(\\d{4})", ""); //se não só numeros
+                value = value.replaceAll("([^0-9])", ""); //se não só numeros
                 
-                value = value.replaceFirst("(\\d{3})(\\d)","$1.$2");
-                value = value.replaceFirst("(\\d{3})\\.(\\d{3})(\\d{1,3})","$1.$2.$3");
-                value = value.replaceFirst("(\\d{3})\\.(\\d{3})\\.(\\d{3})(\\d)","$1.$2.$3-$4");
+                value = value.replaceFirst("([0-9]{3})([0-9]{3})([0-9]{3})([0-9]{2})$", "$1.$2.$3-$4");
                 		
                 textField.setText(value);
                 positionCaret(textField);

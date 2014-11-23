@@ -230,6 +230,7 @@ public class ControllerTelaFuncionario {
 //		tfCpf.addEventFilter(KeyEvent.KEY_TYPED, new ControllerCpfMask());
 		
 		
+		
 		MaskFieldUtil.rgField(tfRg);
 		MaskFieldUtil.cpfField(tfCpf);
 		
@@ -250,7 +251,6 @@ public class ControllerTelaFuncionario {
 				.observableArrayList();
 		listComboBox.add(EnumPermissaoAcessoSistema.Administrador);
 		listComboBox.add(EnumPermissaoAcessoSistema.Funcionario);
-		listComboBox.add(EnumPermissaoAcessoSistema.Gerente);
 		cbPermissao.setItems(listComboBox);
 
 		paneNavBar.setOnMousePressed(new EventHandler<MouseEvent>() {

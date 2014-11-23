@@ -262,6 +262,7 @@ public class ControllerTelaLocalizarDespesa {
 									populaTableView();
 									limparCampos();
 									*/
+									JOptionPane.showMessageDialog(null,"Tarefa Não implementada");
 								}catch(Exception e){
 									e.printStackTrace();
 									JOptionPane.showMessageDialog(null, e.getMessage());
