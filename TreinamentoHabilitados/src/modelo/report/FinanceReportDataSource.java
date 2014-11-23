@@ -20,6 +20,23 @@ public class FinanceReportDataSource implements JRDataSource {
 	public FinanceReportDataSource(List<FinanceiroRelatorio> f) {
 		super();
 		iterator = f.iterator();
+		
+
+		for(FinanceiroRelatorio e : f){
+			switch (e.getTipoPagamentoEnum()) {
+			case Desp :
+			case Est :
+			case Manu :
+			case Salario:
+				total -= e.getValor();
+				break;
+			default:
+				total += e.getValor();
+				break;
+			}
+			
+		}
+		
 	}
 	
 	
@@ -42,17 +59,7 @@ public class FinanceReportDataSource implements JRDataSource {
 			return finance.getTipoPagamento();
 		}
 		if (nome.getName().equalsIgnoreCase("VALOR")) {
-			switch (finance.getTipoPagamentoEnum()) {
-			case Desp :
-			case Est :
-			case Manu :
-			case Salario:
-				total -= finance.getValor();
-				break;
-			default:
-				total += finance.getValor();
-				break;
-			}
+			
 			return finance.getValorStr();
 		}
 		

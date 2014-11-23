@@ -334,6 +334,7 @@ public class ControllerTelaCarro {
 						@Override
 						public void handle(ActionEvent evt) {
 							try{
+								
 								repoCarro.deleteCarro(carro);
 								populaTableView();
 								limparCampos();

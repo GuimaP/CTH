@@ -39,7 +39,7 @@ public class ReportUtil{
 		
 		//Verifica se possui dados na fonte de dados
 		if(source == null){
-			throw new ErrorRelatorioException("n�o h� dados para gerar este relatorio");
+			throw new ErrorRelatorioException("nao ha dados para gerar este relatorio");
 		}
 		
 		

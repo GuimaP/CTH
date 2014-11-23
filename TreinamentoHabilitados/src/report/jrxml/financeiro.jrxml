@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="financeiro" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="abead3c0-9816-425d-b72a-939bf9bc3a51">
 	<property name="ireport.zoom" value="1.6105100000000008"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="37"/>
+	<property name="ireport.x" value="109"/>
+	<property name="ireport.y" value="31"/>
 	<field name="descricao" class="java.lang.String"/>
 	<field name="tipoPagamento" class="java.lang.String"/>
 	<field name="valor" class="java.lang.String"/>
@@ -43,12 +43,7 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="26">
-			<textField>
-				<reportElement x="415" y="0" width="136" height="16" uuid="11bb6be6-962c-4f44-8047-83928ed7bc9e"/>
-				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
-			</textField>
-		</band>
+		<band height="26"/>
 	</pageHeader>
 	<columnHeader>
 		<band height="21">
@@ -110,17 +105,21 @@
 	<pageFooter>
 		<band height="17">
 			<textField>
-				<reportElement mode="Opaque" x="0" y="4" width="515" height="13" backcolor="#E6E6E6" uuid="3665644a-5323-4c51-9b50-355bee96636d"/>
+				<reportElement mode="Opaque" x="0" y="4" width="398" height="13" backcolor="#E6E6E6" uuid="3665644a-5323-4c51-9b50-355bee96636d"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement mode="Opaque" x="515" y="4" width="40" height="13" backcolor="#E6E6E6" uuid="5cd97915-3814-4e28-aa41-637279684ef5"/>
+				<reportElement mode="Opaque" x="398" y="4" width="40" height="13" backcolor="#E6E6E6" uuid="5cd97915-3814-4e28-aa41-637279684ef5"/>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="EEEEE dd MMMMM yyyy">
 				<reportElement x="0" y="4" width="100" height="13" uuid="590b056a-86fb-49a2-ab01-d85cd28be9b4"/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="438" y="1" width="117" height="16" uuid="11bb6be6-962c-4f44-8047-83928ed7bc9e"/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

@@ -44,7 +44,6 @@ public class JRDataSourceFactory {
 		try {
 			List<Financeiro> lstF = new RepositoryFinanceiro().buscarTodos1();
 			List<FinanceiroRelatorio> lstR = new ArrayList<FinanceiroRelatorio>();
-			
 			lstF.forEach(e->{
 				lstR.add(new FinanceiroRelatorio(e));
 			});

@@ -107,62 +107,73 @@ public class ControllerTelaGeraRelatorio {
 				if (cbTipoRelatorio.getSelectionModel().getSelectedIndex() < 0) {
 					JOptionPane.showMessageDialog(null,
 							"Selecione um Tipo de Relatorio");
-					return;
-				}
 
-				// Ve o tipo de relatorio para montar a pesquisa
-				if (cbTipoRelatorio.getSelectionModel().getSelectedItem() == EnumTipoDeRelatorio.Financeiro) {
-					nomeRelatorioString = "Financeiro ";
-					data = JRDataSourceFactory
-							.createDatasource(JRDataSourceFactory.FINANCEIRO_LISTAGEM);
-					
-					generateReport();
-				} else if (cbTipoRelatorio.getSelectionModel().getSelectedItem() == EnumTipoDeRelatorio.AulasPorInstrutor) {
+				} else {
 
-				}
-				JOptionPane.showMessageDialog(null, "Relatorio Gerado!");
-				limpaCampos();
-			} else {// Se nï¿½o, ï¿½ um relatorio por data
-				
-				
-				
-				//Verifica se possui uma data Valida
-				if(dtInicio.getValue() != null & dtFinal.getValue() != null){
-					if(dtInicio.getValue().isAfter(dtFinal.getValue())){
-						throw new ErrorRelatorioException("Data inicial maior que a data final");
+					// Ve o tipo de relatorio para montar a pesquisa
+					if (cbTipoRelatorio.getSelectionModel().getSelectedItem() == EnumTipoDeRelatorio.Financeiro) {
+						nomeRelatorioString = "Financeiro ";
+						data = JRDataSourceFactory
+								.createDatasource(JRDataSourceFactory.FINANCEIRO_LISTAGEM);
+
+						generateReport();
+
+					} else if (cbTipoRelatorio.getSelectionModel()
+							.getSelectedItem() == EnumTipoDeRelatorio.AulasPorInstrutor) {
+
 					}
-				
-				
-				Instant instantInicio = dtInicio.getValue()
-						.atStartOfDay(ZoneId.systemDefault()).toInstant();
-				Date dtInicio = new Date(instantInicio.toEpochMilli());
+				}
 
-				Instant instantFinal = dtFinal.getValue()
-						.atStartOfDay(ZoneId.systemDefault()).toInstant();
-				Date dtFinal = new Date(instantFinal.toEpochMilli());
+			} else {// Se nï¿½o, ï¿½ um relatorio por data
 
-				nomeRelatorioString = "Financeiro "
-						+ dtInicio.toString().replaceAll("/", "-") + " atï¿½ "
-						+ dtFinal.toString().replaceAll("/", "-");
+				// Verifica se possui uma data Valida
+				if (dtInicio.getValue() != null & dtFinal.getValue() != null) {
+					if (dtInicio.getValue().isAfter(dtFinal.getValue())) {
+						throw new ErrorRelatorioException(
+								"Data inicial maior que a data final");
+					}
 
-				data = JRDataSourceFactory.createDatasourcePorData(
-						JRDataSourceFactory.FINANCEIRO_LISTAGEM, dtInicio,
-						dtFinal);
-				
-				btGerar.setDisable(true);
-				generateReport();
-				btGerar.setDisable(false);
-				JOptionPane.showMessageDialog(null, "Relatorio Gerado!");
-				limpaCampos();
-				}else {
-					JOptionPane.showMessageDialog(null,"Entre com uma data vÃ¡lida");
+					if (cbTipoRelatorio.getSelectionModel().getSelectedIndex() < 0) {
+						JOptionPane.showMessageDialog(null,
+								"Selecione um Tipo de Relatorio");
+					} else {
+
+						Instant instantInicio = dtInicio.getValue()
+								.atStartOfDay(ZoneId.systemDefault())
+								.toInstant();
+						Date dtInicio = new Date(instantInicio.toEpochMilli());
+
+						Instant instantFinal = dtFinal.getValue()
+								.atStartOfDay(ZoneId.systemDefault())
+								.toInstant();
+						Date dtFinal = new Date(instantFinal.toEpochMilli());
+
+						nomeRelatorioString = "Financeiro "
+								+ dtInicio.toString().replaceAll("/", "-")
+								+ " atï¿½ "
+								+ dtFinal.toString().replaceAll("/", "-");
+
+						data = JRDataSourceFactory.createDatasourcePorData(
+								JRDataSourceFactory.FINANCEIRO_LISTAGEM,
+								dtInicio, dtFinal);
+
+						btGerar.setDisable(true);
+						generateReport();
+						btGerar.setDisable(false);
+						JOptionPane
+								.showMessageDialog(null, "Relatorio Gerado!");
+						limpaCampos();
+					}
+				} else {
+					JOptionPane.showMessageDialog(null,
+							"Entre com uma data válida");
 				}
 			}
 		} catch (JRException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, e.getMessage());
-		}catch (ErrorRelatorioException e1){
+		} catch (ErrorRelatorioException e1) {
 			JOptionPane.showMessageDialog(null, e1.getMessage());
 		}
 		btGerar.setDisable(false);
@@ -176,15 +187,17 @@ public class ControllerTelaGeraRelatorio {
 		radioHtml.setSelected(false);
 		radioPDF.setSelected(false);
 		checkTodos.setSelected(false);
-		
+
 	}
 
-	private void generateReport() throws JRException,ErrorRelatorioException {
+	private void generateReport() throws JRException, ErrorRelatorioException {
 
 		// Verificando o tipo de Relatorio
 		if (cbTipoRelatorio.getSelectionModel().getSelectedItem() == EnumTipoDeRelatorio.Financeiro) {
 			// Escolhe o tipo de formato
 			if (radioExcel.isSelected()) {
+				data = JRDataSourceFactory
+						.createDatasource(JRDataSourceFactory.FINANCEIRO_LISTAGEM);
 				ReportUtil.gerarRelatorio(data, ReportUtil.FINANCEIRO_LISTAGEM,
 						nomeRelatorioString, ReportUtil.EXCEL_REPORT);
 
@@ -203,7 +216,8 @@ public class ControllerTelaGeraRelatorio {
 						nomeRelatorioString, ReportUtil.PDF_REPORT);
 			} else {
 				// TODO
-				JOptionPane.showMessageDialog(null, "Selecione um tipo de saida");
+				JOptionPane.showMessageDialog(null,
+						"Selecione um tipo de saida");
 			}
 		}
 
@@ -246,8 +260,7 @@ public class ControllerTelaGeraRelatorio {
 
 		dtFinal.setValue(LocalDate.now());
 		dtInicio.setValue(LocalDate.now());
-		
-		
+
 		final ToggleGroup group = new ToggleGroup();
 		radioExcel.setToggleGroup(group);
 		radioHtml.setToggleGroup(group);
